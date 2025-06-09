@@ -11,7 +11,7 @@ export default function Home() {
   className="flex  h-dvh flex-col  bg-cover bg-center bg-no-repeat       "
    style={{
     backgroundImage:
-      "linear-gradient(to right, rgba(253, 230, 138, 0.25), rgba(245, 158, 11, 0.1)), url('/images/img-1.jpg')",
+      "linear-gradient(to right, rgba(0,0,0, 0.3), rgba(0,0,0,.3)), url('/images/img-3.jpg')",
   }}
     >
   <Navbar/>
