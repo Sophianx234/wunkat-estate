@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import { Roboto, Inter } from "next/font/google";
 import "./globals.css";
+import Navbar from "./_components/Navbar";
 
 
-const inter = Inter({ subsets: ['latin'] });
-export const roboto = Roboto({ weight: ['400', '700'], subsets: ['latin']});
 
 export const metadata: Metadata = {
   title: "Wunkat",
@@ -18,9 +16,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      
       <body
-        className={`${inter.className} antialiased`}
+        className='font-inter antialiased'
       >
+        <Navbar/>
         {children}
       </body>
     </html>

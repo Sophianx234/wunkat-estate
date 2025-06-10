@@ -1,5 +1,22 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Darumadrop+One&family=Edu+NSW+ACT+Cursive:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Karla:ital,wght@0,200..800;1,200..800&family=Oswald:wght@200..700&family=Rubik+Dirt&display=swap');
 @import "tailwindcss";
 
 .nav-item{
   @apply px-5  rounded-2xl py-2 
+}
+.sidebar-item{
+  @apply  w-full hover:bg-red-100  focus:bg-red-100 bg-amber-700 my-3 py-3 text-center
+}
+
+
+@theme{
+  
+  --font-inter: "Inter","sans-serif";
+  --font-anton: "Anton","sans-serif";
+  --font-darum: "Darumadrop One",sans-serif;
+  --font-playfair: "Playfair Display",sans-serif;
+  --font-oswald: "Oswald","sans-serif";
+  --font-karla: "Karla";
+  --font-rubik: "Rubik Dirt";
 }
