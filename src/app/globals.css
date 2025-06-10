@@ -1,5 +1,5 @@
 @import "tailwindcss";
 
 .nav-item{
-  @apply px-4 rounded-2xl py-2 
+  @apply px-5  rounded-2xl py-2 
 }

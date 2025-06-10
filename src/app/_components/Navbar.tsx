@@ -1,12 +1,12 @@
 function Navbar() {
   return (
-    <nav className=" flex justify-between  px-20 w-full items-center mt-10 text-white">
+    <nav className=" flex justify-between  px-20 w-full items-center mt-10  text-white">
       <div>
         <h1 className="text-xl font-bold ">WunkatHomes</h1>
       </div>
 
       <ul className="flex  items-center justify-between
-backdrop-blur-3xl bg-white text-black overflow-hidden rounded-2xl   text-lg ">
+backdrop-blur-3xl   overflow-hidden rounded-4xl bg-amber-100/15   text-lg ">
   
         <li className=" pl-10 px-4 rounded-r-2xl py-3">Home</li>
         <li className="nav-item">Buy</li>

@@ -4,7 +4,7 @@ import "./globals.css";
 
 
 const inter = Inter({ subsets: ['latin'] });
-const roboto = Roboto({ weight: ['400', '700'], subsets: ['latin']});
+export const roboto = Roboto({ weight: ['400', '700'], subsets: ['latin']});
 
 export const metadata: Metadata = {
   title: "Wunkat",
