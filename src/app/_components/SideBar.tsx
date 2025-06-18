@@ -1,15 +1,21 @@
 
 import { motion } from 'motion/react'
 import Logo from './Logo'
-function SideBar() {
+import { X } from 'lucide-react'
+
+type sidebarProps = {
+  handleClose: ()=>void
+}
+function SideBar({handleClose}:sidebarProps) {
   return (
-    <motion.div initial={{x:0,opacity:0}} animate={{x:0,opacity:1} } className="absolute bg-white inset-0 h-dvh">
-      <div className='flex items-center sm:hidden'>
+    <motion.div initial={{x:0,opacity:0}}   animate={{x:0,opacity:1} } className="absolute bg-white inset-0 h-dvh">
+      <div className='flex justify-between  mr-4 items-center sm:hidden pt-8 px-4'>
         
         <Logo/>
+        <X size={36} onClick={handleClose} className='  stroke-black'/>
         
       </div>
-      <ul className="flex flex-col   items-center
+      <ul className="flex flex-col   items-center mx-4 
     text-sm  text-black z-10  pt-6">
   
         <li className="  sidebar-item">Home</li>

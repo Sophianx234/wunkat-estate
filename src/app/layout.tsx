@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "./_components/Navbar";
+import ClientOnly from "./_components/ClientOnly";
 
 
 
@@ -20,6 +21,7 @@ export default function RootLayout({
       <body
         className='font-inter antialiased'
       >
+
         <Navbar/>
         {children}
       </body>

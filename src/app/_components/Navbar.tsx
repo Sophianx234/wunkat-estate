@@ -1,4 +1,4 @@
-
+"use client"
 import BreadCrum from "./BreadCrum"
 import Button from "./Button"
 import Logo from "./Logo"
