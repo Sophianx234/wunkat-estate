@@ -1,7 +1,7 @@
 function Feature() {
   return (
    <div
-        className=" rounded-md bg-[url('/images/img-1.jpg')] aspect-[1/2]   bg-center bg-cover"
+        className=" rounded-md bg-[url('/images/img-1.jpg')] aspect-[1/2] lg:aspect-[3/4] lg:w-full  bg-center bg-cover"
         >
           <div className=" pl-1 pt-2 -space-y-1">
 

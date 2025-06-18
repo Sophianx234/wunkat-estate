@@ -9,6 +9,31 @@
   @apply rounded-full  w-full font-medium hover:bg-amber-50    mx-6 py-3 text-center
 }
 
+.hover-blackbtn{
+  @apply hover:bg-white  hover:text-black  duration-300
+}
+.hover-whitebtn{
+  @apply hover:bg-black hover:text-white transition-all duration-300
+}
+.hover-navlink{
+  @apply hover:text-black font-bold
+}
+.section-title{
+@apply text-3xl font-bold lg:text-4xl
+}
+.section-subtitle{
+@apply text-3xl font-bold lg:text-3xl leading-7 
+}
+.section-textcontainer{
+ @apply text-center pt-12 lg:pt-16  pb-6 lg:space-y-6 lg:pb-12
+}
+
+.btn-primary {
+  @apply bg-black text-white font-bold rounded-full  px-8 p-3 lg:py-2 lg:px-6
+}
+.btn-secondary {
+  @apply  bg-white text-black font-bold rounded-full  px-8 p-3 lg:py-2 lg:px-6
+}
 
 @theme{
   

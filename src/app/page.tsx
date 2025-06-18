@@ -1,5 +1,7 @@
+import CTA from "./_components/CTA";
 import Featured from "./_components/Featured";
 import Hero from "./_components/Hero";
+import HomesForYou from "./_components/HomesForYou";
 import Navbar from "./_components/Navbar";
 
 
@@ -23,6 +25,8 @@ export default function Home() {
 </header>
 <main>
   <Featured/>
+  <HomesForYou/>
+  <CTA/>
 </main>
     </div>
   );

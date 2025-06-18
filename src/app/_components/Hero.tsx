@@ -9,10 +9,10 @@ function Hero() {
       <p className="max-w-2xl text-center text-gray-200 antialiased font-medium pt-6 px-6 sm:px-0 ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, hic minus earum dolorum odio ullam doloribus quisquam totam sed eaque porro odit veniam repellat excepturi quo neque ipsum.</p>
       </div>
       <div className="flex justify-center items-center pt-8 gap-6">
-        <Button className='bg-black text-white font-bold rounded-full px-8 p-3 hover:scale-105'>
+        <Button className='btn-primary hover-blackbtn'>
           Login
         </Button>
-        <Button className='text-black bg-white font-semibold hover:scale-105 px-8 p-3  rounded-full'>
+        <Button className=' hover-whitebtn btn-secondary hover-whitebtn'>
           Signup
         </Button>
       </div>
