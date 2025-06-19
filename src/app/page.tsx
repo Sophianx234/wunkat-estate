@@ -1,6 +1,9 @@
 import CTA from "./_components/CTA";
+import Discover from "./_components/Discover";
 import Experts from "./_components/Experts";
 import Featured from "./_components/Featured";
+import Footer from "./_components/Footer";
+import FooterNav from "./_components/FooterNav";
 import Hero from "./_components/Hero";
 import HomesForYou from "./_components/HomesForYou";
 import Navbar from "./_components/Navbar";
@@ -33,6 +36,9 @@ export default function Home() {
   <TrustedBy/>
   <Testimonials/>
   <Experts/>
+  <Discover/>
+  <FooterNav/>
+  <Footer/>
 </main>
     </div>
   );
