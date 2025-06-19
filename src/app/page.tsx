@@ -3,6 +3,7 @@ import Featured from "./_components/Featured";
 import Hero from "./_components/Hero";
 import HomesForYou from "./_components/HomesForYou";
 import Navbar from "./_components/Navbar";
+import Testimonials from "./_components/Testimonials";
 import TrustedBy from "./_components/TrustedBy";
 
 
@@ -29,6 +30,7 @@ export default function Home() {
   <HomesForYou/>
   <CTA/>
   <TrustedBy/>
+  <Testimonials/>
 </main>
     </div>
   );

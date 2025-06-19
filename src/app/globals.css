@@ -21,6 +21,9 @@
 .section-title{
 @apply text-3xl font-bold lg:text-4xl
 }
+.section-title-secondary{
+@apply text-3xl font-bold lg:text-3xl
+}
 .section-subtitle{
 @apply text-3xl font-bold lg:text-3xl leading-7 
 }
