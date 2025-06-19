@@ -1,4 +1,5 @@
 import CTA from "./_components/CTA";
+import Experts from "./_components/Experts";
 import Featured from "./_components/Featured";
 import Hero from "./_components/Hero";
 import HomesForYou from "./_components/HomesForYou";
@@ -31,6 +32,7 @@ export default function Home() {
   <CTA/>
   <TrustedBy/>
   <Testimonials/>
+  <Experts/>
 </main>
     </div>
   );
