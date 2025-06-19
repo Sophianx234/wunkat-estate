@@ -2,7 +2,7 @@ import Feature from "./Feature"
 
 function Featured() {
   return (
-    <div className="pb-32 lg:pt-16" >
+    <div className="pb-32 pt-24 lg:pt-16" >
       <div className="section-textcontainer">
         <h1 className="text-3xl font-bold lg:text-4xl ">Featured Categories</h1>
         <h4 className="">Build in your own way</h4>

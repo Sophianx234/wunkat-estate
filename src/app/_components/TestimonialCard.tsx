@@ -2,14 +2,14 @@ import Image from "next/image"
 
 function TestimonialCard() {
   return (
-    <div className="w-[20rem] pt-8 bg-white px-6 pb-8 rounded-2xl">
+    <div className="sm:w-[20rem]  pt-8 bg-white sm:px-6 px-2 pb-8 rounded-2xl">
       <div className="grid grid-cols-[1fr_2fr_.5fr] justify-center items-center">
 
-      <div className="relative size-16 rounded-full overflow-hidden">
+      <div className="relative sm:size-16 size-12 rounded-full overflow-hidden">
         <Image src="/images/prof-1.jpg" className="object-cover" fill alt="" />
       </div>
-      <div className="font-karla -space-y-2">
-      <p className="font-bold"> Damian Parker</p>
+      <div className="font-karla sm:-space-y-2 ml-2">
+      <p className="font-bold sm:text-base text- leading-3.5 "> Damian Parker</p>
       <p className="text-sm">Customer</p>
       </div>
       <div className="relative w-full h-full">

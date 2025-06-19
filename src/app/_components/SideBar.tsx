@@ -11,7 +11,7 @@ function SideBar({handleClose}:sidebarProps) {
     <motion.div initial={{x:0,opacity:0}}   animate={{x:0,opacity:1} } className="absolute bg-white inset-0 h-dvh">
       <div className='flex justify-between  mr-4 items-center sm:hidden pt-8 px-4'>
         
-        <Logo/>
+        <Logo titleColor='text-black'/>
         <X size={36} onClick={handleClose} className='  stroke-black'/>
         
       </div>

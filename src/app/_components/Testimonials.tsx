@@ -3,10 +3,10 @@ import TestimonialCard from "./TestimonialCard"
 
 function Testimonials() {
   return (
-    <section className="px-12 bg-gray-50  pb-32 pt-44">
-      <div className="flex justify-between pr-24">
+    <section className="sm:px-12 bg-gray-50   pb-32 pl-6 sm:pl-0  sm:pt-44 pt-32">
+      <div className="flex sm:flex-row flex-col justify-between pr-24">
 
-      <h1 className="section-title-secondary ">What our customers are <br /> saying about us?</h1>
+      <h1 className="section-title-secondary ">What our customers are <br className="hidden sm:block" /> saying about us?</h1>
 
        <div className="flex items-center space-x-8 mt-4 md:mt-0 text-gray-700 text-sm">
         <div className="flex items-center space-x-2">
@@ -26,10 +26,14 @@ function Testimonials() {
         </div>
         </div>
       </div>
-    <div className="flex gap-6 justify-center pt-14">
+    <div className="sm:flex grid grid-cols-2 sm:gap-6 gap-3 sm:justify-center  mr-2 sm:mx-0 pt-14">
       <TestimonialCard/>
       <TestimonialCard/>
       <TestimonialCard/>
+      <div className=" sm:hidden">
+      <TestimonialCard/>
+      </div>
+
     </div>
 
       

@@ -5,9 +5,9 @@ import { HeartPulse } from "lucide-react";
 function HomeCard() {
   
   return (
-    <div className="w-72 rounded-lg overflow-hidden shadow-lg bg-white">
+    <div className="lg:w-72 w-full rounded-lg overflow-hidden shadow-lg bg-white">
       {/* Image section */}
-      <div className="relative w-full h-44">
+      <div className="relative w-full lg:h-44 h-32">
         <Image
           src="/images/img-2.jpg"
           alt="building"
@@ -24,10 +24,10 @@ function HomeCard() {
         {/* Location and price */}
         <div className="flex justify-between items-center mb-2">
           <div className="flex items-center gap-1 text-sm text-gray-600">
-            <MapPin className="w-4 h-4" />
-            <span>Ecomog, Accra</span>
+            <MapPin className="w-4 h-4 " />
+            <span className="text-[12px] lg:text-xs">Ecomog, Accra</span>
           </div>
-          <span className="bg-yellow-100 text-yellow-800 px-2 py-1 text-xs rounded-full">
+          <span className="bg-yellow-100 text-yellow-800 sm:px-2 py-1 lg:text-xs text-[10px] px-6 rounded-full">
             GH₵ 30K
           </span>
         </div>

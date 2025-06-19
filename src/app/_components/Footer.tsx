@@ -90,7 +90,7 @@ function Footer() {
 
     {/* App Buttons */}
     <div className="">
-      <h4 className="font-semibold mb-3">Location</h4>
+      <h4 className="font-semibold mb-3 pl-6">Location</h4>
       <div className="space-y-2">
         <div className="flex items-center gap-2 -translate-x-1">
         <MapPin className="size-5 text-green-700" />

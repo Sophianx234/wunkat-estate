@@ -6,7 +6,7 @@
   @apply px-5  rounded-2xl py-2 
 }
 .sidebar-item{
-  @apply rounded-full  w-full font-medium hover:bg-amber-50    mx-6 py-3 text-center
+  @apply rounded-full  w-full font-medium hover:bg-amber-100    mx-6 py-3 text-center
 }
 
 .hover-blackbtn{
@@ -28,7 +28,7 @@
 @apply text-3xl font-bold lg:text-xl
 }
 .section-subtitle{
-@apply text-3xl font-bold lg:text-3xl leading-7 
+@apply text-2xl font-bold lg:text-3xl leading-7 
 }
 .section-textcontainer{
  @apply text-center pt-12 lg:pt-16  pb-6 lg:space-y-6 lg:pb-12
