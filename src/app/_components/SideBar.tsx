@@ -15,8 +15,8 @@ function SideBar({handleClose}:sidebarProps) {
         <X size={36} onClick={handleClose} className='  stroke-black'/>
         
       </div>
-      <ul className="flex flex-col   items-center mx-4 
-    text-sm  text-black z-10  pt-6">
+      <ul className="flex flex-col     
+    text-sm  text-black  z-10  pt-6">
   
         <li className="  sidebar-item">Home</li>
         <li className="sidebar-item">Buy</li>
