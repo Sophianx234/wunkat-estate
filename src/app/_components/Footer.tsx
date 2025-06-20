@@ -19,7 +19,7 @@ function Footer() {
           </div>
 
           {/* Social Icons */}
-          <div className="space-y-3 text-sm text-gray-700">
+          <div className="space-y-3 text-sm text-gray-700 flex sm:block justify-between gap-10">
             <div className="flex gap-3 pt-2">
               <a href="#" className="text-gray-600 hover:text-green-700 transition">
                 <Facebook className="w-5 h-5" />
@@ -31,6 +31,16 @@ function Footer() {
                 <Linkedin className="w-5 h-5" />
               </a>
             </div>
+            <div className="flex items-center gap-5">
+                <div className="flex items-center gap-2">
+                  <MapPin className="size-5 text-green-700" />
+                  <span className="leading-4 text-xs text-nowrap">East Legon<br />Accra, Ghana</span>
+                </div>
+                <div className="flex items-center gap-2 ">
+                  <Clock className="size-5 text-green-700" />
+                  <span className="leading-4 text-xs">Mon - Sat:<br />8am – 6pm</span>
+                </div>
+              </div>
           </div>
         </div>
       </div>
@@ -87,17 +97,7 @@ function Footer() {
                   <li>+233 20 000 0000</li>
                 </ul>
               </div>
-              <div>
-                <h4 className="font-semibold mb-3">Location</h4>
-                <div className="flex items-start gap-2">
-                  <MapPin className="size-5 text-green-700" />
-                  <span className="leading-4 text-xs text-nowrap">East Legon<br />Accra, Ghana</span>
-                </div>
-                <div className="flex items-start gap-2 mt-2">
-                  <Clock className="size-5 text-green-700" />
-                  <span className="leading-4">Mon - Sat:<br />8am – 6pm</span>
-                </div>
-              </div>
+              
             </div>
           </div>
         </div>
