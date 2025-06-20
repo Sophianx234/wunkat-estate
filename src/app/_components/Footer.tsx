@@ -1,5 +1,3 @@
-import Image from "next/image";
-import Logo from "./Logo";
 import {
   Clock,
   Facebook,
@@ -7,6 +5,7 @@ import {
   MapPin,
   Twitter,
 } from "lucide-react";
+import Logo from "./Logo";
 
 function Footer() {
   return (

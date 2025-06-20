@@ -1,6 +1,6 @@
+import { MoveRight } from "lucide-react"
 import Image from "next/image"
 import Button from "./Button"
-import { ArrowBigRight, MoveRight } from "lucide-react"
 
 function Discover() {
   return (

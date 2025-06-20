@@ -6,7 +6,6 @@ import Footer from "./_components/Footer";
 import FooterNav from "./_components/FooterNav";
 import Hero from "./_components/Hero";
 import HomesForYou from "./_components/HomesForYou";
-import Navbar from "./_components/Navbar";
 import Testimonials from "./_components/Testimonials";
 import TrustedBy from "./_components/TrustedBy";
 

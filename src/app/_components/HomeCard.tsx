@@ -1,7 +1,5 @@
+import { Bath, BedDouble, Heart, MapPin, Ruler } from "lucide-react";
 import Image from "next/image";
-import img1 from "/images/img-2.jpg";
-import { BedDouble, Bath, Ruler, Heart, MapPin } from "lucide-react";
-import { HeartPulse } from "lucide-react";
 function HomeCard() {
   
   return (

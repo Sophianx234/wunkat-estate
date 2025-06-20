@@ -1,5 +1,4 @@
 import Image from "next/image"
-import BreadCrum from "./BreadCrum"
 
 type logoProps = {
   titleColor?: string
