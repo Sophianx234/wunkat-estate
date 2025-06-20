@@ -40,7 +40,7 @@ const trustedItems = [
 
 function TrustedBy() {
   return (
-    <section className="bg-black text-white py-20 pb-12 mb-32 px-6 mx-10 rounded-3xl">
+    <section className="bg-black text-white py-20 pb-12 mb-32 px-6 sm:mx-10 mx-4 rounded-3xl">
       <h2 className="text-2xl font-semibold text-center mb-12">
         Trusted By 
       </h2>

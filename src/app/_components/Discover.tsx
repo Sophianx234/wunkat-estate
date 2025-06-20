@@ -10,7 +10,7 @@ function Discover() {
       <h1 className="section-title-secondary  ">Discover Our Finest <br className="hidden sm:block"/> Selection</h1>
       <p className="text-xs ">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Culpa quia ullam quibusdam hic fugiat voluptas, quae cupiditate quasi!</p>
     </div>
-    <Button className="text-sm bg-black sm:btn-primary text-white py-1 px-2 rounded-full flex items-center gap-2">
+    <Button className="text-sm bg-black sm:btn-primary text-white py-1 px-2 sm:py-2 sm:px-3 rounded-full flex items-center gap-2">
       Browse 
        <MoveRight size={22} className="pt-[2px]" />
     </Button >

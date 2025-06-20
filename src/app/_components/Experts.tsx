@@ -8,7 +8,7 @@ function Experts() {
   <p className=" font-karla">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia.</p>
 </div>
 
-<div className="sm:flex grid grid-cols-2 sm:gap-4 gap-2 px-2 sm:px-32 justify-center">
+<div className="sm:flex grid grid-cols-2 w-full sm:gap-4 gap-2  sm:px-32 justify-center px-4 items-center">
 
 <Expert/>
 <Expert/>
