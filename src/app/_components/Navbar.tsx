@@ -1,4 +1,5 @@
 "use client"
+import { Suspense } from "react"
 import BreadCrum from "./BreadCrum"
 import Button from "./Button"
 import Logo from "./Logo"
@@ -12,8 +13,9 @@ function Navbar() {
 
     <nav className=" fixed flex justify-between  sm:px-20 px-6 pt-10 w-full items-center    text-white">
       <Logo/>
-
+<Suspense fallback={null}>
     <BreadCrum/>
+</Suspense>
       <ul className="sm:flex  items-center justify-between
 backdrop-blur-3xl   overflow-hidden rounded-4xl bg-amber-100/15 hidden  text-lg ">
   
