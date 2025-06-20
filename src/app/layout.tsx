@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import "./globals.css";
 import Navbar from "./_components/Navbar";
-import ClientOnly from "./_components/ClientOnly";
+import "./globals.css";
 
 
 
