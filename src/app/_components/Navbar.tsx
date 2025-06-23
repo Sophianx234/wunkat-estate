@@ -11,7 +11,7 @@ function Navbar() {
   return (
     
 
-    <nav className=" fixed grid grid-cols-3 justify-between  sm:px-20 px-6 pt-10 w-full items-center    text-white">
+    <nav className=" fixed sm:grid flex grid-cols-3 justify-between  sm:px-20 px-6 pt-10 w-full items-center    text-white">
       <Logo/>
 <Suspense fallback={null}>
     <BreadCrum/>
