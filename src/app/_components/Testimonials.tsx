@@ -3,7 +3,7 @@ import TestimonialCard from "./TestimonialCard"
 
 function Testimonials() {
   return (
-    <section className="sm:px-12 bg-gray-50   pb-32 pl-6 sm:pl-0  sm:pt-44 pt-32">
+    <section className="sm:px-12 bg-gray-50   pb-32 pl-6 sm:pl-8  sm:pt-44 pt-32">
       <div className="flex sm:flex-row flex-col justify-between pr-24">
 
       <h1 className="section-title-secondary ">What our customers are <br className="hidden sm:block" /> saying about us?</h1>

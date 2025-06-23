@@ -10,10 +10,11 @@
 }
 
 .hover-blackbtn{
-  @apply hover:bg-white  hover:text-black  duration-300
+  @apply   hover:text-white duration-300 hover:scale-105
+  hover:bg-gray-800 transition
 }
 .hover-whitebtn{
-  @apply hover:bg-black hover:text-white transition-all duration-300
+  @apply hover:text-black  duration-300 hover:bg-gray-300 transition hover:scale-105
 }
 .hover-navlink{
   @apply hover:text-black font-bold
