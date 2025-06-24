@@ -7,7 +7,7 @@ import Button from "../_components/Button"
 function Login() {
   return (
 
-    <div className="sm:grid grid-cols-2 mx-6 mt-20 sm:h-[35rem] sm:m-20 justify-center items-center shadow border-gray-200  ">
+    <div className="sm:grid grid-cols-2 mx-6 mt-24 sm:h-[35rem] sm:m-20 justify-center items-center shadow border-gray-200  ">
       <div className="flex flex-col
        sm:px-32 px-6 py-10 border-gray-500 ">
 
