@@ -21,7 +21,7 @@ export default function RootLayout({
         className='font-inter antialiased'
       >
 
-        <Navbar/>
+        
         {children}
       </body>
     </html>

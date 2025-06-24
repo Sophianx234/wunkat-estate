@@ -6,6 +6,7 @@ import Footer from "./_components/Footer";
 import FooterNav from "./_components/FooterNav";
 import Hero from "./_components/Hero";
 import HomesForYou from "./_components/HomesForYou";
+import Navbar from "./_components/Navbar";
 import Testimonials from "./_components/Testimonials";
 import TrustedBy from "./_components/TrustedBy";
 
@@ -23,7 +24,7 @@ export default function Home() {
       "linear-gradient(to right, rgba(0,0,0, 0.3), rgba(0,0,0,.3)), url('/images/img-3.jpg')",
   }}
     >
-      
+   <Navbar/>   
 <Hero/>
 
   </div>
