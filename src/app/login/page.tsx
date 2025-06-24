@@ -7,9 +7,9 @@ import Button from "../_components/Button"
 function Login() {
   return (
 
-    <div className="grid grid-cols-2 h-[35rem] m-20 justify-center items-center shadow border-gray-200  ">
+    <div className="sm:grid grid-cols-2 mx-6 mt-20 sm:h-[35rem] sm:m-20 justify-center items-center shadow border-gray-200  ">
       <div className="flex flex-col
-       px-32">
+       sm:px-32 px-6 py-10 border-gray-500 ">
 
       <div className="space-y-2">
 <h1 className="font-bold text-2xl font-karla">Welcome back</h1>
@@ -48,7 +48,7 @@ function Login() {
         <p><span className="text-gray-500 font-karla text-sm">Don't have an account? </span><span className="font-bold tracking-tighter pl-1 font-karla relative">Sign up for free  <img src="images/und.png" className="w-20 absolute right-0" alt=""  /></span></p>
       </div>
       </div>
-      <div className="relative size-full">
+      <div className="relative hidden sm:block size-full">
 <Image src="/images/img-6.jpg" alt="Login Image" fill className="object-cover w-full h-full" />
       </div>
     </div>
