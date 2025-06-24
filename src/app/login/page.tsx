@@ -45,7 +45,7 @@ function Login() {
         </Button>
       </div>
       <div className="pt-8 text-xs">
-        <p><span className="text-gray-500 font-karla text-sm">Don't have an account? </span><span className="font-bold tracking-tighter pl-1 font-karla relative">Sign up for free  <img src="images/und.png" className="w-20 absolute right-0" alt=""  /></span></p>
+        <p><span className="text-gray-500 font-karla text-sm">DonDon&apos;t have an account? </span><span className="font-bold tracking-tighter pl-1 font-karla relative">Sign up for free  <img src="images/und.png" className="w-20 absolute right-0" alt=""  /></span></p>
       </div>
       </div>
       <div className="relative hidden sm:block size-full">
