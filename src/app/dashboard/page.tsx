@@ -38,7 +38,7 @@ export default function Dashboard() {
 
         <Topbar />
 
-      <main className="flex-1 grid-cols-1 px-8 py-6 relative ">
+      <main className="flex-1 grid-cols-1 px-8 py-6 pt-32 sm:pt-6  relative ">
         
 
         

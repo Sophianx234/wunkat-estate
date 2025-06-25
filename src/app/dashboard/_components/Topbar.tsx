@@ -1,12 +1,16 @@
 import { FaSearch, FaBell } from "react-icons/fa";
 import Image from "next/image";
+import { HiMenuAlt1 } from "react-icons/hi";
 
 export default function Topbar() {
   return (
-    <div className="   bg-white   border-b border-b-gray-200 pt-7 pb-4 pl-5   px-10">
+    <div className=" fixed sm:relative left-0 right-0  z-20 shadow sm:shadow-none  bg-white   border-b border-b-gray-200 pt-7 pb-4 pl-5   px-10">
 
     <div className="grid grid-cols-[2fr_4fr]  justify-between  items-center  ">
-      <div className="relative w-full max-w-md">
+      <div className="sm:hidden block">
+        <HiMenuAlt1 className="size-8"/>
+      </div>
+      <div className="hidden sm:block relative w-full max-w-md">
         <input
           type="text"
           placeholder="Search something here..."
@@ -30,7 +34,7 @@ export default function Topbar() {
             className="object-cover rounded-full "
             />
             </div>
-          <div>
+          <div className="hidden sm:block">
             <p className="text-sm font-semibold">Albert Flores</p>
             <p className="text-xs text-gray-500">albert45@email.com</p>
           </div>
