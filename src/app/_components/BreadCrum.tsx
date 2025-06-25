@@ -4,7 +4,6 @@ import { Menu, X } from "lucide-react";
 import SideBar from "./SideBar";
 import { useRouter,useSearchParams } from "next/navigation";
 import { AnimatePresence } from "motion/react";
-import { ReactNode } from "react";
 import { HiMenuAlt1 } from "react-icons/hi";
 import Sidebar from "../dashboard/_components/SideNav";
 type breadCrumProps = {
