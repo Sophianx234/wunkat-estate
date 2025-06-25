@@ -33,9 +33,11 @@ export default function Dashboard() {
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
-      <div className="grid-rows-[1fr_10fr]">
+      <div className="grid-rows-[1fr_10fr] w-full">
+
 
         <Topbar />
+
       <main className="flex-1 grid-cols-1 px-8 py-6 relative ">
         
 
