@@ -1,6 +1,7 @@
-import { FaSearch, FaBell } from "react-icons/fa";
+import BreadCrum from "@/app/_components/BreadCrum";
 import Image from "next/image";
-import { HiMenuAlt1 } from "react-icons/hi";
+import { Suspense } from "react";
+import { FaBell, FaSearch } from "react-icons/fa";
 
 export default function Topbar() {
   return (
@@ -8,7 +9,10 @@ export default function Topbar() {
 
     <div className="grid grid-cols-[2fr_4fr]  justify-between  items-center  ">
       <div className="sm:hidden block">
-        <HiMenuAlt1 className="size-8"/>
+        <Suspense fallback={null}>
+
+        <BreadCrum type="dash" style="size-8"/>
+        </Suspense>
       </div>
       <div className="hidden sm:block relative w-full max-w-md">
         <input

@@ -4,10 +4,14 @@ import { Menu, X } from "lucide-react";
 import SideBar from "./SideBar";
 import { useRouter,useSearchParams } from "next/navigation";
 import { AnimatePresence } from "motion/react";
+import { ReactNode } from "react";
+import { HiMenuAlt1 } from "react-icons/hi";
+import Sidebar from "../dashboard/_components/SideNav";
 type breadCrumProps = {
   style?: string
+  type?: 'normal'|'dash'
 }
-function BreadCrum({style}:breadCrumProps) {
+function BreadCrum({style,type='normal'}:breadCrumProps) {
   const router = useRouter()
 
   const openSideBar = useSearchParams().get('modal') === 'open'
@@ -24,12 +28,13 @@ function BreadCrum({style}:breadCrumProps) {
     <>
       <div className="flex sm:hidden">
         {!openSideBar ? (
-          <Menu className={style} size={40} onClick={handleOpenSideBar} />
+          type==='normal'?<Menu className={style} size={40} onClick={handleOpenSideBar} />:<HiMenuAlt1 className={style} onClick={handleOpenSideBar}/>
         ) : (
           <X size={40} className={style} onClick={handleCloseSideBar}  />
         )}
       </div>
-      <AnimatePresence>{openSideBar && <SideBar handleClose={handleCloseSideBar} />}</AnimatePresence>
+      {type=='normal'&&<AnimatePresence>{openSideBar && <SideBar handleClose={handleCloseSideBar} />}</AnimatePresence>}
+      {type=='dash'&&<AnimatePresence>{openSideBar && <Sidebar/>}</AnimatePresence>}
     </>
   );
 }
