@@ -15,7 +15,11 @@ export default function Topbar() {
         <FaSearch className="absolute left-3 top-2.5 text-gray-400" />
       </div>
       <div className="flex items-center justify-self-end gap-4">
+        <div className="border border-gray-200 rounded-full p-2 relative">
+          <span className="absolute bg-green-200 rounded-full size-3 top-0 -right-1"></span>
+
         <FaBell className="text-gray-500" />
+        </div>
         <div className="flex items-center gap-2 border-l border-l-gray-200 pl-4">
           <div className="relative size-10">
 

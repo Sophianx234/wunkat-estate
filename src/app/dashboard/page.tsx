@@ -4,6 +4,7 @@ import Sidebar from "./_components/SideNav";
 import Topbar from "./_components/Topbar";
 import Filters from "./_components/Filters";
 import PropertyCard from "./_components/PropertyCard";
+import Button from "../_components/Button";
 
 const mockProperties = [
   {
@@ -14,7 +15,7 @@ const mockProperties = [
     baths: 2,
     size: "2400 sqft",
     price: "$4,000",
-    image: "/images/house1.jpg"
+    image: "/images/img-2.jpg"
   },
   {
     id: 2,
@@ -24,7 +25,7 @@ const mockProperties = [
     baths: 3,
     size: "3650 sqft",
     price: "$5,200",
-    image: "/images/house2.jpg"
+    image: "/images/img-1.jpg"
   },
 ];
 
@@ -39,11 +40,11 @@ export default function Dashboard() {
         
 
         
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between  items-center mb-6">
           <h2 className="text-xl font-semibold">Properties</h2>
-          <button className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2">
+          <Button className="bg-black text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2">
             <FaPlus /> Add Property
-          </button>
+          </Button>
         </div>
         <Filters />
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
