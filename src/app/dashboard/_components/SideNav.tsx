@@ -10,7 +10,7 @@ import Logo from "@/app/_components/Logo";
 import { X } from "lucide-react";
 type sidebarProps = {
   type?: 'normal'|'slide'
-  handleClose: ()=>void
+  handleClose?: ()=>void
 }
 export default function Sidebar({handleClose,type = 'normal'}:sidebarProps) {
   return (
