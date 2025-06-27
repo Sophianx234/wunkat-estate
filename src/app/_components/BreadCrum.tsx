@@ -2,7 +2,7 @@
 import { Menu, X } from "lucide-react";
 
 import SideBar from "./SideBar";
-import { useRouter,useSearchParams } from "next/navigation";
+import { usePathname, useRouter,useSearchParams } from "next/navigation";
 import { AnimatePresence } from "motion/react";
 import { HiMenuAlt1 } from "react-icons/hi";
 import Sidebar from "../dashboard/_components/SideNav";
@@ -12,13 +12,14 @@ type breadCrumProps = {
 }
 function BreadCrum({style,type='normal'}:breadCrumProps) {
   const router = useRouter()
+  const pathname = usePathname()
 
   const openSideBar = useSearchParams().get('modal') === 'open'
   console.log(openSideBar)
   
 
   const handleCloseSideBar = ()=>{
-    router.push('/')
+    router.push(pathname)
   }
   const handleOpenSideBar = ()=>{
     router.push('?modal=open')
@@ -33,7 +34,7 @@ function BreadCrum({style,type='normal'}:breadCrumProps) {
         )}
       </div>
       {type=='normal'&&<AnimatePresence>{openSideBar && <SideBar handleClose={handleCloseSideBar} />}</AnimatePresence>}
-      {type=='dash'&&<AnimatePresence>{openSideBar && <Sidebar/>}</AnimatePresence>}
+      {type=='dash'&&<AnimatePresence>{openSideBar && <Sidebar handleClose={handleCloseSideBar}  type="slide" />}</AnimatePresence>}
     </>
   );
 }
