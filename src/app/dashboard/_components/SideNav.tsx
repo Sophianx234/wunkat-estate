@@ -19,7 +19,7 @@ export default function Sidebar({handleClose,type = 'normal'}:sidebarProps) {
       animate={{ x: 0 }}
       exit={{ x: "-100%" }}
       transition={{ duration: 0.3 }}
-    className={`w-64 ${type=='normal'?'hidden':'block absolute top-0 left-0 z-10 '}  sm:block bg-white shadow   pb-6`}>
+    className={`w-64 ${type=='normal'?'hidden':'block absolute h-dvh top-0 left-0 z-10 '}  sm:block bg-white shadow   pb-6`}>
       <div className={` flex items-center justify-between mb-5 pt-6 border-b border-b-gray-200  pr-2 pb-5 pl-5 border-r border-r-gray-200`}>
         <Logo type="dash"/>
         {type=='slide'&&<X size={30} onClick={handleClose} className={'block self-end  stroke-black'}/>}
