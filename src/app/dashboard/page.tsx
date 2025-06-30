@@ -1,10 +1,8 @@
 
 import { FaPlus } from "react-icons/fa";
-import Sidebar from "./_components/SideNav";
-import Topbar from "./_components/Topbar";
+import Button from "../_components/Button";
 import Filters from "./_components/Filters";
 import PropertyCard from "./_components/PropertyCard";
-import Button from "../_components/Button";
 
 const mockProperties = [
   {
