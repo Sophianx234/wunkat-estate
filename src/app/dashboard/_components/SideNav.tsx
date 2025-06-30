@@ -19,7 +19,7 @@ export default function Sidebar({ handleClose, type = 'normal' }: sidebarProps) 
       animate={{ x: 0 }}
       exit={{ x: "-100%" }}
       transition={{ duration: 0.3 }}
-      className={`w-64 ${type === 'normal' ? 'hidden' : 'block absolute h-dvh top-0 left-0 z-10'} sm:block bg-white shadow pb-6`}
+      className={`w-64 ${type === 'normal' ? 'hidden sm:fixed sm:block left-0 top-0  h-screen w-64 bg-white shadow z-50' : 'block absolute h-dvh top-0 left-0 z-10'} sm:block bg-white shadow pb-6 `}
     >
       {/* Wrapper with flex column layout */}
       <div className="flex flex-col h-dvh">
