@@ -1,3 +1,4 @@
+'use client'
 import {
   Card,
   CardHeader,
@@ -8,9 +9,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Search } from "lucide-react"
+import { Search, Plus } from "lucide-react"
+import { useState } from "react"
+import AgentForm from "./AgentForm"
 
-const agents = [
+const initialAgents = [
   {
     name: "Emily Watson",
     role: "Senior Agent",
@@ -41,6 +44,8 @@ const agents = [
 ]
 
 export default function AgentsPage() {
+  const [agents, setAgents] = useState(initialAgents)
+
   return (
     <div className="p-6 space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -55,6 +60,8 @@ export default function AgentsPage() {
           </Button>
         </div>
       </div>
+
+      
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {agents.map((agent, i) => (
@@ -82,6 +89,7 @@ export default function AgentsPage() {
           </Card>
         ))}
       </div>
+      <AgentForm/>
     </div>
   )
 }
