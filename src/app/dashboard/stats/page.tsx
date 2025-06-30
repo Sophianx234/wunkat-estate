@@ -8,7 +8,7 @@ import SoldAnalytics from "./SoldAnalytics";
 
 export default function Stats() {
   return (
-    <div className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-12">
+    <div className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-12 mt-32">
       {/* Total Income & Revenue */}
 
       <IncomeCard />

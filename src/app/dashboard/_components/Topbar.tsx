@@ -5,7 +5,7 @@ import { FaBell, FaSearch } from "react-icons/fa";
 
 export default function Topbar() {
   return (
-    <div className=" fixed sm:relative left-0 right-0  z-20 shadow sm:shadow-none  bg-white   border-b border-b-gray-200 pt-7 pb-4 pl-5   px-10">
+    <div className=" fixed sm:relative left-0 right-0   z-20 shadow sm:shadow-none  bg-white   border-b border-b-gray-200 pt-7 pb-4 pl-5   px-10">
 
     <div className="grid grid-cols-[2fr_4fr]  justify-between  items-center  ">
       <div className="sm:hidden block">
