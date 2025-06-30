@@ -46,6 +46,17 @@
   @apply flex items-center hover:text-white hover:bg-black transition pl-2  py-3 gap-2 
 }
 
+@layer utilities {
+  .scrollbar-hide {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+}
+
 @theme{
   
   --font-inter: "Inter","sans-serif";
