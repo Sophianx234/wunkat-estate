@@ -1,15 +1,15 @@
 'use client'
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Search, Plus } from "lucide-react"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Search } from "lucide-react"
 import { useState } from "react"
 import AgentForm from "./AgentForm"
 
@@ -44,7 +44,7 @@ const initialAgents = [
 ]
 
 export default function AgentsPage() {
-  const [agents, setAgents] = useState(initialAgents)
+  const [agents] = useState(initialAgents)
 
   return (
     <div className="p-6 space-y-6">
