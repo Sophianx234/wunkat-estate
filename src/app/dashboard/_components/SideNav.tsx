@@ -8,6 +8,7 @@ import { TbFileInvoice, TbHomePlus } from "react-icons/tb";
 import {motion} from 'framer-motion'
 import Logo from "@/app/_components/Logo";
 import { X } from "lucide-react";
+import Link from "next/link";
 type sidebarProps = {
   type?: 'normal'|'slide'
   handleClose?: ()=>void
@@ -34,16 +35,16 @@ export default function Sidebar({ handleClose, type = 'normal' }: sidebarProps) 
 
         {/* Scrollable nav container */}
         <nav className="flex-1 overflow-y-auto scrollbar-hide  text-sm font-medium text-gray-600 px-4 space-y-1">
-          <a href="#" className="dash-nav-item"><MdDashboard className="size-6" /> Dashboard</a>
-          <a href="#" className="dash-nav-item"><RiBuilding2Line className="size-6" /> Properties</a>
-          <a href="#" className="dash-nav-item"><HiOutlineUsers className="size-6" /> Agents</a>
-          <a href="#" className="dash-nav-item"><MdAccountCircle className="size-6" /> Customers</a>
-          <a href="#" className="dash-nav-item"><TbFileInvoice className="size-6" /> Rent Application</a>
-          <a href="#" className="dash-nav-item"><TbHomePlus className="size-6" /> Transaction</a>
-          <a href="#" className="dash-nav-item"><MdMessage className="size-6" /> Message</a>
-          <a href="#" className="dash-nav-item"><FiSettings className="size-6" /> Settings</a>
-          <a href="#" className="dash-nav-item"><MdAccountCircle className="size-6" /> My Account</a>
-          <a href="#" className="dash-nav-item text-red-500"><BiLogOut className="size-6" /> Log Out</a>
+          <Link href="#" className="dash-nav-item"><MdDashboard className="size-6" /> Dashboard</Link>
+          <Link href="/dashboard/properties" className="dash-nav-item"><RiBuilding2Line className="size-6" /> Properties</Link>
+          <Link href="/dashboard/agents" className="dash-nav-item"><HiOutlineUsers className="size-6" /> Agents</Link>
+          <Link href="/dashboard/customers" className="dash-nav-item"><MdAccountCircle className="size-6" /> Customers</Link>
+          <Link href="/dashboard/rent/apply" className="dash-nav-item"><TbFileInvoice className="size-6" /> Rent Application</Link>
+          <Link href="/dashboard/transactions" className="dash-nav-item"><TbHomePlus className="size-6" /> Transaction</Link>
+          <Link href="/dashboard/messages" className="dash-nav-item"><MdMessage className="size-6" /> Message</Link>
+          <Link href="/dashboard/settings" className="dash-nav-item"><FiSettings className="size-6" /> Settings</Link>
+          <Link href="/dashboard/account" className="dash-nav-item"><MdAccountCircle className="size-6" /> My Account</Link>
+          <Link href="#" className="dash-nav-item text-red-500"><BiLogOut className="size-6" /> Log Out</Link>
         </nav>
 
       </div>
