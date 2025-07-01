@@ -16,19 +16,19 @@ export default function MobileNavbar() {
           </Link>
         </li>
         <li className="flex flex-col items-center">
-          <Link href="/properties" className="flex flex-col items-center">
+          <Link href="/dashboard/properties" className="flex flex-col items-center">
             <TbHomePlus className='size-6' />
             <span className="text-xs mt-1">Properties</span>
           </Link>
         </li>
         <li className="flex flex-col items-center">
-          <Link href="/messages" className="flex flex-col items-center">
+          <Link href="/dashboard/messages" className="flex flex-col items-center">
             <MdMessage className='size-6' />
             <span className="text-xs mt-1">Message</span>
           </Link>
         </li>
         <li className="flex flex-col items-center">
-          <Link href="/account" className="flex flex-col items-center">
+          <Link href="/dashboard/account" className="flex flex-col items-center">
             <HiOutlineUsers className='size-6' />
             <span className="text-xs mt-1">My Account</span>
           </Link>
