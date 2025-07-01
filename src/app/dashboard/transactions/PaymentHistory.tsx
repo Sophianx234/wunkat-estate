@@ -1,4 +1,4 @@
-import { Wallet, Home } from "lucide-react";
+import { Wallet } from "lucide-react";
 import { MdOutlineHomeWork } from "react-icons/md";
 
 const payments = Array(6).fill({
