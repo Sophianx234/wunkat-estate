@@ -1,5 +1,7 @@
 import { connectToDatabase } from "@/config/DbConnect";
+import { encryptPassword } from "@/lib/bcrypt";
 import { signToken } from "@/lib/jwtConfig";
+import { setAuthCookie } from "@/lib/setAuthCookie";
 import User from "@/models/User";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -14,25 +16,12 @@ export const POST = async (req: NextRequest) => {
         { status: 400 }
       );
 
-    const newUser = await User.create({ name, password, email });
+    const newPassword = await encryptPassword(password);
+    const newUser = await User.create({ name, password:newPassword, email });
     const token = await signToken(newUser);
-    console.log(token)
-    const response = NextResponse.json(
-      {
-        message: "login successful",
-        token,
-      },
-      { status: 200 }
-    );
+    setAuthCookie(token)
 
-    response.cookies.set("token", token, {
-      secure: process.env.NODE_ENV === "production",
-      httpOnly: true,
-      path: "/",
-      sameSite: "lax",
-    });
-
-    return response;
+    
   } catch (err) {
     console.log(err);
     return NextResponse.json({
