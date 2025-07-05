@@ -1,7 +1,7 @@
 // models/User.js
 import mongoose, { Schema } from "mongoose";
 
-type userDocumentType ={
+export type userDocumentType ={
   name: string;
   email: string;
   password: string;
