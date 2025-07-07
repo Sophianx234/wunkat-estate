@@ -6,6 +6,9 @@ import { CheckIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+type checkboxProps = {
+  type?: "checkbox" | "radio" 
+}
 function Checkbox({
   className,
   ...props

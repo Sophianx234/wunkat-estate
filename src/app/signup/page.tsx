@@ -1,12 +1,60 @@
+"use client";
 import Image from "next/image";
-import { Input } from "../_components/input";
-import { Checkbox } from "../_components/checkbox";
-import { FaGoogle } from "react-icons/fa";
 import Button from "../_components/Button";
+import { Checkbox } from "../_components/checkbox";
+import { Input } from "../_components/input";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useState } from "react";
+import axios from "axios";
+const signupSchema = z
+  .object({
+    name: z.string().min(1, "Name is required"),
+    email: z.string().email("Please enter a valid email"),
+    password: z.string().min(6, "Password must be at least 6 characters long"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+type signupFormInputs = z.infer<typeof signupSchema>;
 
 function Signup() {
+  const [isLoading,setIsLoading] = useState<boolean>(false);
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<signupFormInputs>({
+    resolver: zodResolver(signupSchema),
+  });
+
+  const handleSignup: SubmitHandler<signupFormInputs> = async (data) => {
+    try{
+      setIsLoading(true);
+      const res = await axios.post("/api/auth/signup", data);
+      if (res.status === 200) {
+        console.log("Signup successful:", res.data);
+        // You can redirect or show a success message here
+      } else {
+        console.error("Signup failed:", res.data);
+      }
+
+    }catch(err){
+      console.error("Signup error:", err);
+    }finally{
+      setIsLoading(false);
+    }
+    console.log("Signup data:", data);
+  };
   return (
-    <div className="sm:grid grid-cols-2 mx-6 sm:mt-24 my-10 sm:h-[35rem] sm:m-20 justify-center items-center border shadow border-gray-200">
+    <form
+      onSubmit={handleSubmit(handleSignup)}
+      className="sm:grid grid-cols-2 mx-6 sm:mt-24 my-10 sm:h-[35rem] sm:m-20 justify-center items-center border shadow border-gray-200"
+    >
       <div className="flex flex-col sm:px-32 px-6 py-10 border-gray-500">
         <div className="space-y-2">
           <h1 className="font-bold text-3xl sm:text-2xl font-karla">
@@ -18,16 +66,60 @@ function Signup() {
         </div>
         <div className="flex flex-col gap-4 mt-6">
           <label className="space-y-1 sm:space-y-0">
-            <p className="sm:text-sm font-semibold font-karla text-base">Name</p>
-            <Input type="text" placeholder="Enter your full name" className="py-5 sm:py-1" />
+            <p className="sm:text-sm font-semibold font-karla text-base">
+              Name
+            </p>
+            <Input
+              {...register("name")}
+              type="text"
+              placeholder="Enter your full name"
+              className="py-5 sm:py-1"
+            />
+            {errors.name && (
+              <div className="form-error">{errors.name.message}</div>
+            )}
           </label>
           <label className="space-y-1 sm:space-y-0">
-            <p className="sm:text-sm font-semibold font-karla text-base">Email</p>
-            <Input type="email" placeholder="Enter your email" className="py-5 sm:py-1" />
+            <p className="sm:text-sm font-semibold font-karla text-base">
+              Email
+            </p>
+            <Input
+              {...register("email")}
+              type="email"
+              placeholder="Enter your email"
+              className="py-5 sm:py-1"
+            />
+            {errors.email && (
+              <div className="form-error">{errors.email.message}</div>
+            )}
           </label>
           <label className="space-y-1 sm:space-y-0">
-            <p className="sm:text-sm font-semibold font-karla text-base">Password</p>
-            <Input type="password" placeholder="Create a password" className="py-5 sm:py-1" />
+            <p className="sm:text-sm font-semibold font-karla text-base">
+              Password
+            </p>
+            <Input
+              {...register("password")}
+              type="password"
+              placeholder="Create a password"
+              className="py-5 sm:py-1"
+            />
+            {errors.password && (
+              <div className="form-error">{errors.password.message}</div>
+            )}
+          </label>
+          <label className="space-y-1 sm:space-y-0">
+            <p className="sm:text-sm font-semibold font-karla text-base">
+              Confirm Password
+            </p>
+            <Input
+              {...register("confirmPassword")}
+              type="password"
+              placeholder="Confirm password"
+              className="py-5 sm:py-1"
+            />
+            {errors.confirmPassword && (
+              <div className="form-error">{errors.confirmPassword.message}</div>
+            )}
           </label>
         </div>
         <div className="flex justify-between text-sm sm:text-xs items-center pt-5 font-medium font-karla">
@@ -39,10 +131,6 @@ function Signup() {
         <div className="flex flex-col pt-4 space-y-3">
           <Button className="bg-black text-white font-karla font-medium py-2 sm:py-1 rounded-lg">
             Create Account
-          </Button>
-          <Button className="border text-gray-700 flex items-center gap-2 justify-center font-karla font-medium py-2 sm:py-1 rounded-lg">
-            <FaGoogle />
-            <span> Sign up with Google </span>
           </Button>
         </div>
         <div className="pt-8 text-xs">
@@ -69,7 +157,7 @@ function Signup() {
           className="object-cover w-full h-full"
         />
       </div>
-    </div>
+    </form>
   );
 }
 

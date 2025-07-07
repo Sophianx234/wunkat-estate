@@ -104,10 +104,7 @@ function Login() {
             )}
              {isLoading ? "Signing in..." : "Sign in"}
           </Button>
-          <Button className="border text-gray-700 flex items-center gap-2 justify-center font-karla font-medium py-2 sm:py-2 rounded-lg">
-            <FaGoogle />
-            <span> Sign in with Google </span>
-          </Button>
+          
         </div>
         <div className="pt-8 text-xs">
           <p>
