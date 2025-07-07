@@ -1,12 +1,47 @@
+"use client";
 import Image from "next/image";
 import { Input } from "../_components/input";
 import { Checkbox } from "../_components/checkbox";
 import { FaGoogle } from "react-icons/fa";
 import Button from "../_components/Button";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
+import axios from "axios";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { ScaleLoader} from 'react-spinners'
 
+const loginSchema = z.object({
+  email: z.string().email("Please enter a valid email"),
+  password: z.string().min(6, "Password must be at least 6 characters long"),
+});
+type formInputs = z.infer<typeof loginSchema>;
 function Login() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<formInputs>({
+    resolver: zodResolver(loginSchema),
+  });
+  const handleLogin: SubmitHandler<formInputs> = async (data) => {
+    try {
+      setIsLoading(true);
+      const res = await axios.post("/api/auth/login", data);
+      console.log(data);
+      console.log("res", res);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
-    <div className="sm:grid grid-cols-2 mx-6 mt-24 sm:h-[35rem] sm:m-20 justify-center items-center border shadow border-gray-200   ">
+    <form
+      onSubmit={handleSubmit(handleLogin)}
+      className="sm:grid grid-cols-2 mx-6 mt-24 sm:h-[35rem] sm:m-20 justify-center items-center border shadow border-gray-200   "
+    >
       <div
         className="flex flex-col
        sm:px-32 px-6 py-10 border-gray-500 "
@@ -21,14 +56,34 @@ function Login() {
         </div>
         <div className="flex flex-col gap-4 mt-6 ">
           <label className="space-y-1 sm:space-y-0">
-            <p className="sm:text-sm font-semibold font-karla text-base">Email</p>
+            <p className="sm:text-sm font-semibold font-karla text-base">
+              Email
+            </p>
 
-            <Input type="text" placeholder="Enter your email" className="py-5 sm:py-1" />
+            <Input
+              {...register("email")}
+              type="text"
+              placeholder="Enter your email"
+              className="py-5 sm:py-1"
+            />
+            {errors.email && (
+              <div className="form-error">{errors.email.message}</div>
+            )}
           </label>
           <label className="space-y-1 sm:space-y-0">
-            <p className="sm:text-sm font-semibold font-karla text-base">Password</p>
+            <p className="sm:text-sm font-semibold font-karla text-base">
+              Password
+            </p>
 
-            <Input type="password" placeholder="Enter your password" className="py-5 sm:py-1"/>
+            <Input
+              {...register("password")}
+              type="password"
+              placeholder="Enter your password"
+              className="py-5 sm:py-1"
+            />
+            {errors.password && (
+              <div className="form-error">{errors.password.message}</div>
+            )}
           </label>
         </div>
         <div className="flex  justify-between text-sm sm:text-xs items-center pt-5 font-medium font-karla">
@@ -39,10 +94,17 @@ function Login() {
           <p>Forgot password</p>
         </div>
         <div className="flex flex-col pt-4 space-y-3">
-          <Button className="bg-black text-white font-karla font-medium py-2 sm:py-1 rounded-lg">
-            Sign in
+          <Button
+            disabled={isLoading}
+            className="bg-black flex items-center justify-center gap-3 text-white font-karla font-medium py-2 sm:py-2 rounded-lg"
+          >
+            {isLoading && (
+              
+                <ScaleLoader className="" height={10} width={6} color="#fff" />
+            )}
+             {isLoading ? "Signing in..." : "Sign in"}
           </Button>
-          <Button className="border text-gray-700 flex items-center gap-2 justify-center font-karla font-medium py-2 sm:py-1 rounded-lg">
+          <Button className="border text-gray-700 flex items-center gap-2 justify-center font-karla font-medium py-2 sm:py-2 rounded-lg">
             <FaGoogle />
             <span> Sign in with Google </span>
           </Button>
@@ -71,7 +133,7 @@ function Login() {
           className="object-cover w-full h-full"
         />
       </div>
-    </div>
+    </form>
   );
 }
 

@@ -59,6 +59,9 @@
     display: none; /* Chrome, Safari, Opera */
   }
 }
+.form-error{
+  @apply text-xs bg-red-200 py-2 font-medium text-red-950 rounded-lg mt-2 px-3
+}
 
 @theme{
 

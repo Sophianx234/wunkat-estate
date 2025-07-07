@@ -6,12 +6,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
   try {
+
     const { email, password } = await req.json();
     if (!email || !password)
       throw new Error("Please provide email or password");
     
+
     const user = await User.findOne({email});
-    console.log("boruto")
     if (!user)
       throw new Error("user do not exist. please enter correct information");
     const isPasswordCorrect =  await verifyPassword(password, user.password);
