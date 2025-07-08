@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import axios from "axios";
+import { ScaleLoader } from "react-spinners";
 const signupSchema = z
   .object({
     name: z.string().min(1, "Name is required"),
@@ -48,12 +49,11 @@ function Signup() {
     }finally{
       setIsLoading(false);
     }
-    console.log("Signup data:", data);
   };
   return (
     <form
       onSubmit={handleSubmit(handleSignup)}
-      className="sm:grid grid-cols-2 mx-6 sm:mt-24 my-10 sm:h-[35rem] sm:m-20 justify-center items-center border shadow border-gray-200"
+      className="sm:grid grid-cols-2 mx-6 sm:mt-24 my-10 sm:h-[35rem] sm:m-20 justify-center items-center border overflow-hidden shadow border-gray-200"
     >
       <div className="flex flex-col sm:px-32 px-6 py-10 border-gray-500">
         <div className="space-y-2">
@@ -129,8 +129,12 @@ function Signup() {
           </div>
         </div>
         <div className="flex flex-col pt-4 space-y-3">
-          <Button className="bg-black text-white font-karla font-medium py-2 sm:py-1 rounded-lg">
-            Create Account
+          <Button className="bg-black flex items-center justify-center gap-3 text-white font-karla font-medium py-2 sm:py-1 rounded-lg">
+          { isLoading && (
+              
+                <ScaleLoader className="" height={10} width={6} color="#fff" />
+            )}
+             {isLoading ? "Creating Account..." : "Create Account"}  
           </Button>
         </div>
         <div className="pt-8 text-xs">

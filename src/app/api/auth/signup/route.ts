@@ -9,6 +9,7 @@ export const POST = async (req: NextRequest) => {
   try {
     await connectToDatabase();
     const body = await req.json();
+    console.log(body,'body')
     const { name, password, email, confirmPassword } = body;
     if (password !== confirmPassword)
       return NextResponse.json(
@@ -19,7 +20,7 @@ export const POST = async (req: NextRequest) => {
     const newPassword = await encryptPassword(password);
     const newUser = await User.create({ name, password:newPassword, email });
     const token = await signToken(newUser);
-    setAuthCookie(token)
+    return setAuthCookie(token)
 
     
   } catch (err) {
