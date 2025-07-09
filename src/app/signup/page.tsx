@@ -8,7 +8,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import axios from "axios";
+import toast, {Toaster} from 'react-hot-toast'
 import { ScaleLoader } from "react-spinners";
+import { useRouter } from "next/navigation";
 const signupSchema = z
   .object({
     name: z.string().min(1, "Name is required"),
@@ -25,6 +27,8 @@ type signupFormInputs = z.infer<typeof signupSchema>;
 
 function Signup() {
   const [isLoading,setIsLoading] = useState<boolean>(false);
+  const [acceptTerms, setAcceptTerms] = useState<boolean>(false);
+  const router = useRouter();
   const {
     handleSubmit,
     register,
@@ -35,13 +39,16 @@ function Signup() {
 
   const handleSignup: SubmitHandler<signupFormInputs> = async (data) => {
     try{
+      if(!acceptTerms) throw new Error('need to accept terms and conditions ')
       setIsLoading(true);
       const res = await axios.post("/api/auth/signup", data);
       if (res.status === 200) {
-        console.log("Signup successful:", res.data);
+        router.push('/dashboard/properties')
+        toast.success("Signup successful:", res.data);
         // You can redirect or show a success message here
       } else {
         console.error("Signup failed:", res.data);
+        toast.error('could not sign up ')
       }
 
     }catch(err){
@@ -124,7 +131,7 @@ function Signup() {
         </div>
         <div className="flex justify-between text-sm sm:text-xs items-center pt-5 font-medium font-karla">
           <div className="flex items-center gap-1">
-            <Checkbox />
+            <Checkbox onClick={()=>setAcceptTerms(state=>!state)} />
             <span>I agree to the terms and conditions</span>
           </div>
         </div>
@@ -161,6 +168,7 @@ function Signup() {
           className="object-cover w-full h-full"
         />
       </div>
+      <Toaster position="top-center" />
     </form>
   );
 }

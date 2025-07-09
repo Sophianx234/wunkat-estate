@@ -26,6 +26,8 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json({
       status: "fail",
       msg: err,
+    },{
+      status:500
     });
   }
 };

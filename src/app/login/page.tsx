@@ -10,6 +10,8 @@ import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { ScaleLoader} from 'react-spinners'
+import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -18,6 +20,7 @@ const loginSchema = z.object({
 type formInputs = z.infer<typeof loginSchema>;
 function Login() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -29,8 +32,17 @@ function Login() {
     try {
       setIsLoading(true);
       const res = await axios.post("/api/auth/login", data);
-      console.log(data);
-      console.log("res", res);
+
+      if(res.status === 200){
+        console.log("res", res);
+        toast.success('login successful')
+        router.push('/dashboard/properties')
+        
+
+      }else{
+        toast.error('Login failed...')
+
+      }
     } catch (err) {
       console.log(err);
     } finally {
@@ -130,6 +142,8 @@ function Login() {
           className="object-cover w-full h-full"
         />
       </div>
+            <Toaster position="top-center" />
+      
     </form>
   );
 }
