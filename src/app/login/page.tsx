@@ -1,17 +1,16 @@
 "use client";
-import Image from "next/image";
-import { Input } from "../_components/input";
-import { Checkbox } from "../_components/checkbox";
-import { FaGoogle } from "react-icons/fa";
-import Button from "../_components/Button";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { z } from "zod";
-import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { ScaleLoader} from 'react-spinners'
-import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import toast, { Toaster } from "react-hot-toast";
+import { ScaleLoader } from 'react-spinners';
+import { z } from "zod";
+import Button from "../_components/Button";
+import { Checkbox } from "../_components/checkbox";
+import { Input } from "../_components/input";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
