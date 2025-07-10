@@ -11,7 +11,6 @@ import { z } from "zod";
 import Button from "../_components/Button";
 import { Checkbox } from "../_components/checkbox";
 import { Input } from "../_components/input";
-import { BASE_URL } from "@/lib/utils";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
