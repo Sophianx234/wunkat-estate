@@ -11,6 +11,7 @@ import { z } from "zod";
 import Button from "../_components/Button";
 import { Checkbox } from "../_components/checkbox";
 import { Input } from "../_components/input";
+import { BASE_URL } from "@/lib/utils";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -30,7 +31,7 @@ function Login() {
   const handleLogin: SubmitHandler<formInputs> = async (data) => {
     try {
       setIsLoading(true);
-      const res = await axios.post("/api/auth/login", data);
+      const res = await axios.post(`${BASE_URL}/api/auth/login`, data);
 
       if(res.status === 200){
         console.log("res", res);
