@@ -31,7 +31,7 @@ function Login() {
   const handleLogin: SubmitHandler<formInputs> = async (data) => {
     try {
       setIsLoading(true);
-      const res = await axios.post(`${BASE_URL}/api/auth/login`, data);
+      const res = await axios.post(`/api/auth/login`, data);
 
       if(res.status === 200){
         console.log("res", res);
