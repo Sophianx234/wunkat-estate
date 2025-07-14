@@ -58,7 +58,7 @@ function Login() {
     >
       <div
         className="flex flex-col
-       sm:px-32 px-6 py-10 border-gray-500 "
+       sm:px-32 px-8 py-10 border-gray-500 "
       >
         
         <div className="space-y-2 text-center sm:text-left">
@@ -74,7 +74,7 @@ function Login() {
             Welcome back! Please enter your details.
           </h3>
         </div>
-        <div className="flex flex-col gap-4 mt-6 ">
+        <div className="flex flex-col gap-4  sm:mt-6 mt-8 space-y-4 sm:space-y-0 mb-2 sm:mb-0 ">
           <label className="space-y-1 sm:space-y-0">
             <p className="sm:text-sm font-semibold font-karla text-base">
               Email
