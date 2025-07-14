@@ -1,7 +1,7 @@
 "use client"
 import { Menu, X } from "lucide-react";
 
-import { storeState, useAppStore } from "@/lib/store";
+import { useAppStore } from "@/lib/store";
 import { AnimatePresence } from "motion/react";
 import { HiMenuAlt1 } from "react-icons/hi";
 import Sidebar from "../dashboard/_components/SideNav";
