@@ -1,52 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Darumadrop+One&family=Edu+NSW+ACT+Cursive:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Karla:ital,wght@0,200..800;1,200..800&family=Oswald:wght@200..700&family=Rubik+Dirt&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bebas+Neue&family=Concert+One&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lilita+One&family=Rubik+Mono+One&family=TikTok+Sans:opsz,wght@12..36,300..900&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Darumadrop+One&family=Edu+NSW+ACT+Cursive:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Karla:ital,wght@0,200..800;1,200..800&family=Oswald:wght@200..700&family=Rubik+Dirt&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
-.nav-item{
-  @apply px-5  rounded-2xl py-2 
+.nav-item {
+  @apply px-5  rounded-2xl py-2;
 }
-.sidebar-item{
-  @apply rounded-full   font-medium hover:bg-black hover:text-white px-2    sm:mx-6 py-3 
+.sidebar-item {
+  @apply rounded-full   font-medium hover:bg-black hover:text-white px-2    sm:mx-6 py-3;
 }
 
-.hover-blackbtn{
-  @apply   hover:text-white duration-300 hover:scale-105
-  hover:bg-gray-800 transition
+.hover-blackbtn {
+  @apply hover:text-white duration-300 hover:scale-105
+  hover:bg-gray-800 transition;
 }
-.hover-whitebtn{
-  @apply hover:text-black  duration-300 hover:bg-gray-300 transition hover:scale-105
+.hover-whitebtn {
+  @apply hover:text-black  duration-300 hover:bg-gray-300 transition hover:scale-105;
 }
-.hover-navlink{
-  @apply hover:text-black font-bold
+.hover-navlink {
+  @apply hover:text-black font-bold;
 }
-.section-title{
-@apply text-3xl font-bold lg:text-4xl
+.section-title {
+  @apply text-3xl font-bold lg:text-4xl;
 }
-.section-title-secondary{
-@apply text-lg font-bold leading-5 sm:leading-7 lg:text-3xl
+.section-title-secondary {
+  @apply text-lg font-bold leading-5 sm:leading-7 lg:text-3xl;
 }
-.section-title-tertiary{
-@apply text-xl font-bold lg:text-3xl
+.section-title-tertiary {
+  @apply text-xl font-bold lg:text-3xl;
 }
-.section-subtitle{
-@apply text-2xl font-bold lg:text-3xl leading-7 
+.section-subtitle {
+  @apply text-2xl font-bold lg:text-3xl leading-7;
 }
-.section-textcontainer{
- @apply text-center pt-12 lg:pt-16  pb-6 lg:space-y-6 lg:pb-12
+.section-textcontainer {
+  @apply text-center pt-12 lg:pt-16  pb-6 lg:space-y-6 lg:pb-12;
 }
 
 .btn-primary {
-  @apply bg-black text-white font-bold rounded-full  px-8 p-3 lg:py-2 lg:px-6
+  @apply bg-black text-white font-bold rounded-full  px-8 p-3 lg:py-2 lg:px-6;
 }
 .btn-secondary {
-  @apply  bg-white text-black font-bold rounded-full  px-8 p-3 lg:py-2 lg:px-6
+  @apply bg-white text-black font-bold rounded-full  px-8 p-3 lg:py-2 lg:px-6;
 }
 
-.dash-nav-item{
-  @apply flex items-center hover:text-white hover:bg-black transition pl-2  py-3 gap-2 
+.dash-nav-item {
+  @apply flex items-center hover:text-white hover:bg-black transition pl-2  py-3 gap-2;
 }
 
 @layer utilities {
@@ -59,19 +60,23 @@
     display: none; /* Chrome, Safari, Opera */
   }
 }
-.form-error{
-  @apply text-xs bg-red-200 py-2 font-medium text-red-950 rounded-lg mt-2 px-3
+.form-error {
+  @apply text-xs bg-red-200 py-2 font-medium text-red-950 rounded-lg mt-2 px-3;
 }
 
-@theme{
-
-  --font-inter: "Inter","sans-serif";
-  --font-anton: "Anton","sans-serif";
-  --font-darum: "Darumadrop One",sans-serif;
-  --font-playfair: "Playfair Display",sans-serif;
-  --font-oswald: "Oswald","sans-serif";
+@theme {
+  --font-inter: "Inter", "sans-serif";
+  --font-anton: "Anton", "sans-serif";
+  --font-darum: "Darumadrop One", sans-serif;
+  --font-playfair: "Playfair Display", sans-serif;
+  --font-oswald: "Oswald", "sans-serif";
   --font-karla: "Karla";
   --font-rubik: "Rubik Dirt";
+  --font-rubik-mono: "Rubik Mono One";
+  --font-lilita: "Lilita One";
+  --font-concert: "Concert One";
+  --font-archivo: "Archivo Black";
+  --font-bebas: "Bebas Neue";
 }
 
 @theme inline {
@@ -109,7 +114,8 @@
   --color-sidebar-accent: var(--sidebar-accent);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);}
+  --color-sidebar-ring: var(--sidebar-ring);
+}
 
 :root {
   --radius: 0.625rem;
@@ -143,7 +149,8 @@
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);}
+  --sidebar-ring: oklch(0.708 0 0);
+}
 
 .dark {
   --background: oklch(0.145 0 0);
@@ -176,10 +183,14 @@
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);}
+  --sidebar-ring: oklch(0.556 0 0);
+}
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;}
+    @apply border-border outline-ring/50;
+  }
   body {
-    @apply bg-background text-foreground;}}
+    @apply bg-background text-foreground;
+  }
+}

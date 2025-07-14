@@ -3,6 +3,7 @@ import { Suspense } from "react"
 import BreadCrum from "./BreadCrum"
 import Button from "./Button"
 import Logo from "./Logo"
+import Link from "next/link"
 
 
 function Navbar() {
@@ -11,7 +12,7 @@ function Navbar() {
   return (
     
 
-    <nav className=" fixed sm:grid flex grid-cols-3 justify-between  sm:px-20 px-6 pt-10 w-full items-center    text-white">
+    <nav className=" z-10 fixed sm:grid flex grid-cols-3 justify-between  sm:px-20 px-6 pt-10 w-full items-center    text-white">
       <Logo/>
 <Suspense fallback={null}>
     <BreadCrum/>
@@ -26,9 +27,9 @@ backdrop-blur-3xl   overflow-hidden rounded-4xl bg-amber-100/15 hidden  text-lg 
         
       </ul>
 
-     <Button className='bg-black hover-blackbtn text-white sm:block hidden p-2 justify-self-end rounded-full px-6'>
+     <Link href='login' className='bg-black hover-blackbtn text-white sm:block hidden p-2 justify-self-end rounded-full px-6'>
           Login
-        </Button>
+        </Link>
     </nav>
 
     

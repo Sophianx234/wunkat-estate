@@ -12,6 +12,7 @@ import Button from "../_components/Button";
 import { Checkbox } from "../_components/checkbox";
 import { Input } from "../_components/input";
 import { BASE_URL } from "@/lib/utils";
+import Link from "next/link";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -123,14 +124,14 @@ function Login() {
             <span className="text-gray-500 font-karla text-sm">
               Don&apos;t have an account?{" "}
             </span>
-            <span className="font-bold tracking-tighter pl-1 font-karla relative">
+            <Link href='/signup' className="font-bold tracking-tighter pl-1 font-karla relative">
               Sign up for free{" "}
               <img
                 src="images/und.png"
                 className="w-20 absolute right-0"
                 alt=""
               />
-            </span>
+            </Link>
           </p>
         </div>
       </div>

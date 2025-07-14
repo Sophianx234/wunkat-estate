@@ -11,6 +11,7 @@ import axios from "axios";
 import toast, {Toaster} from 'react-hot-toast'
 import { ScaleLoader } from "react-spinners";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 const signupSchema = z
   .object({
     name: z.string().min(1, "Name is required"),
@@ -149,14 +150,14 @@ function Signup() {
             <span className="text-gray-500 font-karla text-sm">
               Already have an account?
             </span>
-            <span className="font-bold tracking-tighter pl-1 inline-block w-20 font-karla relative  ">
+            <Link href='/login' className="font-bold tracking-tighter pl-1 inline-block w-20 font-karla relative  ">
               Sign in
               <img
                 src="images/und.png"
                 className="w-12  absolute right-9"
                 alt=""
               />
-            </span>
+            </Link>
           </p>
         </div>
       </div>
