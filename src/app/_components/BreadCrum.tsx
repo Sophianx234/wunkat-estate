@@ -16,7 +16,7 @@ function BreadCrum({style,type='normal'}:breadCrumProps) {
     <>
       <div className="flex sm:hidden">
         {!store.openSidebar ? (
-          type==='normal'?<Menu className={style} size={40} onClick={store.toggleSidebar} />:<HiMenuAlt1 className={style} onClick={handleOpenSideBar}/>
+          type==='normal'?<Menu className={style} size={40} onClick={store.toggleSidebar} />:<HiMenuAlt1 className={style} onClick={store.toggleSidebar}/>
         ) : (
           <X size={40} className={style} onClick={store.toggleSidebar}  />
         )}
