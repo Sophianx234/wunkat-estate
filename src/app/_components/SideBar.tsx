@@ -2,6 +2,7 @@
 import { motion } from 'motion/react'
 import Logo from './Logo'
 import { X } from 'lucide-react'
+import Link from 'next/link'
 
 type sidebarProps = {
   handleClose: ()=>void
@@ -24,11 +25,11 @@ function SideBar({handleClose}:sidebarProps) {
       <ul className="flex flex-col     
     text-sm  text-black  z-10  pt-6">
   
-        <li className="  sidebar-item">Home</li>
         <li className="sidebar-item">Buy</li>
         <li className="sidebar-item">Rent</li>
         <li className="sidebar-item">About</li>
         <li className="sidebar-item ">Contact us</li>
+        <Link href='login' className="sidebar-item text-center font-inter py-1">Get an apartment now!</Link>
       </ul>
     
 

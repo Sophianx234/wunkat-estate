@@ -24,10 +24,10 @@ export default function Home() {
       "linear-gradient(to right, rgba(0,0,0, 0.3), rgba(0,0,0,.3)), url('/images/img-4.jpg')",
   }}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/60 to-black/60 z-0" />
+      <div className="absolute inset-0 bg-gradient-to-br from-black/60 h-dvh via-black/60 to-black/60 z-0" ></div>
 
       {/* Optional decorative image overlay */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none select-none z-0">
+      <div className="absolute inset-0 opacity-20 pointer-events-none select-none h-dvh z-0">
         
       </div>
    <Navbar/>   
