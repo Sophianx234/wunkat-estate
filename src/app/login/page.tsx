@@ -22,6 +22,9 @@ const loginSchema = z.object({
 type formInputs = z.infer<typeof loginSchema>;
 function Login() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [rememberPass,setRemeberPass] = useState<boolean>(false)
+
+  console.log('rememberPass', rememberPass);
   const router = useRouter()
   const {
     register,
@@ -38,6 +41,7 @@ function Login() {
       if(res.status === 200){
         console.log("res", res);
         toast.success('login successful')
+        localStorage.
         router.push('/dashboard/properties')
         
 
@@ -108,7 +112,7 @@ function Login() {
         </div>
         <div className="flex  justify-between text-sm sm:text-xs items-center pt-8 sm:pt-5 font-medium font-karla">
           <div className="flex items-center  gap-1">
-            <Checkbox />
+            <Checkbox  onChange={(e) => setRemeberPass((e.target as HTMLInputElement).checked)} />
             <span>Remember for 30 days</span>
           </div>
           <p>Forgot password</p>

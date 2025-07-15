@@ -174,7 +174,7 @@ function Signup() {
           src="/images/img-5.jpg"
           alt="Signup Image"
           fill
-          className="object-cover sm:object-contain  w-full h-full"
+          className="object-cover   w-full h-full"
         />
       </div>
       <Toaster position="top-center" />

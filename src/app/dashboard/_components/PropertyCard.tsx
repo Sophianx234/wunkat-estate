@@ -1,6 +1,9 @@
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import ExpandedProperty from "./ExpandedProperty";
 type propertyCardProps = {
   property: {
+    id:number
     image: string;
     name: string;
     location: string;
@@ -31,8 +34,9 @@ export default function PropertyCard({ property }:propertyCardProps) {
       <p className="text-xs text-gray-400 mb-2">{property.size}</p>
       <div className="flex justify-between items-center text-sm">
         <span className="font-semibold">{property.price}</span>
-        <a href="#" className="text-purple-600 text-xs font-medium">Read more</a>
+        <Button  className="text-white text-xs font-medium">Read more</Button>
       </div>
+<ExpandedProperty/>
     </div>
   );
 }
