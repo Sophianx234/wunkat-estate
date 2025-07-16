@@ -2,6 +2,7 @@ import { FaPlus } from "react-icons/fa";
 import Button from "../../_components/Button";
 import Filters from "../_components/Filters";
 import PropertyCard from "../_components/PropertyCard";
+import AddProperty from "../_components/AddProperty";
 
 const mockProperties = [
   {
@@ -35,6 +36,7 @@ export default function Dashboard() {
           <FaPlus /> Add Property
         </Button>
       </div>
+        <AddProperty/>
       <Filters />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {mockProperties.map((prop) => (

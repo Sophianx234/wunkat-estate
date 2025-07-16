@@ -1,6 +1,8 @@
+'use client';
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import ExpandedProperty from "./ExpandedProperty";
+import { useAppStore } from "@/lib/store";
 type propertyCardProps = {
   property: {
     id:number
@@ -14,6 +16,7 @@ type propertyCardProps = {
   }
 }
 export default function PropertyCard({ property }:propertyCardProps) {
+  const {openExpandedProperty,toggleExpandedProperty} = useAppStore();
   return (
     <div className="bg-white rounded-xl shadow p-4">
       <div className="relative w-full  h-32 mb-2">
@@ -34,9 +37,9 @@ export default function PropertyCard({ property }:propertyCardProps) {
       <p className="text-xs text-gray-400 mb-2">{property.size}</p>
       <div className="flex justify-between items-center text-sm">
         <span className="font-semibold">{property.price}</span>
-        <Button  className="text-white text-xs font-medium">Read more</Button>
+        <Button onClick={toggleExpandedProperty}  className="text-white text-xs font-medium">Read more</Button>
       </div>
-<ExpandedProperty/>
+{openExpandedProperty&&<ExpandedProperty/>}
     </div>
   );
 }

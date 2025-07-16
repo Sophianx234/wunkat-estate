@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Script from "next/script";
+ 
 import "./globals.css";
 
 
@@ -15,6 +17,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      {/* Load Paystack script asynchronously using Next.js Script component */}
+      <Script src="https://js.paystack.co/v1/inline.js" strategy="afterInteractive" />
       
       <body
         className='font-inter antialiased'
