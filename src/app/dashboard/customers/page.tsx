@@ -24,6 +24,7 @@ export type Customer = {
   rentExpiry: string; // ISO date string
   rentStatus: "active" | "due_soon" | "expired";
   smartLockStatus: "locked" | "unlocked";
+  image:string
 };
 
 
