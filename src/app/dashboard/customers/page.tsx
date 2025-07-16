@@ -11,6 +11,21 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Search, Plus } from "lucide-react"
 import { useState } from "react"
+import CustomerRow from "../_components/CustomerRow"
+
+export type Customer = {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  location: string;
+  apartment: string;
+  roomNumber: string;
+  rentExpiry: string; // ISO date string
+  rentStatus: "active" | "due_soon" | "expired";
+  smartLockStatus: "locked" | "unlocked";
+};
+
 
 const initialCustomers = [
   {
@@ -42,20 +57,89 @@ const initialCustomers = [
   },
 ]
 
+export const customerx: Customer[] = [
+  {
+    id: 1,
+    name: "James Carter",
+    email: "jamescarter@gmail.com",
+    phone: "+233 244 123 456",
+    location: "Brooklyn, NY",
+    apartment: "Willow Apartments",
+    roomNumber: "202",
+    rentExpiry: "2025-08-10",
+    rentStatus: "active",
+    smartLockStatus: "locked",
+    image: "/images/image-1.jpg"
+  },
+  {
+    id: 2,
+    name: "Sophia West",
+    email: "sophia.west@example.com",
+    phone: "+233 245 876 321",
+    location: "Queens, NY",
+    apartment: "Maple Heights",
+    roomNumber: "305",
+    rentExpiry: "2025-07-20",
+    rentStatus: "due_soon",
+    smartLockStatus: "unlocked",
+    image: "/images/image-2.jpg"
+  },
+  {
+    id: 3,
+    name: "Daniel Kim",
+    email: "daniel.kim@gmail.com",
+    phone: "+233 240 777 000",
+    location: "Manhattan, NY",
+    apartment: "Cedar Villas",
+    roomNumber: "101",
+    rentExpiry: "2025-06-30",
+    rentStatus: "expired",
+    smartLockStatus: "locked",
+    image: "/images/image-3.jpg"
+  },
+  {
+    id: 4,
+    name: "Amina Abubakar",
+    email: "amina.a@gmail.com",
+    phone: "+233 550 123 999",
+    location: "Kumasi, Ghana",
+    apartment: "Zongo Estates",
+    roomNumber: "14B",
+    rentExpiry: "2025-09-01",
+    rentStatus: "active",
+    smartLockStatus: "unlocked",
+    image: "/images/image-4.jpg"
+  },
+  {
+    id: 5,
+    name: "Kwame Owusu",
+    email: "kwameowusu@example.com",
+    phone: "+233 208 333 111",
+    location: "Accra, Ghana",
+    apartment: "East Legon Hills",
+    roomNumber: "4C",
+    rentExpiry: "2025-07-18",
+    rentStatus: "due_soon",
+    smartLockStatus: "locked",
+    image: "/images/image-5.jpg"
+  }
+];
+
+
 export default function CustomersPage() {
-  const [customers, setCustomers] = useState(initialCustomers)
+  const [customers] = useState<Customer[]>(customerx)
   const [newCustomer, setNewCustomer] = useState({ name: "", email: "", phone: "", location: "", apartment: "" })
 
   const handleAddCustomer = () => {
     if (!newCustomer.name || !newCustomer.email) return
-    setCustomers([
+    /* setCustomers([
       ...customers,
       {
         ...newCustomer,
         image: "/avatars/default.jpg",
         status: "Pending",
       },
-    ])
+    ]) */
     setNewCustomer({ name: "", email: "", phone: "", location: "", apartment: "" })
   }
 
@@ -108,32 +192,11 @@ export default function CustomersPage() {
         </Button>
       </Card>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {customers.map((customer, i) => (
-          <Card key={i} className="hover:shadow-lg transition-all">
-            <CardHeader className="flex flex-row items-center gap-4">
-              <Avatar className="h-12 w-12">
-                <AvatarImage src={customer.image} />
-                <AvatarFallback>{customer.name[0]}</AvatarFallback>
-              </Avatar>
-              <div>
-                <CardTitle className="text-base font-semibold">{customer.name}</CardTitle>
-                <p className="text-sm text-muted-foreground">{customer.location}</p>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="text-sm">
-                <p>Email: <span className="text-muted-foreground">{customer.email}</span></p>
-                <p>Phone: <span className="text-muted-foreground">{customer.phone}</span></p>
-                <p>Apartment: <span className="text-muted-foreground">{customer.apartment}</span></p>
-              </div>
-              <Badge variant={customer.status === "Verified" ? "default" : "secondary"}>
-                {customer.status}
-              </Badge>
-            </CardContent>
-          </Card>
+      {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> */}
+        {(customers).map((customer) => (
+          <CustomerRow key={customer.id} customer={customer}/>
         ))}
-      </div>
+      {/* </div> */}
     </div>
   )
 }

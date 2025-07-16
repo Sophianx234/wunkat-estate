@@ -2,7 +2,7 @@ import Button from "@/app/_components/Button";
 
 export default function Filters() {
   return (
-    <div className="sm:flex grid grid-cols-1 gap-4  p-3 py-2 rounded-xl  bg-white mb-6">
+    <div className="sm:flex   grid grid-cols-1 gap-4  p-3 py-2 rounded-xl  bg-white mb-6">
       <select className="border border-gray-300 rounded-lg py-2 px-3 text-sm">
         <option>Rent a Properties</option>
       </select>

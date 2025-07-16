@@ -1,6 +1,7 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useAppStore } from '@/lib/store';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 export default function AddProperty() {
@@ -13,9 +14,27 @@ export default function AddProperty() {
     sqft: '',
     description: '',
   });
-
+const { toggleAddProperty } = useAppStore();
   const [images, setImages] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  
+    // Close component when clicking outside
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (
+          wrapperRef.current &&
+          !wrapperRef.current.contains(event.target as Node)
+        ) {
+          toggleAddProperty();
+        }
+      };
+  
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [toggleAddProperty]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -62,7 +81,7 @@ export default function AddProperty() {
   };
 
   return (
-    <section className="bg-white p-6 rounded-xl shadow-lg max-w-4xl mx-auto mt-10 w-full">
+    <section ref={wrapperRef} className="bg-white p-6 rounded-xl shadow-lg max-w-4xl mb-8 mx-auto mt-10 w-full">
       <h2 className="text-2xl font-semibold mb-4">Add New Property</h2>
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -147,7 +166,7 @@ export default function AddProperty() {
           </button>
           <button
             type="button"
-            onClick={handleCancel}
+            onClick={toggleAddProperty}
             className="bg-gray-200 text-black px-6 py-2 rounded-md hover:bg-gray-300 w-full md:w-auto"
           >
             Cancel

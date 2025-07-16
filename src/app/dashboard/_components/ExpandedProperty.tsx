@@ -1,80 +1,138 @@
 'use client';
 
-import Image from "next/image";
-import { FormEvent } from "react";
-import { IoClose } from "react-icons/io5";
-import { startPaystackPayment } from "@/lib/paystackConfig";
-import { useAppStore } from "@/lib/store";
+import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import { IoClose } from 'react-icons/io5';
+import { motion, AnimatePresence } from 'framer-motion';
+import { startPaystackPayment } from '@/lib/paystackConfig';
+import { useAppStore } from '@/lib/store';
 
 type ExpandedPropertyProps = {
-  price?: string; // e.g., "1,500"
+  price?: string;
 };
 
-function ExpandedProperty({ price = "1,500" }: ExpandedPropertyProps) {
-  const {toggleExpandedProperty} = useAppStore()
-  const handlePay = async (e: FormEvent) => {
+const images = [
+  '/images/img-1.jpg',
+  '/images/img-2.jpg',
+  '/images/img-5.jpg',
+  '/images/img-4.jpg',
+];
+
+function ExpandedProperty({ price = '1,500' }: ExpandedPropertyProps) {
+  const { toggleExpandedProperty } = useAppStore();
+  const modalRef = useRef<HTMLDivElement>(null);
+  const [index, setIndex] = useState(0);
+
+  // Click outside to close
+  /* useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(e.target as Node)
+      ) {
+        toggleExpandedProperty();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [toggleExpandedProperty]); */
+
+  const handlePay = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const amount = Number(price.replace(/,/g, ""));
-
+    const amount = Number(price.replace(/,/g, ''));
     await startPaystackPayment({
-      email: "customer@example.com", // Replace or pass dynamically
+      email: 'customer@example.com',
       amount,
-      onSuccess: (response) => {
-        console.log("Payment successful:", response);
-        alert(`Payment successful! Reference: ${response.reference}`);
-        // Optionally redirect or verify here
+      onSuccess: (res) => {
+        alert(`Payment successful! Reference: ${res.reference}`);
       },
-      onClose: () => {
-        console.log("Payment popup closed");
-        alert("Transaction was closed");
-      },
+      onClose: () => alert('Transaction was closed'),
     });
   };
 
+  const nextImage = () => {
+    setIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
   return (
-    <div className="   mb-16  absolute inset-x-0 h-fit top-0">
-      <div className="relative bg-white mb-4  mx-6 shadow border z-10">
-        <IoClose onClick={toggleExpandedProperty} className="absolute right-3 top-2 size-8 cursor-pointer" />
-        <div className="flex justify-center pt-6 gap-4">
-          {[1, 2, 3, 4].map((_, index) => (
-            <div key={index} className="relative h-96 w-1/5">
+    <div ref={modalRef} className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center overflow-y-scroll px-4 py-8 ">
+      <div className='absolute top-16 right-20  '>
+
+      <div
+        
+        className=" max-w-5xl w-full rounded-xl shadow-lg mb-4 bg-white relative"
+      >
+        {/* Close Button */}
+        <IoClose
+          onClick={toggleExpandedProperty}
+          className="absolute top-4 right-4 size-8 text-gray-800 hover:text-black cursor-pointer z-10"
+        />
+
+        {/* Image Slider */}
+        <div className="relative h-[350px] md:h-[450px] bg-black overflow-hidden">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -100 }}
+              transition={{ duration: 0.5 }}
+              className="absolute inset-0 w-full h-full"
+            >
               <Image
-                src="/images/img-1.jpg"
+                src={images[index]}
                 fill
-                alt="Apartment"
-                className="object-cover rounded"
+                alt={`Slide ${index}`}
+                className="object-cover"
               />
-            </div>
-          ))}
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Arrows */}
+          <button
+            onClick={prevImage}
+            className="absolute top-1/2 left-4 transform -translate-y-1/2 text-white bg-black/50 p-2 rounded-full hover:bg-black"
+          >
+            ‹
+          </button>
+          <button
+            onClick={nextImage}
+            className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white bg-black/50 p-2 rounded-full hover:bg-black"
+          >
+            ›
+          </button>
         </div>
 
-        <div className="mt-8 px-16 max-w-3xl mb-8">
-          <h2 className="text-2xl font-semibold mb-2 font-inter">
+        {/* Details */}
+        <div className="px-6 py-6 md:px-12 md:py-8 ">
+          <h2 className="text-2xl md:text-3xl font-bold font-inter mb-2">
             Modern 2-Bedroom Apartment
           </h2>
-
-          <p className="text-gray-600 mb-1">
-            <span className="font-medium text-black">Location:</span> Achimota Gardens, Accra
+          <p className="text-gray-600">
+            <span className="font-semibold text-black">Location:</span>{' '}
+            Achimota Gardens, Accra
           </p>
-
-          <p className="text-gray-600 mb-1">
-            <span className="font-medium text-black">Price:</span> GHS {price}/month
+          <p className="text-gray-600 mb-4">
+            <span className="font-semibold text-black">Price:</span> GHS {price}/month
           </p>
-
-          <p className="text-gray-700 mt-4 font-karla">
-            2-bedroom apartment with a spacious living area, modern kitchen, tiled floors,
-            and balcony views.
+          <p className="text-gray-700 font-karla mb-6">
+            2-bedroom apartment with a spacious living area, modern kitchen,
+            tiled floors, and balcony views.
           </p>
 
           <button
             onClick={handlePay}
-            className="mt-6 px-6 py-2 bg-black text-white font-semibold hover:bg-gray-900 rounded-lg transition"
+            className="bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-900 font-semibold"
           >
             Rent Now
           </button>
         </div>
       </div>
+            </div>
     </div>
   );
 }
