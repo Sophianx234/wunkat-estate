@@ -1,5 +1,5 @@
-import { FaLock, FaUnlock, FaEdit } from "react-icons/fa";
-import { format, isPast, isBefore, addDays } from "date-fns";
+import { FaLock, FaUnlock, FaEdit, FaCalendarAlt, FaHourglassHalf } from "react-icons/fa";
+import { format, isPast, isBefore, addDays, differenceInCalendarDays } from "date-fns";
 import { Customer } from "../customers/page";
 import Image from "next/image";
 
@@ -16,6 +16,15 @@ export default function CustomerRow({ customer }: customerRowProps) {
     if (isBefore(rentExpiry, addDays(today, 7))) return "text-yellow-500";
     return "text-green-600";
   };
+
+  const getDaysLeft = () => {
+    const days = differenceInCalendarDays(rentExpiry, today);
+    if (days < 0) return { label: "Expired", color: "text-red-600" };
+    if (days === 0) return { label: "Expires today", color: "text-yellow-600" };
+    return { label: `${days} day${days > 1 ? "s" : ""} left`, color: "text-green-600" };
+  };
+
+  const daysLeft = getDaysLeft();
 
   return (
     <div className="bg-white shadow rounded-xl p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 transition hover:shadow-md">
@@ -35,11 +44,15 @@ export default function CustomerRow({ customer }: customerRowProps) {
           <p className="text-sm text-gray-500">
             {customer.apartment} — Room {customer.roomNumber}
           </p>
-          <p className="text-sm mt-1">
-            📅 Rent Expires:{" "}
+          <p className="text-sm mt-1 flex items-center gap-1 text-gray-600">
+            <FaCalendarAlt className="text-blue-500" />
             <span className={getRentStatusColor()}>
               {format(rentExpiry, "PPP")}
             </span>
+          </p>
+          <p className={`text-sm flex items-center gap-1 ${daysLeft.color}`}>
+            <FaHourglassHalf />
+            {daysLeft.label}
           </p>
         </div>
       </div>

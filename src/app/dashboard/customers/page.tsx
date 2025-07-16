@@ -70,7 +70,7 @@ export const customerx: Customer[] = [
     rentExpiry: "2025-08-10",
     rentStatus: "active",
     smartLockStatus: "locked",
-    image: "/images/image-1.jpg"
+    image: "/images/prof-1.jpg"
   },
   {
     id: 2,
@@ -83,7 +83,7 @@ export const customerx: Customer[] = [
     rentExpiry: "2025-07-20",
     rentStatus: "due_soon",
     smartLockStatus: "unlocked",
-    image: "/images/image-2.jpg"
+    image: "/images/prof-2.jpg"
   },
   {
     id: 3,
@@ -96,7 +96,7 @@ export const customerx: Customer[] = [
     rentExpiry: "2025-06-30",
     rentStatus: "expired",
     smartLockStatus: "locked",
-    image: "/images/image-3.jpg"
+    image: "/images/prof-3.jpg"
   },
   {
     id: 4,
@@ -109,7 +109,7 @@ export const customerx: Customer[] = [
     rentExpiry: "2025-09-01",
     rentStatus: "active",
     smartLockStatus: "unlocked",
-    image: "/images/image-4.jpg"
+    image: "/images/prof-1.jpg"
   },
   {
     id: 5,
@@ -122,7 +122,7 @@ export const customerx: Customer[] = [
     rentExpiry: "2025-07-18",
     rentStatus: "due_soon",
     smartLockStatus: "locked",
-    image: "/images/image-5.jpg"
+    image: "/images/prof-2.jpg"
   }
 ];
 
