@@ -40,7 +40,7 @@ const { toggleAddProperty } = useAppStore();
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleCancel = () => {
+  /* const handleCancel = () => {
     setFormData({
       title: '',
       location: '',
@@ -52,7 +52,7 @@ const { toggleAddProperty } = useAppStore();
     });
     setImages([]);
     setPreviews([]);
-  };
+  }; */
 
   const handleDrop = useCallback((acceptedFiles: File[]) => {
     const total = images.length + acceptedFiles.length;
