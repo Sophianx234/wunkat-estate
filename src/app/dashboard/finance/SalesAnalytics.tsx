@@ -43,7 +43,7 @@ function SalesAnalytics() {
                 outerRadius={70}
                 dataKey="value"
                 label={({ name, percent }) =>
-                  `${name.split(" ")[1]}: ${(percent * 100).toFixed(0)}%`
+                  `${name.split(" ")[1]}: ${((percent as number) * 100).toFixed(0)}%`
                 }
               >
                 {pieData.map((entry, index) => (
