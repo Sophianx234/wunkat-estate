@@ -5,7 +5,12 @@ import Filters from "../_components/Filters";
 import PropertyCard from "../_components/PropertyCard";
 import AddProperty from "../_components/AddProperty";
 import { useAppStore } from "@/lib/store";
-import ExpandedProperty from "../_components/ExpandedProperty";
+import dynamic from 'next/dynamic';
+
+const ExpandedProperty = dynamic(() => import('../_components/ExpandedProperty'), {
+  ssr: false,
+});
+
 
 const mockProperties: {
   id: number;
