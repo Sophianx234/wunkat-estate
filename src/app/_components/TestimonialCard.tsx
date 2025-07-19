@@ -8,7 +8,7 @@ function TestimonialCard() {
       <div className="relative sm:size-16 size-12 rounded-full overflow-hidden">
         <Image src="/images/prof-1.jpg" className="object-cover" fill alt="" />
       </div>
-      <div className="font-karla -space-y-2 sm:space-y-2 ml-2">
+      <div className="font-karla space-y-2 sm:space-y-2 ml-2">
       <p className="font-bold sm:text-base text- leading-3.5 "> Damian Parker</p>
       <p className="text-sm">Customer</p>
       </div>
