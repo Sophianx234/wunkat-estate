@@ -59,7 +59,7 @@ function ExpandedProperty({ price = '1,500' }: ExpandedPropertyProps) {
   };
 
   return (
-    <div ref={modalRef} className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center overflow-y-scroll px-4 py-8 ">
+    <div ref={modalRef} className=" ">
       <div className='absolute top-16 right-20  '>
 
       <div

@@ -1,9 +1,14 @@
+'use client'
 import BreadCrum from "@/app/_components/BreadCrum";
+import { useDashStore } from "@/app/store/dashboard-store";
+
 import Image from "next/image";
+import Link from "next/link";
 import { Suspense } from "react";
 import { FaBell, FaSearch } from "react-icons/fa";
 
 export default function Topbar() {
+  const {toggleNotification} = useDashStore()
   return (
     <div className=" fixed sm:relative left-0 right-0   z-20 shadow sm:shadow-none  bg-white   border-b border-b-gray-200 pt-7 pb-4 pl-5    px-10">
 
@@ -23,12 +28,12 @@ export default function Topbar() {
         <FaSearch className="absolute left-3 top-2.5 text-gray-400" />
       </div>
       <div className="flex items-center justify-self-end gap-4">
-        <div className="border border-gray-200 rounded-full p-2 relative ">
+        <div onClick={toggleNotification} className="border hover:scale-105 duration-200 cursor border-gray-200 rounded-full p-2 relative ">
           <span className="absolute bg-green-200 rounded-full size-3 top-0 -right-1 "></span>
 
         <FaBell className="text-gray-500" />
         </div>
-        <div className="flex items-center gap-2 border-l border-l-gray-200 pl-4">
+        <Link href='/dashboard/settings' className="flex items-center gap-2 border-l border-l-gray-200 pl-4">
           <div className="relative size-10">
 
           <Image
@@ -42,7 +47,7 @@ export default function Topbar() {
             <p className="text-sm font-semibold">Albert Flores</p>
             <p className="text-xs text-gray-500">albert45@email.com</p>
           </div>
-        </div>
+        </Link>
       </div>
     </div>
     </div>

@@ -1,14 +1,14 @@
 'use client'
-import { BiLogOut } from "react-icons/bi";
-import { FiSettings } from "react-icons/fi";
-import { MdDashboard, MdMessage, MdAccountCircle } from "react-icons/md";
-import { HiOutlineUsers } from "react-icons/hi";
-import { RiBuilding2Line } from "react-icons/ri";
-import { TbFileInvoice, TbHomePlus } from "react-icons/tb";
-import {motion} from 'framer-motion'
 import Logo from "@/app/_components/Logo";
+import { motion } from 'framer-motion';
 import { X } from "lucide-react";
 import Link from "next/link";
+import { BiLogOut } from "react-icons/bi";
+import { FiSettings } from "react-icons/fi";
+import { HiOutlineUsers } from "react-icons/hi";
+import { MdAccountCircle, MdMessage } from "react-icons/md";
+import { RiBuilding2Line } from "react-icons/ri";
+import { TbFileInvoice, TbHomePlus, TbReportAnalytics } from "react-icons/tb";
 type sidebarProps = {
   type?: 'normal'|'slide'
   handleClose?: ()=>void
@@ -35,7 +35,11 @@ export default function Sidebar({ handleClose, type = 'normal' }: sidebarProps) 
 
         {/* Scrollable nav container */}
         <nav className="flex-1 overflow-y-auto scrollbar-hide  text-sm font-medium text-gray-600 px-4 space-y-1">
-          <Link href="#" className="dash-nav-item"><MdDashboard className="size-6" /> Dashboard</Link>
+         <Link href="/dashboard/finance/analytics" className="dash-nav-item">
+  <TbReportAnalytics className="size-6" />
+  Financial Analytics
+</Link>
+
           <Link href="/dashboard/properties" className="dash-nav-item"><RiBuilding2Line className="size-6" /> Properties</Link>
           <Link href="/dashboard/agents" className="dash-nav-item"><HiOutlineUsers className="size-6" /> Agents</Link>
           <Link href="/dashboard/customers" className="dash-nav-item"><MdAccountCircle className="size-6" /> Customers</Link>
@@ -43,7 +47,6 @@ export default function Sidebar({ handleClose, type = 'normal' }: sidebarProps) 
           <Link href="/dashboard/transactions" className="dash-nav-item"><TbHomePlus className="size-6" /> Transaction</Link>
           <Link href="/dashboard/messages" className="dash-nav-item"><MdMessage className="size-6" /> Message</Link>
           <Link href="/dashboard/settings" className="dash-nav-item"><FiSettings className="size-6" /> Settings</Link>
-          <Link href="/dashboard/account" className="dash-nav-item"><MdAccountCircle className="size-6" /> My Account</Link>
           <Link href="#" className="dash-nav-item text-red-500"><BiLogOut className="size-6" /> Log Out</Link>
         </nav>
 

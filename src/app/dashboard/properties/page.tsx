@@ -7,7 +7,17 @@ import AddProperty from "../_components/AddProperty";
 import { useAppStore } from "@/lib/store";
 import ExpandedProperty from "../_components/ExpandedProperty";
 
-const mockProperties = [
+const mockProperties: {
+  id: number;
+  name: string;
+  location: string;
+  beds: number;
+  baths: number;
+  size: string;
+  price: string;
+  image: string;
+  status: "available" | "booked" | "pending";
+}[] = [
   {
     id: 1,
     name: "St. George Bayfront",
@@ -17,6 +27,7 @@ const mockProperties = [
     size: "2400 sqft",
     price: "$4,000",
     image: "/images/img-2.jpg",
+    status: "available",
   },
   {
     id: 2,
@@ -27,6 +38,7 @@ const mockProperties = [
     size: "3650 sqft",
     price: "$5,200",
     image: "/images/img-1.jpg",
+    status: "booked",
   },
 ];
 

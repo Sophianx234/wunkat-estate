@@ -18,7 +18,7 @@ const incomeData = [
 ]
 function IncomeCard() {
   return (
-    <Card className="lg:col-span-8">
+    <Card className="lg:col-span-14">
         <CardHeader>
           <CardTitle>Total Income</CardTitle>
         </CardHeader>
