@@ -4,8 +4,18 @@ import { useAppStore } from '@/lib/store';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
+type FormDataType = {
+  title: string;
+  location: string;
+  bedrooms: string;
+  bathrooms: string;
+  price: string;
+  sqft: string;
+  description: string;
+};
+
 export default function AddProperty() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormDataType>({
     title: '',
     location: '',
     bedrooms: '',
@@ -14,57 +24,55 @@ export default function AddProperty() {
     sqft: '',
     description: '',
   });
-const { toggleAddProperty } = useAppStore();
+
+  const { toggleAddProperty } = useAppStore();
   const [images, setImages] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  
-    // Close component when clicking outside
-    useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (
-          wrapperRef.current &&
-          !wrapperRef.current.contains(event.target as Node)
-        ) {
-          toggleAddProperty();
-        }
-      };
-  
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [toggleAddProperty]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  // Close component when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        toggleAddProperty();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [toggleAddProperty]);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  /* const handleCancel = () => {
-    setFormData({
-      title: '',
-      location: '',
-      bedrooms: '',
-      bathrooms: '',
-      price: '',
-      sqft: '',
-      description: '',
-    });
-    setImages([]);
-    setPreviews([]);
-  }; */
+  const handleDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const total = images.length + acceptedFiles.length;
+      if (total > 4) {
+        alert('You can only upload up to 4 images.');
+        return;
+      }
 
-  const handleDrop = useCallback((acceptedFiles: File[]) => {
-    const total = images.length + acceptedFiles.length;
-    if (total > 4) {
-      alert('You can only upload up to 4 images.');
-      return;
-    }
-
-    const newPreviews = acceptedFiles.map(file => URL.createObjectURL(file));
-    setImages(prev => [...prev, ...acceptedFiles]);
-    setPreviews(prev => [...prev, ...newPreviews]);
-  }, [images]);
+      const newPreviews = acceptedFiles.map((file) =>
+        URL.createObjectURL(file)
+      );
+      setImages((prev) => [...prev, ...acceptedFiles]);
+      setPreviews((prev) => [...prev, ...newPreviews]);
+    },
+    [images]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: handleDrop,
@@ -81,26 +89,57 @@ const { toggleAddProperty } = useAppStore();
   };
 
   return (
-    <section ref={wrapperRef} className="bg-white p-6 rounded-xl shadow-lg max-w-4xl mb-8 mx-auto mt-10 w-full">
+    <section
+      ref={wrapperRef}
+      className="bg-white p-6 rounded-xl shadow-lg max-w-4xl mb-8 mx-auto mt-10 w-full"
+    >
       <h2 className="text-2xl font-semibold mb-4">Add New Property</h2>
 
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+      >
         {/* Text Inputs */}
-        {[
-          { id: 'title', label: 'Title', type: 'text', placeholder: 'e.g. Modern Studio Apartment' },
-          { id: 'location', label: 'Location', type: 'text', placeholder: 'e.g. East Legon, Accra' },
+        {([
+          {
+            id: 'title',
+            label: 'Title',
+            type: 'text',
+            placeholder: 'e.g. Modern Studio Apartment',
+          },
+          {
+            id: 'location',
+            label: 'Location',
+            type: 'text',
+            placeholder: 'e.g. East Legon, Accra',
+          },
           { id: 'bedrooms', label: 'Bedrooms', type: 'number' },
           { id: 'bathrooms', label: 'Bathrooms', type: 'number' },
-          { id: 'price', label: 'Price (GHS)', type: 'number', placeholder: 'e.g. 1500' },
-          { id: 'sqft', label: 'Square Footage (sqft)', type: 'number', placeholder: 'e.g. 2400' },
-        ].map((input) => (
+          {
+            id: 'price',
+            label: 'Price (GHS)',
+            type: 'number',
+            placeholder: 'e.g. 1500',
+          },
+          {
+            id: 'sqft',
+            label: 'Square Footage (sqft)',
+            type: 'number',
+            placeholder: 'e.g. 2400',
+          },
+        ] as const).map((input) => (
           <div className="flex flex-col" key={input.id}>
-            <label htmlFor={input.id} className="mb-1 font-medium text-sm">{input.label}</label>
+            <label
+              htmlFor={input.id}
+              className="mb-1 font-medium text-sm"
+            >
+              {input.label}
+            </label>
             <input
               id={input.id}
               name={input.id}
               type={input.type}
-              value={(formData as any)[input.id]}
+              value={formData[input.id as keyof FormDataType]}
               onChange={handleChange}
               className="border rounded-md px-3 py-2"
               placeholder={input.placeholder || ''}
@@ -111,7 +150,12 @@ const { toggleAddProperty } = useAppStore();
 
         {/* Description */}
         <div className="flex flex-col md:col-span-2">
-          <label htmlFor="description" className="mb-1 font-medium text-sm">Description</label>
+          <label
+            htmlFor="description"
+            className="mb-1 font-medium text-sm"
+          >
+            Description
+          </label>
           <textarea
             id="description"
             name="description"
@@ -125,7 +169,9 @@ const { toggleAddProperty } = useAppStore();
 
         {/* Image Upload */}
         <div className="md:col-span-2">
-          <label className="mb-1 font-medium text-sm block">Upload Images (max 4)</label>
+          <label className="mb-1 font-medium text-sm block">
+            Upload Images (max 4)
+          </label>
           <div
             {...getRootProps()}
             className={`border-2 border-dashed rounded-md px-4 py-10 text-center cursor-pointer ${
