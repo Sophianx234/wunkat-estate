@@ -25,7 +25,7 @@ function ExpandedProperty({ price = '1,500' }: ExpandedPropertyProps) {
 
   // Re-enable click-outside-to-close safely
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    
 
     const handleClickOutside = (e: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
