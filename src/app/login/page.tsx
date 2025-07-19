@@ -25,7 +25,6 @@ function Login() {
   const [rememberPass,setRemeberPass] = useState<boolean>(false)
 
   console.log('rememberPass', rememberPass);
-  const router = useRouter()
   const {
     register,
     handleSubmit,
