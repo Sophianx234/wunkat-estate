@@ -14,6 +14,14 @@ type FormDataType = {
   description: string;
 };
 
+type InputType = {
+            id: string,
+            label: string,
+            type: string,
+            placeholder: string,
+          }
+
+
 export default function AddProperty() {
   const [formData, setFormData] = useState<FormDataType>({
     title: '',
@@ -127,7 +135,7 @@ export default function AddProperty() {
             type: 'number',
             placeholder: 'e.g. 2400',
           },
-        ] as const).map((input) => (
+        ] as InputType[]).map((input) => (
           <div className="flex flex-col" key={input.id}>
             <label
               htmlFor={input.id}

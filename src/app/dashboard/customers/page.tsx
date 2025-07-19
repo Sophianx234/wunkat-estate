@@ -54,7 +54,7 @@ export type Customer = {
   },
 ] */
 
-const customerx: Customer[] = [
+export const customerx: Customer[] = [
   {
     id: 1,
     name: "James Carter",
