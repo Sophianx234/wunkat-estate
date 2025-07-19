@@ -59,12 +59,12 @@ function ExpandedProperty({ price = '1,500' }: ExpandedPropertyProps) {
   };
 
   return (
-    <div ref={modalRef} className=" ">
-      <div className='absolute top-16 right-20  '>
+    <div ref={modalRef} className=" fixed h-dvh inset-0   bg-[#000000a7] flex justify-center items-center overflow-y-scroll ">
+      <div className=' translate-x-32 translate-y-32   '>
 
       <div
         
-        className=" max-w-5xl w-full rounded-xl shadow-lg mb-4 bg-white relative"
+        className=" max-w-2xl mx-10 w-full rounded-xl shadow-lg mb-4 mt-32 bg-white relative"
       >
         {/* Close Button */}
         <IoClose
