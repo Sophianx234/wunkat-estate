@@ -1,26 +1,25 @@
 "use client";
 import {
-  FaLock,
-  FaUnlock,
-  FaEdit,
-  FaCalendarAlt,
-  FaHourglassHalf,
-  FaTrash,
-} from "react-icons/fa";
-import {
-  format,
-  isPast,
-  isBefore,
   addDays,
   differenceInCalendarDays,
+  format,
+  isBefore,
+  isPast,
 } from "date-fns";
-import { Customer } from "../customers/page";
 import Image from "next/image";
-import Swal from "sweetalert2";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import ExtendRentModal from "./ExtendRentModal";
 import { useState } from "react";
+import {
+  FaCalendarAlt,
+  FaEdit,
+  FaHourglassHalf,
+  FaLock,
+  FaUnlock
+} from "react-icons/fa";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import Swal from "sweetalert2";
+import { Customer } from "../customers/page";
 import EditCustomerModal from "./EditCuserModal";
+import ExtendRentModal from "./ExtendRentModal";
 
 type customerRowProps = {
   customer: Customer;

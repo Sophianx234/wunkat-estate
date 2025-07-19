@@ -25,7 +25,7 @@ function Layout({ children }: LayoutProps) {
       {openNotifications && <NotificationList/>}
 
       {/* Scrollable Main Content */}
-      <main className="sm:pl-64 sm:pt-28 pb-24 pt-24  sm:h-screen  overflow-y-auto sm:px-8 sm:py-6">
+      <main className="sm:pl-64 sm:pt-28 pb-24 pt-0  sm:h-screen  overflow-y-auto sm:px-8 sm:py-6">
         {children}
       </main>
       <MobileNavbar/>

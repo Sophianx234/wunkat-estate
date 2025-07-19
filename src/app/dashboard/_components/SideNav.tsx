@@ -8,7 +8,7 @@ import { FiSettings } from "react-icons/fi";
 import { HiOutlineUsers } from "react-icons/hi";
 import { MdAccountCircle, MdMessage } from "react-icons/md";
 import { RiBuilding2Line } from "react-icons/ri";
-import { TbFileInvoice, TbHomePlus, TbReportAnalytics } from "react-icons/tb";
+import { TbHomePlus, TbReportAnalytics } from "react-icons/tb";
 type sidebarProps = {
   type?: 'normal'|'slide'
   handleClose?: ()=>void

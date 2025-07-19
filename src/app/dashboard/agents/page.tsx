@@ -47,7 +47,7 @@ export default function AgentsPage() {
   const [agents] = useState(initialAgents)
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 mt-24 sm:mt-0 space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold">Agents</h2>

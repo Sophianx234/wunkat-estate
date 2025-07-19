@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
-import { IoClose } from 'react-icons/io5';
-import { motion, AnimatePresence } from 'framer-motion';
 import { startPaystackPayment } from '@/lib/paystackConfig';
 import { useAppStore } from '@/lib/store';
+import { AnimatePresence, motion } from 'framer-motion';
+import Image from 'next/image';
+import { useRef, useState } from 'react';
+import { IoClose } from 'react-icons/io5';
 
 type ExpandedPropertyProps = {
   price?: string;

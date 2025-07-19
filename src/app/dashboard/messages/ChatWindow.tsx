@@ -1,16 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { SendHorizonal } from 'lucide-react';
+import { SendHorizonal, ArrowLeft } from 'lucide-react';
+import Image from 'next/image';
 
-// Dummy users and messages
-export const users = [
+const users = [
   { id: 'user1', name: 'Alice Doe', lastMessage: 'That sounds amazing!' },
   { id: 'user2', name: 'Andrea Jones', lastMessage: 'Hey! How are you?' },
   { id: 'user3', name: 'Simon Stewart', lastMessage: 'Lunch Tuesday?' },
 ];
 
-export const messages: Record<string, { sender: string; text: string; time: string }[]> = {
+const initialMessages: Record<string, { sender: string; text: string; time: string }[]> = {
   user1: [
     { sender: 'user', text: 'Hi admin!', time: '09:00' },
     { sender: 'admin', text: 'Hello Alice', time: '09:01' },
@@ -22,19 +22,18 @@ export const messages: Record<string, { sender: string; text: string; time: stri
   user3: [],
 };
 
-export default function ChatWindow({
-  selectedUser,
-  isAdmin,
-}: {
+type Props = {
   selectedUser: string;
   isAdmin: boolean;
-}) {
-  const [chat, setChat] = useState(messages[selectedUser] || []);
+  onBack?: () => void;
+};
+
+export default function ChatWindow({ selectedUser, isAdmin, onBack }: Props) {
+  const [chat, setChat] = useState(initialMessages[selectedUser] || []);
   const [input, setInput] = useState('');
 
-  // Update chat when selectedUser changes
   useEffect(() => {
-    setChat(messages[selectedUser] || []);
+    setChat(initialMessages[selectedUser] || []);
   }, [selectedUser]);
 
   const handleSend = () => {
@@ -49,9 +48,7 @@ export default function ChatWindow({
     const updatedChat = [...chat, newMessage];
     setChat(updatedChat);
     setInput('');
-
-    // Optionally: Update the global messages object (if needed)
-    messages[selectedUser] = updatedChat;
+    initialMessages[selectedUser] = updatedChat;
   };
 
   const displayName = isAdmin
@@ -59,14 +56,22 @@ export default function ChatWindow({
     : 'Admin';
 
   return (
-    <div className=" flex flex-col bg-white p-4 col-span-2">
+    <div className="flex flex-col h-full bg-white p-4">
       {/* Header */}
-      <div className="border-b pb-3 mb-3 flex items-center justify-between">
-        <h2 className="font-semibold text-gray-700">Chat with {displayName}</h2>
+      <div className=" fixed top-[5.5rem] z-10 py-3 inset-x-0 sm:block  bg-white mb-12 border-b pb-3 sm:mb-3 flex justify-between px-2 items-center gap-2">
+        {onBack && (
+          <button onClick={onBack} className="sm:hidden text-gray-600 hover:text-black">
+            <ArrowLeft size={20} />
+          </button>
+        )}
+        <h2 className="font-semibold text-gray-700">{displayName}</h2>
+        <div className='relative size-14 rounded-full overflow-hidden'>
+          <Image fill alt='user' src='/images/user-1.jpg' className='object-cover'/>
+        </div>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto space-y-4 px-1">
+      <div className="flex-1 overflow-y-auto pt-20 space-y-4 px-1">
         {chat.map((msg, i) => (
           <div
             key={i}
@@ -83,7 +88,7 @@ export default function ChatWindow({
       </div>
 
       {/* Input */}
-      <div className="mt-4 flex items-center gap-2">
+      <div className="mt-4 flex items-center fixed inset-x-0 bottom-24 mx-2 sm:mx-0 sm:block gap-2">
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}

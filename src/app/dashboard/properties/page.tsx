@@ -45,7 +45,7 @@ const mockProperties: {
 export default function Dashboard() {
   const { openAddProperty,toggleAddProperty,openExpandedProperty} = useAppStore();
   return (
-    <main className="flex-1 grid-cols-1 mt-8 px-8 py-6 pt-32 sm:pt-6  relative ">
+    <main className="flex-1 grid-cols-1 sm:mt-8 px-8 py-6 pt-32 sm:pt-6  relative ">
       <div className="flex justify-between  items-center mb-6">
         <h2 className="text-xl font-semibold">Properties</h2>
         <Button onClick={toggleAddProperty} className="bg-black text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2">

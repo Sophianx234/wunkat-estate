@@ -1,15 +1,11 @@
 'use client'
+import { Button } from "@/components/ui/button"
 import {
   Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
+  CardTitle
 } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Search, Plus } from "lucide-react"
+import { Plus, Search } from "lucide-react"
 import { useState } from "react"
 import CustomerRow from "../_components/CustomerRow"
 
@@ -28,7 +24,7 @@ export type Customer = {
 };
 
 
-const initialCustomers = [
+/* const initialCustomers = [
   {
     name: "James Carter",
     email: "james@estatevista.com",
@@ -56,7 +52,7 @@ const initialCustomers = [
     location: "Manhattan, NY",
     apartment: "Apt 305 - Riverfront Residences",
   },
-]
+] */
 
 export const customerx: Customer[] = [
   {
@@ -145,7 +141,7 @@ export default function CustomersPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6  space-y-6 mt-24 sm:mt-0">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold">Customers</h2>

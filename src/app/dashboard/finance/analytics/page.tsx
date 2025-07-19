@@ -9,9 +9,9 @@ import SoldAnalytics from "../SoldAnalytics";
 
 export default function Finance() {
   return (
-    <div className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-12 mt-10">
+    <div className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-12 sm:mt-10 mt-24">
       {/* Total Income & Revenue */}
-
+    <h1 className="text-xl font-inter font-bold">Business Statistics</h1>
       <IncomeCard />
 
       {/* Sales Analytics */}
