@@ -10,7 +10,7 @@ function Navbar() {
   return (
     
 
-    <nav className=" z-10 fixed sm:grid flex grid-cols-3 justify-between  sm:px-20 px-6 pt-10 w-full items-center    text-white">
+    <nav className="bg-white sm:bg-transparent z-10 fixed sm:grid flex grid-cols-3 justify-between  sm:px-20 px-6 py-4 sm:pt-10 w-full items-center  text-black shadow sm:shadow-none  sm:text-white">
       <Logo/>
 
     <BreadCrum/>
