@@ -4,8 +4,8 @@ import Button from "../../_components/Button";
 import Filters from "../_components/Filters";
 import PropertyCard from "../_components/PropertyCard";
 import AddProperty from "../_components/AddProperty";
-import { useAppStore } from "@/lib/store";
 import dynamic from 'next/dynamic';
+import { useDashStore } from "@/lib/store";
 
 const ExpandedProperty = dynamic(() => import('../_components/ExpandedProperty'), {
   ssr: false,
@@ -48,7 +48,7 @@ const mockProperties: {
 ];
 
 export default function Dashboard() {
-  const { openAddProperty,toggleAddProperty,openExpandedProperty} = useAppStore();
+  const { openAddProperty,toggleAddProperty,openExpandedProperty} = useDashStore();
   return (
     <main className="flex-1 grid-cols-1 sm:mt-8 px-8 py-6 pt-32 sm:pt-6  relative ">
       <div className="flex justify-between  items-center mb-6">

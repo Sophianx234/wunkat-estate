@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import { IoClose } from 'react-icons/io5';
 import { startPaystackPayment } from '@/lib/paystackConfig';
-import { useAppStore } from '@/lib/store';
+import { useDashStore } from '@/lib/store';
 
 type ExpandedPropertyProps = {
   price?: string;
@@ -19,7 +19,7 @@ const images = [
 ];
 
 function ExpandedProperty({ price = '1,500' }: ExpandedPropertyProps) {
-  const { toggleExpandedProperty } = useAppStore();
+  const { toggleExpandedProperty } = useDashStore();
   const modalRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
 

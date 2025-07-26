@@ -8,7 +8,7 @@ export type storeState = {
   toggleExpandedProperty: () => void;
   toggleAddProperty: () => void;
 }
-export const useAppStore = create<storeState>((set) => ({
+export const useDashStore = create<storeState>((set) => ({
   openSidebar: false,
   openExpandedProperty: false,
   openAddProperty: false,

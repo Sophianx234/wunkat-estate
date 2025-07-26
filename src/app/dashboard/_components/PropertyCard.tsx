@@ -1,7 +1,7 @@
 'use client';
 import { Button } from "@/components/ui/button";
+import { useDashStore } from "@/lib/store";
 import Image from "next/image";
-import { useAppStore } from "@/lib/store";
 
 type propertyCardProps = {
   property: {
@@ -18,7 +18,7 @@ type propertyCardProps = {
 };
 
 export default function PropertyCard({ property }: propertyCardProps) {
-  const { toggleExpandedProperty } = useAppStore();
+  const { toggleExpandedProperty } = useDashStore();
 
   const getStatusStyle = (status: string) => {
     switch (status.toLowerCase()) {

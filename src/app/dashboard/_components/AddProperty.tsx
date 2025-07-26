@@ -1,6 +1,6 @@
 'use client';
 
-import { useAppStore } from '@/lib/store';
+import { useDashStore } from '@/lib/store';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
@@ -33,7 +33,7 @@ export default function AddProperty() {
     description: '',
   });
 
-  const { toggleAddProperty } = useAppStore();
+  const { toggleAddProperty } = useDashStore();
   const [images, setImages] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const wrapperRef = useRef<HTMLDivElement>(null);

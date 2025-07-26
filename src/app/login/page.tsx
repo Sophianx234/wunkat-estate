@@ -13,6 +13,7 @@ import Button from "../_components/Button";
 import { Checkbox } from "../_components/checkbox";
 import { Input } from "../_components/input";
 import Logo from "../_components/Logo";
+import { useRouter } from "next/navigation";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -22,6 +23,7 @@ type formInputs = z.infer<typeof loginSchema>;
 function Login() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [rememberPass,setRemeberPass] = useState<boolean>(false)
+  const router = useRouter()
 
   console.log('rememberPass', rememberPass);
   const {
@@ -31,28 +33,35 @@ function Login() {
   } = useForm<formInputs>({
     resolver: zodResolver(loginSchema),
   });
-  const handleLogin: SubmitHandler<formInputs> = async (data) => {
-    try {
-      setIsLoading(true);
-      const res = await axios.post(`${BASE_URL}/api/auth/login`, data);
+const handleLogin: SubmitHandler<formInputs> = async (data) => {
+  try {
+    setIsLoading(true);
 
-      if(res.status === 200){
-        console.log("res", res);
-        toast.success('login successful')
-        localStorage.
-        router.push('/dashboard/properties')
-        
+    const res = await fetch(`/api/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
 
-      }else{
-        toast.error('Login failed...')
+    const result = await res.json();
 
-      }
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setIsLoading(false);
+    if (res.ok) {
+      console.log("res", result);
+      toast.success('Login successful');
+      router.push('/dashboard/properties');
+    } else {
+      toast.error(result?.message || 'Login failed...');
     }
-  };
+  } catch (err) {
+    console.log(err);
+    toast.error('Something went wrong...');
+  } finally {
+    setIsLoading(false);
+  }
+};
+
   return (
     <form
       onSubmit={handleSubmit(handleLogin)}

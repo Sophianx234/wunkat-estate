@@ -1,19 +1,55 @@
 'use client'
 import Logo from "@/app/_components/Logo";
+import { BASE_URL } from "@/lib/utils";
+import axios from "axios";
 import { motion } from 'framer-motion';
 import { X } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { BiLogOut } from "react-icons/bi";
 import { FiSettings } from "react-icons/fi";
 import { HiOutlineUsers } from "react-icons/hi";
 import { MdAccountCircle, MdMessage } from "react-icons/md";
 import { RiBuilding2Line } from "react-icons/ri";
 import { TbHomePlus, TbReportAnalytics } from "react-icons/tb";
+import { ScaleLoader } from "react-spinners";
 type sidebarProps = {
   type?: 'normal'|'slide'
   handleClose?: ()=>void
 }
 export default function Sidebar({ handleClose, type = 'normal' }: sidebarProps) {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter()
+  const handleLogout = async()=>{
+    try{
+      setIsLoading(true)
+      
+      const res = await fetch(`/api/auth/logout`)
+      const data = await res.json()
+      if(res.ok){
+        console.log('logout',data)
+        
+        toast.success('Logout successful')
+        router.push('/')
+        
+        
+      }else{
+        console.log('logout',data)
+      }
+    }catch(err){
+      
+      toast.error('Logout failed')
+      console.log(err)
+    }finally{
+      setIsLoading(false)
+      
+      
+    }
+    
+
+  }
   return (
     <motion.aside
       initial={{ x: "-100%" }}
@@ -46,10 +82,15 @@ export default function Sidebar({ handleClose, type = 'normal' }: sidebarProps) 
           <Link href="/dashboard/transactions" className="dash-nav-item"><TbHomePlus className="size-6" /> Transaction</Link>
           <Link href="/dashboard/messages" className="dash-nav-item"><MdMessage className="size-6" /> Message</Link>
           <Link href="/dashboard/settings" className="dash-nav-item"><FiSettings className="size-6" /> Settings</Link>
-          <Link href="#" className="dash-nav-item text-red-500"><BiLogOut className="size-6" /> Log Out</Link>
+          <button onClick={handleLogout} className="dash-nav-item w-full text-red-500">{isLoading && (
+              
+                <ScaleLoader className="" height={10} width={6} color="#fff" />
+            )}
+             {isLoading ? "Loging out..." : (<><BiLogOut className="size-6" />Logout</>)}</button>
         </nav>
 
       </div>
+      <Toaster/>
     </motion.aside>
   );
 }
