@@ -4,7 +4,7 @@ import mongoose, { Schema } from "mongoose";
 export type userDocumentType ={
   name: string;
   email: string;
-  profile:string;
+  profile?:string;
   password: string;
   role: "buyer" | "seller" | "agent" | "admin";
   phone?: string;

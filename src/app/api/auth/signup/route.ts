@@ -26,7 +26,7 @@ export const POST = async (req: NextRequest) => {
       name,
       email,
       password: newPassword,
-      profile: "/images/user-default.png", // Default avatar
+       // Default avatar
     });
 
     const token = await signToken(newUser);
