@@ -13,6 +13,7 @@ import { ScaleLoader } from "react-spinners";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Logo from "../_components/Logo";
+import { useDashStore } from "@/lib/store";
 
 // ✅ Zod schema includes acceptTerms
 const signupSchema = z
@@ -37,6 +38,7 @@ type SignupFormInputs = z.infer<typeof signupSchema>;
 function Signup() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const {setSignupData} = useDashStore()
 
   const {
     handleSubmit,
@@ -54,13 +56,11 @@ function Signup() {
   const handleSignup: SubmitHandler<SignupFormInputs> = async (data) => {
     try {
       setIsLoading(true);
-      const res = await axios.post("/api/auth/signup", data);
-      if (res.status === 200) {
-        toast.success("Signup successful!");
-        router.push("/dashboard/properties");
-      } else {
-        toast.error("Signup failed.");
-      }
+      setSignupData(data)
+      router.push("/me/profile");
+      
+      
+
     } catch (err) {
       toast.error("Something went wrong.");
     } finally {

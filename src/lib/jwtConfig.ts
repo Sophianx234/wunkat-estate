@@ -2,10 +2,10 @@ import { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 export type userType = {
   id: string;
-  name: string;
-  profile:string
+  
+  
 };
-type DecodedToken = {
+export type DecodedToken = {
   userId: string;
   email: string;
   name?: string;
@@ -16,7 +16,7 @@ const jwtSecret = process.env.JWT_SECRET as string;
 const jwtExpires = process.env.JWT_EXPIRES;
 export const signToken = async (user: userType) => {
   if (jwtSecret && jwtExpires)
-    return jwt.sign({ userId: user.id, name: user.name,profile:user.profile }, jwtSecret, {
+    return jwt.sign({ userId: user.id,  }, jwtSecret, {
       expiresIn: Number(jwtExpires)*60*60,
     });
   else {
