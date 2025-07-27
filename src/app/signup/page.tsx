@@ -45,7 +45,7 @@ function Signup() {
       setIsLoading(true);
       const res = await axios.post("/api/auth/signup", data);
       if (res.status === 200) {
-        router.push("/dashboard/properties");
+        router.push("/me/profile");
         toast.success("Signup successful:", res.data);
         // You can redirect or show a success message here
       } else {
