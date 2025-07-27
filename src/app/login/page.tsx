@@ -50,7 +50,7 @@ const handleLogin: SubmitHandler<formInputs> = async (data) => {
     if (res.ok) {
       console.log("res", result);
       toast.success('Login successful');
-      router.push('/me/profile');
+      router.push('/dashboard/properties');
     } else {
       toast.error(result?.message || 'Login failed...');
     }

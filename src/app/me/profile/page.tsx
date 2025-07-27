@@ -9,8 +9,8 @@ import toast, { Toaster } from 'react-hot-toast';
 
 export default function UploadProfilePage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [avatar, setAvatar] = useState<string | null>(null); // Preview image
-  const [selectedFile, setSelectedFile] = useState<File | null>(null); // Raw file
+  const [avatar, setAvatar] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const router = useRouter();
 
@@ -39,18 +39,33 @@ export default function UploadProfilePage() {
       return;
     }
 
+    const formData = new FormData();
+    formData.append('image', selectedFile);
+
     setUploading(true);
     try {
-      // Simulate image upload
-      await new Promise((res) => setTimeout(res, 1500));
-      toast.success('Profile uploaded!');
+      const res = await fetch('/api/user/update-image', {
+        method: 'PATCH',
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const { msg } = await res.json();
+        throw new Error(msg || 'Upload failed');
+      }
+
+      toast.success('Profile updated!');
       router.push('/dashboard/properties');
-    } catch (err) {
-      toast.error('Upload failed!');
+    } catch (err: any) {
+      toast.error(err.message || 'Something went wrong');
     } finally {
       setUploading(false);
     }
   };
+
+  const handleSkip = ()=>{
+    router.push('/dashboard/properties')
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
@@ -70,7 +85,7 @@ export default function UploadProfilePage() {
               className="object-cover group-hover:opacity-80 transition"
             />
           ) : (
-            <div className="">
+            <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
               
             </div>
           )}
@@ -82,20 +97,28 @@ export default function UploadProfilePage() {
             onChange={handleFileChange}
           />
         </div>
-        {uploading ? (
-        <ScaleLoader />
-      ) : (
-        <button
-          onClick={handleSetProfile}
-          className="flex items-center  gap-2 bg-black text-white px-5 py-2 rounded-md hover:bg-gray-800 transition"
-        >
-          <FiUploadCloud />
-          Set Profile
-        </button>
-      )}
-      </div>
+        <div className='grid grid-cols-2 gap-3 items-center'>
+          <button
+            onClick={handleSkip}
+            className="flex justify-center hover:bg-gray-100 items-center gap-2 bg-white shadow border border-gray-200 text-black px-5 py-2 rounded-md"
+          >
+            Skip
+          </button>
 
-      
+
+        {uploading ? (
+          <ScaleLoader />
+        ) : (
+          <button
+            onClick={handleSetProfile}
+            className="flex items-center gap-2 bg-black text-white px-5 py-2 rounded-md hover:bg-gray-800 transition"
+          >
+            <FiUploadCloud />
+            Set Profile
+          </button>
+        )}
+      </div>
+        </div>
     </div>
   );
 }
