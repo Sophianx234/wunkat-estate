@@ -97,17 +97,18 @@ export default function UploadProfilePage() {
             onChange={handleFileChange}
           />
         </div>
-        <div className='grid grid-cols-2 gap-3 items-center'>
-          <button
+        <div className={`${uploading ? 'flex':'grid grid-cols-2'} gap-3 items-center`}>
+          {!uploading&&<button
             onClick={handleSkip}
             className="flex justify-center hover:bg-gray-100 items-center gap-2 bg-white shadow border border-gray-200 text-black px-5 py-2 rounded-md"
           >
             Skip
-          </button>
+          </button>}
 
 
         {uploading ? (
-          <ScaleLoader />
+
+          <ScaleLoader className='' />
         ) : (
           <button
             onClick={handleSetProfile}
