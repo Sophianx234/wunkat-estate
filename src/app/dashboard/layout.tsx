@@ -1,16 +1,31 @@
 'use client'
-import { useDashStore } from "../store/dashboard-store";
+import { useEffect } from "react";
 import MobileNavbar from "./_components/MobileNavbar";
 import NotificationList from "./_components/Notifications";
 import Sidebar from "./_components/SideNav";
 import Topbar from "./_components/Topbar";
+import { useDashStore } from "@/lib/store";
 
 type LayoutProps = {
   children: React.ReactNode;
 };
 
 function Layout({ children }: LayoutProps) {
-  const {openNotifications} = useDashStore()
+  const {openNotifications,setUser} = useDashStore()
+  useEffect(()=>{
+    const getMe = async()=>{
+      const res = await fetch('/api/auth/me')
+      const data = await res.json()
+      if(res.ok ){
+        setUser(data.user)
+        console.log(data.user,'user')
+        
+        
+  }
+}
+    getMe()
+  },[]) 
+
   return (
     <div className="bg-gray-50">
       {/* Fixed Sidebar */}

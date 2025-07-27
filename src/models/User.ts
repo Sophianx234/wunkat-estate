@@ -4,6 +4,7 @@ import mongoose, { Schema } from "mongoose";
 export type userDocumentType ={
   name: string;
   email: string;
+  profile:string;
   password: string;
   role: "buyer" | "seller" | "agent" | "admin";
   phone?: string;
@@ -37,6 +38,10 @@ const userSchema = new Schema<userDocumentType>({
     type: Date,
     default: Date.now,
   },
+  profile:{
+    type:String,
+    default:'/images/user-default.png'
+  }
 });
 
 export default mongoose.models.User || mongoose.model<userDocumentType>("User", userSchema);

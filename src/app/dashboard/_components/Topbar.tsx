@@ -1,6 +1,6 @@
 'use client'
 import BreadCrum from "@/app/_components/BreadCrum";
-import { useDashStore } from "@/app/store/dashboard-store";
+import { useDashStore } from "@/lib/store";
 
 import Image from "next/image";
 import Link from "next/link";

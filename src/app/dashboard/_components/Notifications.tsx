@@ -8,7 +8,7 @@ import {
   CalendarCheck,
   Trash2,
 } from 'lucide-react';
-import { useDashStore } from '@/app/store/dashboard-store';
+import { useDashStore } from '@/lib/store';
 
 type Notification = {
   id: number;
