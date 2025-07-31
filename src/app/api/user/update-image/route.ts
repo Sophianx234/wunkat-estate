@@ -55,11 +55,7 @@ export const PATCH = async (req: NextRequest) => {
     if (!image && !email && !name) {
       return NextResponse.json({ msg: "No image provided" }, { status: 400 });
     }
-    const updateData = {
-      name:'',
-      profile:'',
-      email:''
-    }
+    const updateData: Partial<{name:string,email:string,profile:string}> = {};
     if(email) updateData.email = email
     if(name) updateData.name = name
     const arrayBuffer = await image.arrayBuffer();
