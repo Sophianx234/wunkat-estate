@@ -2,6 +2,7 @@ import { connectToDatabase } from "@/config/DbConnect";
 import cloudinary from "@/lib/cloudinary";
 import { getTokenFromRequest } from "@/lib/jwtConfig";
 import User from "@/models/User";
+import { UploadApiResponse } from "cloudinary";
 import { NextRequest, NextResponse } from "next/server";
 import { Readable } from "stream";
 
@@ -18,7 +19,7 @@ function bufferToStream(buffer: Buffer) {
 }
 
 // 📤 Upload to Cloudinary from buffer stream
-function uploadBufferToCloudinary(buffer: Buffer,userId:string): Promise<any> {
+function uploadBufferToCloudinary(buffer: Buffer,userId:string){
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
       { folder: "wunkathomes/users",
@@ -27,7 +28,7 @@ function uploadBufferToCloudinary(buffer: Buffer,userId:string): Promise<any> {
         invalidate: true, },
       (error, result) => {
         if (error) reject(error);
-        else resolve(result);
+        else resolve(result as UploadApiResponse);
       }
     );
 

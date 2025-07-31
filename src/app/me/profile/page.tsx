@@ -1,12 +1,12 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useDashStore } from "@/lib/store";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { FiUploadCloud } from "react-icons/fi";
 import { ScaleLoader } from "react-spinners";
-import toast, { Toaster } from "react-hot-toast";
-import { useDashStore } from "@/lib/store";
 
 export default function UploadProfilePage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -66,8 +66,9 @@ export default function UploadProfilePage() {
 
       toast.success("Profile updated!");
       router.push("/dashboard/properties");
-    } catch (err: any) {
-      toast.error(err.message || "Something went wrong");
+    } catch (err) {
+      toast.error("Something went wrong");
+      console.log(err)
     } finally {
       setUploading(false);
     }

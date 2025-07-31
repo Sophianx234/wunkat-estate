@@ -60,8 +60,9 @@ function Signup() {
       
       
 
-    } catch (err) {
+    } catch () {
       toast.error("Something went wrong.");
+      
     } finally {
       setIsLoading(false);
     }

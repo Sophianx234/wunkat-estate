@@ -2,8 +2,6 @@
 import BreadCrum from "@/app/_components/BreadCrum";
 import { useDashStore } from "@/lib/store";
 
-import Image from "next/image";
-import Link from "next/link";
 import { Suspense } from "react";
 import { FaBell, FaSearch } from "react-icons/fa";
 import Profile from "./Profile";
