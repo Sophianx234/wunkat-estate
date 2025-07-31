@@ -83,7 +83,6 @@ export default function SettingsPage() {
         },
         body: JSON.stringify({newPassword,oldPassword})
       })
-      const data = await res.json()
       if(res.ok){
         toast.dismiss()
         toast.success('Password change successful')
