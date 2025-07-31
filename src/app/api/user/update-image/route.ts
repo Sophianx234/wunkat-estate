@@ -8,11 +8,7 @@ import { Readable } from "stream";
 
 // Disable body parsing
 
-type updateDataType = {
-  name: string;
-  email: string;
-  profile:string
-};
+
 // 🔄 Convert Buffer to Stream
 function bufferToStream(buffer: Buffer) {
   return Readable.from(buffer);
