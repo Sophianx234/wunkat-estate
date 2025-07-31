@@ -14,7 +14,7 @@ import { Checkbox } from "../_components/checkbox";
 import { Input } from "../_components/input";
 import Logo from "../_components/Logo";
 
-// ✅ Zod schema includes acceptTerms
+// ✅ Zod schema
 const signupSchema = z
   .object({
     name: z.string().min(1, "Name is required"),
@@ -30,7 +30,14 @@ const signupSchema = z
     path: ["confirmPassword"],
   });
 
-type SignupFormInputs = z.infer<typeof signupSchema>;
+// ✅ Manually define type to allow boolean instead of literal true
+type SignupFormInputs = {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  acceptTerms: boolean;
+};
 
 function Signup() {
   const [isLoading, setIsLoading] = useState(false);
@@ -53,7 +60,7 @@ function Signup() {
   const handleSignup: SubmitHandler<SignupFormInputs> = async (data) => {
     try {
       setIsLoading(true);
-      setSignupData(data);
+      setSignupData({ ...data, acceptTerms: true });
       router.push("/me/profile");
     } catch (err) {
       toast.error("Something went wrong.");
@@ -82,7 +89,6 @@ function Signup() {
           </h3>
         </div>
 
-        {/* Form Fields */}
         <div className="flex flex-col gap-4 mt-6">
           <label className="space-y-1 sm:space-y-0">
             <p className="sm:text-sm font-semibold font-karla text-base">
@@ -140,7 +146,9 @@ function Signup() {
               className="py-6 sm:py-1"
             />
             {errors.confirmPassword && (
-              <div className="form-error">{errors.confirmPassword.message}</div>
+              <div className="form-error">
+                {errors.confirmPassword.message}
+              </div>
             )}
           </label>
         </div>
@@ -149,7 +157,9 @@ function Signup() {
         <div className="flex justify-between text-sm sm:text-xs items-center pt-5 font-medium font-karla">
           <div className="flex items-center gap-1">
             <Checkbox
-              onClick={() => setValue("acceptTerms", !watch("acceptTerms"))}
+              onClick={() =>
+                setValue("acceptTerms", !watch("acceptTerms"))
+              }
               checked={watch("acceptTerms")}
             />
             <span>I agree to the terms and conditions</span>
