@@ -40,9 +40,7 @@ function uploadBufferToCloudinary(buffer: Buffer, userId: string) {
 
 export const PATCH = async (req: NextRequest) => {
   try {
-    const updateData:updateDataType = {
-
-    }
+    
     await connectToDatabase();
     
     // 🔐 Get user token
@@ -60,6 +58,11 @@ export const PATCH = async (req: NextRequest) => {
 
     if (!image && !email && !name) {
       return NextResponse.json({ msg: "No image provided" }, { status: 400 });
+    }
+    const updateData = {
+      name:'',
+      profile:'',
+      email:''
     }
     if(email) updateData.email = email
     if(name) updateData.name = name
