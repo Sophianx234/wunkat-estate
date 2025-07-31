@@ -104,6 +104,7 @@ export default function SettingsPage() {
               router.refresh()
               setAvatar(reader.result as string); // Update avatar in UI
               setUserProf(data.user);
+              router.refresh()
               Swal.fire(
                 "Updated!",
                 "Your profile picture has been changed.",
