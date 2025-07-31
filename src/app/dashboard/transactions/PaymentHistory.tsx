@@ -1,4 +1,4 @@
-import { Wallet } from "lucide-react";
+import { HiOutlineClock } from "react-icons/hi";
 import { MdOutlineHomeWork } from "react-icons/md";
 
 const payments = Array(6).fill({
@@ -15,10 +15,10 @@ export default function PaymentHistory() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="bg-white p-4 rounded-xl shadow flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-500">Total Pay</p>
-            <p className="text-2xl font-bold text-gray-800 mt-1">$5500.65</p>
+            <p className="text-sm text-gray-500">Subscription</p>
+            <p className="text-2xl font-bold text-gray-800 mt-1">14 Days left</p>
           </div>
-          <Wallet className="text-green-600 w-8 h-8" />
+           <HiOutlineClock className="text-yellow-500 w-8 h-8" />
         </div>
 
         <div className="bg-white p-4 rounded-xl shadow flex items-center justify-between">

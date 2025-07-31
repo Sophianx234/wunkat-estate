@@ -79,7 +79,7 @@ export default function Sidebar({ handleClose, type = 'normal' }: sidebarProps) 
           <Link href="/dashboard/properties" className={`dash-nav-item ${pathname ==='/dashboard/properties'?'bg-black text-white':''}`}><RiBuilding2Line className="size-6" /> Properties</Link>
           <Link href="/dashboard/agents" className={`dash-nav-item ${pathname ==='/dashboard/agents'?'bg-black text-white':''}`}><HiOutlineUsers className="size-6" /> Agents</Link>
           <Link href="/dashboard/customers" className={`dash-nav-item ${pathname ==='/dashboard/customers'?'bg-black text-white':''}`}><MdAccountCircle className="size-6" /> Customers</Link>
-          <Link href="/dashboard/transactions" className={`dash-nav-item ${pathname ==='/dashboard/transactions'?'bg-black text-white':''}`}><TbHomePlus className="size-6" /> Transaction</Link>
+          <Link href="/dashboard/transactions" className={`dash-nav-item ${pathname ==='/dashboard/transactions'?'bg-black text-white':''}`}><TbHomePlus className="size-6" /> Transactions</Link>
           <Link href="/dashboard/messages" className={`dash-nav-item ${pathname ==='/dashboard/messages'?'bg-black text-white':''}`}><MdMessage className="size-6" /> Message</Link>
           <Link href="/dashboard/settings" className={`dash-nav-item ${pathname ==='/dashboard/settings'?'bg-black text-white':''}`}><FiSettings className="size-6" /> Settings</Link>
           <button onClick={handleLogout} className="dash-nav-item w-full text-red-500">{isLoading && (

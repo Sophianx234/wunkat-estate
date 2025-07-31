@@ -1,21 +1,26 @@
-import Image from "next/image"
-import { Phone, MessageCircle } from "lucide-react"
+'use client'
+import { useDashStore } from "@/lib/store"
+import { MessageCircle, Phone } from "lucide-react"
 
 export default function TenantCard() {
+  const {user} = useDashStore()
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-md border col-span-2 sm:col-span-1  transition-all hover:shadow-lg">
-      <div className="flex flex-col items-center text-center">
-        <div className="relative size-24">
+    <div className="fixed w-64 -translate-y-9">
+        <h1 className="text-2xl font-semibold text-gray-800 mb-4">Transactions</h1>
 
-        <Image
-          src="/images/prof-1.jpg"
+    <div className="bg-white p-6 rounded-2xl h-[24.5rem] pb-8   shadow-md border col-span-2 sm:col-span-1  transition-all hover:shadow-lg">
+      <div className="flex flex-col items-center text-center">
+        <div className="relative rounded-full overflow-hidden size-24">
+
+        <img
+          src={user?.profile}
           alt="Profile"
-          fill
+          
           className="rounded-full border bg-center object-cover "
           />
           </div>
-        <h2 className="mt-4 text-lg font-semibold">Rachel Mohr</h2>
-        <p className="text-sm text-muted-foreground">ID: 015485647</p>
+        <h2 className="mt-4 text-lg font-semibold">{user?.name}</h2>
+        <p className="text-sm text-muted-foreground">{user?.email}</p>
 
         <div className="flex gap-3 mt-4">
           <button className="flex items-center gap-1 bg-muted px-3 py-1.5 text-sm rounded-full hover:bg-accent">
@@ -28,17 +33,16 @@ export default function TenantCard() {
       </div>
 
       <div className="mt-6 text-left">
-        <h3 className="font-semibold text-gray-800 mb-2">About Mohr</h3>
+        <h3 className="font-semibold text-gray-800 mb-2">About {user?.name}</h3>
         <div className="text-sm text-gray-600 space-y-1">
           <p>Flat: <span className="font-medium">Merpur 045167</span></p>
           <p>User ID: <span className="font-medium">B48564</span></p>
           <p>Registered: <span className="font-medium">20 Jan 2018</span></p>
           <p>Profession: <span className="font-medium">Business</span></p>
         </div>
-        <p className="mt-3 text-sm text-gray-500">
-          Rachel is a long-term tenant known for punctual payments and great communication. She’s currently leasing a two-bedroom apartment.
-        </p>
+       
       </div>
+    </div>
     </div>
   )
 }
