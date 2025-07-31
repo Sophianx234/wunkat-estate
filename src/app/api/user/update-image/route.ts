@@ -64,7 +64,7 @@ export const PATCH = async (req: NextRequest) => {
     // 🧠 Update DB
     const updatedUser = await User.findByIdAndUpdate(
       token.userId,
-      { profile: result.secure_url },
+      { profile: (result as UploadApiResponse).secure_url },
       { new: true }
     );
 
