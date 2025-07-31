@@ -8,7 +8,7 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { ScaleLoader } from "react-spinners";
-import z, { boolean } from "zod";
+import z from "zod";
 import Button from "../_components/Button";
 import { Checkbox } from "../_components/checkbox";
 import { Input } from "../_components/input";
