@@ -26,6 +26,7 @@ const userSchema = new Schema<userDocumentType>({
   password: {
     type: String,
     required: true,
+    select: false
   },
   role: {
     type: String,

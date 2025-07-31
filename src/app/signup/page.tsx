@@ -1,19 +1,18 @@
 "use client";
+import { useDashStore } from "@/lib/store";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import toast, { Toaster } from "react-hot-toast";
+import { ScaleLoader } from "react-spinners";
+import z from "zod";
 import Button from "../_components/Button";
 import { Checkbox } from "../_components/checkbox";
 import { Input } from "../_components/input";
-import z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useState } from "react";
-import axios from "axios";
-import toast, { Toaster } from "react-hot-toast";
-import { ScaleLoader } from "react-spinners";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 import Logo from "../_components/Logo";
-import { useDashStore } from "@/lib/store";
 
 // ✅ Zod schema includes acceptTerms
 const signupSchema = z

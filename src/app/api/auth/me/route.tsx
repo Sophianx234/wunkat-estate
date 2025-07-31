@@ -1,5 +1,5 @@
-import { DecodedToken, userType } from '@/lib/jwtConfig';
-import User, { userDocumentType } from '@/models/User';
+import { DecodedToken } from '@/lib/jwtConfig';
+import User from '@/models/User';
 import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    const user = await User.findById((decoded as DecodedToken).userId).select('name password profile')
+    const user = await User.findById((decoded as DecodedToken).userId).select('name email profile')
     
     return NextResponse.json({ user });
   } catch (err) {

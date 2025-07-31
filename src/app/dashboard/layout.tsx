@@ -5,6 +5,7 @@ import NotificationList from "./_components/Notifications";
 import Sidebar from "./_components/SideNav";
 import Topbar from "./_components/Topbar";
 import { useDashStore } from "@/lib/store";
+import { userType } from "@/lib/jwtConfig";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -17,7 +18,7 @@ function Layout({ children }: LayoutProps) {
       const res = await fetch('/api/auth/me')
       const data = await res.json()
       if(res.ok ){
-        setUser(data.user)
+        setUser(data.user as userType)
         console.log(data.user,'user')
         
         

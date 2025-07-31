@@ -2,6 +2,10 @@ import { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 export type userType = {
   id: string;
+  profile:string
+  name: string ;
+  email:string;
+
   
   
 };
@@ -17,7 +21,7 @@ const jwtExpires = process.env.JWT_EXPIRES;
 export const signToken = async (user: userType) => {
   if (jwtSecret && jwtExpires)
     return jwt.sign({ userId: user.id,  }, jwtSecret, {
-      expiresIn: Number(jwtExpires)*60*60,
+      expiresIn: Number(jwtExpires)*60*60*24,
     });
   else {
     throw new Error("JWT_EXPIRES is not defined in environment variables");

@@ -1,7 +1,5 @@
 'use client'
 import Logo from "@/app/_components/Logo";
-import { BASE_URL } from "@/lib/utils";
-import axios from "axios";
 import { motion } from 'framer-motion';
 import { X } from "lucide-react";
 import Link from "next/link";

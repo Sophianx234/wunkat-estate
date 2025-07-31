@@ -18,10 +18,13 @@ function bufferToStream(buffer: Buffer) {
 }
 
 // 📤 Upload to Cloudinary from buffer stream
-function uploadBufferToCloudinary(buffer: Buffer): Promise<any> {
+function uploadBufferToCloudinary(buffer: Buffer,userId:string): Promise<any> {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
-      { folder: "wunkathomes/users" },
+      { folder: "wunkathomes/users",
+         public_id: userId, // 👈 This ensures uniqueness
+        overwrite: true,   // 👈 Overwrites existing image
+        invalidate: true, },
       (error, result) => {
         if (error) reject(error);
         else resolve(result);
@@ -42,6 +45,7 @@ export const PATCH = async (req: NextRequest) => {
       return NextResponse.json({ msg: "Unauthorized" }, { status: 401 });
     }
 
+
     // 📦 Parse the image from FormData
     const form = await req.formData();
     const image = form.get("image") as File;
@@ -54,7 +58,7 @@ export const PATCH = async (req: NextRequest) => {
     const buffer = Buffer.from(arrayBuffer);
 
     // ☁ Upload to Cloudinary
-    const result = await uploadBufferToCloudinary(buffer);
+    const result = await uploadBufferToCloudinary(buffer,token.userId);
 
     // 🧠 Update DB
     const updatedUser = await User.findByIdAndUpdate(

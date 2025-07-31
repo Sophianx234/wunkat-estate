@@ -15,6 +15,8 @@ export type storeState = {
   openAddProperty: boolean;
   openExpandedProperty: boolean;
   signupData: signupType | null;
+  avatar: string;
+  setAvatar: (url: string) => void;
   setSignupData: (data: signupType) => void;
   toggleSidebar: () => void;
   toggleExpandedProperty: () => void;
@@ -31,6 +33,7 @@ export const useDashStore = create<storeState>((set) => ({
   openNotifications: false,
   user: null,
   signupData: null,
+  avatar: '', // ✅ Initial value for avatar
 
   toggleSidebar: () => set((state) => ({ openSidebar: !state.openSidebar })),
   toggleExpandedProperty: () =>
@@ -41,5 +44,6 @@ export const useDashStore = create<storeState>((set) => ({
     set((state) => ({ openNotifications: !state.openNotifications })),
 
   setUser: (user: userType) => set(() => ({ user })),
-  setSignupData: (data: signupType) => set(() => ({ signupData: data })), // ✅ fixed
+  setAvatar: (url: string) => set(() => ({ avatar: url })), // ✅ Corrected function
+  setSignupData: (data: signupType) => set(() => ({ signupData: data })),
 }));

@@ -9,24 +9,36 @@ export const POST = async (req: NextRequest) => {
   try {
     await connectToDatabase();
     const { email, password } = await req.json();
-    if (!email || !password)
-      throw new Error("Please provide email or password");
 
-    const user = await User.findOne({ email });
-    if (!user)
-      throw new Error("user do not exist. please enter correct information");
+    if (!email || !password) {
+      return NextResponse.json(
+        { message: "Please provide both email and password." },
+        { status: 400 }
+      );
+    }
+
+    const user = await User.findOne({ email }).select('+password');
+    if (!user) {
+      return NextResponse.json(
+        { message: "User does not exist. Please check your credentials." },
+        { status: 401 }
+      );
+    }
+
     const isPasswordCorrect = await verifyPassword(password, user.password);
-    console.log("user", user);
-    console.log("iscorrect", isPasswordCorrect);
-    if (!isPasswordCorrect)
-      throw new Error("wrong password. please enter correct password");
+    if (!isPasswordCorrect) {
+      return NextResponse.json(
+        { message: "Wrong password. Please try again." },
+        { status: 401 }
+      );
+    }
+
     const token = await signToken(user);
-    return setAuthCookie(token);
+    return setAuthCookie(token); // this should internally return a proper response
   } catch (err) {
     return NextResponse.json(
       {
-        status: "fail",
-        msg: err,
+        message: (err as Error).message || "Something went wrong",
       },
       {
         status: 500,
