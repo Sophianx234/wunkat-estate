@@ -17,44 +17,68 @@ import toast from "react-hot-toast";
 import { HiOutlineClock, HiOutlineMoon, HiOutlineSun } from "react-icons/hi";
 import { LiaLanguageSolid } from "react-icons/lia";
 import Swal from "sweetalert2";
+import { z } from "zod";
+
+const passwordSchema = z
+  .object({
+    oldPassword: z.string().min(6, "Old password must be at least 6 characters"),
+    newPassword: z.string().min(6, "New password must be at least 6 characters"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "New passwords do not match",
+    path: ["confirmPassword"],
+  });
+
 
 export default function SettingsPage() {
   const [theme, setTheme] = useState("light");
   const [language, setLanguage] = useState("english");
   const [timezone, setTimezone] = useState("");
-  const [name, setName] = useState("Proveen Juge");
+  const [name, setName] = useState("");
   const { user, setUser } = useDashStore();
-  const [email, setEmail] = useState("hello@proveenjuge.com");
+  const [email, setEmail] = useState("");
   const [avatar, setAvatar] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const handleChangePassword = () => {
-    if (!oldPassword || !newPassword || !confirmPassword) {
-      return Swal.fire("Error", "Please fill in all fields", "error");
-    }
 
-    if (newPassword !== confirmPassword) {
-      return Swal.fire("Mismatch", "New passwords do not match", "warning");
-    }
+  const handleChangePassword = async () => {
+  const result = passwordSchema.safeParse({
+    oldPassword,
+    newPassword,
+    confirmPassword,
+  });
 
-    Swal.fire({
-      title: "Change Password?",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonText: "Yes, change it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire("Updated!", "Your password has been changed.", "success");
-        // Optional: Send password change to server
-        // Reset form
-        setOldPassword("");
-        setNewPassword("");
-        setConfirmPassword("");
-      }
+  if (!result.success) {
+    const fieldErrors: { [key: string]: string } = {};
+    result.error.errors.forEach((err) => {
+      if (err.path.length > 0) fieldErrors[err.path[0]] = err.message;
     });
-  };
+    setErrors(fieldErrors);
+    return;
+  }
+
+  setErrors({});
+
+  Swal.fire({
+    title: "Change Password?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Yes, change it!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire("Updated!", "Your password has been changed.", "success");
+
+      // Reset fields
+      setOldPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    }
+  });
+};
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -122,15 +146,42 @@ export default function SettingsPage() {
     reader.readAsDataURL(file);
   };
 
-  const handleUpdateInfo = () => {
+  const handleUpdateInfo = async() => {
+    const updatedInfo: Partial<{name:string;email:string}> = {}
+    if(!email && !name) return 
+    if(email) updatedInfo.email = email
+    if(name) updatedInfo.name = name
+    
     Swal.fire({
       title: "Update Information?",
-      html: `<b>Name:</b> ${name}<br/><b>Email:</b> ${email}`,
+      html: `${name&&`<b>Name:</b> ${name}<br/>`}${email&&`<b>Email:</b> ${email}`}`,
       icon: "question",
       showCancelButton: true,
       confirmButtonText: "Yes, update it!",
-    }).then((result) => {
+    }).then(async(result) => {
       if (result.isConfirmed) {
+        toast.loading('Updating information....')
+        
+       const  res = await fetch('/api/user/update-me',{
+        method: 'PATCH',
+        headers: {
+    'Content-Type': 'application/json',
+  },
+        body:JSON.stringify(updatedInfo)
+
+        })
+        const data = await res.json()
+        if(res.ok){
+          toast.dismiss()
+          console.log('xxxxxx:',data)
+          toast.success('update successful')
+          setUser(data.user)
+          
+          
+        }else{
+          toast.dismiss()
+          toast.error('update failed')
+        }
         Swal.fire("Success!", "Your information has been updated.", "success");
         // Optionally send to server here
       }
@@ -138,11 +189,13 @@ export default function SettingsPage() {
   };
   return (
     <div className="min-h-screen bg-gray-50 px-4 md:px-10 py-8">
-      <h1 className="text-2xl font-bold mb-8 text-gray-800">Settings</h1>
 
       <div className="flex flex-col md:flex-row gap-6">
         {/* Sidebar */}
-        <div className="w-full md:w-64 bg-white rounded-xl shadow-sm p-4 space-y-3 text-sm font-medium text-gray-600">
+        <div className="fixed -translate-y-9">
+      <h1 className="text-2xl font-bold mb-8 text-gray-800">Settings</h1>
+
+        <div className="w-full md:w-64   bg-white rounded-xl shadow-sm p-4 space-y-3 text-sm font-medium text-gray-600">
           {[
             {
               label: "Personal Information",
@@ -167,6 +220,10 @@ export default function SettingsPage() {
               {label}
             </div>
           ))}
+        </div>
+        </div>
+        <div className="w-full md:w-64  ">
+
         </div>
 
         {/* Main Content */}
@@ -214,7 +271,9 @@ export default function SettingsPage() {
                 <div className="relative">
                   <User className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
                   <input
-                    value={user?.name}
+                    placeholder={user?.name}
+
+                    
                     onChange={(e) => setName(e.target.value)}
                     className="w-full border rounded-md px-10 py-2 text-sm focus:outline-none focus:ring focus:ring-blue-200"
                   />
@@ -227,7 +286,8 @@ export default function SettingsPage() {
                 <div className="relative">
                   <Mail className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
                   <input
-                    value={user?.email}
+                    placeholder={user?.email}
+                    
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full border rounded-md px-10 py-2 text-sm focus:outline-none focus:ring focus:ring-blue-200"
                   />
@@ -239,7 +299,7 @@ export default function SettingsPage() {
             <div className="mt-6">
               <button
                 onClick={handleUpdateInfo}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md text-sm font-medium transition"
+                className="bg-gray-950 hover:bg-zinc-800   text-white px-5 py-2 rounded-md text-sm font-medium transition"
               >
                 Update Info
               </button>
@@ -247,72 +307,81 @@ export default function SettingsPage() {
           </div>
 
           {/* Remaining sections (change-password, preferences, etc.) remain the same... */}
-          <div
-            id="change-password"
-            className="bg-white rounded-xl shadow-sm p-6"
-          >
-            <h2 className="text-lg font-semibold text-gray-700 mb-4">
-              Change Password
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label className="text-sm text-gray-600 block mb-1">
-                  Old Password
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
-                  <input
-                    type="password"
-                    placeholder="Enter old password"
-                    value={oldPassword}
-                    onChange={(e) => setOldPassword(e.target.value)}
-                    className="w-full border rounded-md px-10 py-2 text-sm focus:outline-none focus:ring focus:ring-blue-200"
-                  />
-                </div>
-              </div>
+          <div id="change-password" className="bg-white rounded-xl shadow-sm p-6">
+  <h2 className="text-lg font-semibold  text-gray-700 mb-4">
+    Change Password
+  </h2>
+  <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
+    <div>
+      <label className="text-sm text-gray-600 block mb-1">
+        Old Password
+      </label>
+      <div className="relative">
+        <Lock className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
+        <input
+          type="password"
+          placeholder="Enter old password"
+          value={oldPassword}
+          onChange={(e) => setOldPassword(e.target.value)}
+          className="w-full border rounded-md px-10 py-2 text-sm focus:outline-none focus:ring focus:ring-blue-200"
+        />
+      </div>
+      {errors.oldPassword && (
+        <p className="text-sm text-red-600 mt-1">{errors.oldPassword}</p>
+      )}
+    </div>
 
-              <div>
-                <label className="text-sm text-gray-600 block mb-1">
-                  New Password
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
-                  <input
-                    type="password"
-                    placeholder="Enter new password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    className="w-full border rounded-md px-10 py-2 text-sm focus:outline-none focus:ring focus:ring-blue-200"
-                  />
-                </div>
-              </div>
+    <div>
+      <label className="text-sm text-gray-600 block mb-1">
+        New Password
+      </label>
+      <div className="relative">
+        <Lock className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
+        <input
+          type="password"
+          placeholder="Enter new password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          className="w-full border rounded-md px-10 py-2 text-sm focus:outline-none focus:ring focus:ring-blue-200"
+        />
+      </div>
+      {errors.newPassword && (
+        <p className="text-sm text-red-600 mt-1">{errors.newPassword}</p>
+      )}
+    </div>
 
-              <div>
-                <label className="text-sm text-gray-600 block mb-1">
-                  Confirm New Password
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
-                  <input
-                    type="password"
-                    placeholder="Confirm new password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full border rounded-md px-10 py-2 text-sm focus:outline-none focus:ring focus:ring-blue-200"
-                  />
-                </div>
-              </div>
-            </div>
+    <div>
+      <label className="text-sm text-gray-600 block mb-1">
+        Confirm New Password
+      </label>
+      <div className="relative">
+        <Lock className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
+        <input
+          type="password"
+          placeholder="Confirm new password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          className="w-full border rounded-md px-10 py-2 text-sm focus:outline-none focus:ring focus:ring-blue-200"
+        />
+      </div>
+      {errors.confirmPassword && (
+        <p className="text-sm text-red-600 mt-1">
+          {errors.confirmPassword}
+        </p>
+      )}
+    </div>
+  </div>
 
-            <div className="mt-6">
-              <button
-                onClick={handleChangePassword}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md text-sm font-medium transition"
-              >
-                Confirm Password Change
-              </button>
-            </div>
-          </div>
+  <div className="mt-6">
+    <button
+      onClick={handleChangePassword}
+      className="bg-gray-950 hover:bg-zinc-800 text-white px-5 py-2 rounded-md text-sm font-medium transition"
+    >
+      Confirm Password Change
+    </button>
+  </div>
+</div>
+
 
           {/* Preferences */}
           <div id="preferences" className="bg-white rounded-xl shadow-sm p-6">

@@ -48,26 +48,22 @@ export const PATCH = async (req: NextRequest) => {
     // 📦 Parse the image from FormData
     const form = await req.formData();
     const image = form.get("image") as File;
-    const email = form.get("email") as string;
-    const name = form.get("name")  as string;
+    
 
 
-    if (!image && !email && !name) {
+    if (!image ) {
       return NextResponse.json({ msg: "No image provided" }, { status: 400 });
     }
-    const updateData: Partial<{name:string,email:string,profile:string}> = {};
-    if(email) updateData.email = email
-    if(name) updateData.name = name
+    
     const arrayBuffer = await image.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
     // ☁ Upload to Cloudinary
     const result = await uploadBufferToCloudinary(buffer, token.userId);
-    if(result) updateData.profile = (result as UploadApiResponse).secure_url
     // 🧠 Update DB
     const updatedUser = await User.findByIdAndUpdate(
       token.userId,
-      updateData,
+      {profile:(result as UploadApiResponse).secure_url},
       { new: true }
     );
 
