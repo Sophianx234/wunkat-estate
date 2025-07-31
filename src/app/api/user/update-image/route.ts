@@ -7,11 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Readable } from "stream";
 
 // Disable body parsing
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+
 
 // 🔄 Convert Buffer to Stream
 function bufferToStream(buffer: Buffer) {
