@@ -6,6 +6,13 @@ import { UploadApiResponse } from "cloudinary";
 import { NextRequest, NextResponse } from "next/server";
 import { Readable } from "stream";
 
+// Disable body parsing
+
+type updateDataType = {
+  name: string;
+  email: string;
+  profile:string
+};
 // 🔄 Convert Buffer to Stream
 function bufferToStream(buffer: Buffer) {
   return Readable.from(buffer);
@@ -17,8 +24,8 @@ function uploadBufferToCloudinary(buffer: Buffer, userId: string) {
     const stream = cloudinary.uploader.upload_stream(
       {
         folder: "wunkathomes/users",
-        public_id: userId,
-        overwrite: true,
+        public_id: userId, // 👈 This ensures uniqueness
+        overwrite: true, // 👈 Overwrites existing image
         invalidate: true,
       },
       (error, result) => {
@@ -33,41 +40,51 @@ function uploadBufferToCloudinary(buffer: Buffer, userId: string) {
 
 export const PATCH = async (req: NextRequest) => {
   try {
-    await connectToDatabase();
+    const updateData:updateDataType = {
 
+    }
+    await connectToDatabase();
+    
+    // 🔐 Get user token
     const token = await getTokenFromRequest(req);
     if (!token || !token.userId) {
       return NextResponse.json({ msg: "Unauthorized" }, { status: 401 });
     }
 
+    // 📦 Parse the image from FormData
     const form = await req.formData();
-    const image = form.get("image") as File | null;
-    const email = form.get("email")?.toString();
-    const name = form.get("name")?.toString();
+    const image = form.get("image") as File;
+    const email = form.get("email") as string;
+    const name = form.get("name")  as string;
+
 
     if (!image && !email && !name) {
-      return NextResponse.json({ msg: "No data provided" }, { status: 400 });
+      return NextResponse.json({ msg: "No image provided" }, { status: 400 });
     }
+    if(email) updateData.email = email
+    if(name) updateData.name = name
+    const arrayBuffer = await image.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
 
-    const updateData: Partial<{ name: string; email: string; profile: string }> = {};
+    // ☁ Upload to Cloudinary
+    const result = await uploadBufferToCloudinary(buffer, token.userId);
+    if(result) updateData.profile = (result as UploadApiResponse).secure_url
+    // 🧠 Update DB
+    const updatedUser = await User.findByIdAndUpdate(
+      token.userId,
+      updateData,
+      { new: true }
+    );
 
-    if (email) updateData.email = email;
-    if (name) updateData.name = name;
-
-    if (image) {
-      const arrayBuffer = await image.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
-      const result = await uploadBufferToCloudinary(buffer, token.userId);
-      updateData.profile = (result as UploadApiResponse).secure_url;
-    }
-
-    const updatedUser = await User.findByIdAndUpdate(token.userId, updateData, {
-      new: true,
-    });
-
-    return NextResponse.json({ msg: "Profile updated", user: updatedUser }, { status: 200 });
+    return NextResponse.json(
+      { msg: "Profile updated", user: updatedUser },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Update profile error:", error);
-    return NextResponse.json({ msg: "Failed to update profile" }, { status: 500 });
+    return NextResponse.json(
+      { msg: "Failed to update profile" },
+      { status: 500 }
+    );
   }
 };
