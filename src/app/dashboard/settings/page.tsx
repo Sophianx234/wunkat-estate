@@ -24,12 +24,12 @@ export default function SettingsPage() {
   const [language, setLanguage] = useState("english");
   const [timezone, setTimezone] = useState("");
   const [name, setName] = useState("Proveen Juge");
-  const { user,setUser, setAvatar,avatar } = useDashStore();
+  const { user, setUser } = useDashStore();
   const [email, setEmail] = useState("hello@proveenjuge.com");
+  const [avatar, setAvatar] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const router = useRouter();
 
   const handleChangePassword = () => {
     if (!oldPassword || !newPassword || !confirmPassword) {
@@ -100,7 +100,6 @@ export default function SettingsPage() {
             if (res.ok) {
               toast.dismiss();
               toast.success("Picture updated successfully!");
-              router.refresh()
               setAvatar(reader.result as string); // Update avatar in UI
               setUser(data.user);
               Swal.fire(

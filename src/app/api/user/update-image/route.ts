@@ -48,7 +48,8 @@ export const PATCH = async (req: NextRequest) => {
     // 📦 Parse the image from FormData
     const form = await req.formData();
     const image = form.get("image") as File;
-    const {email, name } = await req.json() 
+    const email = form.get("email") as string;
+    const name = form.get("name")  as string;
 
 
     if (!image && !email && !name) {
