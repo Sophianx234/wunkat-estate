@@ -1,10 +1,9 @@
 'use client';
 import { useDashStore } from '@/lib/store';
 import Link from 'next/link';
-export const revalidate = 0;
 function Profile() {
 const {user}= useDashStore();
-console.warn('user',user)
+
   
 
   return (
@@ -16,7 +15,7 @@ console.warn('user',user)
         <div className="relative overflow-hidden rounded-full size-10">
           {user?.profile ? (
             <img
-              src={`${user.profile}?v=${Date.now()}`}
+              src={user.profile}
               alt="user"
               
               className="object-cover size-10 rounded-full"

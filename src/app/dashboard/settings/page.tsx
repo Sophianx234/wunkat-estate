@@ -24,9 +24,8 @@ export default function SettingsPage() {
   const [language, setLanguage] = useState("english");
   const [timezone, setTimezone] = useState("");
   const [name, setName] = useState("Proveen Juge");
-  const { user, setAvatar: setUserProf } = useDashStore();
+  const { user,setUser, setAvatar,avatar } = useDashStore();
   const [email, setEmail] = useState("hello@proveenjuge.com");
-  const [avatar, setAvatar] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -103,8 +102,7 @@ export default function SettingsPage() {
               toast.success("Picture updated successfully!");
               router.refresh()
               setAvatar(reader.result as string); // Update avatar in UI
-              setUserProf(data.user);
-              router.refresh()
+              setUser(data.user);
               Swal.fire(
                 "Updated!",
                 "Your profile picture has been changed.",
