@@ -46,6 +46,7 @@ export default function SettingsPage() {
 
 
   const handleChangePassword = async () => {
+
   const result = passwordSchema.safeParse({
     oldPassword,
     newPassword,
@@ -53,6 +54,8 @@ export default function SettingsPage() {
   });
 
   if (!result.success) {
+    toast.dismiss()
+    toast.error('failed')
     const fieldErrors: { [key: string]: string } = {};
     result.error.errors.forEach((err) => {
       if (err.path.length > 0) fieldErrors[err.path[0]] = err.message;
@@ -68,14 +71,34 @@ export default function SettingsPage() {
     icon: "question",
     showCancelButton: true,
     confirmButtonText: "Yes, change it!",
-  }).then((result) => {
+  }).then(async(result) => {
     if (result.isConfirmed) {
-      Swal.fire("Updated!", "Your password has been changed.", "success");
+  toast.loading('Changing password...')
+
+      const res = await fetch('/api/user/change-password',{
+        method:'PATCH',
+        
+        headers:{
+        'Content-Type': 'application/json',  
+        },
+        body: JSON.stringify({newPassword,oldPassword})
+      })
+      const data = await res.json()
+      if(res.ok){
+        toast.dismiss()
+        toast.success('Password change successful')
+        Swal.fire("Updated!", "Your password has been changed.", "success");
+        setOldPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+
+      }else{
+        toast.dismiss()
+        toast.error('Password change failed')
+
+      }
 
       // Reset fields
-      setOldPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
     }
   });
 };
@@ -173,7 +196,6 @@ export default function SettingsPage() {
         const data = await res.json()
         if(res.ok){
           toast.dismiss()
-          console.log('xxxxxx:',data)
           toast.success('update successful')
           setUser(data.user)
           

@@ -3,7 +3,7 @@ import Logo from "@/app/_components/Logo";
 import { motion } from 'framer-motion';
 import { X } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { BiLogOut } from "react-icons/bi";
@@ -20,6 +20,8 @@ type sidebarProps = {
 export default function Sidebar({ handleClose, type = 'normal' }: sidebarProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter()
+  const pathname = usePathname()
+  console.log('pathname',pathname)
   const handleLogout = async()=>{
     try{
       setIsLoading(true)
@@ -74,12 +76,12 @@ export default function Sidebar({ handleClose, type = 'normal' }: sidebarProps) 
   Financial Analytics
 </Link>
 
-          <Link href="/dashboard/properties" className="dash-nav-item"><RiBuilding2Line className="size-6" /> Properties</Link>
-          <Link href="/dashboard/agents" className="dash-nav-item"><HiOutlineUsers className="size-6" /> Agents</Link>
-          <Link href="/dashboard/customers" className="dash-nav-item"><MdAccountCircle className="size-6" /> Customers</Link>
-          <Link href="/dashboard/transactions" className="dash-nav-item"><TbHomePlus className="size-6" /> Transaction</Link>
-          <Link href="/dashboard/messages" className="dash-nav-item"><MdMessage className="size-6" /> Message</Link>
-          <Link href="/dashboard/settings" className="dash-nav-item"><FiSettings className="size-6" /> Settings</Link>
+          <Link href="/dashboard/properties" className={`dash-nav-item ${pathname ==='/dashboard/properties'?'bg-black text-white':''}`}><RiBuilding2Line className="size-6" /> Properties</Link>
+          <Link href="/dashboard/agents" className={`dash-nav-item ${pathname ==='/dashboard/agents'?'bg-black text-white':''}`}><HiOutlineUsers className="size-6" /> Agents</Link>
+          <Link href="/dashboard/customers" className={`dash-nav-item ${pathname ==='/dashboard/customers'?'bg-black text-white':''}`}><MdAccountCircle className="size-6" /> Customers</Link>
+          <Link href="/dashboard/transactions" className={`dash-nav-item ${pathname ==='/dashboard/transactions'?'bg-black text-white':''}`}><TbHomePlus className="size-6" /> Transaction</Link>
+          <Link href="/dashboard/messages" className={`dash-nav-item ${pathname ==='/dashboard/messages'?'bg-black text-white':''}`}><MdMessage className="size-6" /> Message</Link>
+          <Link href="/dashboard/settings" className={`dash-nav-item ${pathname ==='/dashboard/settings'?'bg-black text-white':''}`}><FiSettings className="size-6" /> Settings</Link>
           <button onClick={handleLogout} className="dash-nav-item w-full text-red-500">{isLoading && (
               
                 <ScaleLoader className="" height={10} width={6} color="#fff" />
