@@ -1,6 +1,5 @@
 "use client";
 
-import { userType } from "@/lib/jwtConfig";
 import { useDashStore } from "@/lib/store";
 import {
   Github,
@@ -14,13 +13,11 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Router } from "next/router";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { HiOutlineClock, HiOutlineMoon, HiOutlineSun } from "react-icons/hi";
 import { LiaLanguageSolid } from "react-icons/lia";
 import Swal from "sweetalert2";
-import { mutate } from "swr";
 
 export default function SettingsPage() {
   const [theme, setTheme] = useState("light");
@@ -120,6 +117,7 @@ export default function SettingsPage() {
             }
           } catch (error) {
             Swal.fire("Error", "Failed to upload image.", "error");
+            console.log(error)
           }
         }
       });
