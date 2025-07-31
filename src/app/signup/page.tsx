@@ -8,7 +8,7 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { ScaleLoader } from "react-spinners";
-import z from "zod";
+import z, { boolean } from "zod";
 import Button from "../_components/Button";
 import { Checkbox } from "../_components/checkbox";
 import { Input } from "../_components/input";
@@ -21,10 +21,8 @@ const signupSchema = z
     email: z.string().email("Please enter a valid email"),
     password: z.string().min(6, "Password must be at least 6 characters long"),
     confirmPassword: z.string(),
-    acceptTerms: z.literal(true, {
-      errorMap: () => ({
-        message: "You must accept the terms and conditions",
-      }),
+    acceptTerms: z.boolean().refine((val) => val === true, {
+      message: "You must accept the terms and conditions",
     }),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -37,7 +35,7 @@ type SignupFormInputs = z.infer<typeof signupSchema>;
 function Signup() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const {setSignupData} = useDashStore()
+  const { setSignupData } = useDashStore();
 
   const {
     handleSubmit,
@@ -55,15 +53,11 @@ function Signup() {
   const handleSignup: SubmitHandler<SignupFormInputs> = async (data) => {
     try {
       setIsLoading(true);
-      setSignupData(data)
+      setSignupData(data);
       router.push("/me/profile");
-      
-      
-
     } catch (err) {
       toast.error("Something went wrong.");
-      console.log(err)
-      
+      console.log(err);
     } finally {
       setIsLoading(false);
     }
@@ -91,40 +85,54 @@ function Signup() {
         {/* Form Fields */}
         <div className="flex flex-col gap-4 mt-6">
           <label className="space-y-1 sm:space-y-0">
-            <p className="sm:text-sm font-semibold font-karla text-base">Name</p>
+            <p className="sm:text-sm font-semibold font-karla text-base">
+              Name
+            </p>
             <Input
               {...register("name")}
               type="text"
               placeholder="Enter your full name"
               className="py-6 sm:py-1"
             />
-            {errors.name && <div className="form-error">{errors.name.message}</div>}
+            {errors.name && (
+              <div className="form-error">{errors.name.message}</div>
+            )}
           </label>
 
           <label className="space-y-1 sm:space-y-0">
-            <p className="sm:text-sm font-semibold font-karla text-base">Email</p>
+            <p className="sm:text-sm font-semibold font-karla text-base">
+              Email
+            </p>
             <Input
               {...register("email")}
               type="email"
               placeholder="Enter your email"
               className="py-6 sm:py-1"
             />
-            {errors.email && <div className="form-error">{errors.email.message}</div>}
+            {errors.email && (
+              <div className="form-error">{errors.email.message}</div>
+            )}
           </label>
 
           <label className="space-y-1 sm:space-y-0">
-            <p className="sm:text-sm font-semibold font-karla text-base">Password</p>
+            <p className="sm:text-sm font-semibold font-karla text-base">
+              Password
+            </p>
             <Input
               {...register("password")}
               type="password"
               placeholder="Create a password"
               className="py-6 sm:py-1"
             />
-            {errors.password && <div className="form-error">{errors.password.message}</div>}
+            {errors.password && (
+              <div className="form-error">{errors.password.message}</div>
+            )}
           </label>
 
           <label className="space-y-1 sm:space-y-0">
-            <p className="sm:text-sm font-semibold font-karla text-base">Confirm Password</p>
+            <p className="sm:text-sm font-semibold font-karla text-base">
+              Confirm Password
+            </p>
             <Input
               {...register("confirmPassword")}
               type="password"
