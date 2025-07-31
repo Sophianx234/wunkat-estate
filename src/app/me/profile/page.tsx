@@ -48,7 +48,7 @@ export default function UploadProfilePage() {
 
     setUploading(true);
     try {
-      
+      toast.loading("Creating account...");
       const signupRes = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -63,10 +63,11 @@ export default function UploadProfilePage() {
         const { msg } = await res.json();
         throw new Error(msg || "Upload failed");
       }
-
-      toast.success("Profile updated!");
+      toast.dismiss()
+      toast.success("Account created");
       router.push("/dashboard/properties");
     } catch (err) {
+      toast.dismiss();
       toast.error("Something went wrong");
       console.log(err)
     } finally {
@@ -74,8 +75,34 @@ export default function UploadProfilePage() {
     }
   };
 
-  const handleSkip = () => {
-    router.push("/dashboard/properties");
+  const handleSkip = async() => {
+    try{
+      toast.loading("Creating account...");
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(signupData),
+      });
+      router.push("/dashboard/properties");
+      if (!res.ok) {
+        const { msg } = await res.json();
+        throw new Error(msg || "Upload failed");
+      }
+      if(res.ok){
+
+        toast.dismiss();
+        
+        toast.success("Account created...");
+        router.push("/dashboard/properties");
+      }
+    
+    } catch (err) {
+      toast.dismiss();
+      toast.error("Something went wrong");
+      console.log(err)
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
