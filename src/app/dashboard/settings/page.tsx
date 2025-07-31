@@ -103,7 +103,6 @@ export default function SettingsPage() {
               toast.success("Picture updated successfully!");
               router.refresh()
               setAvatar(reader.result as string); // Update avatar in UI
-              console.log("xx", data);
               setUserProf(data.user);
               Swal.fire(
                 "Updated!",
