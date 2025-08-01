@@ -5,10 +5,10 @@ import { MessageCircle, Phone } from "lucide-react"
 export default function TenantCard() {
   const {user} = useDashStore()
   return (
-    <div className="md:fixed  mt-24 md:mt-0 md:w-64 md:-translate-y-9">
+    <div className="md:fixed   col-span-2  mt-24 md:mt-0 md:w-64 md:-translate-y-9">
         <h1 className="text-2xl font-semibold text-gray-800 mb-4">Transactions</h1>
 
-    <div className="bg-white w-full p-6 rounded-2xl md:h-[24.5rem] pb-8   shadow-md border col-span-3 sm:col-span-1  transition-all hover:shadow-lg">
+    <div className="bg-white block w-full self-center p-6 rounded-2xl md:h-[24.5rem] pb-8   shadow-md border col-span-3 sm:col-span-1  transition-all hover:shadow-lg">
       <div className="flex flex-col items-center text-center">
         <div className="relative rounded-full overflow-hidden size-24">
 
