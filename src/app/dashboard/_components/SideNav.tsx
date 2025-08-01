@@ -1,5 +1,6 @@
 "use client";
 import Logo from "@/app/_components/Logo";
+import { useDashStore } from "@/lib/store";
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import Link from "next/link";
@@ -23,6 +24,7 @@ export default function Sidebar({
 }: sidebarProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
+  const {toggleSidebar} = useDashStore()
   const pathname = usePathname();
   console.log("pathname", pathname);
   const handleLogout = async () => {
@@ -50,18 +52,18 @@ export default function Sidebar({
     <motion.aside
       initial={{ x: "-100%" }}
       animate={{ x: 0 }}
-      exit={{ x: "-100%" }}
+      exit={{ x: '-100%' }}
       transition={{ duration: 0.3 }}
-      className={`w-64 ${
+      className={` ${
         type === "normal"
           ? "hidden sm:fixed sm:block left-0 top-0  h-screen w-64 bg-white shadow z-50"
-          : "block absolute h-dvh top-0 left-0 -z-20 md:z-10"
+          : "block absolute h-dvh inset-0 top-0 left-0  z-10"
       } sm:block bg-white md:shadow pb-6 `}
     >
       {/* Wrapper with flex column layout */}
       <div className="flex flex-col h-full md:h-dvh">
         {/* Top section: Logo and close button */}
-        <div className="md:flex hidden  items-center justify-between mb-5 pt-6 border-b border-b-gray-200 pr-2 pb-5 pl-5 border-r border-r-gray-200">
+        <div className="flex   items-center justify-between mb-5 pt-6 border-b border-b-gray-200 pr-3 md:pr-2 pb-5 pl-5 border-r border-r-gray-200">
           <Logo type="dash" />
           {type === "slide" && (
             <X
@@ -71,20 +73,17 @@ export default function Sidebar({
             />
           )}
         </div>
-        <div className="md:hidden flex mb-5 pt-16 bg-transparent"></div>
 
         {/* Scrollable nav container */}
-        <nav className="flex-1  flex-col overflow-y-auto shadow md:shadow-none border md:border-none border-gray-200 scrollbar-hide  text-sm font-medium text-gray-600 px-4 space-y-1">
-          <div className="block pl-1 md:hidden mt-4">
-          <Logo type="dash" />
-          </div>
-          <Link href="/dashboard/finance/analytics" className="dash-nav-item">
+        <nav className="flex-1  flex-col overflow-y-auto    border-gray-200 scrollbar-hide  text-sm font-medium text-gray-600 px-4 space-y-1">
+          
+          <Link onClick={toggleSidebar} href="/dashboard/finance/analytics" className="dash-nav-item">
             <TbReportAnalytics className="size-6" />
             Financial Analytics
           </Link>
 
           <Link
-            href="/dashboard/properties"
+            onClick={toggleSidebar} href="/dashboard/properties"
             className={`dash-nav-item ${
               pathname === "/dashboard/properties" ? "bg-black text-white" : ""
             }`}
@@ -92,7 +91,7 @@ export default function Sidebar({
             <RiBuilding2Line className="size-6" /> Properties
           </Link>
           <Link
-            href="/dashboard/agents"
+            onClick={toggleSidebar} href="/dashboard/agents"
             className={`dash-nav-item ${
               pathname === "/dashboard/agents" ? "bg-black text-white" : ""
             }`}
@@ -100,7 +99,7 @@ export default function Sidebar({
             <HiOutlineUsers className="size-6" /> Agents
           </Link>
           <Link
-            href="/dashboard/customers"
+            onClick={toggleSidebar} href="/dashboard/customers"
             className={`dash-nav-item ${
               pathname === "/dashboard/customers" ? "bg-black text-white" : ""
             }`}
@@ -108,7 +107,7 @@ export default function Sidebar({
             <MdAccountCircle className="size-6" /> Customers
           </Link>
           <Link
-            href="/dashboard/transactions"
+            onClick={toggleSidebar} href="/dashboard/transactions"
             className={`dash-nav-item ${
               pathname === "/dashboard/transactions"
                 ? "bg-black text-white"
@@ -118,7 +117,7 @@ export default function Sidebar({
             <TbHomePlus className="size-6" /> Transactions
           </Link>
           <Link
-            href="/dashboard/messages"
+            onClick={toggleSidebar} href="/dashboard/messages"
             className={`dash-nav-item ${
               pathname === "/dashboard/messages" ? "bg-black text-white" : ""
             }`}
@@ -126,7 +125,7 @@ export default function Sidebar({
             <MdMessage className="size-6" /> Message
           </Link>
           <Link
-            href="/dashboard/settings"
+            onClick={toggleSidebar} href="/dashboard/settings"
             className={`dash-nav-item ${
               pathname === "/dashboard/settings" ? "bg-black text-white" : ""
             }`}
