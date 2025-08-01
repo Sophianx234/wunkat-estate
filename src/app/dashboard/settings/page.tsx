@@ -213,10 +213,10 @@ export default function SettingsPage() {
 
       <div className="flex flex-col md:flex-row gap-6">
         {/* Sidebar */}
-        <div className="fixed -translate-y-9">
-      <h1 className="text-2xl font-bold mb-8 text-gray-800">Settings</h1>
+        <div className="md:fixed pt-24 md:pt-0 md:-translate-y-9">
+      <h1 className="text-2xl font-bold  md:mb-8 mb-0 text-gray-800">Settings</h1>
 
-        <div className="w-full md:w-64   bg-white rounded-xl shadow-sm p-4 space-y-3 text-sm font-medium text-gray-600">
+        <div className="w-full md:w-64 md:block hidden  bg-white rounded-xl shadow-sm p-4 space-y-3 text-sm font-medium text-gray-600">
           {[
             {
               label: "Personal Information",
@@ -255,7 +255,7 @@ export default function SettingsPage() {
               Personal Information
             </h2>
 
-            <div className="flex items-center gap-4 mb-4">
+            <div className="flex  items-center gap-4 mb-4">
               <div
                 className="relative size-24 rounded-full overflow-hidden border-2 border-gray-300 cursor-pointer group"
                 onClick={handleAvatarClick}
