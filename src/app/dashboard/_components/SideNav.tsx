@@ -75,9 +75,9 @@ export default function Sidebar({
 
         {/* Scrollable nav container */}
         <nav className="flex-1 flex  justify-between md:block flex-col overflow-y-auto shadow md:shadow-none border md:border-none border-gray-200 scrollbar-hide  text-sm font-medium text-gray-600 px-4 space-y-1">
-          <>
+          <div className="block md:hidden my-4">
           <Logo type="dash" />
-          </>
+          </div>
           <Link href="/dashboard/finance/analytics" className="dash-nav-item">
             <TbReportAnalytics className="size-6" />
             Financial Analytics
