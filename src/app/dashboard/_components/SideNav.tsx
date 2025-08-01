@@ -24,7 +24,7 @@ export default function Sidebar({
 }: sidebarProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
-  const {toggleSidebar} = useDashStore()
+  const { toggleSidebar } = useDashStore();
   const pathname = usePathname();
   console.log("pathname", pathname);
   const handleLogout = async () => {
@@ -50,9 +50,10 @@ export default function Sidebar({
   };
   return (
     <motion.aside
+      key="sidebar"
       initial={{ x: "-100%" }}
       animate={{ x: 0 }}
-      exit={{ x: '-100%' }}
+      exit={{ x: "-100%" }}
       transition={{ duration: 0.3 }}
       className={` ${
         type === "normal"
@@ -76,14 +77,18 @@ export default function Sidebar({
 
         {/* Scrollable nav container */}
         <nav className="flex-1  flex-col overflow-y-auto    border-gray-200 scrollbar-hide  text-sm font-medium text-gray-600 px-4 space-y-1">
-          
-          <Link onClick={toggleSidebar} href="/dashboard/finance/analytics" className="dash-nav-item">
+          <Link
+            onClick={toggleSidebar}
+            href="/dashboard/finance/analytics"
+            className="dash-nav-item"
+          >
             <TbReportAnalytics className="size-6" />
             Financial Analytics
           </Link>
 
           <Link
-            onClick={toggleSidebar} href="/dashboard/properties"
+            onClick={toggleSidebar}
+            href="/dashboard/properties"
             className={`dash-nav-item ${
               pathname === "/dashboard/properties" ? "bg-black text-white" : ""
             }`}
@@ -91,7 +96,8 @@ export default function Sidebar({
             <RiBuilding2Line className="size-6" /> Properties
           </Link>
           <Link
-            onClick={toggleSidebar} href="/dashboard/agents"
+            onClick={toggleSidebar}
+            href="/dashboard/agents"
             className={`dash-nav-item ${
               pathname === "/dashboard/agents" ? "bg-black text-white" : ""
             }`}
@@ -99,7 +105,8 @@ export default function Sidebar({
             <HiOutlineUsers className="size-6" /> Agents
           </Link>
           <Link
-            onClick={toggleSidebar} href="/dashboard/customers"
+            onClick={toggleSidebar}
+            href="/dashboard/customers"
             className={`dash-nav-item ${
               pathname === "/dashboard/customers" ? "bg-black text-white" : ""
             }`}
@@ -107,7 +114,8 @@ export default function Sidebar({
             <MdAccountCircle className="size-6" /> Customers
           </Link>
           <Link
-            onClick={toggleSidebar} href="/dashboard/transactions"
+            onClick={toggleSidebar}
+            href="/dashboard/transactions"
             className={`dash-nav-item ${
               pathname === "/dashboard/transactions"
                 ? "bg-black text-white"
@@ -117,7 +125,8 @@ export default function Sidebar({
             <TbHomePlus className="size-6" /> Transactions
           </Link>
           <Link
-            onClick={toggleSidebar} href="/dashboard/messages"
+            onClick={toggleSidebar}
+            href="/dashboard/messages"
             className={`dash-nav-item ${
               pathname === "/dashboard/messages" ? "bg-black text-white" : ""
             }`}
@@ -125,7 +134,8 @@ export default function Sidebar({
             <MdMessage className="size-6" /> Message
           </Link>
           <Link
-            onClick={toggleSidebar} href="/dashboard/settings"
+            onClick={toggleSidebar}
+            href="/dashboard/settings"
             className={`dash-nav-item ${
               pathname === "/dashboard/settings" ? "bg-black text-white" : ""
             }`}

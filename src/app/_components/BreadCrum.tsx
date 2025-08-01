@@ -1,7 +1,7 @@
 "use client";
 import { Menu, X } from "lucide-react";
 
-import { AnimatePresence } from "motion/react";
+import { AnimatePresence } from "framer-motion";
 import { HiMenuAlt1 } from "react-icons/hi";
 import Sidebar from "../dashboard/_components/SideNav";
 import SideBar from "./SideBar";
