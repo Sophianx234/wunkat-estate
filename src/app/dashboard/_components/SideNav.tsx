@@ -74,8 +74,8 @@ export default function Sidebar({
         <div className="md:hidden flex mb-5 pt-16 bg-transparent"></div>
 
         {/* Scrollable nav container */}
-        <nav className="flex-1 flex  justify-between md:block flex-col overflow-y-auto shadow md:shadow-none border md:border-none border-gray-200 scrollbar-hide  text-sm font-medium text-gray-600 px-4 space-y-1">
-          <div className="block md:hidden my-4">
+        <nav className="flex-1  flex-col overflow-y-auto shadow md:shadow-none border md:border-none border-gray-200 scrollbar-hide  text-sm font-medium text-gray-600 px-4 space-y-1">
+          <div className="block pl-1 md:hidden mt-4">
           <Logo type="dash" />
           </div>
           <Link href="/dashboard/finance/analytics" className="dash-nav-item">
