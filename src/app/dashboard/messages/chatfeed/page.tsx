@@ -1,24 +1,22 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import ChatSidebar from './chatsidebar';
 import ChatWindow from '../chatwindow/page';
-import Image from 'next/image';
-import { useDashStore } from '@/lib/store';
+import ChatSidebar from './chatsidebar';
 
 
 const isAdmin = true;
 
 export default function MessagesPage() {
   const [selectedUser, setSelectedUser] = useState<string | null>(isAdmin ? 'user1' : 'admin');
-  const [isMobile, setIsMobile] = useState(false);
-  const {user} = useDashStore()
+  // const [isMobile, setIsMobile] = useState(false);
+  // const {user} = useDashStore()
 
-  const handleBack = () => setSelectedUser(null);
+  // const handleBack = () => setSelectedUser(null);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 640);
+      // setIsMobile(window.innerWidth < 640);
     };
 
     // Set on mount

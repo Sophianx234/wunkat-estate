@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { SendHorizonal, ArrowLeft } from 'lucide-react';
+import { SendHorizonal } from 'lucide-react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 const users = [
   { id: 'user1', name: 'Alice Doe', lastMessage: 'That sounds amazing!' },
@@ -28,7 +28,7 @@ type Props = {
   onBack?: () => void;
 };
 
-export default function ChatWindow({ selectedUser, isAdmin, onBack }: Props) {
+export default function ChatWindow({ selectedUser, isAdmin }: Props) {
   const [chat, setChat] = useState(initialMessages[selectedUser] || []);
   const [input, setInput] = useState('');
 

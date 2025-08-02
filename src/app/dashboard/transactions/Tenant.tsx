@@ -2,12 +2,11 @@
 
 import { useDashStore } from '@/lib/store';
 import {
-  Home,
   BadgeCheck,
-  FileText,
   CalendarDays,
   DollarSign,
-  MapPin,
+  FileText,
+  MapPin
 } from 'lucide-react';
 
 export default function TenantCard() {
