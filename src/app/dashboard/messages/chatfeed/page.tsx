@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import ChatWindow from '../chatwindow/page';
+import ChatWindow from '../chatwindow/ChatWindow';
 import ChatSidebar from './chatsidebar';
 
 
