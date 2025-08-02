@@ -28,9 +28,9 @@ export default function MessagesPage() {
   }, []);
 
   return (
-    <div className="flex gap-3 h-full  pt-24 sm:pt-0  ">
+    <div className="md:flex grid-cols-1 gap-3 h-full  pt-24 sm:pt-0  ">
       {/* Sidebar for desktop & mobile when no user selected */}
-      {(isAdmin && (!selectedUser || !isMobile)) && (
+      {isAdmin &&  (
         
           <ChatSidebar onSelectUser={setSelectedUser} selectedUser={selectedUser ?? ''} />
         
