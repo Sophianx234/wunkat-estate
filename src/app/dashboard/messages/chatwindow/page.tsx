@@ -42,7 +42,7 @@ export default function ChatWindow({ selectedUser, isAdmin, onBack }: Props) {
     const newMessage = {
       sender: isAdmin ? 'admin' : 'user',
       text: input,
-      time: 'Now',
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
 
     const updatedChat = [...chat, newMessage];
@@ -56,48 +56,54 @@ export default function ChatWindow({ selectedUser, isAdmin, onBack }: Props) {
     : 'Admin';
 
   return (
-    <div className="flex flex-col h-full bg-white p-4">
+    <div className="flex w-[38rem] rounded-md overflow-hidden h-[26rem] fixed border-x border-x-gray-200  flex-col ">
       {/* Header */}
-      <div className=" fixed top-[5.5rem] z-10 py-3 inset-x-0 sm:block  bg-white mb-12 border-b pb-3 sm:mb-3 flex justify-between px-2 items-center gap-2">
-        {onBack && (
-          <button onClick={onBack} className="sm:hidden text-gray-600 hover:text-black">
-            <ArrowLeft size={20} />
-          </button>
-        )}
-        <h2 className="font-semibold text-gray-700">{displayName}</h2>
-        <div className='relative size-14 rounded-full overflow-hidden'>
-          <Image fill alt='user' src='/images/user-1.jpg' className='object-cover'/>
+      <div className="flex items-center justify-between bg-white px-4 py-3 shadow z-10">
+        <h2 className="font-semibold text-gray-700 text-base sm:text-lg">
+          {displayName || 'Boruto Uzumaki'}
+        </h2>
+        <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden">
+          <Image fill alt="user" src="/images/user-1.jpg" className="object-cover" />
         </div>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto pt-20 space-y-4 px-1">
-        {chat.map((msg, i) => (
-          <div
-            key={i}
-            className={`max-w-xs px-4 py-2 rounded-xl ${
-              msg.sender === (isAdmin ? 'admin' : 'user')
-                ? 'bg-blue-500 text-white self-end ml-auto'
-                : 'bg-gray-100 text-gray-800'
-            }`}
-          >
-            <p>{msg.text}</p>
-            <p className="text-xs text-right opacity-70">{msg.time}</p>
-          </div>
-        ))}
+      <div className=" px-4 py-4 space-y-7">
+        {chat.map((msg, i) => {
+          const isSender = msg.sender === (isAdmin ? 'admin' : 'user');
+          return (
+            <div
+              key={i}
+              className={`max-w-[75%] px-4 py-2 rounded-xl relative shadow-sm text-sm sm:text-base ${
+                isSender
+                  ? 'bg-gray-900 text-white self-end ml-auto'
+                  : 'bg-gray-100 text-gray-800 self-start'
+              }`}
+            >
+              <p>{msg.text}</p>
+              <span
+                className={`absolute -bottom-4 right-2 text-[10px] ${
+                  isSender ? 'text-white/70' : 'text-gray-500'
+                }`}
+              >
+                {msg.time}
+              </span>
+            </div>
+          );
+        })}
       </div>
 
       {/* Input */}
-      <div className="mt-4 flex items-center fixed inset-x-0 bottom-24 mx-2 sm:mx-0 sm:block gap-2">
+      <div className="border-y px-4 py-3 absolute inset-x-0 bottom-0 bg-white flex items-center gap-2">
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="flex-1 border rounded-full px-4 py-2 focus:outline-none"
           placeholder="Type a message..."
+          className="flex-1 border rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
         />
         <button
           onClick={handleSend}
-          className="bg-blue-500 hover:bg-blue-600 p-2 rounded-full text-white"
+          className="bg-gray-900 hover:bg-gray-800 p-2 rounded-full text-white"
         >
           <SendHorizonal size={20} />
         </button>
