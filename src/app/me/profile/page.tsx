@@ -7,16 +7,21 @@ import { useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { FiUploadCloud } from "react-icons/fi";
 import { ScaleLoader } from "react-spinners";
+import Cropper from "react-easy-crop";
+import getCroppedImg from "@/lib/utils";
 
 export default function UploadProfilePage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [avatar, setAvatar] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [cropping, setCropping] = useState(false);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
+
   const router = useRouter();
   const { signupData } = useDashStore();
-
-  console.log("user", signupData);
 
   const handleAvatarClick = () => {
     fileInputRef.current?.click();
@@ -26,15 +31,34 @@ export default function UploadProfilePage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setSelectedFile(file);
-
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.result) {
         setAvatar(reader.result as string);
+        setCropping(true); // Open crop modal
       }
     };
     reader.readAsDataURL(file);
+  };
+
+  const onCropComplete = (_: any, croppedAreaPixels: any) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  };
+
+  const confirmCrop = async () => {
+    if (!avatar || !croppedAreaPixels) return;
+    try {
+      const croppedFile = await getCroppedImg(avatar, croppedAreaPixels);
+      setSelectedFile(croppedFile);
+
+      // Preview cropped image
+      const previewUrl = URL.createObjectURL(croppedFile);
+      setAvatar(previewUrl);
+
+      setCropping(false);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleSetProfile = async () => {
@@ -63,20 +87,20 @@ export default function UploadProfilePage() {
         const { msg } = await res.json();
         throw new Error(msg || "Upload failed");
       }
-      toast.dismiss()
+      toast.dismiss();
       toast.success("Account created");
       router.push("/dashboard/properties");
     } catch (err) {
       toast.dismiss();
       toast.error("Something went wrong");
-      console.log(err)
+      console.log(err);
     } finally {
       setUploading(false);
     }
   };
 
-  const handleSkip = async() => {
-    try{
+  const handleSkip = async () => {
+    try {
       toast.loading("Creating account...");
       const res = await fetch("/api/auth/signup", {
         method: "POST",
@@ -88,18 +112,15 @@ export default function UploadProfilePage() {
         const { msg } = await res.json();
         throw new Error(msg || "Upload failed");
       }
-      if(res.ok){
-
+      if (res.ok) {
         toast.dismiss();
-        
         toast.success("Account created...");
         router.push("/dashboard/properties");
       }
-    
     } catch (err) {
       toast.dismiss();
       toast.error("Something went wrong");
-      console.log(err)
+      console.log(err);
     } finally {
       setUploading(false);
     }
@@ -162,6 +183,37 @@ export default function UploadProfilePage() {
           )}
         </div>
       </div>
+
+      {/* Crop Modal */}
+      {cropping && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center z-50">
+          <div className="relative w-[300px] h-[300px] bg-white">
+            <Cropper
+              image={avatar || ""}
+              crop={crop}
+              zoom={zoom}
+              aspect={1}
+              onCropChange={setCrop}
+              onZoomChange={setZoom}
+              onCropComplete={onCropComplete}
+            />
+          </div>
+          <div className="mt-4 flex gap-4">
+            <button
+              onClick={() => setCropping(false)}
+              className="px-4 py-2 bg-gray-300 rounded"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={confirmCrop}
+              className="px-4 py-2 bg-black border border-white shadow text-white rounded"
+            >
+              Crop & Save
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

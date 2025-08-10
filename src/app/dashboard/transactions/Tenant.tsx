@@ -47,7 +47,7 @@ export default function TenantCard() {
 
           <div className="flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-lg">
             <MapPin className="w-4 h-4 text-gray-600" />
-            <span className="font-medium">Unit:</span>
+            <span className="font-medium">Location:</span>
             <span className="ml-auto text-xs">Merpur #045167</span>
           </div>
 

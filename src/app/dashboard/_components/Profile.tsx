@@ -9,7 +9,7 @@ const {user}= useDashStore();
   return (
     <div>
       <Link
-        href="/dashboard/settings"
+        href="/dashboard/account"
         className="flex items-center gap-2 border-l border-l-gray-200 pl-4"
       >
         <div className="relative overflow-hidden rounded-full size-10">

@@ -126,21 +126,21 @@ export default function Sidebar({
           </Link>
           <Link
             onClick={toggleSidebar}
-            href="/dashboard/messages"
+            href="/dashboard/messages/chatfeed"
             className={`dash-nav-item ${
-              pathname === "/dashboard/messages" ? "bg-black text-white" : ""
+              pathname === "/dashboard/messages/chatfeed" ? "bg-black text-white" : ""
             }`}
           >
             <MdMessage className="size-6" /> Message
           </Link>
           <Link
             onClick={toggleSidebar}
-            href="/dashboard/settings"
+            href="/dashboard/account"
             className={`dash-nav-item ${
-              pathname === "/dashboard/settings" ? "bg-black text-white" : ""
+              pathname === "/dashboard/account" ? "bg-black text-white" : ""
             }`}
           >
-            <FiSettings className="size-6" /> Settings
+            <FiSettings className="size-6" /> Account
           </Link>
           <button
             onClick={handleLogout}
