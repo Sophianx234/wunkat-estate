@@ -6,6 +6,7 @@ import PropertyCard from "../_components/PropertyCard";
 import AddProperty from "../_components/AddProperty";
 import dynamic from 'next/dynamic';
 import { useDashStore } from "@/lib/store";
+import AddHouse from "../_components/AddHouse";
 
 const ExpandedProperty = dynamic(() => import('../_components/ExpandedProperty'), {
   ssr: false,
@@ -48,16 +49,23 @@ const mockProperties: {
 ];
 
 export default function Dashboard() {
-  const { openAddProperty,toggleAddProperty,openExpandedProperty} = useDashStore();
+  const { openAddProperty,toggleAddProperty,openExpandedProperty,openAddHouse,toggleAddHouse} = useDashStore();
   return (
     <main className="flex-1 grid-cols-1 sm:mt-8 px-8 py-6 pt-32 sm:pt-6  relative ">
       <div className="flex justify-between  items-center mb-6">
         <h2 className="text-xl font-semibold">Properties</h2>
+        <div className="flex items-center gap-3">
+
         <Button onClick={toggleAddProperty} className="bg-black text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2">
           <FaPlus /> Add Property
         </Button>
+        <Button onClick={toggleAddHouse} className="bg-black text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2">
+          <FaPlus /> House
+        </Button>
+        </div>
       </div>
         { openAddProperty && <AddProperty/>}
+       {openAddHouse && <AddHouse/>}
       <Filters />
       <div className="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {mockProperties.map((prop) => (

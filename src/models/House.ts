@@ -1,5 +1,4 @@
-import { Schema } from "mongoose";
-import mongoose, { Schema, Document, Types } from "mongoose";
+import mongoose, { Document, Schema, Types } from "mongoose";
 
 export type LocationType = {
   address: string;
@@ -12,15 +11,12 @@ export type LocationType = {
   };
 };
 
-
-// House Interface
 export interface IHouse extends Document {
   name: string;
   description?: string;
-  price: number; // price for the whole house
   location: LocationType;
-  rooms?: Types.ObjectId[]; // references to Room
-  owner: string; // or ObjectId if you have a User collection
+  rooms?: Types.ObjectId[];
+  owner: string;
   amenities?: string[];
 }
 
@@ -34,18 +30,17 @@ const LocationSchema = new Schema<LocationType>({
     lng: { type: Number },
   },
 });
-// House Schema
+
 const HouseSchema = new Schema<IHouse>(
   {
     name: { type: String, required: true },
     description: String,
-    price: { type: Number, required: true },
     location: { type: LocationSchema, required: true },
     rooms: [{ type: Schema.Types.ObjectId, ref: "Room" }],
-    owner: { type: String, required: true },
-    amenities: [String],
   },
   { timestamps: true }
 );
 
-export const HouseModel = mongoose.model<IHouse>("House", HouseSchema);
+// ✅ Avoid OverwriteModelError
+export const HouseModel =
+  mongoose.models.House || mongoose.model<IHouse>("House", HouseSchema);

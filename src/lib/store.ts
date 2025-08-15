@@ -13,6 +13,7 @@ export type storeState = {
   user: userType | null;
   openSidebar: boolean;
   openAddProperty: boolean;
+  openAddHouse:boolean
   openExpandedProperty: boolean;
   signupData: signupType | null;
   avatar: string;
@@ -21,6 +22,7 @@ export type storeState = {
   toggleSidebar: () => void;
   toggleExpandedProperty: () => void;
   toggleAddProperty: () => void;
+  toggleAddHouse: ()=>void
   setUser: (user: userType) => void;
   openNotifications: boolean;
   toggleNotification: () => void;
@@ -34,6 +36,9 @@ export const useDashStore = create<storeState>((set) => ({
   user: null,
   signupData: null,
   avatar: '', // ✅ Initial value for avatar
+  openAddHouse:false,
+  toggleAddHouse: () =>
+    set((state) => ({ openAddHouse: !state.openAddHouse })),
 
   toggleSidebar: () => set((state) => ({ openSidebar: !state.openSidebar })),
   toggleExpandedProperty: () =>

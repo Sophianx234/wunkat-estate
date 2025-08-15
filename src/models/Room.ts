@@ -4,7 +4,6 @@ import { Schema } from "mongoose";
 export interface IRoom extends mongoose.Document {
   houseId?: Types.ObjectId; // Optional if standalone
   name: string;
-  location: string;
   description?: string;
   price: number;
   available: boolean;
@@ -17,7 +16,6 @@ const RoomSchema: Schema = new Schema(
   {
     houseId: { type: Schema.Types.ObjectId, ref: "House" },
     name: { type: String, required: true },
-    location: { type: String, required: true },
     description: { type: String },
     price: { type: Number, required: true },
     available: { type: Boolean, default: true },
