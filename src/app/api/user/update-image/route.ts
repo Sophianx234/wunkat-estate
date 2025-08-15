@@ -1,5 +1,5 @@
 import { connectToDatabase } from "@/config/DbConnect";
-import cloudinary from "@/lib/cloudinary";
+import cloudinary, { uploadBufferToCloudinary } from "@/lib/cloudinary";
 import { getTokenFromRequest } from "@/lib/jwtConfig";
 import User from "@/models/User";
 import { UploadApiResponse } from "cloudinary";
@@ -10,29 +10,7 @@ import { Readable } from "stream";
 
 
 // 🔄 Convert Buffer to Stream
-function bufferToStream(buffer: Buffer) {
-  return Readable.from(buffer);
-}
 
-// 📤 Upload to Cloudinary from buffer stream
-function uploadBufferToCloudinary(buffer: Buffer, userId: string) {
-  return new Promise((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream(
-      {
-        folder: "wunkathomes/users",
-        public_id: userId, // 👈 This ensures uniqueness
-        overwrite: true, // 👈 Overwrites existing image
-        invalidate: true,
-      },
-      (error, result) => {
-        if (error) reject(error);
-        else resolve(result as UploadApiResponse);
-      }
-    );
-
-    bufferToStream(buffer).pipe(stream);
-  });
-}
 
 export const PATCH = async (req: NextRequest) => {
   try {
@@ -59,7 +37,7 @@ export const PATCH = async (req: NextRequest) => {
     const buffer = Buffer.from(arrayBuffer);
 
     // ☁ Upload to Cloudinary
-    const result = await uploadBufferToCloudinary(buffer, token.userId);
+    const result = await uploadBufferToCloudinary(buffer, token.userId,'users');
     // 🧠 Update DB
     const updatedUser = await User.findByIdAndUpdate(
       token.userId,

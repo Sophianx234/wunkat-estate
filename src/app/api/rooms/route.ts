@@ -1,13 +1,13 @@
-import { NextResponse } from "next/server";
-import dbConnect from "@/lib/dbConnect";
+import { connectToDatabase } from "@/config/DbConnect";
+import { uploadBufferToCloudinary } from "@/lib/cloudinary";
 import Room from "@/models/Room";
-import { writeFile } from "fs/promises";
-import path from "path";
+import { UploadApiResponse } from "cloudinary";
+import { NextRequest, NextResponse } from "next/server";
 
 // ✅ Handle POST (Add Room)
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    await dbConnect();
+    await connectToDatabase();
 
     const formData = await req.formData();
 
@@ -19,17 +19,22 @@ export async function POST(req: Request) {
 
     // Handle images
     const images: string[] = [];
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-
     const imageFiles = formData.getAll("images") as File[];
+
     for (const file of imageFiles) {
-      const bytes = Buffer.from(await file.arrayBuffer());
-      const fileName = `${Date.now()}-${file.name}`;
-      const filePath = path.join(uploadDir, fileName);
-      await writeFile(filePath, bytes);
-      images.push(`/uploads/${fileName}`);
+      const buffer = Buffer.from(await file.arrayBuffer());
+
+      // Upload to Cloudinary (unique ID to avoid overwriting)
+      const result = await uploadBufferToCloudinary(
+        buffer,
+        undefined,
+        "rooms"
+      );
+
+      images.push((result as UploadApiResponse).secure_url);
     }
 
+    // Create the room
     const room = await Room.create({
       houseId,
       name,
@@ -49,7 +54,7 @@ export async function POST(req: Request) {
 // ✅ Optional GET to list all rooms
 export async function GET() {
   try {
-    await dbConnect();
+    await connectToDatabase();
     const rooms = await Room.find().populate("houseId", "name location");
     return NextResponse.json(rooms);
   } catch (error) {

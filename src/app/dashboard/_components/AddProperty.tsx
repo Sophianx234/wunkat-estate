@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useDashStore } from '@/lib/store';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -228,6 +228,7 @@ export default function AddProperty() {
 
         </form>
       </Form>
+      <Toaster/>
     </section>
   );
 }
