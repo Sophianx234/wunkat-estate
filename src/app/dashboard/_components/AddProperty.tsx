@@ -14,14 +14,19 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Checkbox } from '@/components/ui/checkbox';
+import Image from 'next/image';
 
+// ✅ Extend schema with beds & baths
 const roomSchema = z.object({
   houseId: z.string().min(1, 'Please select a house'),
   name: z.string().min(2, 'Room name must be at least 2 characters'),
   price: z.string().min(1, 'Price is required'),
   available: z.boolean(),
   description: z.string().optional(),
+  beds: z.coerce.number().min(0, 'Number of beds is required'),
+  baths: z.coerce.number().min(0, 'Number of baths is required'),
 });
+
 
 type RoomFormData = z.infer<typeof roomSchema>;
 type HouseType = { _id: string; name: string };
@@ -39,6 +44,7 @@ export default function AddProperty() {
       try {
         const res = await fetch('/api/houses');
         const data = await res.json();
+        console.log('houses',data)
         setHouses(data);
       } catch {
         toast.error('Failed to fetch houses');
@@ -55,12 +61,10 @@ export default function AddProperty() {
       price: '',
       available: true,
       description: '',
+      beds: 0,
+      baths: 0,
     },
   });
-
-  // Click outside to close
-
-
 
   // Dropzone handler
   const handleDrop = useCallback((acceptedFiles: File[]) => {
@@ -120,12 +124,17 @@ export default function AddProperty() {
                     <SelectValue placeholder="Select a house" />
                   </SelectTrigger>
                   <SelectContent>
-                    {houses.map(house => (
-                      <SelectItem key={house._id} value={house._id}>
-                        {house.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
+  {Array.isArray(houses) && houses.length > 0 ? (
+    houses.map((house) => (
+      <SelectItem key={house._id} value={house._id}>
+        {house.name}
+      </SelectItem>
+    ))
+  ) : (
+    <p className="text-gray-500 px-2">No houses available</p>
+  )}
+</SelectContent>
+
                 </Select>
                 <FormMessage />
               </FormItem>
@@ -156,6 +165,36 @@ export default function AddProperty() {
                 <FormLabel>Price (GHS)</FormLabel>
                 <FormControl>
                   <Input type="number" placeholder="e.g. 1500" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Beds */}
+          <FormField
+            control={form.control}
+            name="beds"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Beds</FormLabel>
+                <FormControl>
+                  <Input type="number" placeholder="e.g. 2" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Baths */}
+          <FormField
+            control={form.control}
+            name="baths"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Baths</FormLabel>
+                <FormControl>
+                  <Input type="number" placeholder="e.g. 1" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -210,7 +249,7 @@ export default function AddProperty() {
             {previews.length > 0 && (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
                 {previews.map((src, index) => (
-                  <img key={index} src={src} className="rounded-md w-full h-32 object-cover" />
+                  <img alt='' key={index} src={src} className="rounded-md w-full h-32 object-cover" />
                 ))}
               </div>
             )}

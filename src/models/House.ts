@@ -42,5 +42,6 @@ const HouseSchema = new Schema<IHouse>(
 );
 
 // ✅ Avoid OverwriteModelError
-export const HouseModel =
+const House =
   mongoose.models.House || mongoose.model<IHouse>("House", HouseSchema);
+export default House;

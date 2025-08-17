@@ -1,5 +1,5 @@
 import { connectToDatabase } from '@/config/DbConnect';
-import { HouseModel } from '@/models/House';
+import House from '@/models/House';
 import { NextResponse } from 'next/server';
 
 // MongoDB connection helper
@@ -8,7 +8,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   try {
     await connectToDatabase();
-    const houses = await HouseModel.find().select('name'); // only return name and _id
+    const houses = await House.find().select('name'); // only return name and _id
     return NextResponse.json(houses);
   } catch (error) {
     console.error('Error fetching houses:', error);

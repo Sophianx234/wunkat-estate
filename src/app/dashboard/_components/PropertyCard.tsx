@@ -2,13 +2,21 @@
 import { Button } from "@/components/ui/button";
 import { useDashStore } from "@/lib/store";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 type propertyCardProps = {
   property: {
-    id: number;
+    id: string;
     image: string;
+    description:string
     name: string;
-    location: string;
+    location?: {
+                address: string,
+                city: string,
+                region: string,
+                country: string,
+                _id: string
+            };
     beds: number;
     baths: number;
     size: string;
@@ -19,6 +27,7 @@ type propertyCardProps = {
 
 export default function PropertyCard({ property }: propertyCardProps) {
   const { toggleExpandedProperty } = useDashStore();
+  const router = useRouter()
 
   const getStatusStyle = (status: string) => {
     switch (status.toLowerCase()) {
@@ -32,6 +41,12 @@ export default function PropertyCard({ property }: propertyCardProps) {
         return "bg-gray-100 text-gray-600";
     }
   };
+
+  const handleReadMore = ()=>{
+    router.push(`properties/${property.id}`)
+
+
+  }
 
   return (
     <div className="bg-white rounded-xl shadow-md p-4 relative hover:shadow-lg transition">
@@ -57,7 +72,8 @@ export default function PropertyCard({ property }: propertyCardProps) {
 
       {/* Property Info */}
       <h3 className="font-semibold text-sm mb-1">{property.name}</h3>
-      <p className="text-xs text-gray-500 mb-2">{property.location}</p>
+      <p className="text-xs text-gray-500 mb-2">{property?.location?.city} - {property?.location?.region}</p>
+      <p className="text-xs text-gray-500 mb-2">{property?.description}</p>
 
       <div className="flex flex-wrap gap-2 text-xs text-gray-600 mb-2">
         <span>{property.beds} Beds</span>
@@ -69,7 +85,7 @@ export default function PropertyCard({ property }: propertyCardProps) {
       <div className="flex justify-between items-center text-sm mt-2">
         <span className="font-semibold text-gray-800">{property.price}</span>
         <Button
-          onClick={toggleExpandedProperty}
+          onClick={handleReadMore}
           className="text-white text-xs font-medium px-4 py-1"
         >
           Read more

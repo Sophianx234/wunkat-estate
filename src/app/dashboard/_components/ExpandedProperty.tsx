@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { IoClose } from 'react-icons/io5';
 import { startPaystackPayment } from '@/lib/paystackConfig';
 import { useDashStore } from '@/lib/store';
+import toast, { Toaster } from "react-hot-toast";
 
 type ExpandedPropertyProps = {
   price?: string;
@@ -33,18 +34,47 @@ function ExpandedProperty({ price = '1,500' }: ExpandedPropertyProps) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [toggleExpandedProperty]);
 
-  const handlePay = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const amount = Number(price.replace(/,/g, ''));
-    await startPaystackPayment({
-      email: 'customer@example.com',
-      amount,
-      onSuccess: (res) => {
-        alert(`Payment successful! Reference: ${res.reference}`);
-      },
-      onClose: () => alert('Transaction was closed'),
-    });
-  };
+
+// ...
+
+const handlePay = async (e: React.FormEvent) => {
+  e.preventDefault();
+  const amount = Number(price.replace(/,/g, ''));
+
+  await startPaystackPayment({
+    email: 'customer@example.com',
+    amount,
+    onSuccess: async (res) => {
+      try {
+        const response = await fetch("/api/payments/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            reference: res.reference,
+            userId: "USER_ID",   // get from auth/session
+            roomId: "ROOM_ID",   // pass from props
+            amount,
+            duration: 1, // months
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Verification failed");
+        }
+
+        toast.success("✅ Payment verified & saved!");
+      } catch (err) {
+        console.error(err);
+        toast.error("❌ Error verifying payment");
+      }
+    },
+    onClose: () => {
+      toast("⚠️ Transaction was closed", { icon: "⚠️" });
+    }
+  });
+};
+
+
 
   const nextImage = () => {
     setIndex((prev) => (prev + 1) % images.length);
@@ -145,6 +175,7 @@ function ExpandedProperty({ price = '1,500' }: ExpandedPropertyProps) {
           </button>
         </div>
       </motion.div>
+      <Toaster/>
     </div>
   );
 }

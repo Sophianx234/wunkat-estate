@@ -8,6 +8,8 @@ export interface IRoom extends mongoose.Document {
   price: number;
   available: boolean;
   images: string[];
+  beds: number;
+  baths: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -19,9 +21,16 @@ const RoomSchema: Schema = new Schema(
     description: { type: String },
     price: { type: Number, required: true },
     available: { type: Boolean, default: true },
-    images: { type: [String]},
+    images: { type: [String] },
+
+    // ✅ New fields
+    beds: { type: Number, required: true, min: 0 },
+    baths: { type: Number, required: true, min: 0 },
   },
   { timestamps: true }
 );
 
-export default mongoose.model<IRoom>("Room", RoomSchema);
+const Room =
+  mongoose.models.Room || mongoose.model<IRoom>("Room", RoomSchema);
+
+export default Room;

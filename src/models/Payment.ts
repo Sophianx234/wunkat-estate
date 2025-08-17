@@ -1,19 +1,39 @@
-import { Schema, model, models, Types } from 'mongoose';
+import mongoose, { Schema, Types } from "mongoose";
 
-interface IPayment {
-  rentedId: Types.ObjectId; // Ref to Rented
+export interface IPayment extends mongoose.Document {
+  userId: Types.ObjectId;
+  roomId: Types.ObjectId;
   amount: number;
-  date: Date;
-  receiptNo: string;
-  description?: string;
+  currency: string;
+  status: "pending" | "completed" | "failed";
+  paymentMethod: "card" | "mobile_money" | "paypal";
+  reference: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-const PaymentSchema = new Schema<IPayment>({
-  rentedId: { type: Schema.Types.ObjectId, ref: 'Rented', required: true },
-  amount: { type: Number, required: true },
-  date: { type: Date, default: Date.now },
-  receiptNo: { type: String, required: true, unique: true },
-  description: String,
-});
+const PaymentSchema = new Schema(
+  {
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    roomId: { type: Schema.Types.ObjectId, ref: "Room", required: true },
+    amount: { type: Number, required: true },
+    currency: { type: String, default: "USD" },
+    status: {
+      type: String,
+      enum: ["pending", "completed", "failed"],
+      default: "pending",
+    },
+    paymentMethod: {
+      type: String,
+      enum: ["card", "mobile_money"],
+      required: true,
+    },
+    reference: { type: String, unique: true, required: true },
+  },
+  { timestamps: true }
+);
 
-export default models.Payment || model<IPayment>('Payment', PaymentSchema);
+const Payment =
+  mongoose.models.Payment || mongoose.model<IPayment>("Payment", PaymentSchema);
+
+export default Payment;
