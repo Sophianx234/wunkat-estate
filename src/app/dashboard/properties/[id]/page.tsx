@@ -26,40 +26,45 @@ function ExpandedProperty({ price = '1,500' }: ExpandedPropertyProps) {
   const { user } = useDashStore();
   const { id: roomId } = useParams();
 
+  console.log('xx123: ',roomId,user?._id,user?.email)
+
   const handlePay = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const amount = Number(price.replace(/,/g, ''));
+  e.preventDefault();
 
-    await startPaystackPayment({
-      email: 'customer@example.com',
-      amount,
-      onSuccess: async (res) => {
-        try {
-          const response = await fetch("/api/payments/verify", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              reference: res.reference,
-              userId: user?.id,
-              roomId: roomId,
-              amount,
-              duration: 1,
-            }),
-          });
+  // Convert price string to number and then multiply by 100 (Paystack expects kobo/pesewas)
+  const amount = Number(price.replace(/,/g, '')) * 100;
 
-          if (!response.ok) throw new Error("Verification failed");
+  await startPaystackPayment({
+    email: user?.email as string,
+    amount,
+    callback: async (res: { reference: string }) => {
+      try {
+        const response = await fetch("/api/payments", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            reference: res.reference,
+            userId: user?._id,
+            roomId: roomId,
+            amount: amount / 100, // save in normal GHS
+            duration: 1,
+          }),
+        });
 
-          toast.success("✅ Payment verified & saved!");
-        } catch (err) {
-          console.error(err);
-          toast.error("❌ Error verifying payment");
-        }
-      },
-      onClose: () => {
-        toast("⚠️ Transaction was closed", { icon: "⚠️" });
+        if (!response.ok) throw new Error("Verification failed");
+
+        toast.success("✅ Payment verified & saved!");
+      } catch (err) {
+        console.error(err);
+        toast.error("❌ Error verifying payment");
       }
-    });
-  };
+    },
+    onClose: () => {
+      toast("⚠️ Transaction was closed", { icon: "⚠️" });
+    },
+  });
+};
+
 
   const nextImage = () => setIndex((prev) => (prev + 1) % images.length);
   const prevImage = () => setIndex((prev) => (prev - 1 + images.length) % images.length);

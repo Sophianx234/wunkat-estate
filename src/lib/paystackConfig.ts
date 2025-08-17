@@ -1,13 +1,3 @@
-import loadPaystackScript from "@paystack/inline-js";
-
-export type PaystackSuccessResponse = {
-  reference: string;
-  trans: string;
-  status: string;
-  message: string;
-  // ...other Paystack return fields you may use
-};
-
 export async function startPaystackPayment({
   email,
   amount,
@@ -15,10 +5,14 @@ export async function startPaystackPayment({
   onClose,
 }: {
   email: string;
-  amount: number; // amount in Ghana Cedis
-  onSuccess: (ref: PaystackSuccessResponse) => void;
+  amount: number; // in GHS
+  onSuccess: (ref: any) => void;
   onClose: () => void;
 }) {
+  // Dynamically import Paystack script only on client
+  if (typeof window === "undefined") return;
+
+  const { default: loadPaystackScript } = await import("@paystack/inline-js");
   await new loadPaystackScript();
 
   interface PaystackPop {
@@ -27,15 +21,15 @@ export async function startPaystackPayment({
       email: string;
       amount: number;
       currency: string;
-      callback: (response: PaystackSuccessResponse) => void;
+      callback: (response: any) => void;
       onClose: () => void;
     }): { openIframe: () => void };
   }
 
-  const handler = ((window as unknown) as { PaystackPop: PaystackPop }).PaystackPop.setup({
-    key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY!,
+  const handler = ((window as any).PaystackPop as PaystackPop).setup({
+    key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY!, // ✅ Make sure this is set in .env.local
     email,
-    amount: amount * 100, // GHS to pesewas
+    amount: amount * 100, // convert GHS → pesewas
     currency: "GHS",
     callback: onSuccess,
     onClose,
