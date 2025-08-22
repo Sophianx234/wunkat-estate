@@ -6,10 +6,17 @@ import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import toast, { Toaster } from 'react-hot-toast';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
-// shadcn/ui
-
+// ✅ Shadcn UI
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 
 const ghanaRegions = [
   'Ahafo', 'Ashanti', 'Bono', 'Bono East', 'Central', 'Eastern', 'Greater Accra',
@@ -17,14 +24,14 @@ const ghanaRegions = [
   'Volta', 'Western', 'Western North',
 ];
 
-// Zod schema
+// ✅ Zod schema
 const locationSchema = z.object({
   address: z.string().min(1, 'Address is required'),
   city: z.string().min(1, 'City is required'),
   region: z.enum(ghanaRegions as [string, ...string[]], {
     errorMap: () => ({ message: 'Please select a valid region' }),
   }),
-  country: z.string().default('Ghana'),
+  country: z.string().min(1, 'Country is required'),
 });
 
 const formSchema = z.object({
@@ -32,6 +39,10 @@ const formSchema = z.object({
   description: z.string().optional(),
   location: locationSchema,
   amenities: z.string().optional(),
+
+  // ✅ Smart lock fields
+  smartLockEnabled: z.boolean(),
+  lockStatus: z.enum(['locked', 'unlocked']).optional(),
 });
 
 type FormDataType = z.infer<typeof formSchema>;
@@ -44,6 +55,7 @@ export default function AddHouse() {
     register,
     handleSubmit,
     control,
+    watch,
     formState: { errors, isSubmitting },
     reset,
   } = useForm<FormDataType>({
@@ -51,34 +63,34 @@ export default function AddHouse() {
     defaultValues: {
       name: '',
       description: '',
-      location: { address: '', city: '', region: '', country: 'Ghana' },
+      location: { address: '', city: '', region: ghanaRegions[0], country: 'Ghana' },
       amenities: '',
+      smartLockEnabled: false,
+      lockStatus: 'locked',
     },
   });
 
+  const smartLockEnabled = watch('smartLockEnabled');
+
   // Close form on outside click
-  useEffect(() => {
-  const handleClickOutside = (event: PointerEvent) => {
-    const target = event.target as Element;
+  /* useEffect(() => {
+    const handleClickOutside = (event: PointerEvent) => {
+      const target = event.target as Element;
+      if (wrapperRef.current?.contains(target)) return;
+      if (target.closest('[data-radix-select-content]')) return;
+      toggleAddHouse();
+    };
 
-    // If click is inside wrapper → do nothing
-    if (wrapperRef.current?.contains(target)) return;
-
-    // If click is inside Radix SelectContent → do nothing
-    if (target.closest("[data-radix-select-content]")) return;
-
-    // Otherwise → close
-    toggleAddHouse();
-  };
-
-  document.addEventListener("pointerdown", handleClickOutside);
-  return () => document.removeEventListener("pointerdown", handleClickOutside);
-}, [toggleAddHouse]);
+    document.addEventListener('pointerdown', handleClickOutside);
+    return () => document.removeEventListener('pointerdown', handleClickOutside);
+  }, [toggleAddHouse]); */
 
   const onSubmit = async (data: FormDataType) => {
     const payload = {
       ...data,
       amenities: data.amenities ? data.amenities.split(',').map((a) => a.trim()) : [],
+      // Ensure lockStatus is only sent if smart lock is enabled
+      lockStatus: data.smartLockEnabled ? data.lockStatus : undefined,
     };
 
     const toastId = toast.loading('Adding house...');
@@ -106,17 +118,24 @@ export default function AddHouse() {
     >
       <h2 className="text-2xl font-semibold mb-4">Add New House</h2>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+      >
         {/* Name */}
         <div className="flex flex-col md:col-span-2">
           <label className="mb-1 font-medium text-sm">House Name</label>
           <input
             {...register('name')}
-            className={`border rounded-md px-3 py-2 ${errors.name ? 'border-red-500' : ''}`}
+            className={`border rounded-md px-3 py-2 ${
+              errors.name ? 'border-red-500' : ''
+            }`}
             placeholder="e.g. Sunset Villa"
             aria-invalid={!!errors.name}
           />
-          {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+          {errors.name && (
+            <p className="text-red-500 text-sm">{errors.name.message}</p>
+          )}
         </div>
 
         {/* Description */}
@@ -127,9 +146,6 @@ export default function AddHouse() {
             className="border rounded-md px-3 py-2 min-h-[80px]"
             placeholder="Describe the house..."
           />
-          {errors.description && (
-            <p className="text-red-500 text-sm">{errors.description.message}</p>
-          )}
         </div>
 
         {/* Address */}
@@ -140,11 +156,7 @@ export default function AddHouse() {
             className={`border rounded-md px-3 py-2 ${
               errors.location?.address ? 'border-red-500' : ''
             }`}
-            aria-invalid={!!errors.location?.address}
           />
-          {errors.location?.address && (
-            <p className="text-red-500 text-sm">{errors.location.address.message}</p>
-          )}
         </div>
 
         {/* City */}
@@ -155,29 +167,21 @@ export default function AddHouse() {
             className={`border rounded-md px-3 py-2 ${
               errors.location?.city ? 'border-red-500' : ''
             }`}
-            aria-invalid={!!errors.location?.city}
           />
-          {errors.location?.city && (
-            <p className="text-red-500 text-sm">{errors.location.city.message}</p>
-          )}
         </div>
 
-        {/* Region (shadcn Select) */}
-        <div className="flex flex-col md:col-span-1">
+        {/* Region */}
+        <div className="flex flex-col">
           <label className="mb-1 font-medium text-sm">Region</label>
           <Controller
             control={control}
             name="location.region"
             render={({ field }) => (
-              <Select
-                value={field.value}
-                onValueChange={field.onChange}
-              >
+              <Select value={field.value} onValueChange={field.onChange}>
                 <SelectTrigger
                   className={`w-full border rounded-md px-3 py-2 h-10 justify-between ${
                     errors.location?.region ? 'border-red-500' : ''
                   }`}
-                  aria-invalid={!!errors.location?.region}
                 >
                   <SelectValue placeholder="Select a Region" />
                 </SelectTrigger>
@@ -191,9 +195,6 @@ export default function AddHouse() {
               </Select>
             )}
           />
-          {errors.location?.region && (
-            <p className="text-red-500 text-sm">{errors.location.region.message}</p>
-          )}
         </div>
 
         {/* Country */}
@@ -214,8 +215,45 @@ export default function AddHouse() {
             className="border rounded-md px-3 py-2"
             placeholder="e.g. Pool, WiFi, Parking"
           />
-          <small className="text-gray-500">Separate multiple amenities with commas</small>
         </div>
+
+        {/* ✅ Smart Lock Toggle */}
+        <div className="flex items-center gap-3 md:col-span-2 mt-2">
+          <Label htmlFor="smartLockEnabled">Enable Smart Lock</Label>
+          <Controller
+            control={control}
+            name="smartLockEnabled"
+            render={({ field }) => (
+              <Switch
+                id="smartLockEnabled"
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
+            )}
+          />
+        </div>
+
+        {/* ✅ Lock Status (only show if smart lock enabled) */}
+        {smartLockEnabled && (
+          <div className="flex flex-col md:col-span-2">
+            <label className="mb-1 font-medium text-sm">Default Lock Status</label>
+            <Controller
+              control={control}
+              name="lockStatus"
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger className="w-full border rounded-md px-3 py-2 h-10 justify-between">
+                    <SelectValue placeholder="Select lock status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="locked">Locked</SelectItem>
+                    <SelectItem value="unlocked">Unlocked</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
+        )}
 
         {/* Buttons */}
         <div className="md:col-span-2 flex gap-4 mt-2">
@@ -235,7 +273,6 @@ export default function AddHouse() {
           </button>
         </div>
       </form>
-      {/* If you already mount <Toaster /> in your root layout, you can remove this */}
       <Toaster />
     </section>
   );

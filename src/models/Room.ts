@@ -2,7 +2,7 @@ import mongoose, { Types } from "mongoose";
 import { Schema } from "mongoose";
 
 export interface IRoom extends mongoose.Document {
-  houseId?: Types.ObjectId; // Optional if standalone
+  houseId?: Types.ObjectId;
   name: string;
   description?: string;
   price: number;
@@ -10,6 +10,8 @@ export interface IRoom extends mongoose.Document {
   images: string[];
   beds: number;
   baths: number;
+  smartLockEnabled?: boolean;  // ✅ Conditional based on house
+  lockStatus?: "locked" | "unlocked";
   createdAt: Date;
   updatedAt: Date;
 }
@@ -23,12 +25,30 @@ const RoomSchema: Schema = new Schema(
     available: { type: Boolean, default: true },
     images: { type: [String] },
 
-    // ✅ New fields
     beds: { type: Number, required: true, min: 0 },
     baths: { type: Number, required: true, min: 0 },
+
+    // ✅ Smart lock fields
+    smartLockEnabled: { type: Boolean, default: false },
+    lockStatus: { type: String, enum: ["locked", "unlocked"], default: "locked" },
   },
   { timestamps: true }
 );
+
+// Middleware: Ensure room smart lock matches house setting
+RoomSchema.pre("save", async function (next) {
+  if (this.houseId) {
+    const House = mongoose.model("House");
+    const house = await House.findById(this.houseId);
+
+    if (!house?.smartLockEnabled) {
+      // If house doesn’t support smart locks, force-disable them
+      this.smartLockEnabled = false;
+      this.lockStatus = undefined;
+    }
+  }
+  next();
+});
 
 const Room =
   mongoose.models.Room || mongoose.model<IRoom>("Room", RoomSchema);

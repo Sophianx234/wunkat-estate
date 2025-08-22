@@ -18,6 +18,7 @@ export interface IHouse extends Document {
   rooms?: Types.ObjectId[];
   owner: string;
   amenities?: string[];
+  smartLockSupport?: boolean; // ✅ Indicates if this house supports smart locks
 }
 
 const LocationSchema = new Schema<LocationType>({
@@ -37,6 +38,7 @@ const HouseSchema = new Schema<IHouse>(
     description: String,
     location: { type: LocationSchema, required: true },
     rooms: [{ type: Schema.Types.ObjectId, ref: "Room" }],
+    smartLockSupport: { type: Boolean, default: false }, // ✅ New field
   },
   { timestamps: true }
 );
