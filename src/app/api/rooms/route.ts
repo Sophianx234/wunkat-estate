@@ -23,9 +23,7 @@ export async function POST(req: NextRequest) {
     const baths = Number(formData.get("baths"));
 
     // ✅ Smart lock fields
-    const smartLockEnabled = formData.get("smartLockEnabled") === "true";
-    const lockStatus = (formData.get("lockStatus") as "locked" | "unlocked") || "locked";
-    console.warn('x1x2x3',smartLockEnabled,lockStatus)
+    
 
     // Handle images
     const images: string[] = [];
@@ -38,7 +36,7 @@ export async function POST(req: NextRequest) {
     }
 
     const house = await House.findById(houseId).select('smartLockSupport')
-
+console.log('xxxxxxxxxxx:',house.smartLockSupport)
     // ✅ Create the room
     const room = await Room.create({
       houseId,

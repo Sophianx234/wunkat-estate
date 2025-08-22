@@ -8,15 +8,15 @@ type propertyCardProps = {
   property: {
     id: string;
     image: string;
-    description:string
+    description: string;
     name: string;
     location?: {
-                address: string,
-                city: string,
-                region: string,
-                country: string,
-                _id: string
-            };
+      address: string;
+      city: string;
+      region: string;
+      country: string;
+      _id: string;
+    };
     beds: number;
     baths: number;
     size: string;
@@ -27,7 +27,7 @@ type propertyCardProps = {
 
 export default function PropertyCard({ property }: propertyCardProps) {
   const { toggleExpandedProperty } = useDashStore();
-  const router = useRouter()
+  const router = useRouter();
 
   const getStatusStyle = (status: string) => {
     switch (status.toLowerCase()) {
@@ -42,54 +42,55 @@ export default function PropertyCard({ property }: propertyCardProps) {
     }
   };
 
-  const handleReadMore = ()=>{
-    router.push(`properties/${property.id}`)
-
-
-  }
+  const handleReadMore = () => {
+    router.push(`properties/${property.id}`);
+  };
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-4 relative hover:shadow-lg transition">
+    <div className="bg-white rounded-xl shadow-md p-4 relative hover:shadow-lg transition flex flex-col h-full">
+      {/* Image + Badge */}
       <div className="relative w-full h-32 mb-4 rounded-lg overflow-hidden">
-        {/* Image */}
         <Image
           src={property.image}
           alt={property.name}
           fill
           className="object-cover"
         />
-
-        {/* Status Badge */}
         <span
           className={`absolute top-2 left-2 px-3 py-1 text-xs font-medium rounded-full ${getStatusStyle(
-            'pending'
+            property.status
           )}`}
         >
-          {/* {property.status.charAt(0).toUpperCase() + property.status.slice(1)} */}
-          Pending
+          {property.status.charAt(0).toUpperCase() + property.status.slice(1)}
         </span>
       </div>
 
-      {/* Property Info */}
-      <h3 className="font-semibold text-sm mb-1">{property.name}</h3>
-      <p className="text-xs text-gray-500 mb-2">{property?.location?.city} - {property?.location?.region}</p>
-      <p className="text-xs text-gray-500 mb-2">{property?.description}</p>
+      {/* Content */}
+      <div className="flex flex-col flex-grow">
+        <h3 className="font-semibold text-sm mb-1">{property.name}</h3>
+        <p className="text-xs text-gray-500 mb-2">
+          {property?.location?.city} - {property?.location?.region}
+        </p>
+        <p className="text-xs text-gray-500 mb-2 line-clamp-3">
+          {property?.description}
+        </p>
 
-      <div className="flex flex-wrap gap-2 text-xs text-gray-600 mb-2">
-        <span>{property.beds} Beds</span>
-        <span>{property.baths} Baths</span>
-        <span>{property.size}</span>
-      </div>
+        <div className="flex flex-wrap gap-2 text-xs text-gray-600 mb-2">
+          <span>{property.beds} Beds</span>
+          <span>{property.baths} Baths</span>
+          <span>{property.size}</span>
+        </div>
 
-      {/* Price & CTA */}
-      <div className="flex justify-between items-center text-sm mt-2">
-        <span className="font-semibold text-gray-800">{property.price}</span>
-        <Button
-          onClick={handleReadMore}
-          className="text-white text-xs font-medium px-4 py-1"
-        >
-          Read more
-        </Button>
+        {/* Footer pinned at bottom */}
+        <div className="mt-auto flex justify-between items-center text-sm pt-2">
+          <span className="font-semibold text-gray-800">{property.price}</span>
+          <Button
+            onClick={handleReadMore}
+            className="text-white text-xs font-medium px-4 py-1"
+          >
+            Read more
+          </Button>
+        </div>
       </div>
     </div>
   );
