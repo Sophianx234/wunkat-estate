@@ -36,19 +36,19 @@ const RoomSchema: Schema = new Schema(
 );
 
 // Middleware: Ensure room smart lock matches house setting
-RoomSchema.pre("save", async function (next) {
+/* RoomSchema.pre("save", async function (next) {
   if (this.houseId) {
     const House = mongoose.model("House");
     const house = await House.findById(this.houseId);
 
-    if (!house?.smartLockEnabled) {
+    if (!house?.smartLockSupport) {
       // If house doesn’t support smart locks, force-disable them
       this.smartLockEnabled = false;
       this.lockStatus = undefined;
     }
   }
   next();
-});
+}); */
 
 const Room =
   mongoose.models.Room || mongoose.model<IRoom>("Room", RoomSchema);

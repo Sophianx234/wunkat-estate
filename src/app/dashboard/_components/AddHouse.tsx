@@ -41,7 +41,7 @@ const formSchema = z.object({
   amenities: z.string().optional(),
 
   // ✅ Smart lock fields
-  smartLockEnabled: z.boolean(),
+  smartLockSupport: z.boolean(),
   lockStatus: z.enum(['locked', 'unlocked']).optional(),
 });
 
@@ -65,12 +65,12 @@ export default function AddHouse() {
       description: '',
       location: { address: '', city: '', region: ghanaRegions[0], country: 'Ghana' },
       amenities: '',
-      smartLockEnabled: false,
+      smartLockSupport: false,
       lockStatus: 'locked',
     },
   });
 
-  const smartLockEnabled = watch('smartLockEnabled');
+  const smartLockEnabled = watch('smartLockSupport');
 
   // Close form on outside click
   /* useEffect(() => {
@@ -90,9 +90,10 @@ export default function AddHouse() {
       ...data,
       amenities: data.amenities ? data.amenities.split(',').map((a) => a.trim()) : [],
       // Ensure lockStatus is only sent if smart lock is enabled
-      lockStatus: data.smartLockEnabled ? data.lockStatus : undefined,
+      lockStatus: data.smartLockSupport ? data.lockStatus : undefined,
     };
-
+    console.log('payload',payload)
+    
     const toastId = toast.loading('Adding house...');
     try {
       const res = await fetch('/api/houses', {
@@ -219,13 +220,13 @@ export default function AddHouse() {
 
         {/* ✅ Smart Lock Toggle */}
         <div className="flex items-center gap-3 md:col-span-2 mt-2">
-          <Label htmlFor="smartLockEnabled">Enable Smart Lock</Label>
+          <Label htmlFor="smartLockSupport">Support Smart Lock</Label>
           <Controller
             control={control}
-            name="smartLockEnabled"
+            name="smartLockSupport"
             render={({ field }) => (
               <Switch
-                id="smartLockEnabled"
+                id="smartLockSupport"
                 checked={field.value}
                 onCheckedChange={field.onChange}
               />
@@ -273,7 +274,7 @@ export default function AddHouse() {
           </button>
         </div>
       </form>
-      <Toaster />
+      <Toaster position='bottom-right' />
     </section>
   );
 }

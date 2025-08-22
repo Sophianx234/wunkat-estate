@@ -8,7 +8,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   try {
     await connectToDatabase();
-    const houses = await House.find().select('name'); // only return name and _id
+    const houses = await House.find().select('name smartLockSupport'); // only return name and _id
     return NextResponse.json(houses);
   } catch (error) {
     console.error('Error fetching houses:', error);
@@ -26,7 +26,15 @@ export async function POST(request: Request) {
 
     const body = await request.json();
 
-    const { name, description, location, amenities } = body;
+    
+    const {
+      name,
+      description,
+      location,
+      amenities,
+      smartLockSupport,
+      lockStatus
+    } = body;
 
     // Basic validation
     if (!name || !location?.address || !location?.city || !location?.region) {
@@ -36,11 +44,14 @@ export async function POST(request: Request) {
       );
     }
 
-    const newHouse = new HouseModel({
+    // ✅ If smart lock is enabled, include lockStatus
+    const newHouse = new House({
       name,
       description,
       location,
       amenities,
+      smartLockSupport,
+      lockStatus: smartLockSupport ? lockStatus : undefined,
     });
 
     await newHouse.save();
@@ -50,7 +61,7 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (error) {
-    console.error(error);
+    console.error('Error creating house:', error);
     return NextResponse.json(
       { error: 'Failed to create house' },
       { status: 500 }
