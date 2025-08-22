@@ -112,25 +112,25 @@ if(isLoading) return <>loading</>
   return (
     <div className="w-full mt-16 sm:mt-0 min-h-screen bg-gray-50">
       {/* Hero Section with Slider */}
-      <div className="relative w-full lg:ml-8 h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px]">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            transition={{ duration: 0.5 }}
-            className="absolute inset-0 w-full h-full"
-          >
-            <Image
-              src={(room as roomType)?.images[index]}
-              alt={`Slide ${index}`}
-              fill
-              className="object-cover"
-              priority
-            />
-          </motion.div>
-        </AnimatePresence>
+      <div className="relative w-full scrollbar-hide overflow-x-hidden lg:ml-8 h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px]">
+         <AnimatePresence mode="wait">
+    <motion.div
+      key={index}
+      initial={{ opacity: 0, x: 100 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -100 }}
+      transition={{ duration: 0.5 }}
+      className="absolute inset-0 scrollbar-hide w-full h-full"
+    >
+      <Image
+        src={room?.images[index] || '/images/img-placeholder.jpg'}
+        alt={`Slide ${index}`}
+        fill
+        className="object-cover"
+        priority
+      />
+    </motion.div>
+  </AnimatePresence>
 
         {/* Back Button */}
         <button
