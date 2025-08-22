@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
@@ -20,11 +20,51 @@ const images = [
   '/images/img-4.jpg',
 ];
 
+export type roomType = {
+  lockStatus: "locked" | "unlocked"; // adjust if there are other possible values
+  _id: string;
+  houseId: string;
+  name: string;
+  description: string;
+  price: number;
+  available: boolean;
+  images: string[];
+  beds: number;
+  baths: number;
+  smartLockEnabled: boolean;
+  
+};
+
 function ExpandedProperty({ price = '1,500' }: ExpandedPropertyProps) {
   const [index, setIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
+  const [room, setRoom] = useState<roomType|null>(null)
   const { user } = useDashStore();
   const { id: roomId } = useParams();
+  useEffect(()=>{
+    try{
+    
+    const getRoom = async()=>{
+      setIsLoading(true)
+
+        const res = await fetch(`/api/rooms/${roomId}`)
+        if(res.ok){
+          const data = await res.json() 
+          console.log('datata:',data)
+          setRoom(data)
+        }
+        
+      }
+      getRoom()
+    }catch(err){
+      console.error(err)
+
+    }
+    finally{
+      setIsLoading(false)
+    }
+  },[])
 
   console.log('xx123: ',roomId,user?._id,user?.email)
 
@@ -65,9 +105,9 @@ function ExpandedProperty({ price = '1,500' }: ExpandedPropertyProps) {
   });
 };
 
-
-  const nextImage = () => setIndex((prev) => (prev + 1) % images.length);
-  const prevImage = () => setIndex((prev) => (prev - 1 + images.length) % images.length);
+if(isLoading) return <>loading</>
+  const nextImage = () => setIndex((prev) => (prev + 1) % (room as roomType)?.images.length);
+  const prevImage = () => setIndex((prev) => (prev - 1 + (room as roomType).images.length) % (room as roomType).images.length);
 
   return (
     <div className="w-full mt-16 sm:mt-0 min-h-screen bg-gray-50">
@@ -83,7 +123,7 @@ function ExpandedProperty({ price = '1,500' }: ExpandedPropertyProps) {
             className="absolute inset-0 w-full h-full"
           >
             <Image
-              src={images[index]}
+              src={(room as roomType)?.images[index]}
               alt={`Slide ${index}`}
               fill
               className="object-cover"
@@ -117,7 +157,7 @@ function ExpandedProperty({ price = '1,500' }: ExpandedPropertyProps) {
 
         {/* Dots */}
         <div className="absolute bottom-6 w-full flex justify-center gap-2">
-          {images.map((_, i) => (
+          {(room as roomType)?.images.map((_, i) => (
             <div
               key={i}
               onClick={() => setIndex(i)}
@@ -142,7 +182,7 @@ function ExpandedProperty({ price = '1,500' }: ExpandedPropertyProps) {
 <div className="mb-6 p-6 bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 rounded-2xl shadow-lg">
   <p className="text-gray-300 text-sm tracking-wide uppercase">Monthly Rent</p>
   <p className="mt-2 text-4xl sm:text-5xl font-extrabold text-white drop-shadow-md">
-    GHS {price}
+    GHS {room?.price}
   </p>
 </div>
 
@@ -154,24 +194,21 @@ function ExpandedProperty({ price = '1,500' }: ExpandedPropertyProps) {
           </p>
 
           <p className="text-gray-700 mb-8 leading-relaxed">
-            This spacious 2-bedroom apartment boasts an elegant modern design,
-            featuring a bright living room, fully equipped kitchen,
-            stylish tiled floors, and a private balcony with breathtaking views.
-            Located in the serene Achimota Gardens, it’s close to transport routes,
-            shops, and schools.
+            {room?.description}
+           
           </p>
 
           <button
             onClick={handlePay}
             className="bg-black text-white px-8 py-4 rounded-lg hover:bg-gray-700 font-bold text-lg transition w-full sm:w-auto"
           >
-            Rent Now
+            Book Now
           </button>
         </div>
 
         {/* Extra images (Gallery Grid) */}
         <div className="grid grid-cols-2 gap-4">
-          {images.map((img, i) => (
+          {room?.images.map((img, i) => (
             <div key={i} className="relative h-40 sm:h-48 md:h-56 rounded-lg overflow-hidden shadow">
               <Image src={img} alt={`Gallery ${i}`} fill className="object-cover" />
             </div>

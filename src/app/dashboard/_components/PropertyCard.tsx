@@ -88,7 +88,7 @@ export default function PropertyCard({ property }: propertyCardProps) {
             onClick={handleReadMore}
             className="text-white text-xs font-medium px-4 py-1"
           >
-            Read more
+           View & Book
           </Button>
         </div>
       </div>
