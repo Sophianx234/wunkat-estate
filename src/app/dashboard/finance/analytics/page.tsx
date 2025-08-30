@@ -2,26 +2,35 @@
 // Update the import path below if your Avatar component is located elsewhere
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
+import DashboardAnalytics from "../../_components/Analytics";
+import TransactionHistory from "../../_components/TransactionTable";
+import BalanceCard from "../BalanceCard";
 import ClientCard from "../ClientCard";
 import IncomeCard from "../IncomeCard";
 import SalesAnalytics from "../SalesAnalytics";
 import SoldAnalytics from "../SoldAnalytics";
+import TopProductsChart from "../TopProductChart";
 
 export default function Finance() {
   return (
-    <div className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-12 sm:mt-10 mt-24">
+    <div className="ml-4">
       {/* Total Income & Revenue */}
-    <h1 className="text-xl font-inter font-bold">Business Statistics</h1>
-      <IncomeCard />
+    <h1 className="text-xl font-inter font-bold mb-3">Business Statistics</h1>
+      {/* <IncomeCard /> */}
 
       {/* Sales Analytics */}
-      <SalesAnalytics />
+      {/* <SalesAnalytics /> */}
 
       {/* Sold Properties */}
-      <SoldAnalytics />
+      {/* <SoldAnalytics /> */}
 
       {/* New Clients */}
-      <ClientCard />
+      {/* <ClientCard /> */}
+
+      <DashboardAnalytics/>
+      
+      <TransactionHistory/>
+      
     </div>
   );
 }
