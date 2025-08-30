@@ -73,7 +73,7 @@ function Signup() {
   return (
     <form
       onSubmit={handleSubmit(handleSignup)}
-      className="sm:grid grid-cols-2 mx-6 sm:mt-24 sm:my-10 sm:h-[35rem] sm:m-20 justify-center items-center sm:border overflow-hidden sm:shadow sm:border-gray-200"
+      className="sm:grid grid-cols-2 h-dvh justify-center items-center sm:border overflow-hidden sm:shadow sm:border-gray-200"
     >
       {/* Left side form */}
       <div className="flex flex-col sm:px-32 px-6 h-full overflow-y-scroll scrollbar-hide sm:py-10 sm:border-gray-500">

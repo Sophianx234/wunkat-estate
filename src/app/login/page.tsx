@@ -63,7 +63,7 @@ const handleLogin: SubmitHandler<formInputs> = async (data) => {
   return (
     <form
       onSubmit={handleSubmit(handleLogin)}
-      className="sm:grid grid-cols-2 sm:mx-6 sm:mt-24 sm:h-[35rem] sm:m-20 justify-center items-center sm:border sm:shadow sm:border-gray-200   "
+      className="sm:grid  grid-cols-2   h-dvh  justify-center items-center sm:border sm:shadow sm:border-gray-200   "
     >
       <div
         className="flex flex-col
