@@ -2,17 +2,14 @@ import { connectToDatabase } from "@/config/DbConnect";
 import Room from "@/models/Room";
 import { NextRequest, NextResponse } from "next/server";
 
-type RouteParams = {
-  params: {
-    id: string;
-  };
-};
-
-export async function GET(req: NextRequest, { params }: RouteParams) {
+export async function GET(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
     await connectToDatabase();
 
-    const { id } = params;
+    const { id } = context.params;
     console.log("idxxx:", id);
 
     if (!id) {
