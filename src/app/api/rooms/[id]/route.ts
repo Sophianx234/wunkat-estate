@@ -2,11 +2,13 @@ import { connectToDatabase } from "@/config/DbConnect";
 import Room from "@/models/Room";
 import { NextRequest, NextResponse } from "next/server";
 
-// The second argument must be destructured properly
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+type RouteParams = {
+  params: {
+    id: string;
+  };
+};
+
+export async function GET(req: NextRequest, { params }: RouteParams) {
   try {
     await connectToDatabase();
 
