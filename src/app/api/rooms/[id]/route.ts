@@ -4,12 +4,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Record<string, string> }
 ) {
   try {
     await connectToDatabase();
 
-    const { id } = params;
+    const { id } = context.params;
     console.log("idxxx", id);
 
     if (!id) {
@@ -23,12 +23,12 @@ export async function GET(
     if (!room) {
       return NextResponse.json(
         { msg: "could not fetch room with specified ID:" },
-        { status: 400 }
+        { status: 404 }
       );
     }
 
     return NextResponse.json(room, { status: 200 });
   } catch (err) {
-    return NextResponse.json({ err }, { status: 500 });
+    return NextResponse.json({ error: (err as Error).message }, { status: 500 });
   }
 }
