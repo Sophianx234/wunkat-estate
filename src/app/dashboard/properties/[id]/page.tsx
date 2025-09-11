@@ -13,12 +13,12 @@ type ExpandedPropertyProps = {
   price?: string;
 };
 
-const images = [
+/* const images = [
   '/images/img-1.jpg',
   '/images/img-2.jpg',
   '/images/img-5.jpg',
   '/images/img-4.jpg',
-];
+]; */
 
 export type roomType = {
   lockStatus: "locked" | "unlocked"; // adjust if there are other possible values

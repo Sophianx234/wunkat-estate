@@ -4,12 +4,6 @@
 
 import DashboardAnalytics from "../../_components/Analytics";
 import TransactionHistory from "../../_components/TransactionTable";
-import BalanceCard from "../BalanceCard";
-import ClientCard from "../ClientCard";
-import IncomeCard from "../IncomeCard";
-import SalesAnalytics from "../SalesAnalytics";
-import SoldAnalytics from "../SoldAnalytics";
-import TopProductsChart from "../TopProductChart";
 
 export default function Finance() {
   return (

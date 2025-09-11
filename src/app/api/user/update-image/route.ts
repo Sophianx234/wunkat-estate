@@ -1,10 +1,9 @@
 import { connectToDatabase } from "@/config/DbConnect";
-import cloudinary, { uploadBufferToCloudinary } from "@/lib/cloudinary";
+import { uploadBufferToCloudinary } from "@/lib/cloudinary";
 import { getTokenFromRequest } from "@/lib/jwtConfig";
 import User from "@/models/User";
 import { UploadApiResponse } from "cloudinary";
 import { NextRequest, NextResponse } from "next/server";
-import { Readable } from "stream";
 
 // Disable body parsing
 

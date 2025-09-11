@@ -7,7 +7,7 @@ import { useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { FiUploadCloud } from "react-icons/fi";
 import { ScaleLoader } from "react-spinners";
-import Cropper from "react-easy-crop";
+import Cropper, { Area } from "react-easy-crop";
 import getCroppedImg from "@/lib/utils";
 
 export default function UploadProfilePage() {
@@ -16,9 +16,9 @@ export default function UploadProfilePage() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [cropping, setCropping] = useState(false);
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
+  const [crop, setCrop] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState<number>(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null); // typed
 
   const router = useRouter();
   const { signupData } = useDashStore();
@@ -35,23 +35,22 @@ export default function UploadProfilePage() {
     reader.onload = () => {
       if (reader.result) {
         setAvatar(reader.result as string);
-        setCropping(true); // Open crop modal
+        setCropping(true);
       }
     };
     reader.readAsDataURL(file);
   };
 
-  const onCropComplete = (_: any, croppedAreaPixels: any) => {
-    setCroppedAreaPixels(croppedAreaPixels);
+  const onCropComplete = (_: Area, croppedPixels: Area) => {
+    setCroppedAreaPixels(croppedPixels);
   };
 
   const confirmCrop = async () => {
     if (!avatar || !croppedAreaPixels) return;
     try {
-      const croppedFile = await getCroppedImg(avatar, croppedAreaPixels);
+      const croppedFile: File = await getCroppedImg(avatar, croppedAreaPixels); // ensure getCroppedImg returns File
       setSelectedFile(croppedFile);
 
-      // Preview cropped image
       const previewUrl = URL.createObjectURL(croppedFile);
       setAvatar(previewUrl);
 
@@ -60,7 +59,6 @@ export default function UploadProfilePage() {
       console.error(err);
     }
   };
-
   const handleSetProfile = async () => {
     if (!selectedFile) {
       toast.error("Please select an image first!");

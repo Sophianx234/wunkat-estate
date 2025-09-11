@@ -1,3 +1,12 @@
+export interface PaystackResponse {
+  reference: string;
+  trans: string;
+  status: "success" | "failed" | "abandoned";
+  message: string;
+  transaction: string;
+  trxref: string;
+}
+
 export async function startPaystackPayment({
   email,
   amount,
@@ -6,10 +15,9 @@ export async function startPaystackPayment({
 }: {
   email: string;
   amount: number; // in GHS
-  onSuccess: (ref: any) => void;
+  onSuccess: (ref: PaystackResponse) => void;
   onClose: () => void;
 }) {
-  // Dynamically import Paystack script only on client
   if (typeof window === "undefined") return;
 
   const { default: loadPaystackScript } = await import("@paystack/inline-js");
@@ -21,13 +29,13 @@ export async function startPaystackPayment({
       email: string;
       amount: number;
       currency: string;
-      callback: (response: any) => void;
+      callback: (response: PaystackResponse) => void;
       onClose: () => void;
     }): { openIframe: () => void };
   }
 
-  const handler = ((window as any).PaystackPop as PaystackPop).setup({
-    key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY!, // ✅ Make sure this is set in .env.local
+  const handler = ((window as unknown as { PaystackPop: PaystackPop }).PaystackPop).setup({
+    key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY!,
     email,
     amount: amount * 100, // convert GHS → pesewas
     currency: "GHS",

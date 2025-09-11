@@ -1,11 +1,5 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import { useDashStore } from '@/lib/store';
-import { useForm, Controller } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import toast, { Toaster } from 'react-hot-toast';
 import {
   Select,
   SelectContent,
@@ -13,10 +7,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useDashStore } from '@/lib/store';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRef } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import toast, { Toaster } from 'react-hot-toast';
+import { z } from 'zod';
 
 // ✅ Shadcn UI
-import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 
 const ghanaRegions = [
   'Ahafo', 'Ashanti', 'Bono', 'Bono East', 'Central', 'Eastern', 'Greater Accra',

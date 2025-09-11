@@ -26,7 +26,6 @@ type propertyCardProps = {
 };
 
 export default function PropertyCard({ property }: propertyCardProps) {
-  const { toggleExpandedProperty } = useDashStore();
   const router = useRouter();
 
   const getStatusStyle = (status: string) => {

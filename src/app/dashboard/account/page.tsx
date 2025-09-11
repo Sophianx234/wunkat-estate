@@ -25,9 +25,9 @@ const passwordSchema = z
 
 
 export default function AccountPage() {
-  const [theme, setTheme] = useState("light");
+  /* const [theme, setTheme] = useState("light");
   const [language, setLanguage] = useState("english");
-  const [timezone, setTimezone] = useState("");
+  const [timezone, setTimezone] = useState(""); */
   const [name, setName] = useState("");
   const { user, setUser } = useDashStore();
   const [email, setEmail] = useState("");

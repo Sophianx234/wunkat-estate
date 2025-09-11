@@ -1,14 +1,24 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
+export const BASE_URL =
+  process.env.NEXT_PUBLIC_BASE_API_URL || "http://localhost:3000/api";
 
-export const BASE_URL = process.env.NEXT_PUBLIC_BASE_API_URL || "http://localhost:3000/api"
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
+export interface PixelCrop {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
 
-export default function getCroppedImg(imageSrc: string, pixelCrop: any): Promise<File> {
+export default function getCroppedImg(
+  imageSrc: string,
+  pixelCrop: PixelCrop
+): Promise<File> {
   return new Promise((resolve, reject) => {
     const image = new Image();
     image.src = imageSrc;

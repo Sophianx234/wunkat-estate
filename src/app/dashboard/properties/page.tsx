@@ -5,8 +5,6 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import Button from "../../_components/Button";
-import AddHouse from "./add-house/page";
 import Filters from "../_components/Filters";
 import PropertyCard from "../_components/PropertyCard";
 
@@ -42,7 +40,6 @@ export default function Dashboard() {
   const {
     
     openExpandedProperty,
-    openAddHouse,
     toggleAddHouse,
   } = useDashStore();
 
