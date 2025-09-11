@@ -2,21 +2,18 @@ import { connectToDatabase } from "@/config/DbConnect";
 import Room from "@/models/Room";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  req: NextRequest,
-  context: {
-    params: Promise<{ id: string }> | { id: string };
-  }
-) {
+type RouteParams = {
+  params: {
+    id: string;
+  };
+};
+
+export async function GET(req: NextRequest, { params }: RouteParams) {
   try {
     await connectToDatabase();
 
-    // Resolve if params.id is inside a promise
-    const params = "then" in context.params
-      ? await context.params
-      : context.params;
-
     const { id } = params;
+    console.log("idxxx:", id);
 
     if (!id) {
       return NextResponse.json(
