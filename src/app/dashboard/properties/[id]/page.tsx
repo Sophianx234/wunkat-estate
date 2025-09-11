@@ -35,12 +35,13 @@ export type roomType = {
   
 };
 
-function ExpandedProperty({ price = '1,500' }: ExpandedPropertyProps) {
+function ExpandedProperty() {
   const [index, setIndex] = useState(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const [room, setRoom] = useState<roomType|null>(null)
   const { user } = useDashStore();
+  const price = '1,500'
   const { id: roomId } = useParams();
   useEffect(()=>{
     try{
