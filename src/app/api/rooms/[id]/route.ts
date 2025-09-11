@@ -2,19 +2,20 @@ import { connectToDatabase } from "@/config/DbConnect";
 import Room from "@/models/Room";
 import { NextRequest, NextResponse } from "next/server";
 
+// The second argument must be destructured properly
 export async function GET(
   req: NextRequest,
-  context: { params: Record<string, string> }
+  { params }: { params: { id: string } }
 ) {
   try {
     await connectToDatabase();
 
-    const { id } = context.params;
+    const { id } = params;
     console.log("idxxx", id);
 
     if (!id) {
       return NextResponse.json(
-        { msg: "could not find ID:" },
+        { msg: "could not find ID" },
         { status: 400 }
       );
     }
@@ -22,13 +23,16 @@ export async function GET(
     const room = await Room.findById(id);
     if (!room) {
       return NextResponse.json(
-        { msg: "could not fetch room with specified ID:" },
+        { msg: "could not fetch room with specified ID" },
         { status: 404 }
       );
     }
 
     return NextResponse.json(room, { status: 200 });
   } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 500 });
+    return NextResponse.json(
+      { error: (err as Error).message },
+      { status: 500 }
+    );
   }
 }
