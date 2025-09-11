@@ -1,7 +1,6 @@
 "use client";
 import Logo from "@/app/_components/Logo";
 import { useDashStore } from "@/lib/store";
-import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -49,22 +48,18 @@ export default function Sidebar({
     }
   };
   return (
-    <motion.aside
-      key="sidebar"
-      initial={{ x: "-100%" }}
-      animate={{ x: 0 }}
-      exit={{ x: "-100%" }}
-      transition={{ duration: 0.3 }}
+    <aside
+      
       className={` ${
         type === "normal"
-          ? "hidden sm:fixed sm:block left-0 top-0  h-screen w-64 bg-white shadow z-50"
+          ? "hidden sm:fixed sm:block left-0 top-0  h-screen w-64 bg-white  z-50"
           : "block absolute h-dvh inset-0 top-0 left-0  z-10"
-      } sm:block bg-white md:shadow pb-6 `}
+      } sm:block bg-white  pb-6 `}
     >
       {/* Wrapper with flex column layout */}
       <div className="flex flex-col h-full md:h-dvh">
         {/* Top section: Logo and close button */}
-        <div className="flex   items-center justify-between mb-5 pt-6 border-b border-b-gray-200 pr-3 md:pr-2 pb-5 pl-5 border-r border-r-gray-200">
+        <div className="flex   items-center justify-between  pt-6 border-b border-b-gray-200 pr-3 md:pr-2 pb-5 pl-5 border-r border-r-gray-200">
           <Logo type="dash" />
           {type === "slide" && (
             <X
@@ -76,7 +71,7 @@ export default function Sidebar({
         </div>
 
         {/* Scrollable nav container */}
-        <nav className="flex-1  flex-col overflow-y-auto    border-gray-200 scrollbar-hide  text-sm font-medium text-gray-600 px-4 space-y-1">
+        <nav className="flex-1  flex-col overflow-y-auto pt-5 shadow  border-gray-200 scrollbar-hide  text-sm font-medium text-gray-600 px-4 space-y-1">
           <Link
             onClick={toggleSidebar}
             href="/dashboard/finance/analytics"
@@ -161,6 +156,6 @@ export default function Sidebar({
         </nav>
       </div>
       <Toaster />
-    </motion.aside>
+    </aside>
   );
 }

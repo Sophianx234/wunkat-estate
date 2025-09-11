@@ -24,7 +24,6 @@ export default function RootLayout({
         className='font-inter antialiased'
       >
 
-        
         {children}
       </body>
     </html>

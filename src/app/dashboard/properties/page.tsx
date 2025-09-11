@@ -1,18 +1,21 @@
-'use client';
+"use client";
 
+import { useDashStore } from "@/lib/store";
+import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import Button from "../../_components/Button";
+import AddHouse from "./add-house/page";
 import Filters from "../_components/Filters";
 import PropertyCard from "../_components/PropertyCard";
-import AddProperty from "../_components/AddProperty";
-import dynamic from 'next/dynamic';
-import { useDashStore } from "@/lib/store";
-import AddHouse from "../_components/AddHouse";
 
-const ExpandedProperty = dynamic(() => import('../_components/ExpandedProperty'), {
-  ssr: false,
-});
+const ExpandedProperty = dynamic(
+  () => import("../_components/ExpandedProperty"),
+  {
+    ssr: false,
+  }
+);
 
 interface Room {
   _id: string;
@@ -21,27 +24,31 @@ interface Room {
   price: number;
   available: boolean;
   images: string[];
-  beds:number;
-  baths:number;
+  beds: number;
+  baths: number;
   houseId?: {
     name: string;
     location: {
-                address: string,
-                city: string,
-                region: string,
-                country: string,
-                _id: string
-            }
+      address: string;
+      city: string;
+      region: string;
+      country: string;
+      _id: string;
+    };
   };
 }
 
-
 export default function Dashboard() {
-  const { openAddProperty, toggleAddProperty, openExpandedProperty, openAddHouse, toggleAddHouse } = useDashStore();
+  const {
+    
+    openExpandedProperty,
+    openAddHouse,
+    toggleAddHouse,
+  } = useDashStore();
 
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
-  console.log('roomsx',rooms)
+  console.log("roomsx", rooms);
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -65,23 +72,22 @@ export default function Dashboard() {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold">Properties</h2>
         <div className="flex items-center gap-3">
-          <Button
-            onClick={toggleAddProperty}
+          <Link
+            href="properties/add-property"
             className="bg-black text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2"
           >
             <FaPlus /> Add Property
-          </Button>
-          <Button
+          </Link>
+          <Link
+          href='properties/add-house'
             onClick={toggleAddHouse}
             className="bg-black text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2"
           >
             <FaPlus /> House
-          </Button>
+          </Link>
         </div>
       </div>
 
-      {openAddProperty && <AddProperty />}
-      {openAddHouse && <AddHouse />}
 
       <Filters />
 
@@ -97,7 +103,7 @@ export default function Dashboard() {
                 id: room._id,
 
                 name: room.name,
-                location: room.houseId?.location ,
+                location: room.houseId?.location,
                 beds: room.beds || 0, // If you have beds in your schema, replace this
                 baths: room.baths || 0, // If you have baths in your schema, replace this
                 size: "",

@@ -115,17 +115,20 @@ export default function AddHouse() {
   return (
     <section
       ref={wrapperRef}
-      className="bg-white p-6 mb-8 rounded-xl shadow-lg max-w-3xl mx-auto mt-10 w-full"
+      className="   rounded-xl h-full    w-full"
     >
-      <h2 className="text-2xl font-semibold mb-4">Add New House</h2>
+      
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+        className="grid grid-cols-1 "
       >
         {/* Name */}
-        <div className="flex flex-col md:col-span-2">
-          <label className="mb-1 font-medium text-sm">House Name</label>
+        <div className='bg-white mt-10 p-6 w-full grid grid-cols-1 md:grid-cols-2 gap-4'>
+
+        <div className="flex flex-col md:col-span-2  ">
+      <h2 className="text-base font-semibold mb-5">House Information</h2>
+          <label className="mb-1 font-medium text-sm">Name</label>
           <input
             {...register('name')}
             className={`border rounded-md px-3 py-2 ${
@@ -139,15 +142,7 @@ export default function AddHouse() {
           )}
         </div>
 
-        {/* Description */}
-        <div className="flex flex-col md:col-span-2">
-          <label className="mb-1 font-medium text-sm">Description</label>
-          <textarea
-            {...register('description')}
-            className="border rounded-md px-3 py-2 min-h-[80px]"
-            placeholder="Describe the house..."
-          />
-        </div>
+        
 
         {/* Address */}
         <div className="flex flex-col">
@@ -183,7 +178,7 @@ export default function AddHouse() {
                   className={`w-full border rounded-md px-3 py-2 h-10 justify-between ${
                     errors.location?.region ? 'border-red-500' : ''
                   }`}
-                >
+                  >
                   <SelectValue placeholder="Select a Region" />
                 </SelectTrigger>
                 <SelectContent className="max-h-64">
@@ -207,6 +202,8 @@ export default function AddHouse() {
             readOnly
           />
         </div>
+                      </div>
+<div className='bg-white mt-2 p-6 w-full grid grid-cols-1 md:grid-cols-2 gap-4'>
 
         {/* Amenities */}
         <div className="flex flex-col md:col-span-2">
@@ -215,6 +212,15 @@ export default function AddHouse() {
             {...register('amenities')}
             className="border rounded-md px-3 py-2"
             placeholder="e.g. Pool, WiFi, Parking"
+          />
+        </div>
+        {/* Description */}
+        <div className="flex flex-col md:col-span-2">
+          <label className="mb-1 font-medium text-sm">Description</label>
+          <textarea
+            {...register('description')}
+            className="border rounded-md px-3 py-2 min-h-[80px]"
+            placeholder="Describe the house..."
           />
         </div>
 
@@ -273,6 +279,7 @@ export default function AddHouse() {
             Cancel
           </button>
         </div>
+            </div>
       </form>
       <Toaster position='bottom-right' />
     </section>
