@@ -9,10 +9,10 @@ import { startPaystackPayment } from '@/lib/paystackConfig';
 import toast, { Toaster } from "react-hot-toast";
 import { useDashStore } from '@/lib/store';
 
-type ExpandedPropertyProps = {
+/* type ExpandedPropertyProps = {
   price?: string;
 };
-
+ */
 /* const images = [
   '/images/img-1.jpg',
   '/images/img-2.jpg',
