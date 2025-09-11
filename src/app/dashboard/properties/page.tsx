@@ -40,7 +40,6 @@ export default function Dashboard() {
   const {
     
     openExpandedProperty,
-    toggleAddHouse,
   } = useDashStore();
 
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -77,7 +76,7 @@ export default function Dashboard() {
           </Link>
           <Link
           href='properties/add-house'
-            onClick={toggleAddHouse}
+            
             className="bg-black text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2"
           >
             <FaPlus /> House
