@@ -1,6 +1,5 @@
 'use client';
 
-import { useDashStore } from '@/lib/store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
@@ -15,10 +14,9 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
+import { useRouter } from 'next/navigation';
 import { FiDollarSign, FiDroplet } from "react-icons/fi";
 import { IoBedOutline, IoImageOutline } from 'react-icons/io5';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 
 // ✅ Extend schema with beds & baths
 const roomSchema = z.object({
