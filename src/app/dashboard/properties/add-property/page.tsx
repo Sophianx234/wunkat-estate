@@ -17,6 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from 'next/navigation';
 import { FiDollarSign, FiDroplet } from "react-icons/fi";
 import { IoBedOutline, IoImageOutline } from 'react-icons/io5';
+import Link from 'next/link';
 
 // ✅ Extend schema with beds & baths
 const roomSchema = z.object({
@@ -265,9 +266,9 @@ export default function AddProperty() {
 
           {/* Buttons */}
           <div className="flex justify-end pt-4 gap-4">
-            <Button type="button" variant="secondary" onClick={toggleAddProperty}>
+            <Link href='/dashboard/properties'>
               Cancel
-            </Button>
+            </Link>
             <Button type="submit" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting ? 'Adding...' : 'Add Property'}
             </Button>
