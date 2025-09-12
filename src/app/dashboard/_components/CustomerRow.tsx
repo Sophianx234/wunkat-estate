@@ -13,7 +13,7 @@ import {
   FaEdit,
   FaHourglassHalf,
   FaLock,
-  FaUnlock
+  FaUnlock,
 } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Swal from "sweetalert2";
@@ -27,13 +27,12 @@ type customerRowProps = {
 
 export default function CustomerRow({ customer }: customerRowProps) {
   const rentExpiry = new Date(customer.rentExpiry);
-
   const today = new Date();
+
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleExtendRent = (newDate: string) => {
-    // Save it to server or update local state
     Swal.fire("Rent Extended", `New rent expiry: ${newDate}`, "success");
   };
 
@@ -60,9 +59,7 @@ export default function CustomerRow({ customer }: customerRowProps) {
 
     const result = await Swal.fire({
       title: isLocked ? "Unlock Room?" : "Lock Room?",
-      text: `Are you sure you want to ${
-        isLocked ? "unlock" : "lock"
-      } this room?`,
+      text: `Are you sure you want to ${isLocked ? "unlock" : "lock"} this room?`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: isLocked ? "#16a34a" : "#dc2626",
@@ -71,12 +68,9 @@ export default function CustomerRow({ customer }: customerRowProps) {
     });
 
     if (result.isConfirmed) {
-      // You can update state or perform an API call here
       Swal.fire(
         isLocked ? "Unlocked!" : "Locked!",
-        `Room ${customer.roomNumber} has been ${
-          isLocked ? "unlocked" : "locked"
-        }.`,
+        `Room ${customer.roomNumber} has been ${isLocked ? "unlocked" : "locked"}.`,
         "success"
       );
     }
@@ -94,16 +88,15 @@ export default function CustomerRow({ customer }: customerRowProps) {
     });
 
     if (result.isConfirmed) {
-      // You can delete from state or API
       Swal.fire("Deleted!", "Customer has been removed.", "success");
     }
   };
 
   return (
-    <div className="bg-white shadow rounded-xl p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 transition hover:shadow-md">
+    <div className="group bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 transition-all duration-300 hover:shadow-lg hover:border-gray-200">
       {/* Left - Image + Info */}
-      <div className="flex items-center gap-4 w-full sm:w-auto">
-        <div className="relative w-16 h-16 rounded-full overflow-hidden border border-gray-300">
+      <div className="flex items-center gap-5 w-full sm:w-auto">
+        <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-gray-100 group-hover:ring-blue-200 transition">
           <Image
             src={customer.image || "/avatars/default.jpg"}
             alt={customer.name}
@@ -113,40 +106,41 @@ export default function CustomerRow({ customer }: customerRowProps) {
         </div>
 
         <div>
-          <h3 className="text-lg font-semibold">{customer.name}</h3>
+          <h3 className="text-lg font-semibold text-gray-800">{customer.name}</h3>
           <p className="text-sm text-gray-500">
             {customer.apartment} — Room {customer.roomNumber}
           </p>
-          <p className="text-sm mt-1 flex items-center gap-1 text-gray-600">
-            <FaCalendarAlt className="text-blue-500" />
-            <span className={getRentStatusColor()}>
-              {format(rentExpiry, "PPP")}
-            </span>
-          </p>
-          <p className={`text-sm flex items-center gap-1 ${daysLeft.color}`}>
-            <FaHourglassHalf />
-            {daysLeft.label}
-          </p>
+
+          <div className="mt-2 space-y-1">
+            <p className="text-sm flex items-center gap-2">
+              <FaCalendarAlt className="text-blue-500" />
+              <span className={getRentStatusColor()}>
+                {format(rentExpiry, "PPP")}
+              </span>
+            </p>
+            <p className={`text-sm flex items-center gap-2 ${daysLeft.color}`}>
+              <FaHourglassHalf />
+              {daysLeft.label}
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Right - Buttons */}
-      <div className="flex flex-wrap items-center gap-2 ml-auto">
+      <div className="flex flex-wrap items-center gap-3 ml-auto">
         <button
-          className={`px-3 py-1.5 rounded-md text-sm font-medium text-white ${
-            customer.smartLockStatus === "locked"
-              ? "bg-red-600"
-              : "bg-green-600"
+          className={`px-4 py-2 rounded-full text-sm font-medium text-white shadow-sm transition-all hover:opacity-90 ${
+            customer.smartLockStatus === "locked" ? "bg-red-500" : "bg-green-500"
           }`}
           onClick={handleLockToggle}
         >
           {customer.smartLockStatus === "locked" ? (
-            <span className="flex items-center gap-1">
+            <span className="flex items-center gap-2">
               <FaUnlock className="text-sm" />
               Unlock
             </span>
           ) : (
-            <span className="flex items-center gap-1">
+            <span className="flex items-center gap-2">
               <FaLock className="text-sm" />
               Lock
             </span>
@@ -155,23 +149,27 @@ export default function CustomerRow({ customer }: customerRowProps) {
 
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-3 py-1.5 rounded-md bg-blue-500 text-white text-sm hover:bg-blue-600 font-medium"
+          className="px-4 py-2 rounded-full bg-blue-500 text-white text-sm font-medium shadow-sm hover:bg-blue-600 transition-all"
         >
           Extend Rent
         </button>
 
-        <button onClick={() => setIsEditOpen(true)} className="p-2 text-gray-500 hover:text-black">
+        <button
+          onClick={() => setIsEditOpen(true)}
+          className="p-2.5 rounded-full bg-gray-100 text-gray-500 hover:text-gray-800 hover:bg-gray-200 transition"
+        >
           <FaEdit className="text-lg" />
         </button>
 
         <button
-          className="p-2 text-red-600 hover:text-red-800"
+          className="p-2.5 rounded-full bg-red-50 text-red-500 hover:bg-red-100 transition"
           onClick={handleDelete}
         >
-          {/* <FaTrash  /> */}
           <RiDeleteBin6Line className="text-lg" />
         </button>
       </div>
+
+      {/* Modals */}
       <ExtendRentModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -185,7 +183,6 @@ export default function CustomerRow({ customer }: customerRowProps) {
         customer={customer}
         onSave={(updatedData) => {
           console.log("Updated customer:", updatedData);
-          // Send to backend or update state
         }}
       />
     </div>

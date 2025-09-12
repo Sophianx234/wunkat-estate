@@ -6,7 +6,7 @@ import { UploadApiResponse } from "cloudinary";
 import { NextRequest, NextResponse } from "next/server";
 import House from "@/models/House";
 
-// ✅ Handle POST (Add Room)
+
 export async function POST(req: NextRequest) {
   try {
     await connectToDatabase();
@@ -19,13 +19,13 @@ export async function POST(req: NextRequest) {
     const available = formData.get("available") === "true";
     const description = formData.get("description") as string;
 
-    const beds = Number(formData.get("beds"));
-    const baths = Number(formData.get("baths"));
+    const beds = Number(formData.get("beds")) || 0;
+    const baths = Number(formData.get("baths")) || 0;
 
-    // ✅ Smart lock fields
-    
+    // ✅ New: plan type
+    const planType = (formData.get("planType") as string);
 
-    // Handle images
+    // ✅ Handle images
     const images: string[] = [];
     const imageFiles = formData.getAll("images") as File[];
 
@@ -35,8 +35,12 @@ export async function POST(req: NextRequest) {
       images.push((result as UploadApiResponse).secure_url);
     }
 
-    const house = await House.findById(houseId).select('smartLockSupport')
-console.log('xxxxxxxxxxx:',house.smartLockSupport)
+    // ✅ Fetch house to check smart lock support
+    const house = await House.findById(houseId).select("smartLockSupport");
+    if (!house) {
+      return NextResponse.json({ error: "House not found" }, { status: 404 });
+    }
+
     // ✅ Create the room
     const room = await Room.create({
       houseId,
@@ -47,15 +51,14 @@ console.log('xxxxxxxxxxx:',house.smartLockSupport)
       images,
       beds,
       baths,
-      smartLockEnabled: house.smartLockSupport || undefined,
-      lockStatus: 'locked' 
-      
-
+      planType, // <-- added here
+      smartLockEnabled: house.smartLockSupport || false,
+      lockStatus: house.smartLockSupport ? "locked" : null,
     });
 
     return NextResponse.json(room, { status: 201 });
   } catch (error) {
-    console.error("Error adding room:", error);
+    console.error("❌ Error adding room:", error);
     return NextResponse.json({ error: "Failed to add room" }, { status: 500 });
   }
 }

@@ -32,6 +32,7 @@ export type roomType = {
   beds: number;
   baths: number;
   smartLockEnabled: boolean;
+  planType:'monthly'| 'yearly'
   
 };
 
@@ -181,7 +182,7 @@ if(isLoading) return <>loading</>
           {/* Highlighted Price */}
 {/* Highlighted Price */}
 <div className="mb-6 p-6 bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 rounded-2xl shadow-lg">
-  <p className="text-gray-300 text-sm tracking-wide uppercase">Monthly Rent</p>
+  <p className="text-gray-300 text-sm tracking-wide uppercase">{room?.planType} Rent</p>
   <p className="mt-2 text-4xl sm:text-5xl font-extrabold text-white drop-shadow-md">
     GHS {room?.price}
   </p>

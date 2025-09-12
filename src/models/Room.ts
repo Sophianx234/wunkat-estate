@@ -12,6 +12,7 @@ export interface IRoom extends mongoose.Document {
   baths: number;
   smartLockEnabled?: boolean;  // ✅ Conditional based on house
   lockStatus?: "locked" | "unlocked";
+  planType?: "monthly" | "yearly"; // ✅ new field
   createdAt: Date;
   updatedAt: Date;
 }
@@ -31,24 +32,16 @@ const RoomSchema: Schema = new Schema(
     // ✅ Smart lock fields
     smartLockEnabled: { type: Boolean, default: false },
     lockStatus: { type: String, enum: ["locked", "unlocked"], default: "locked" },
+
+    // ✅ Plan type field
+    planType: { 
+      type: String, 
+      enum: ["monthly", "yearly"], 
+      default: "monthly" 
+    },
   },
   { timestamps: true }
 );
-
-// Middleware: Ensure room smart lock matches house setting
-/* RoomSchema.pre("save", async function (next) {
-  if (this.houseId) {
-    const House = mongoose.model("House");
-    const house = await House.findById(this.houseId);
-
-    if (!house?.smartLockSupport) {
-      // If house doesn’t support smart locks, force-disable them
-      this.smartLockEnabled = false;
-      this.lockStatus = undefined;
-    }
-  }
-  next();
-}); */
 
 const Room =
   mongoose.models.Room || mongoose.model<IRoom>("Room", RoomSchema);

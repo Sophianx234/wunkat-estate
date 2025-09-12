@@ -10,7 +10,7 @@ export async function GET(
   try {
     await connectToDatabase();
 
-    const { id } = context.params;
+    const { id } = await context.params;
     console.log("idxxx:", id);
 
     if (!id) {
