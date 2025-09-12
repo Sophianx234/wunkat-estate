@@ -2,6 +2,8 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { FaBath, FaBed } from "react-icons/fa";
+import { MdOutlineSquareFoot } from "react-icons/md";
 
 type propertyCardProps = {
   property: {
@@ -21,6 +23,7 @@ type propertyCardProps = {
     size: string;
     price: string;
     status: "available" | "booked" | "pending";
+    plantype: string;
   };
 };
 
@@ -72,16 +75,23 @@ export default function PropertyCard({ property }: propertyCardProps) {
         <p className="text-xs text-gray-500 mb-2 line-clamp-3">
           {property?.description}
         </p>
-
-        <div className="flex flex-wrap gap-2 text-xs text-gray-600 mb-2">
-          <span>{property.beds} Beds</span>
-          <span>{property.baths} Baths</span>
-          <span>{property.size}</span>
+<div className="flex items-center gap-4 text-gray-600 text-sm mb-4">
+          <div className="flex items-center gap-1">
+            <FaBed className="text-gray-500" />
+            <span>{property.beds} Beds</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <FaBath className="text-gray-500" />
+            <span>{property.baths} Baths</span>
+          </div>
+            <span>{property.size}</span>
+          
         </div>
-
         {/* Footer pinned at bottom */}
-        <div className="mt-auto flex justify-between items-center text-sm pt-2">
-          <span className="font-semibold text-gray-800">{property.price}</span>
+        <div className="mt-auto flex  justify-between items-center text-sm pt-2">
+          <span className="font-semibold text-gray-800 flex-col flex leading-tight">{property.price}<span className="italic text-xs font-medium text-gray-500">
+            {property?.plantype.includes("m") ? "/month" : "/year"}
+          </span></span>
           <Button
             onClick={handleReadMore}
             className="text-white text-xs font-medium px-4 py-1"

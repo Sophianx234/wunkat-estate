@@ -24,6 +24,7 @@ interface Room {
   images: string[];
   beds: number;
   baths: number;
+  planType:string;
   houseId?: {
     name: string;
     location: {
@@ -97,6 +98,7 @@ export default function Dashboard() {
               property={{
                 description: room.description,
                 id: room._id,
+                plantype:room.planType,
 
                 name: room.name,
                 location: room.houseId?.location,
