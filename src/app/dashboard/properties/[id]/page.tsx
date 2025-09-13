@@ -1,14 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { startPaystackPayment } from "@/lib/paystackConfig";
+import { useDashStore } from "@/lib/store";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
-import { IoArrowBack } from "react-icons/io5";
-import { startPaystackPayment } from "@/lib/paystackConfig";
+import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { useDashStore } from "@/lib/store";
-import TermsAgreement from "../../_components/TermsAgreement";
+import { IoArrowBack } from "react-icons/io5";
 import TenancyTermsModal from "../../_components/TermsAgreement";
 
 /* type ExpandedPropertyProps = {
@@ -44,7 +43,7 @@ function ExpandedProperty() {
   const router = useRouter();
   const [room, setRoom] = useState<roomType | null>(null);
   const { user } = useDashStore();
-  const price = "1,500";
+  
   const { id: roomId } = useParams();
   useEffect(() => {
     try {
@@ -72,7 +71,7 @@ function ExpandedProperty() {
     
 
     // Convert price string to number and then multiply by 100 (Paystack expects kobo/pesewas)
-    const amount = Number(price.replace(/,/g, "")) * 100;
+    const amount = room?.price as number ;
 
     await startPaystackPayment({
       email: user?.email as string,
