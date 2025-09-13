@@ -142,6 +142,7 @@ export default function TenancyTermsModal({open,setOpen,handlePay}:TenancyTermsM
                   onClick={() => {
                     setOpen(false);
                     setAccepted(false);
+                    handlePay();
                   }}
                 >
                   Accept & Continue

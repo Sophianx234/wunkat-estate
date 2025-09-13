@@ -40,7 +40,7 @@ export type roomType = {
 function ExpandedProperty() {
   const [index, setIndex] = useState(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const router = useRouter();
   const [room, setRoom] = useState<roomType | null>(null);
   const { user } = useDashStore();
@@ -68,8 +68,8 @@ function ExpandedProperty() {
 
   console.log("xx123: ", roomId, user?._id, user?.email);
 
-  const handlePay = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handlePay = async () => {
+    
 
     // Convert price string to number and then multiply by 100 (Paystack expects kobo/pesewas)
     const amount = Number(price.replace(/,/g, "")) * 100;
@@ -204,7 +204,7 @@ function ExpandedProperty() {
           </p>
 
           <button
-            onClick={handlePay}
+            onClick={()=>setOpen(true)}
             className="bg-black text-white px-8 py-4 rounded-lg hover:bg-gray-700 font-bold text-lg transition w-full sm:w-auto"
           >
             Book Now
@@ -228,7 +228,7 @@ function ExpandedProperty() {
           ))}
         </div>
       </div>
-      <TenancyTermsModal open={open} setOpen={setOpen} />
+      <TenancyTermsModal handlePay={handlePay} open={open} setOpen={setOpen} />
       <Toaster />
     </div>
   );
