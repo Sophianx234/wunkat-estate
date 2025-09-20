@@ -6,8 +6,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
 import { IoArrowBack } from "react-icons/io5";
+import { ToastContainer } from "react-toastify";
+import Swal from "sweetalert2";
 import TenancyTermsModal from "../../_components/TermsAgreement";
 
 /* type ExpandedPropertyProps = {
@@ -67,9 +68,24 @@ function ExpandedProperty() {
 
   console.log("xx123: ", roomId, user?._id, user?.email);
 
+  const Toast = Swal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.onmouseenter = Swal.stopTimer;
+    toast.onmouseleave = Swal.resumeTimer;
+  },
+});
+
 const handlePay = async () => {
   if (!user || !room) {
-    toast.error("User or room info missing");
+    Toast.fire({
+      icon: "error",
+      title: "User or room info missing",
+    });
     return;
   }
 
@@ -78,19 +94,20 @@ const handlePay = async () => {
       email: user.email,
       amount: room.price * 100, // convert GHS to kobo
       currency: "GHS",
-      // omit 'reference' so Paystack generates it automatically
     },
     async (response) => {
       if (response.status === "success") {
-        toast.success("Payment successful! Verifying...");
+        Toast.fire({
+          icon: "success",
+          title: "Payment successful! Verifying...",
+        });
 
         try {
-          // Use the reference returned by Paystack
           const res = await fetch("/api/payment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              reference: response.reference, // ← Paystack-generated reference
+              reference: response.reference,
               userId: user._id,
               roomId: room._id,
               amount: room.price,
@@ -101,21 +118,35 @@ const handlePay = async () => {
           const data = await res.json();
 
           if (res.ok) {
-            toast.success("Payment verified and room booked!");
+            Toast.fire({
+              icon: "success",
+              title: "Payment verified and room booked!",
+            });
             setOpen(false);
           } else {
-            toast.error(data.error || "Verification failed");
+            Toast.fire({
+              icon: "error",
+              title: data.error || "Verification failed",
+            });
           }
         } catch (err) {
           console.error(err);
-          toast.error("Error verifying payment");
+          Toast.fire({
+            icon: "error",
+            title: "Error verifying payment",
+          });
         }
       } else {
-        toast.error("Payment cancelled or failed");
+        Toast.fire({
+          icon: "error",
+          title: "Payment cancelled or failed",
+        });
       }
     }
   );
 };
+
+
 
 
 
@@ -245,7 +276,20 @@ const handlePay = async () => {
         </div>
       </div>
       <TenancyTermsModal handlePay={handlePay} open={open} setOpen={setOpen} />
-      <Toaster />
+      <ToastContainer
+  position="top-right"
+  autoClose={4000}
+  hideProgressBar={false}
+  newestOnTop={true}
+  closeOnClick
+  rtl={false}
+  pauseOnFocusLoss
+  draggable
+  pauseOnHover
+  theme="colored"   // makes success/error have notifier-style colors
+/>
+
+
     </div>
   );
 }

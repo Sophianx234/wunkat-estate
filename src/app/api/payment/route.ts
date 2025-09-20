@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 
     // ✅ Verify with Paystack
     const res = await fetch(`https://api.paystack.co/transaction/verify/${reference}`, {
-      headers: { Authorization: `Bearer ${process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY}` },
+      headers: { Authorization: `Bearer ${process.env.NEXT_PUBLIC_PAYSTACK_LIVE_KEY}` },
     });
     const data = await res.json();
 
@@ -21,6 +21,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Payment verification failed" }, { status: 400 });
     }
 
+    const paymentMethod = data.data.channel;
+    console.log("Payment method:", paymentMethod);
     // ✅ Calculate expiry date
     const expiresAt = new Date();
     expiresAt.setMonth(expiresAt.getMonth() + duration); // e.g. 1 month rent
@@ -31,7 +33,7 @@ export async function POST(req: NextRequest) {
       roomId,
       amount,
       reference,
-      status: "success",
+      paymentMethod,
       expiresAt,
     });
 
