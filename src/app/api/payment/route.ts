@@ -34,6 +34,7 @@ export async function POST(req: NextRequest) {
       amount,
       reference,
       paymentMethod,
+      status: "completed",
       expiresAt,
     });
 

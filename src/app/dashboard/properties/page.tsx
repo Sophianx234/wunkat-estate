@@ -15,7 +15,7 @@ const ExpandedProperty = dynamic(
   }
 );
 
-interface Room {
+export interface IRoom {
   _id: string;
   name: string;
   description: string;
@@ -25,6 +25,7 @@ interface Room {
   beds: number;
   baths: number;
   planType:string;
+  status: string;
   houseId?: {
     name: string;
     location: {
@@ -43,7 +44,7 @@ export default function Dashboard() {
     openExpandedProperty,
   } = useDashStore();
 
-  const [rooms, setRooms] = useState<Room[]>([]);
+  const [rooms, setRooms] = useState<IRoom[]>([]);
   const [loading, setLoading] = useState(true);
   console.log("roomsx", rooms);
 
@@ -95,20 +96,7 @@ export default function Dashboard() {
           {rooms.map((room) => (
             <PropertyCard
               key={room._id}
-              property={{
-                description: room.description,
-                id: room._id,
-                plantype:room.planType,
-
-                name: room.name,
-                location: room.houseId?.location,
-                beds: room.beds || 0, // If you have beds in your schema, replace this
-                baths: room.baths || 0, // If you have baths in your schema, replace this
-                size: "",
-                price: `$${room.price}`,
-                image: room.images[0] || "/placeholder.jpg",
-                status: room.available ? "available" : "booked",
-              }}
+              room={room}
             />
           ))}
         </div>

@@ -8,8 +8,9 @@ export interface IPayment extends mongoose.Document {
   status: "pending" | "completed" | "failed";
   paymentMethod: "card" | "mobile_money" | "paypal";
   reference: string;
-  createdAt: Date;
+  expiresAt: Date
   updatedAt: Date;
+  createdAt: Date;
 }
 
 const PaymentSchema = new Schema(
@@ -29,6 +30,10 @@ const PaymentSchema = new Schema(
       required: true,
     },
     reference: { type: String, unique: true, required: true },
+    expiresAt: {
+      type: Date,
+      required: [true,'expires at required ']
+    }
   },
   { timestamps: true }
 );
