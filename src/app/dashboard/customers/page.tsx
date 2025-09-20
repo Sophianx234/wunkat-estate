@@ -1,14 +1,7 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardTitle
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Plus } from "lucide-react";
 import { useState } from "react";
-import CustomersTable from "../_components/CustomerTable";
+import CustomerRow from "../_components/CustomerRow";
+import FilterBar from "../_components/FilterBar";
 
 const customerx = [
   {
@@ -78,77 +71,49 @@ const customerx = [
   },
 ];
 
+
 export default function CustomersPage() {
   const [customers] = useState(customerx);
-  const [newCustomer, setNewCustomer] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    location: "",
-    apartment: "",
-  });
+  const [filtered, setFiltered] = useState(customerx);
 
-  const handleAddCustomer = () => {
-    if (!newCustomer.name || !newCustomer.email) return;
-    // You can push to state or backend here
-    setNewCustomer({
-      name: "",
-      email: "",
-      phone: "",
-      location: "",
-      apartment: "",
-    });
+  const handleFilter = (filters: {
+    search: string;
+    rentStatus: string;
+    lockStatus: string;
+  }) => {
+    let result = [...customers];
+
+    if (filters.search) {
+      result = result.filter((c) =>
+        [c.name, c.email, c.roomNumber].some((field) =>
+          field.toLowerCase().includes(filters.search.toLowerCase())
+        )
+      );
+    }
+
+    if (filters.rentStatus) {
+      result = result.filter((c) => c.rentStatus === filters.rentStatus);
+    }
+
+    if (filters.lockStatus) {
+      result = result.filter((c) => c.smartLockStatus === filters.lockStatus);
+    }
+
+    setFiltered(result);
   };
 
   return (
     <div className="p-6 space-y-6 mt-24 sm:mt-0">
-      {/* Add new customer card */}
-      <Card className="p-4">
-        <CardTitle className="text-lg mb-4">Add New Customer</CardTitle>
-        <div className="grid sm:grid-cols-5 gap-4">
-          <Input
-            placeholder="Full Name"
-            value={newCustomer.name}
-            onChange={(e) =>
-              setNewCustomer({ ...newCustomer, name: e.target.value })
-            }
-          />
-          <Input
-            placeholder="Email"
-            value={newCustomer.email}
-            onChange={(e) =>
-              setNewCustomer({ ...newCustomer, email: e.target.value })
-            }
-          />
-          <Input
-            placeholder="Phone"
-            value={newCustomer.phone}
-            onChange={(e) =>
-              setNewCustomer({ ...newCustomer, phone: e.target.value })
-            }
-          />
-          <Input
-            placeholder="Location"
-            value={newCustomer.location}
-            onChange={(e) =>
-              setNewCustomer({ ...newCustomer, location: e.target.value })
-            }
-          />
-          <Input
-            placeholder="Apartment"
-            value={newCustomer.apartment}
-            onChange={(e) =>
-              setNewCustomer({ ...newCustomer, apartment: e.target.value })
-            }
-          />
-        </div>
-        <Button className="mt-4" onClick={handleAddCustomer}>
-          <Plus className="w-4 h-4 mr-2" /> Add Customer
-        </Button>
-      </Card>
+      <FilterBar onFilter={handleFilter} />
 
-      {/* Customers Table (TanStack + CustomerRow) */}
-      <CustomersTable data={customers} />
+      <div className="space-y-4">
+        {filtered.map((customer) => (
+          <CustomerRow key={customer.id} customer={customer} />
+        ))}
+        {filtered.length === 0 && (
+          <p className="text-center text-gray-500">No customers found.</p>
+        )}
+      </div>
     </div>
   );
 }

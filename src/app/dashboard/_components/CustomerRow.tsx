@@ -37,18 +37,18 @@ export default function CustomerRow({ customer }: customerRowProps) {
   };
 
   const getRentStatusColor = () => {
-    if (isPast(rentExpiry)) return "text-red-600";
-    if (isBefore(rentExpiry, addDays(today, 7))) return "text-yellow-500";
-    return "text-green-600";
+    if (isPast(rentExpiry)) return "text-gray-700";
+    if (isBefore(rentExpiry, addDays(today, 7))) return "text-gray-500";
+    return "text-black";
   };
 
   const getDaysLeft = () => {
     const days = differenceInCalendarDays(rentExpiry, today);
-    if (days < 0) return { label: "Expired", color: "text-red-600" };
-    if (days === 0) return { label: "Expires today", color: "text-yellow-600" };
+    if (days < 0) return { label: "Expired", color: "text-red-400" };
+    if (days === 0) return { label: "Expires today", color: "text-gray-500" };
     return {
       label: `${days} day${days > 1 ? "s" : ""} left`,
-      color: "text-green-600",
+      color: "text-black",
     };
   };
 
@@ -62,7 +62,7 @@ export default function CustomerRow({ customer }: customerRowProps) {
       text: `Are you sure you want to ${isLocked ? "unlock" : "lock"} this room?`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: isLocked ? "#16a34a" : "#dc2626",
+      confirmButtonColor: isLocked ? "#000000" : "#000000",
       cancelButtonColor: "#6b7280",
       confirmButtonText: isLocked ? "Yes, Unlock it!" : "Yes, Lock it!",
     });
@@ -82,7 +82,7 @@ export default function CustomerRow({ customer }: customerRowProps) {
       text: "This action cannot be undone!",
       icon: "error",
       showCancelButton: true,
-      confirmButtonColor: "#dc2626",
+      confirmButtonColor: "#000000",
       cancelButtonColor: "#6b7280",
       confirmButtonText: "Yes, Delete",
     });
@@ -93,10 +93,10 @@ export default function CustomerRow({ customer }: customerRowProps) {
   };
 
   return (
-    <div className="group bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 transition-all duration-300 hover:shadow-lg hover:border-gray-200">
-      {/* Left - Image + Info */}
-      <div className="flex items-center gap-5 w-full sm:w-auto">
-        <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-gray-100 group-hover:ring-blue-200 transition">
+    <div className="group bg-white rounded-3xl shadow-md border border-gray-200 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-6 transition-all hover:shadow-lg">
+      {/* Left - Avatar + Info */}
+      <div className="flex items-center gap-5 min-w-0">
+        <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-gray-100 transition-all group-hover:ring-gray-500">
           <Image
             src={customer.image || "/avatars/default.jpg"}
             alt={customer.name}
@@ -105,65 +105,65 @@ export default function CustomerRow({ customer }: customerRowProps) {
           />
         </div>
 
-        <div>
-          <h3 className="text-lg font-semibold text-gray-800">{customer.name}</h3>
-          <p className="text-sm text-gray-500">
+        <div className="flex flex-col min-w-0">
+          <h3 className="text-lg font-bold text-black truncate">{customer.name}</h3>
+          <p className="text-sm text-gray-500 truncate">
             {customer.apartment} — Room {customer.roomNumber}
           </p>
 
           <div className="mt-2 space-y-1">
-            <p className="text-sm flex items-center gap-2">
-              <FaCalendarAlt className="text-blue-500" />
-              <span className={getRentStatusColor()}>
-                {format(rentExpiry, "PPP")}
-              </span>
+            <p className="text-sm flex items-center gap-2 font-medium">
+              <FaCalendarAlt className="shrink-0 text-black" />
+              <span className={getRentStatusColor()}>{format(rentExpiry, "PPP")}</span>
             </p>
-            <p className={`text-sm flex items-center gap-2 ${daysLeft.color}`}>
-              <FaHourglassHalf />
+            <p className={`text-sm flex items-center gap-2 font-medium ${daysLeft.color}`}>
+              <FaHourglassHalf className="shrink-0 text-black" />
               {daysLeft.label}
             </p>
           </div>
         </div>
       </div>
 
-      {/* Right - Buttons */}
-      <div className="flex flex-wrap items-center gap-3 ml-auto">
+      {/* Right - Actions */}
+      <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 sm:ml-auto">
+        {/* Lock/Unlock */}
         <button
-          className={`px-4 py-2 rounded-full text-sm font-medium text-white shadow-sm transition-all hover:opacity-90 ${
-            customer.smartLockStatus === "locked" ? "bg-red-500" : "bg-green-500"
-          }`}
           onClick={handleLockToggle}
+          className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-white shadow-sm transition hover:opacity-90 ${
+            customer.smartLockStatus === "locked" ? "bg-black" : "bg-gray-800"
+          }`}
         >
           {customer.smartLockStatus === "locked" ? (
-            <span className="flex items-center gap-2">
-              <FaUnlock className="text-sm" />
-              Unlock
-            </span>
+            <>
+              <FaUnlock className="text-sm" /> Unlock
+            </>
           ) : (
-            <span className="flex items-center gap-2">
-              <FaLock className="text-sm" />
-              Lock
-            </span>
+            <>
+              <FaLock className="text-sm" /> Lock
+            </>
           )}
         </button>
 
+        {/* Extend Rent */}
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2 rounded-full bg-blue-500 text-white text-sm font-medium shadow-sm hover:bg-blue-600 transition-all"
+          className="px-4 py-2 rounded-full bg-black text-white text-sm font-medium shadow-sm hover:bg-gray-800 transition"
         >
           Extend Rent
         </button>
 
+        {/* Edit */}
         <button
           onClick={() => setIsEditOpen(true)}
-          className="p-2.5 rounded-full bg-gray-100 text-gray-500 hover:text-gray-800 hover:bg-gray-200 transition"
+          className="p-2.5 flex items-center justify-center rounded-full bg-gray-100 text-black hover:text-white hover:bg-black transition"
         >
           <FaEdit className="text-lg" />
         </button>
 
+        {/* Delete */}
         <button
-          className="p-2.5 rounded-full bg-red-50 text-red-500 hover:bg-red-100 transition"
           onClick={handleDelete}
+          className="p-2.5 flex items-center justify-center rounded-full bg-red-50 text-red-500 hover:bg-red-100 transition"
         >
           <RiDeleteBin6Line className="text-lg" />
         </button>
