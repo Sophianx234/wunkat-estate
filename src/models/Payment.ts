@@ -17,7 +17,7 @@ const PaymentSchema = new Schema(
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     roomId: { type: Schema.Types.ObjectId, ref: "Room", required: true },
     amount: { type: Number, required: true },
-    currency: { type: String, default: "USD" },
+    currency: { type: String, default: "Cedi" },
     status: {
       type: String,
       enum: ["pending", "completed", "failed"],

@@ -1,47 +1,41 @@
-export interface PaystackResponse {
-  reference: string;
-  trans: string;
-  status: "success" | "failed" | "abandoned";
-  message: string;
-  transaction: string;
-  trxref: string;
-}
-
-export async function startPaystackPayment({
-  email,
-  amount,
-  onSuccess,
-  onClose,
-}: {
+// /lib/paystackConfig.ts
+export type PaystackPaymentData = {
   email: string;
-  amount: number; // in GHS
-  onSuccess: (ref: PaystackResponse) => void;
-  onClose: () => void;
-}) {
-  if (typeof window === "undefined") return;
+  amount: number; // in kobo
+  currency?: string;
+};
 
-  const { default: loadPaystackScript } = await import("@paystack/inline-js");
-  await new loadPaystackScript();
+export const startPaystackPayment = (
+  paymentData: PaystackPaymentData,
+  callback: (response: { status: "success" | "cancelled"; [key: string]: any }) => void
+) => {
+  if (typeof window === "undefined") return; // Ensure client-side
 
-  interface PaystackPop {
-    setup(options: {
-      key: string;
-      email: string;
-      amount: number;
-      currency: string;
-      callback: (response: PaystackResponse) => void;
-      onClose: () => void;
-    }): { openIframe: () => void };
+  // Load Paystack script dynamically if not already loaded
+  if (!(window as any).PaystackPop) {
+    const script = document.createElement("script");
+    script.src = "https://js.paystack.co/v1/inline.js";
+    script.async = true;
+    script.onload = () => openPaystack(paymentData, callback);
+    document.body.appendChild(script);
+  } else {
+    openPaystack(paymentData, callback);
   }
+};
 
-  const handler = ((window as unknown as { PaystackPop: PaystackPop }).PaystackPop).setup({
-    key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY!,
+const openPaystack = (
+  { email, amount, reference, currency }: PaystackPaymentData,
+  callback: (response: { status: "success" | "cancelled"; [key: string]: any }) => void
+) => {
+  const handler = (window as any).PaystackPop.setup({
+    key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY, // Public key from env
     email,
-    amount: amount * 100, // convert GHS → pesewas
-    currency: "GHS",
-    callback: onSuccess,
-    onClose,
+    amount,
+    currency: currency || "GHS",
+    ref: reference,
+    onClose: () => callback({ status: "cancelled" }),
+    callback: (res: any) => callback({ status: "success", ...res }),
   });
 
   handler.openIframe();
-}
+};

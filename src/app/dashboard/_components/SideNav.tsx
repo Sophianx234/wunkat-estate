@@ -90,7 +90,7 @@ export default function Sidebar({
           >
             <RiBuilding2Line className="size-6" /> Properties
           </Link>
-          <Link
+        {/*   <Link
             onClick={toggleSidebar}
             href="/dashboard/agents"
             className={`dash-nav-item ${
@@ -98,15 +98,15 @@ export default function Sidebar({
             }`}
           >
             <HiOutlineUsers className="size-6" /> Agents
-          </Link>
+          </Link> */}
           <Link
             onClick={toggleSidebar}
-            href="/dashboard/customers"
+            href="/dashboard/tenants"
             className={`dash-nav-item ${
-              pathname === "/dashboard/customers" ? "bg-black text-white" : ""
+              pathname === "/dashboard/tenants" ? "bg-black text-white" : ""
             }`}
           >
-            <MdAccountCircle className="size-6" /> Customers
+            <MdAccountCircle className="size-6" /> Tenants
           </Link>
           <Link
             onClick={toggleSidebar}
@@ -119,15 +119,7 @@ export default function Sidebar({
           >
             <TbHomePlus className="size-6" /> Transactions
           </Link>
-          <Link
-            onClick={toggleSidebar}
-            href="/dashboard/messages/chatfeed"
-            className={`dash-nav-item ${
-              pathname === "/dashboard/messages/chatfeed" ? "bg-black text-white" : ""
-            }`}
-          >
-            <MdMessage className="size-6" /> Message
-          </Link>
+         
           <Link
             onClick={toggleSidebar}
             href="/dashboard/account"

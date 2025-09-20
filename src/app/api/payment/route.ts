@@ -8,10 +8,12 @@ export async function POST(req: NextRequest) {
   try {
     await connectToDatabase();
     const { reference, userId, roomId, amount, duration } = await req.json();
+    console.log('damina')
+    console.log(reference,userId,roomId,amount,duration)
 
     // ✅ Verify with Paystack
     const res = await fetch(`https://api.paystack.co/transaction/verify/${reference}`, {
-      headers: { Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}` },
+      headers: { Authorization: `Bearer ${process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY}` },
     });
     const data = await res.json();
 

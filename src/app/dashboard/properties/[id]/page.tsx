@@ -67,42 +67,59 @@ function ExpandedProperty() {
 
   console.log("xx123: ", roomId, user?._id, user?.email);
 
-  const handlePay = async () => {
-    
+const handlePay = async () => {
+  if (!user || !room) {
+    toast.error("User or room info missing");
+    return;
+  }
 
-    // Convert price string to number and then multiply by 100 (Paystack expects kobo/pesewas)
-    const amount = room?.price as number ;
+  startPaystackPayment(
+    {
+      email: user.email,
+      amount: room.price * 100, // convert GHS to kobo
+      currency: "GHS",
+      // omit 'reference' so Paystack generates it automatically
+    },
+    async (response) => {
+      if (response.status === "success") {
+        toast.success("Payment successful! Verifying...");
 
-    await startPaystackPayment({
-      email: user?.email as string,
-      amount,
-      callback: async (res: { reference: string }) => {
         try {
-          const response = await fetch("/api/payments", {
+          // Use the reference returned by Paystack
+          const res = await fetch("/api/payment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              reference: res.reference,
-              userId: user?._id,
-              roomId: roomId,
-              amount: amount / 100, // save in normal GHS
-              duration: 1,
+              reference: response.reference, // ← Paystack-generated reference
+              userId: user._id,
+              roomId: room._id,
+              amount: room.price,
+              duration: room.planType === "monthly" ? 1 : 12,
             }),
           });
 
-          if (!response.ok) throw new Error("Verification failed");
+          const data = await res.json();
 
-          toast.success("✅ Payment verified & saved!");
+          if (res.ok) {
+            toast.success("Payment verified and room booked!");
+            setOpen(false);
+          } else {
+            toast.error(data.error || "Verification failed");
+          }
         } catch (err) {
           console.error(err);
-          toast.error("❌ Error verifying payment");
+          toast.error("Error verifying payment");
         }
-      },
-      onClose: () => {
-        toast("⚠️ Transaction was closed", { icon: "⚠️" });
-      },
-    });
-  };
+      } else {
+        toast.error("Payment cancelled or failed");
+      }
+    }
+  );
+};
+
+
+
+
 
   if (isLoading) return <>loading</>;
   const nextImage = () =>

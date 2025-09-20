@@ -17,9 +17,10 @@ import {
 } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Swal from "sweetalert2";
-import { Customer } from "../customers/page";
+import { Customer } from "../tenants/page";
 import EditCustomerModal from "./EditCuserModal";
 import ExtendRentModal from "./ExtendRentModal";
+import Link from "next/link";
 
 type customerRowProps = {
   customer: Customer;
@@ -59,7 +60,9 @@ export default function CustomerRow({ customer }: customerRowProps) {
 
     const result = await Swal.fire({
       title: isLocked ? "Unlock Room?" : "Lock Room?",
-      text: `Are you sure you want to ${isLocked ? "unlock" : "lock"} this room?`,
+      text: `Are you sure you want to ${
+        isLocked ? "unlock" : "lock"
+      } this room?`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: isLocked ? "#000000" : "#000000",
@@ -70,7 +73,9 @@ export default function CustomerRow({ customer }: customerRowProps) {
     if (result.isConfirmed) {
       Swal.fire(
         isLocked ? "Unlocked!" : "Locked!",
-        `Room ${customer.roomNumber} has been ${isLocked ? "unlocked" : "locked"}.`,
+        `Room ${customer.roomNumber} has been ${
+          isLocked ? "unlocked" : "locked"
+        }.`,
         "success"
       );
     }
@@ -106,7 +111,9 @@ export default function CustomerRow({ customer }: customerRowProps) {
         </div>
 
         <div className="flex flex-col min-w-0">
-          <h3 className="text-lg font-bold text-black truncate">{customer.name}</h3>
+          <h3 className="text-lg font-bold text-black truncate">
+            {customer.name}
+          </h3>
           <p className="text-sm text-gray-500 truncate">
             {customer.apartment} — Room {customer.roomNumber}
           </p>
@@ -114,9 +121,13 @@ export default function CustomerRow({ customer }: customerRowProps) {
           <div className="mt-2 space-y-1">
             <p className="text-sm flex items-center gap-2 font-medium">
               <FaCalendarAlt className="shrink-0 text-black" />
-              <span className={getRentStatusColor()}>{format(rentExpiry, "PPP")}</span>
+              <span className={getRentStatusColor()}>
+                {format(rentExpiry, "PPP")}
+              </span>
             </p>
-            <p className={`text-sm flex items-center gap-2 font-medium ${daysLeft.color}`}>
+            <p
+              className={`text-sm flex items-center gap-2 font-medium ${daysLeft.color}`}
+            >
               <FaHourglassHalf className="shrink-0 text-black" />
               {daysLeft.label}
             </p>
@@ -130,7 +141,7 @@ export default function CustomerRow({ customer }: customerRowProps) {
         <button
           onClick={handleLockToggle}
           className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-white shadow-sm transition hover:opacity-90 ${
-            customer.smartLockStatus === "locked" ? "bg-black" : "bg-gray-800"
+            customer.smartLockStatus === "locked" ? "bg-black" : "bg-gray-950"
           }`}
         >
           {customer.smartLockStatus === "locked" ? (
@@ -151,6 +162,12 @@ export default function CustomerRow({ customer }: customerRowProps) {
         >
           Extend Rent
         </button>
+        <Link
+          href={`/dashboard/tenants/${customer.id}`}
+          className="px-4 py-2 rounded-full bg-black text-white text-sm font-medium shadow-sm hover:bg-gray-800 transition"
+        >
+          View
+        </Link>
 
         {/* Edit */}
         <button

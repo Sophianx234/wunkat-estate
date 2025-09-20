@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useState } from 'react';
-import { Customer } from '../customers/page';
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment, useState } from "react";
+import { Customer } from "../tenants/page";
 
 type EditCustomerModalProps = {
   isOpen: boolean;
@@ -55,7 +55,9 @@ export default function EditCustomerModal({
             leaveTo="opacity-0 scale-90"
           >
             <Dialog.Panel className="bg-white max-w-lg w-full rounded-lg shadow-xl p-6 space-y-4">
-              <Dialog.Title className="text-lg font-bold mb-2">Edit Customer</Dialog.Title>
+              <Dialog.Title className="text-lg font-bold mb-2">
+                Edit Customer
+              </Dialog.Title>
 
               <input
                 type="text"

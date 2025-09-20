@@ -20,7 +20,6 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const stats = [
   { title: "No. of Properties", value: 5467, change: -3.22, icon: Home },
-  { title: "Regi. Agents", value: 607, change: +5.54, icon: Users },
   { title: "Customers", value: 5467, change: -2.33, icon: Users },
   { title: "Revenue", value: 5467, change: +4.25, icon: DollarSign },
 ];
@@ -92,11 +91,11 @@ const DashboardAnalytics: FC = () => {
   return (
     <div className="grid gap-6 mb-3">
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {stats.map((stat) => (
           <Card
             key={stat.title}
-            className="p-5 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-white to-gray-50 border"
+            className="p-5 rounded-2xl shadow-md  transition-shadow duration-300 bg-gradient-to-br from-white to-gray-50 border"
           >
             <div className="flex items-center justify-between w-full">
               <div>

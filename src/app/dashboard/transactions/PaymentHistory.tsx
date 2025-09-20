@@ -24,7 +24,7 @@ export default function PaymentHistory() {
         <div className="bg-white p-4 rounded-xl shadow flex items-center justify-between">
           <div>
             <p className="text-sm text-gray-500">Properties</p>
-            <p className="text-2xl font-bold text-gray-800 mt-1">2 Properties</p>
+            <p className="text-2xl font-bold text-gray-800 mt-1">1 Property</p>
           </div>
           <MdOutlineHomeWork className="text-blue-600 w-8 h-8" />
         </div>
