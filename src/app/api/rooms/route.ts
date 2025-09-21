@@ -64,13 +64,53 @@ export async function POST(req: NextRequest) {
 }
 
 // ✅ Optional GET to list all rooms
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     await connectToDatabase();
-    const rooms = await Room.find().populate("houseId", "name location smartLockEnabled");
-    return NextResponse.json(rooms);
+
+    // ✅ extract query params
+    const { searchParams } = new URL(req.url);
+    const search = searchParams.get("search") || "";
+    const type = searchParams.get("type") || "";
+    const city = searchParams.get("city") || "";
+    const status = searchParams.get("status") || "";
+
+    // ✅ build filter dynamically
+    const filter: any = {};
+
+    if (search) {
+      // fuzzy match on description or name
+      filter.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+      ];
+    }
+
+
+    if (status) {
+      filter.status = status; // e.g. available / booked / pending
+    }
+
+    
+
+    // ✅ query database
+    const rooms = await Room.find(filter)
+      .populate({
+        path: "houseId",
+        select: "name location smartLockEnabled",
+        match: city ? { location: city } : {}, // ✅ filter inside populated field
+      })
+      .lean();
+
+    // ✅ remove rooms where house didn't match city
+    const filteredRooms = city ? rooms.filter((r) => r.houseId) : rooms;
+
+    return NextResponse.json(filteredRooms);
   } catch (error) {
     console.error("Error fetching rooms:", error);
-    return NextResponse.json({ error: "Failed to fetch rooms" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch rooms" },
+      { status: 500 }
+    );
   }
 }

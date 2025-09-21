@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -10,7 +9,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { FaSearch, FaRedo, FaHome, FaMapMarkerAlt, FaCheckCircle, FaEraser, FaTimesCircle } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { FaCheckCircle, FaHome, FaMapMarkerAlt, FaSearch } from "react-icons/fa";
+import { FiFilter } from "react-icons/fi";
+import { RiMenu4Line } from "react-icons/ri";
 
 type FiltersProps = {
   onFilter: (filters: {
@@ -26,10 +29,35 @@ export default function Filters({ onFilter }: FiltersProps) {
   const [type, setType] = useState("");
   const [city, setCity] = useState("");
   const [status, setStatus] = useState("");
+  const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
-    onFilter({ search, type, city, status });
+
+    // ✅ build query string properly
+    const params = new URLSearchParams();
+    if (search) params.set("search", search);
+    if (type) params.set("type", type);
+    if (city) params.set("city", city);
+    if (status) params.set("status", status);
+  const queryString = params.toString();
+    // ✅ push new URL with query params
+    router.push(`?${params.toString()}`);
+
+      try {
+    // ✅ request filtered rooms from backend
+    const res = await fetch(`/api/rooms?${queryString}`);
+    const data = await res.json();
+
+    if (res.ok) {
+      // 🔥 pass data to parent (so it can render)
+      console.log('data',data);
+    } else {
+      console.error("Error fetching rooms:", data.error);
+    }
+  } catch (error) {
+    console.error("Request failed:", error);
+  }
   };
 
   const handleReset = () => {
@@ -105,12 +133,20 @@ export default function Filters({ onFilter }: FiltersProps) {
       {/* Buttons */}
         
        <Button
+  variant="outline"
+  
+  className="text-sm px-4 py-2 rounded-lg flex items-center gap-2"
+>
+  <FiFilter className="w-4 h-4" />
+  Filter
+</Button>
+       <Button
   type="button"
   variant="outline"
   onClick={handleReset}
   className="text-sm px-4 py-2 rounded-lg flex items-center gap-2"
 >
-  <FaTimesCircle className="w-4 h-4" />
+  <RiMenu4Line className="w-4 h-4" />
   Reset
 </Button>
     </form>
