@@ -11,9 +11,11 @@ import {
 } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { FaCheckCircle, FaHome, FaMapMarkerAlt, FaSearch } from "react-icons/fa";
+import { FaCheckCircle, FaMapMarkerAlt, FaSearch } from "react-icons/fa";
 import { FiFilter } from "react-icons/fi";
+import { GiRoundKnob } from "react-icons/gi";
 import { RiMenu4Line } from "react-icons/ri";
+import { ghanaRegions } from "../properties/add-house/page";
 
 type FiltersProps = {
   onFilter: (filters: {
@@ -89,12 +91,12 @@ export default function Filters({ onFilter }: FiltersProps) {
       <div className="relative ">
         <Select value={type} onValueChange={setType}>
           <SelectTrigger className="pl-9 text-sm rounded-lg">
-            <SelectValue placeholder="Property Type" />
+            <SelectValue placeholder="Smart Lock" />
           </SelectTrigger>
-          <FaHome className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+          <GiRoundKnob className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
           <SelectContent>
-            <SelectItem value="room">Room</SelectItem>
-            <SelectItem value="house">House</SelectItem>
+            <SelectItem value="true">True</SelectItem>
+            <SelectItem value="false">False</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -107,9 +109,11 @@ export default function Filters({ onFilter }: FiltersProps) {
           </SelectTrigger>
           <FaMapMarkerAlt className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
           <SelectContent>
-            <SelectItem value="accra">Accra</SelectItem>
-            <SelectItem value="kumasi">Kumasi</SelectItem>
-            <SelectItem value="tamale">Tamale</SelectItem>
+            {ghanaRegions.map((region) => (
+              <SelectItem key={region} value={region}>
+                {region}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>

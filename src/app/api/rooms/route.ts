@@ -71,13 +71,15 @@ export async function GET(req: NextRequest) {
     // ✅ extract query params
     const { searchParams } = new URL(req.url);
     const search = searchParams.get("search") || "";
-    const type = searchParams.get("type") || "";
+    const type:boolean = Boolean(searchParams.get("type")) || false;
     const city = searchParams.get("city") || "";
     const status = searchParams.get("status") || "";
 
     // ✅ build filter dynamically
-    const filter: any = {};
+    
 
+      const filter: any = {};
+      
     if (search) {
       // fuzzy match on description or name
       filter.$or = [
@@ -90,27 +92,33 @@ export async function GET(req: NextRequest) {
     if (status) {
       filter.status = status; // e.g. available / booked / pending
     }
+    if (type) {
+      console.log('type',type)
+      filter.smartLockEnabled = type; // e.g. available / booked / pending
+    }
 
+    console.log('filter',filter)
     
-
     // ✅ query database
     const rooms = await Room.find(filter)
       .populate({
         path: "houseId",
         select: "name location smartLockEnabled",
-        match: city ? { location: city } : {}, // ✅ filter inside populated field
+         match: { "location.region": city } , // ✅ filter inside populated field
       })
       .lean();
-
-    // ✅ remove rooms where house didn't match city
-    const filteredRooms = city ? rooms.filter((r) => r.houseId) : rooms;
-
-    return NextResponse.json(filteredRooms);
-  } catch (error) {
-    console.error("Error fetching rooms:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch rooms" },
-      { status: 500 }
-    );
-  }
+      
+      // console.log('rooms',rooms)
+      // ✅ remove rooms where house didn't match city
+      const filteredRooms = city ? rooms.filter((r) => r.houseId) : rooms;
+      console.log('filteredRooms',filteredRooms)
+      
+      return NextResponse.json(filteredRooms);
+    }catch (error) {
+      console.error("Error fetching rooms:", error);
+      return NextResponse.json(
+        { error: "Failed to fetch rooms" },
+        { status: 500 }
+      );
+    }
 }

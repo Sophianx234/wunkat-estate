@@ -18,7 +18,7 @@ import { z } from 'zod';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 
-const ghanaRegions = [
+export const ghanaRegions = [
   'Ahafo', 'Ashanti', 'Bono', 'Bono East', 'Central', 'Eastern', 'Greater Accra',
   'North East', 'Northern', 'Oti', 'Savannah', 'Upper East', 'Upper West',
   'Volta', 'Western', 'Western North',
