@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import Filters from "../_components/Filters";
 import PropertyCard from "../_components/PropertyCard";
+import { ScaleLoader } from "react-spinners";
 
 const ExpandedProperty = dynamic(
   () => import("../_components/ExpandedProperty"),
@@ -20,11 +21,11 @@ export interface IRoom {
   name: string;
   description: string;
   price: number;
-  available: boolean;
+  available?: boolean;
   images: string[];
   beds: number;
   baths: number;
-  planType:string;
+  planType: string;
   status: string;
   houseId?: {
     name: string;
@@ -39,10 +40,7 @@ export interface IRoom {
 }
 
 export default function Dashboard() {
-  const {
-    
-    openExpandedProperty,
-  } = useDashStore();
+  const { openExpandedProperty, filteredRooms } = useDashStore();
 
   const [rooms, setRooms] = useState<IRoom[]>([]);
   const [loading, setLoading] = useState(true);
@@ -51,6 +49,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchRooms = async () => {
       try {
+        setLoading(true);
         const res = await fetch("/api/rooms");
         if (!res.ok) throw new Error("Failed to fetch rooms");
         const data = await res.json();
@@ -77,8 +76,7 @@ export default function Dashboard() {
             <FaPlus /> Add Property
           </Link>
           <Link
-          href='properties/add-house'
-            
+            href="properties/add-house"
             className="bg-black text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2"
           >
             <FaPlus /> House
@@ -86,19 +84,30 @@ export default function Dashboard() {
         </div>
       </div>
 
-
       <Filters />
 
       {loading ? (
-        <p>Loading rooms...</p>
+        <div className="flex justify-center items-center">
+          <ScaleLoader color="#868e96"  />
+        </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {rooms.map((room) => (
-            <PropertyCard
-              key={room._id}
-              room={room}
-            />
-          ))}
+          {filteredRooms ? (
+            filteredRooms.length > 0 ? (
+              filteredRooms.map((room) => (
+                <PropertyCard key={room._id} room={room} />
+              ))
+            ) : (
+              <p className="col-span-full text-center text-gray-500">
+                No results match your filters.
+                <br />
+                Press <span className="font-semibold">Reset</span> in the filter
+                panel to see all rooms again.
+              </p>
+            )
+          ) : (
+            rooms.map((room) => <PropertyCard key={room._id} room={room} />)
+          )}
         </div>
       )}
 

@@ -92,9 +92,12 @@ export async function GET(req: NextRequest) {
     if (status) {
       filter.status = status; // e.g. available / booked / pending
     }
-    if (type) {
+    
+    
+    
+    if (type !== undefined) {
       console.log('type',type)
-      filter.smartLockEnabled = type; // e.g. available / booked / pending
+      filter.smartLockEnabled = type;
     }
 
     console.log('filter',filter)

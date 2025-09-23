@@ -24,7 +24,6 @@ export default function PropertyCard({ room }: propertyCardProps) {
         return "bg-gray-100 text-gray-600";
     }
   };
- const status =  room.available ? "available" : "booked"
   const handleReadMore = () => {
     router.push(`properties/${room._id}`);
   };
@@ -41,10 +40,10 @@ export default function PropertyCard({ room }: propertyCardProps) {
         />
         <span
           className={`absolute top-2 left-2 px-3 py-1 text-xs font-medium rounded-full ${getStatusStyle(
-            status
+            room?.status
           )}`}
         >
-          {status.charAt(0).toUpperCase() + status.slice(1)}
+          {room?.status.charAt(0).toUpperCase() + room?.status.slice(1)}
         </span>
       </div>
 
@@ -75,7 +74,7 @@ export default function PropertyCard({ room }: propertyCardProps) {
             {room?.planType.includes("m") ? "/month" : "/year"}
           </span></span>
           <Button
-          disabled={!room.available}
+          disabled={!room.status.includes("available")}
             onClick={handleReadMore}
             className="text-white text-xs font-medium px-4 py-1"
           >

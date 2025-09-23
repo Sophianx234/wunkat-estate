@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Payment from "@/models/Payment";
 import Room from "@/models/Room";
 import { connectToDatabase } from "@/config/DbConnect";
+import next from "next";
 
 export async function POST(req: NextRequest) {
   try {
@@ -50,3 +51,4 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
+

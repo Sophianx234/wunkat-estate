@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { userType } from "./jwtConfig";
+import { IRoom } from "@/app/dashboard/properties/page";
 
 export type signupType = {
   email: string;
@@ -17,8 +18,11 @@ export type storeState = {
   openExpandedProperty: boolean;
   signupData: signupType | null;
   avatar: string;
+  filteredRooms: IRoom[] | null;
+
   setAvatar: (url: string) => void;
   setSignupData: (data: signupType) => void;
+  setFilteredRooms: (data: IRoom[]|null) => void;
   toggleSidebar: () => void;
   toggleExpandedProperty: () => void;
   toggleAddProperty: () => void;
@@ -37,6 +41,7 @@ export const useDashStore = create<storeState>((set) => ({
   signupData: null,
   avatar: '', // ✅ Initial value for avatar
   openAddHouse:false,
+  filteredRooms: null,
   toggleAddHouse: () =>
     set((state) => ({ openAddHouse: !state.openAddHouse })),
 
@@ -51,4 +56,5 @@ export const useDashStore = create<storeState>((set) => ({
   setUser: (user: userType) => set(() => ({ user })),
   setAvatar: (url: string) => set(() => ({ avatar: url })), // ✅ Corrected function
   setSignupData: (data: signupType) => set(() => ({ signupData: data })),
+  setFilteredRooms: (data: IRoom[]) => set(() => ({ filteredRooms: data })),
 }));

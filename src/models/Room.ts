@@ -6,11 +6,11 @@ export interface IRoom extends mongoose.Document {
   name: string;
   description?: string;
   price: number;
-  available: boolean;
+  status: "available" | "booked" | "pending";
   images: string[];
   beds: number;
   baths: number;
-  smartLockEnabled?: boolean;  // ✅ Conditional based on house
+  smartLockEnabled?: boolean; // ✅ Conditional based on house
   lockStatus?: "locked" | "unlocked";
   planType?: "monthly" | "yearly"; // ✅ new field
   createdAt: Date;
@@ -23,7 +23,11 @@ const RoomSchema: Schema = new Schema(
     name: { type: String, required: true },
     description: { type: String },
     price: { type: Number, required: true },
-    available: { type: Boolean, default: true },
+    status: {
+      type: String,
+      enum: ["available", "booked", "pending"],
+      default: "available",
+    },
     images: { type: [String] },
 
     beds: { type: Number, required: true, min: 0 },
@@ -31,19 +35,22 @@ const RoomSchema: Schema = new Schema(
 
     // ✅ Smart lock fields
     smartLockEnabled: { type: Boolean, default: false },
-    lockStatus: { type: String, enum: ["locked", "unlocked"], default: "locked" },
+    lockStatus: {
+      type: String,
+      enum: ["locked", "unlocked"],
+      default: "locked",
+    },
 
     // ✅ Plan type field
-    planType: { 
-      type: String, 
-      enum: ["monthly", "yearly"], 
-      default: "monthly" 
+    planType: {
+      type: String,
+      enum: ["monthly", "yearly"],
+      default: "monthly",
     },
   },
   { timestamps: true }
 );
 
-const Room =
-  mongoose.models.Room || mongoose.model<IRoom>("Room", RoomSchema);
+const Room = mongoose.models.Room || mongoose.model<IRoom>("Room", RoomSchema);
 
 export default Room;

@@ -16,6 +16,7 @@ import { FiFilter } from "react-icons/fi";
 import { GiRoundKnob } from "react-icons/gi";
 import { RiMenu4Line } from "react-icons/ri";
 import { ghanaRegions } from "../properties/add-house/page";
+import { useDashStore } from "@/lib/store";
 
 type FiltersProps = {
   onFilter: (filters: {
@@ -26,12 +27,13 @@ type FiltersProps = {
   }) => void;
 };
 
-export default function Filters({ onFilter }: FiltersProps) {
+export default function Filters() {
   const [search, setSearch] = useState("");
   const [type, setType] = useState("");
   const [city, setCity] = useState("");
   const [status, setStatus] = useState("");
   const router = useRouter();
+  const {setFilteredRooms}  = useDashStore()
 
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
@@ -54,6 +56,7 @@ export default function Filters({ onFilter }: FiltersProps) {
     if (res.ok) {
       // 🔥 pass data to parent (so it can render)
       console.log('data',data);
+      setFilteredRooms(data);
     } else {
       console.error("Error fetching rooms:", data.error);
     }
@@ -67,7 +70,7 @@ export default function Filters({ onFilter }: FiltersProps) {
     setType("");
     setCity("");
     setStatus("");
-    onFilter({ search: "", type: "", city: "", status: "" });
+    setFilteredRooms(null);
   };
 
   return (

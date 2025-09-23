@@ -23,7 +23,7 @@ export default function Sidebar({
 }: sidebarProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
-  const { toggleSidebar } = useDashStore();
+  const { toggleSidebar,user } = useDashStore();
   const pathname = usePathname();
   console.log("pathname", pathname);
   const handleLogout = async () => {
@@ -110,7 +110,7 @@ export default function Sidebar({
           </Link>
           <Link
             onClick={toggleSidebar}
-            href="/dashboard/transactions"
+            href={`/dashboard/transactions/${user?._id}`}
             className={`dash-nav-item ${
               pathname === "/dashboard/transactions"
                 ? "bg-black text-white"
