@@ -57,3 +57,44 @@ export default function getCroppedImg(
     image.onerror = () => reject(new Error("Image load error"));
   });
 }
+
+
+export function formatNumber(num: number): string {
+  return num.toLocaleString("en-US"); 
+}
+
+export function formatDate(isoString: Date): string {
+  const date = new Date(isoString);
+  return date.toLocaleDateString("en-US"); 
+}
+
+// Example
+// 👉 "10/20/2025"
+
+export function daysLeft(targetDate: string | Date): number {
+  const now = new Date();
+  const end = new Date(targetDate);
+
+  // difference in ms
+  const diff = end.getTime() - now.getTime();
+
+  // convert ms → days
+  return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+}
+
+// Example
+daysLeft("2025-10-20T22:56:51.836Z"); 
+// 👉 e.g. 27 (depending on today's date)
+
+export function formatToShortDate(isoString: string | Date): string {
+  const date = new Date(isoString);
+  return date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+// Example
+formatToShortDate("2024-03-21T10:00:00.000Z");
+// 👉 "21 Mar 2024"

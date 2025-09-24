@@ -1,3 +1,7 @@
+import { daysLeft, formatNumber, formatToShortDate } from "@/lib/utils";
+import { IHouse } from "@/models/House";
+import { IPayment } from "@/models/Payment";
+import { IRoom } from "@/models/Room";
 import { HiOutlineClock } from "react-icons/hi";
 import { MdOutlineHomeWork } from "react-icons/md";
 
@@ -7,8 +11,12 @@ const payments = Array(6).fill({
   description: "Autem aliquid molestiae",
   amount: "$943.57",
 });
+type transactionType =IPayment & { roomId: IRoom & { houseId: IHouse } }
+export type paymentHistoryProps = {
+  transactions?:transactionType[] ;
+};
 
-export default function PaymentHistory() {
+export default function PaymentHistory({transactions}:paymentHistoryProps) {
   return (
     <div className="col-span-2 flex flex-col gap-6">
       {/* Summary Cards */}
@@ -16,7 +24,7 @@ export default function PaymentHistory() {
         <div className="bg-white p-4 rounded-xl shadow flex items-center justify-between">
           <div>
             <p className="text-sm text-gray-500">Subscription</p>
-            <p className="text-2xl font-bold text-gray-800 mt-1">14 Days left</p>
+            <p className="text-2xl font-bold text-gray-800 mt-1">{transactions&& daysLeft(transactions?.[0].expiresAt)>0?`${daysLeft(transactions?.[0].expiresAt)} Days left`:'Expired' } </p>
           </div>
            <HiOutlineClock className="text-yellow-500 w-8 h-8" />
         </div>
@@ -37,19 +45,21 @@ export default function PaymentHistory() {
           <table className="w-full text-sm text-left">
             <thead>
               <tr className="text-gray-500 border-b">
-                <th className="py-2">Date</th>
-                <th>Receipt No</th>
-                <th>Description</th>
-                <th className="text-right">Amount</th>
+                <th className="py-2 text-left">Date</th>
+                <th className="text-left">Receipt No</th>
+                <th className="text-left">Room</th>
+                <th>House</th>
+                <th className="text-left">Amount</th>
               </tr>
             </thead>
             <tbody>
-              {payments.map((payment, index) => (
+              {transactions?.map((payment:transactionType, index) => (
                 <tr key={index} className="border-b hover:bg-gray-50 transition">
-                  <td className="py-2 text-xs sm:text-sm">{payment.date}</td>
-                  <td className="text-xs sm:text-sm text-wrap">{payment.receipt}</td>
-                  <td className="text-xs sm:text-sm px-3">{payment.description}</td>
-                  <td className="text-right ">{payment.amount}</td>
+                  <td className="py-2 text-xs sm:text-sm text-wrap">{formatToShortDate(payment?.createdAt) }</td>
+                  <td className="text-xs sm:text-sm text-wrap">{payment.reference}</td>
+                  <td className="text-xs sm:text-sm text-wrap ">{payment.roomId.name}</td>
+                  <td className="">{payment.roomId.houseId.name}</td>
+                  <td className=" ">₵{formatNumber(payment.amount)} </td>
                 </tr>
               ))}
             </tbody>
