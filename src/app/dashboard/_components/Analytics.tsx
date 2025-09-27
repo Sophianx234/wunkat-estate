@@ -69,7 +69,10 @@ const chartOptions = {
     },
   },
 };
-export function DashboardAnalytics() {
+type customerRowProps = {
+  customer: Customer;
+};
+export function DashboardAnalytics({ customer }: customerRowProps) {
   return (
     <div className="grid grid-cols-2 gap-4 mb-6  *:data-[slot=card]:shadow-xs  @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
       <Card className="@container/card">

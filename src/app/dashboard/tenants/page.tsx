@@ -2,6 +2,7 @@
 import { useState } from "react";
 import CustomerRow from "../_components/CustomerRow";
 import FilterBar from "../_components/FilterBar";
+import CustomerTable from "../_components/CustomerTable";
 
 const customerx = [
   {
@@ -26,7 +27,7 @@ const customerx = [
     apartment: "Maple Heights",
     roomNumber: "305",
     rentExpiry: "2025-07-20",
-    rentStatus: "due_soon",
+    rentStatus: "pending",
     smartLockStatus: "unlocked",
     image: "/images/prof-2.jpg",
   },
@@ -71,7 +72,19 @@ const customerx = [
   },
 ];
 
-
+export type Customer = {
+  id: number
+  name: string
+  email: string
+  phone: string
+  location: string
+  apartment: string
+  roomNumber: string
+  rentExpiry: string // ISO date string e.g. "2025-08-10"
+  rentStatus: string // extend as needed
+  smartLockStatus: string
+  image: string
+}
 export default function CustomersPage() {
   const [customers] = useState(customerx);
   const [filtered, setFiltered] = useState(customerx);
@@ -107,7 +120,8 @@ export default function CustomersPage() {
       <FilterBar onFilter={handleFilter} />
 
       <div className="space-y-4">
-        {filtered.map((customer) => (
+        <CustomerTable />
+         {filtered.map((customer) => (
           <CustomerRow key={customer.id} customer={customer} />
         ))}
         {filtered.length === 0 && (
