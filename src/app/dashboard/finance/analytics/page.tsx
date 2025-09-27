@@ -2,7 +2,7 @@
 // Update the import path below if your Avatar component is located elsewhere
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-import DashboardAnalytics from "../../_components/Analytics";
+import { DashboardAnalytics } from "../../_components/Analytics";
 import TransactionHistory from "../../_components/TransactionTable";
 
 export default function Finance() {

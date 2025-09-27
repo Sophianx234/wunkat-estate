@@ -1,28 +1,11 @@
 "use client";
-
-import { FC } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Users, DollarSign, Home } from "lucide-react";
+import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react"
+// import { Bar } from "react-chartjs-2";
+import { Badge } from "@/components/ui/badge"
+import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import BalanceCard from "../finance/BalanceCard";
 
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { Bar } from "react-chartjs-2";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-
-const stats = [
-  { title: "No. of Properties", value: 5467, change: -3.22, icon: Home },
-  { title: "Customers", value: 5467, change: -2.33, icon: Users },
-  { title: "Revenue", value: 5467, change: +4.25, icon: DollarSign },
-];
 
 const chartData = {
   labels: ["Jan", "Feb", "Mar", "Apr", "May"],
@@ -86,36 +69,94 @@ const chartOptions = {
     },
   },
 };
-
-const DashboardAnalytics: FC = () => {
+export function DashboardAnalytics() {
   return (
-    <div className="grid gap-6 mb-3">
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {stats.map((stat) => (
-          <Card
-            key={stat.title}
-            className="p-5 rounded-2xl shadow-md  transition-shadow duration-300 bg-gradient-to-br from-white to-gray-50 border"
-          >
-            <div className="flex items-center justify-between w-full">
-              <div>
-                <h4 className="text-sm text-muted-foreground">{stat.title}</h4>
-                <p className="text-2xl font-bold mt-1">{stat.value}</p>
-                <span
-                  className={`text-sm font-medium ${
-                    stat.change > 0 ? "text-green-600" : "text-red-600"
-                  }`}
-                >
-                  {stat.change > 0 ? `+${stat.change}%` : `${stat.change}%`}
-                </span>
-              </div>
-              <div className="p-3 rounded-full bg-primary/10 text-primary">
-                <stat.icon className="w-6 h-6" />
-              </div>
-            </div>
-          </Card>
-        ))}
-      </div>
+    <div className="grid grid-cols-2 gap-4 mb-6  *:data-[slot=card]:shadow-xs  @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+      <Card className="@container/card">
+        <CardHeader>
+          <CardDescription>Total Revenue</CardDescription>
+          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+            $1,250.00
+          </CardTitle>
+          <CardAction>
+            <Badge variant="outline">
+              <IconTrendingUp />
+              +12.5%
+            </Badge>
+          </CardAction>
+        </CardHeader>
+        <CardFooter className="flex-col items-start gap-1.5 text-sm">
+          <div className="line-clamp-1 flex gap-2 font-medium">
+            Trending up this month <IconTrendingUp className="size-4" />
+          </div>
+          <div className="text-muted-foreground">
+            Visitors for the last 6 months
+          </div>
+        </CardFooter>
+      </Card>
+      <Card className="@container/card">
+        <CardHeader>
+          <CardDescription>New Customers</CardDescription>
+          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+            1,234
+          </CardTitle>
+          <CardAction>
+            <Badge variant="outline">
+              <IconTrendingDown />
+              -20%
+            </Badge>
+          </CardAction>
+        </CardHeader>
+        <CardFooter className="flex-col items-start gap-1.5 text-sm">
+          <div className="line-clamp-1 flex gap-2 font-medium">
+            Down 20% this period <IconTrendingDown className="size-4" />
+          </div>
+          <div className="text-muted-foreground">
+            Acquisition needs attention
+          </div>
+        </CardFooter>
+      </Card>
+      <Card className="@container/card">
+        <CardHeader>
+          <CardDescription>Active Accounts</CardDescription>
+          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+            45,678
+          </CardTitle>
+          <CardAction>
+            <Badge variant="outline">
+              <IconTrendingUp />
+              +12.5%
+            </Badge>
+          </CardAction>
+        </CardHeader>
+        <CardFooter className="flex-col items-start gap-1.5 text-sm">
+          <div className="line-clamp-1 flex gap-2 font-medium">
+            Strong user retention <IconTrendingUp className="size-4" />
+          </div>
+          <div className="text-muted-foreground">Engagement exceed targets</div>
+        </CardFooter>
+      </Card>
+      <Card className="@container/card">
+        <CardHeader>
+          <CardDescription>Growth Rate</CardDescription>
+          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+            4.5%
+          </CardTitle>
+          <CardAction>
+            <Badge variant="outline">
+              <IconTrendingUp />
+              +4.5%
+            </Badge>
+          </CardAction>
+        </CardHeader>
+        <CardFooter className="flex-col items-start gap-1.5 text-sm">
+          <div className="line-clamp-1 flex gap-2 font-medium">
+            Steady performance increase <IconTrendingUp className="size-4" />
+          </div>
+          <div className="text-muted-foreground">Meets growth projections</div>
+        </CardFooter>
+      </Card>
+   
 
       {/* Income Analytics */}
       <div className="grid grid-cols-[4fr_1fr] gap-4">
@@ -123,7 +164,7 @@ const DashboardAnalytics: FC = () => {
           <CardContent className="p-6">
             <h3 className="text-lg font-semibold mb-4">Income Analytics</h3>
             <div className="h-[300px]">
-              <Bar data={chartData} options={chartOptions} />
+              {/* <Bar data={chartData} options={chartOptions} /> */}
             </div>
           </CardContent>
         </Card>
