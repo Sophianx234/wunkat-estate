@@ -10,6 +10,8 @@ import { useState } from "react"
 import Swal from "sweetalert2"
 import { Customer } from "../tenants/page"
 import { Payment } from "./CustomerTable"
+import ExtendRentModal from "./ExtendRentModal"
+import EditCustomerModal from "./EditCuserModal"
 type customerRowProps = {
   customer: Customer;
   payment: Payment;
@@ -84,7 +86,6 @@ function CustomerTableRow({customer,payment}: customerRowProps) {
         Swal.fire("Deleted!", "Customer has been removed.", "success");
       }
     };
-  
   return (
     
       <TableRow key={payment.id}>
@@ -171,7 +172,7 @@ function CustomerTableRow({customer,payment}: customerRowProps) {
       {/* Delete */}
       <DropdownMenuItem
         onClick={handleDelete}
-        className="text-red-600 focus:text-red-600"
+        className=""
       >
         <Trash2 className="mr-2 h-4 w-4" />
         Delete
@@ -180,6 +181,21 @@ function CustomerTableRow({customer,payment}: customerRowProps) {
   </DropdownMenu>
 </TableCell>
               </TableCell>
+               <ExtendRentModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              currentDate={customer.rentExpiry}
+              onConfirm={handleExtendRent}
+            />
+      
+            <EditCustomerModal
+              isOpen={isEditOpen}
+              onClose={() => setIsEditOpen(false)}
+              customer={customer}
+              onSave={(updatedData) => {
+                console.log("Updated customer:", updatedData);
+              }}
+            />
             </TableRow>
   )
 }

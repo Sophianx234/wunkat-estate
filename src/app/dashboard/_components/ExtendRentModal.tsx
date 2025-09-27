@@ -76,7 +76,7 @@ export default function ExtendRentModal({
                 </button>
                 <button
                   onClick={handleSubmit}
-                  className="px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-sm"
+                  className="px-4 py-2 rounded-md bg-black hover:bg-gray-800 text-white text-sm"
                 >
                   Confirm
                 </button>

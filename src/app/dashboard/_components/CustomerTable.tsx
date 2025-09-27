@@ -24,6 +24,8 @@ import { useState } from "react"
 import { addDays, differenceInCalendarDays, isBefore, isPast } from "date-fns"
 import { Customer } from "../tenants/page"
 import CustomerTableRow from "./CustomerTableRow"
+import ExtendRentModal from "./ExtendRentModal"
+import EditCustomerModal from "./EditCuserModal"
 // import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 
 export type Payment = {
@@ -156,21 +158,23 @@ const customerx = [
 
 export default function CustomerTable() {
   
+  
   return (
-    <div className="rounded-xl border bg-white p-4 shadow-sm">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Customer</TableHead>
-            <TableHead>House</TableHead>
-            <TableHead>Room</TableHead>
-            <TableHead>Amount</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Due</TableHead>
-            <TableHead>Paid by</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
+    <div className="   ">
+      <Table className="rounded-lg border shadow-2xl bg-white py-4 ">
+       <TableHeader>
+  <TableRow className="h-16"> {/* sets row height instead of py-12 */}
+    <TableHead className="pl-12 py-4">Customer</TableHead>
+    <TableHead className=" py-4">House</TableHead>
+    <TableHead className=" py-4">Room</TableHead>
+    <TableHead className=" py-4">Amount</TableHead>
+    <TableHead className=" py-4">Status</TableHead>
+    <TableHead className=" py-4">Due</TableHead>
+    <TableHead className=" py-4">Paid by</TableHead>
+    <TableHead className=" py-4">Actions</TableHead>
+  </TableRow>
+</TableHeader>
+
         <TableBody>
           {customerx.map((customer,i) => <CustomerTableRow key={customer.id} customer={customer} payment={payments[i]} />)}
           
@@ -178,9 +182,11 @@ export default function CustomerTable() {
       </Table>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between px-2 py-3 text-sm text-muted-foreground mt-5  border-t-1 border-t-gray-200">
-        <span>Showing 1 to 5 of 25 entries</span>
-        <Pagination>
+      <div className="grid grid-cols-[5fr_2fr] w-full mt-4 items-center px-3 ">
+        <div className="text-sm text-[#868e96] font-bold">Showing 1 to 5 of 25 entries</div>
+        <div className="d">
+
+        <Pagination className="  w-fit">
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious href="#" size="default" />
@@ -196,7 +202,9 @@ export default function CustomerTable() {
             </PaginationItem>
           </PaginationContent>
         </Pagination>
+        </div>
       </div>
+      
     </div>
   )
 }

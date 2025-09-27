@@ -124,7 +124,7 @@ export default function EditCustomerModal({
                 </button>
                 <button
                   onClick={handleSave}
-                  className="px-4 py-2 rounded-md bg-blue-600 text-white text-sm hover:bg-blue-700"
+                  className="px-4 py-2 rounded-md text-white bg-black hover:bg-gray-800 text-sm "
                 >
                   Save Changes
                 </button>
