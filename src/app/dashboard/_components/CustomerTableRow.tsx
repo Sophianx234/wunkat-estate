@@ -94,8 +94,8 @@ function CustomerTableRow({payment}: customerRowProps) {
                   <AvatarFallback>{payment.userId.name[0]}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <div className="font-medium">{payment.userId.name}</div>
-                  <div className="text-sm text-muted-foreground">{payment.userId.email}</div>
+                  <div className="font-medium text-sm">{payment.userId.name}</div>
+                  <div className="text-xs text-muted-foreground">{payment.userId.email}</div>
                 </div>
               </TableCell>
               {/* House */}
@@ -103,7 +103,7 @@ function CustomerTableRow({payment}: customerRowProps) {
               {/* Room */}
               <TableCell className="text-xs ">{payment.roomId.name}</TableCell>
               {/* Amount */}
-              <TableCell className="text-xs ">₵{formatNumber(payment.amount) }</TableCell>
+              <TableCell className="text-xs tracking-tighter ">₵{formatNumber(payment.amount) }</TableCell>
               {/* Amount */}
               <TableCell className="text-xs text-center">
                 <Badge

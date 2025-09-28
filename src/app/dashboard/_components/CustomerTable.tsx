@@ -86,7 +86,7 @@ import { transactionType } from "../transactions/PaymentHistory"
     avatar: "https://i.pravatar.cc/40?img=5",
   },
 ] */
-const customerx = [
+/* const customerx = [
   {
     id: 1,
     name: "James Carter",
@@ -152,7 +152,7 @@ const customerx = [
     smartLockStatus: "locked",
     image: "/images/prof-2.jpg",
   },
-];
+]; */
 
 
 
