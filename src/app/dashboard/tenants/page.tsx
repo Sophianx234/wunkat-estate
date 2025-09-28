@@ -121,12 +121,7 @@ export default function CustomersPage() {
 
       <div className="space-y-4">
         <CustomerTable />
-         {filtered.map((customer) => (
-          <CustomerRow key={customer.id} customer={customer} />
-        ))}
-        {filtered.length === 0 && (
-          <p className="text-center text-gray-500">No customers found.</p>
-        )}
+        
       </div>
     </div>
   );

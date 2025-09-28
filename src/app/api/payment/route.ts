@@ -4,6 +4,8 @@ import Payment from "@/models/Payment";
 import Room from "@/models/Room";
 import { connectToDatabase } from "@/config/DbConnect";
 import next from "next";
+import House from "@/models/House";
+import User from "@/models/User";
 
 export async function POST(req: NextRequest) {
   try {
@@ -52,3 +54,26 @@ export async function POST(req: NextRequest) {
   }
 }
 
+
+
+export async function GET(req: NextRequest) {
+  await connectToDatabase();
+
+
+
+  const transactions = await Payment.find()
+  .sort({ createdAt: -1 }).populate('userId')
+  .populate({
+    path: "roomId",
+    model: Room, // 👈 explicitly tell mongoose which model
+    populate: {
+      path: "houseId",
+      model: House, // 👈 nested populate House
+    },
+  });
+
+    
+    
+
+  return NextResponse.json(transactions, { status: 200 });
+}

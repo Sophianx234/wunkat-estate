@@ -2,22 +2,21 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { TableCell, TableRow } from "@/components/ui/table"
+import { formatDate, formatNumber, removeUnderscores } from "@/lib/utils"
 import { addDays, differenceInCalendarDays, isBefore, isPast } from "date-fns"
 import { CalendarPlus, Eye, Lock, MoreVertical, Pencil, Trash2, Unlock } from "lucide-react"
-import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
 import Swal from "sweetalert2"
-import { Customer } from "../tenants/page"
-import { Payment } from "./CustomerTable"
-import ExtendRentModal from "./ExtendRentModal"
+import { transactionType } from "../transactions/PaymentHistory"
 import EditCustomerModal from "./EditCuserModal"
+import ExtendRentModal from "./ExtendRentModal"
 type customerRowProps = {
-  customer: Customer;
-  payment: Payment;
+  
+  payment: transactionType;
 };
-function CustomerTableRow({customer,payment}: customerRowProps) {
-  const rentExpiry = new Date(customer.rentExpiry);
+function CustomerTableRow({payment}: customerRowProps) {
+  const rentExpiry = new Date(payment.expiresAt);
     const today = new Date();
   
     const [isEditOpen, setIsEditOpen] = useState(false);
@@ -46,7 +45,7 @@ function CustomerTableRow({customer,payment}: customerRowProps) {
     const daysLeft = getDaysLeft();
   
     const handleLockToggle = async () => {
-      const isLocked = customer.smartLockStatus === "locked";
+      const isLocked = payment.roomId.lockStatus === "locked";
   
       const result = await Swal.fire({
         title: isLocked ? "Unlock Room?" : "Lock Room?",
@@ -63,7 +62,7 @@ function CustomerTableRow({customer,payment}: customerRowProps) {
       if (result.isConfirmed) {
         Swal.fire(
           isLocked ? "Unlocked!" : "Locked!",
-          `Room ${customer.roomNumber} has been ${
+          `Room ${payment.roomId.name} has been ${
             isLocked ? "unlocked" : "locked"
           }.`,
           "success"
@@ -73,7 +72,7 @@ function CustomerTableRow({customer,payment}: customerRowProps) {
   
     const handleDelete = async () => {
       const result = await Swal.fire({
-        title: "Delete Customer?",
+        title: `Delete Tenant ${payment.userId.name}?`,
         text: "This action cannot be undone!",
         icon: "error",
         showCancelButton: true,
@@ -83,46 +82,44 @@ function CustomerTableRow({customer,payment}: customerRowProps) {
       });
   
       if (result.isConfirmed) {
-        Swal.fire("Deleted!", "Customer has been removed.", "success");
+        Swal.fire("Deleted!", `Tenant ${payment.userId.name} has been removed.`, "success");
       }
     };
   return (
     
-      <TableRow key={payment.id}>
+      <TableRow key={payment._id}>
               <TableCell className="flex items-center gap-3">
                 <Avatar>
-                  <AvatarImage src={payment.avatar} alt={payment.name} />
-                  <AvatarFallback>{payment.name[0]}</AvatarFallback>
+                  <AvatarImage src={payment.userId.profile} alt={payment.userId.name} />
+                  <AvatarFallback>{payment.userId.name[0]}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <div className="font-medium">{customer.name}</div>
-                  <div className="text-sm text-muted-foreground">{customer.email}</div>
+                  <div className="font-medium">{payment.userId.name}</div>
+                  <div className="text-sm text-muted-foreground">{payment.userId.email}</div>
                 </div>
               </TableCell>
               {/* House */}
-              <TableCell>{payment.amount}</TableCell>
+              <TableCell className="text-xs ">{payment.roomId.houseId.name}</TableCell>
               {/* Room */}
-              <TableCell>{customer.roomNumber}</TableCell>
+              <TableCell className="text-xs ">{payment.roomId.name}</TableCell>
               {/* Amount */}
-              <TableCell>{payment.amount}</TableCell>
+              <TableCell className="text-xs ">₵{formatNumber(payment.amount) }</TableCell>
               {/* Amount */}
-              <TableCell>
+              <TableCell className="text-xs text-center">
                 <Badge
-                  variant={customer.rentStatus === "Paid" ? "default" : "secondary"}
-                  className={customer.rentStatus === "Pending" ? "bg-gray-200 text-gray-800" : ""}
+                  variant={payment.roomId.status === "booked"  ? "default" : "secondary"}
+                  className={payment.roomId.status === "pending" ? "bg-gray-200 text-gray-800" :payment.roomId.status === "available"  ? "bg-green-200":''}
                 >
-                  {customer.rentStatus}
+                  {payment.roomId.status}
                 </Badge>
               </TableCell>
                 {/* Due */}
-                              <TableCell>{payment.amount}</TableCell>
+                              <TableCell className="text-xs text-center">
+                                <span className={daysLeft.color}>{daysLeft.label}</span>
+                              </TableCell>
               {/* Paid by */}
-              <TableCell>
-                {payment.method === "visa" ? (
-                  <Image src="/visa.svg" alt="Visa" width={40} height={24} />
-                ) : (
-                  <Image src="/mastercard.svg" alt="MasterCard" width={40} height={24} />
-                )}
+              <TableCell className="text-xs text-center" >
+                {removeUnderscores(payment.paymentMethod)}
               </TableCell>
 
               <TableCell className="">
@@ -136,7 +133,7 @@ function CustomerTableRow({customer,payment}: customerRowProps) {
     <DropdownMenuContent align="end" className="w-44">
       {/* View */}
       <DropdownMenuItem asChild>
-        <Link href={`/dashboard/tenants/${customer.id}`} className="w-full flex items-center">
+        <Link href={`/dashboard/tenants/${payment.userId._id}`} className="w-full flex items-center">
           <Eye className="mr-2 h-4 w-4" />
           View
         </Link>
@@ -156,7 +153,7 @@ function CustomerTableRow({customer,payment}: customerRowProps) {
 
       {/* Lock / Unlock */}
       <DropdownMenuItem onClick={handleLockToggle}>
-        {customer.smartLockStatus === "locked" ? (
+        {payment.roomId.lockStatus === "locked" ? (
           <>
             <Unlock className="mr-2 h-4 w-4" />
             Unlock Room
@@ -184,14 +181,14 @@ function CustomerTableRow({customer,payment}: customerRowProps) {
                <ExtendRentModal
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
-              currentDate={customer.rentExpiry}
+              currentDate={formatDate(rentExpiry)}
               onConfirm={handleExtendRent}
             />
       
             <EditCustomerModal
               isOpen={isEditOpen}
               onClose={() => setIsEditOpen(false)}
-              customer={customer}
+              customer={payment.userId }
               onSave={(updatedData) => {
                 console.log("Updated customer:", updatedData);
               }}

@@ -29,7 +29,7 @@ export type roomType = {
   name: string;
   description: string;
   price: number;
-  available: boolean;
+  status:"available" | "booked" | "pending";
   images: string[];
   beds: number;
   baths: number;

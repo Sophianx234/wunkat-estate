@@ -98,3 +98,9 @@ export function formatToShortDate(isoString: string | Date): string {
 // Example
 formatToShortDate("2024-03-21T10:00:00.000Z");
 // 👉 "21 Mar 2024"
+
+export function removeUnderscores(input: string): string {
+  return input.replace(/_/g, " ");
+}
+
+// usage

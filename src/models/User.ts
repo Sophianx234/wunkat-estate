@@ -2,6 +2,7 @@
 import mongoose, { Schema } from "mongoose";
 
 export type userDocumentType ={
+  _id?:string
   name: string;
   email: string;
   profile?:string;

@@ -1,9 +1,10 @@
 import { daysLeft, formatNumber, formatToShortDate } from "@/lib/utils";
 import { IHouse } from "@/models/House";
 import { IPayment } from "@/models/Payment";
-import { IRoom } from "@/models/Room";
+import { userDocumentType } from "@/models/User";
 import { HiOutlineClock } from "react-icons/hi";
 import { MdOutlineHomeWork } from "react-icons/md";
+import { roomType } from "../properties/[id]/page";
 
 const payments = Array(6).fill({
   date: "21 Mar 2024",
@@ -11,7 +12,10 @@ const payments = Array(6).fill({
   description: "Autem aliquid molestiae",
   amount: "$943.57",
 });
-type transactionType =IPayment & { roomId: IRoom & { houseId: IHouse } }
+export type transactionType = Omit<IPayment, "roomId" | "userId"> & {
+  roomId: roomType & { houseId: IHouse };
+  userId: userDocumentType;
+}; 
 export type paymentHistoryProps = {
   transactions?:transactionType[] ;
 };

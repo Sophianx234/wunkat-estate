@@ -3,12 +3,13 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { Customer } from "../tenants/page";
+import { userDocumentType } from "@/models/User";
 
 type EditCustomerModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  customer: Customer;
-  onSave: (updatedCustomer: Customer) => void;
+  customer: userDocumentType;
+  onSave: (updatedCustomer: userDocumentType) => void;
 };
 
 export default function EditCustomerModal({
@@ -17,7 +18,7 @@ export default function EditCustomerModal({
   customer,
   onSave,
 }: EditCustomerModalProps) {
-  const [formData, setFormData] = useState<Customer>({ ...customer });
+  const [formData, setFormData] = useState<userDocumentType>( customer );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -86,7 +87,7 @@ export default function EditCustomerModal({
               <input
                 type="text"
                 name="location"
-                value={formData.location}
+                value={'Tamale, Ghana'}
                 onChange={handleChange}
                 placeholder="Location"
                 className="w-full border rounded-md p-2"
@@ -94,7 +95,7 @@ export default function EditCustomerModal({
               <input
                 type="text"
                 name="apartment"
-                value={formData.apartment}
+                value={"Green Villa"}
                 onChange={handleChange}
                 placeholder="Apartment"
                 className="w-full border rounded-md p-2"
@@ -102,7 +103,7 @@ export default function EditCustomerModal({
               <input
                 type="text"
                 name="roomNumber"
-                value={formData.roomNumber}
+                value={'A-101'}
                 onChange={handleChange}
                 placeholder="Room Number"
                 className="w-full border rounded-md p-2"
@@ -110,7 +111,7 @@ export default function EditCustomerModal({
               <input
                 type="date"
                 name="rentExpiry"
-                value={formData.rentExpiry}
+                value={'expires on 2025-08-10'}
                 onChange={handleChange}
                 className="w-full border rounded-md p-2"
               />
