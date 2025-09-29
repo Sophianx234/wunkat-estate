@@ -161,18 +161,7 @@ export function DashboardAnalytics({ customer }: customerRowProps) {
       </Card>
    
 
-      {/* Income Analytics */}
-      <div className="grid grid-cols-[4fr_1fr] gap-4">
-        <Card className="rounded-2xl shadow-md border">
-          <CardContent className="p-6">
-            <h3 className="text-lg font-semibold mb-4">Income Analytics</h3>
-            <div className="h-[300px]">
-              {/* <Bar data={chartData} options={chartOptions} /> */}
-            </div>
-          </CardContent>
-        </Card>
-        <BalanceCard />
-      </div>
+     
     </div>
   );
 };

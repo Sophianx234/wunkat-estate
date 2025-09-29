@@ -12,7 +12,7 @@ export default function Finance() {
   return (
     <div className="ml-4">
       {/* Total Income & Revenue */}
-    <h1 className="text-xl font-inter font-bold mb-3">WunkatHomes Dashboard</h1>
+    <h1 className="text-xl font-inter pt-4 pl-2 font-bold mb-3">WunkatHomes Dashboard</h1>
       {/* <IncomeCard /> */}
 
       {/* Sales Analytics */}
@@ -25,11 +25,17 @@ export default function Finance() {
       {/* <ClientCard /> */}
 
       <DashboardAnalytics/>
+      <div className="grid grid-cols-[1fr_1fr] items-center mb-6 gap-2">
+
+      <TransactionHistory/>
       <SubscriptionCard/>
+      </div>
+      <div className="grid grid-cols-2 items-center">
+
       <ReturningRateCard/>
       <TotalRevenueCard/>
+      </div>
       
-      <TransactionHistory/>
       
     </div>
   );

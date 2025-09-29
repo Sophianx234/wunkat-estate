@@ -60,7 +60,7 @@ const transactions: Transaction[] = [
 
 const TransactionHistory: FC = () => {
   return (
-    <Card className="w-full">
+    <Card className="">
       <CardContent>
         <h2 className="text-lg font-semibold mb-4">Recent Transaction History</h2>
         <Table>
