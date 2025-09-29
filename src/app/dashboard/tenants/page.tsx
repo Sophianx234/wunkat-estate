@@ -24,7 +24,6 @@ export type Customer = {
 };
 
 export default function CustomersPage() {
-  const [customers] = useState<transactionType[]|null>(null);
   const [filtered, setFiltered] = useState<transactionType[]|null>(null);
   const [loading, setLoading] = useState(false); // ✅ loading state
 
@@ -35,6 +34,7 @@ export default function CustomersPage() {
   }) => {
     try {
       if (!filters.search && !filters.rentStatus && !filters.lockStatus) {
+        setFiltered(null); // reset to show all
       return;
     }
       setLoading(true); // start loader
@@ -62,16 +62,16 @@ export default function CustomersPage() {
         // ✅ Loading state
         <div className="flex items-center gap-2 text-gray-500">
           <Loader2 className="w-6 h-6 animate-spin" />
-          <span>Loading customers...</span>
+          <span>Loading Tenants...</span>
         </div>
       ) : filtered && filtered.length === 0 ? (
         // ✅ No results state
         <div className="text-gray-500 text-sm italic">
-          No customers match your filter.
+          No Tenants match your filter.
         </div>
       ) : (
         // ✅ Show table (fallback to [] if null to avoid errors)
-        <CustomerTable customers={filtered ?? []} />
+        <CustomerTable customers={filtered as transactionType[]} />
       )}
     </div>
   </div>
