@@ -94,71 +94,75 @@ export default function CustomerTable({ customers }: customerTableProps) {
       </div>
 
       {/* Pagination */}
-      <div className="grid grid-cols-[5fr_2fr] w-full mt-6 items-center  ">
-  {/* ✅ Showing X to Y of Z entries */}
-  <div className="text-sm text-[#868e96] font-bold">
-    Showing {startIndex + 1} to {Math.min(endIndex, dataToShow.length)} of{" "}
-    {dataToShow.length} entries
-  </div>
+   {/* ✅ Only show pagination if there are more than 5 items */}
+{dataToShow.length > itemsPerPage && (
+  <div className="grid grid-cols-[5fr_2fr] w-full mt-6 items-center">
+    {/* Showing X to Y of Z entries */}
+    <div className="text-sm text-[#868e96] font-bold">
+      Showing {startIndex + 1} to {Math.min(endIndex, dataToShow.length)} of{" "}
+      {dataToShow.length} entries
+    </div>
 
-  <div className="">
-    <Pagination className="">
-      <PaginationContent>
-        {/* Prev button */}
-        <PaginationItem>
-          <PaginationPrevious
-            
-            size="default"
-            onClick={(e) => {
-              e.preventDefault();
-              if (currentPage > 1) setCurrentPage(currentPage - 1);
-            }}
-            className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
-          />
-        </PaginationItem>
-
-        {/* Dynamic page numbers */}
-        {Array.from({ length: totalPages }).map((_, i) => (
-          <PaginationItem key={i}>
-            <PaginationLink
-              href="#"
+    <div className="flex justify-end">
+      <Pagination>
+        <PaginationContent>
+          {/* Prev button */}
+          <PaginationItem>
+            <PaginationPrevious
               size="default"
-              isActive={currentPage === i + 1}
               onClick={(e) => {
                 e.preventDefault();
-                setCurrentPage(i + 1);
+                if (currentPage > 1) setCurrentPage(currentPage - 1);
               }}
               className={
-                currentPage === i + 1
-                  ? "bg-black text-white"
-                  : "bg-gray-200 text-black"
+                currentPage === 1 ? "pointer-events-none opacity-50" : ""
               }
-            >
-              {i + 1}
-            </PaginationLink>
+            />
           </PaginationItem>
-        ))}
 
-        {/* Next button */}
-        <PaginationItem>
-          <PaginationNext
-            
-            size="default"
-            onClick={(e) => {
-              e.preventDefault();
-              if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-            }}
-            className={
-              currentPage === totalPages
-                ? "pointer-events-none opacity-50"
-                : ""
-            }
-          />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
+          {/* Dynamic page numbers */}
+          {Array.from({ length: totalPages }).map((_, i) => (
+            <PaginationItem key={i}>
+              <PaginationLink
+                href="#"
+                size="default"
+                isActive={currentPage === i + 1}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentPage(i + 1);
+                }}
+                className={
+                  currentPage === i + 1
+                    ? "bg-black text-white"
+                    : "bg-gray-200 text-black"
+                }
+              >
+                {i + 1}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+
+          {/* Next button */}
+          <PaginationItem>
+            <PaginationNext
+              size="default"
+              onClick={(e) => {
+                e.preventDefault();
+                if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+              }}
+              className={
+                currentPage === totalPages
+                  ? "pointer-events-none opacity-50"
+                  : ""
+              }
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+    </div>
   </div>
-</div>
+)}
+
 
     </div>
   );

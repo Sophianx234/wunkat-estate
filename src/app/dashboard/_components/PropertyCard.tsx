@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FaBath, FaBed } from "react-icons/fa";
 import { IRoom } from "../properties/page";
+import { Bath, BedDouble } from "lucide-react";
 
 type propertyCardProps = {
   room:IRoom
@@ -56,13 +57,13 @@ export default function PropertyCard({ room }: propertyCardProps) {
         <p className="text-xs text-gray-500 mb-2 line-clamp-3">
           {room?.description}
         </p>
-<div className="flex items-center gap-4 text-gray-600 text-sm mb-4">
+<div className="flex items-center justify-between  gap-4 text-gray-600 text-xs mb-4">
           <div className="flex items-center gap-1">
-            <FaBed className="text-gray-500" />
+            <BedDouble  className="size-4 text-gray-500" />
             <span>{room.beds} Beds</span>
           </div>
-          <div className="flex items-center gap-1">
-            <FaBath className="text-gray-500" />
+          <div className="flex  items-center gap-1">
+            <Bath  className=" size-4 text-gray-500" />
             <span>{room.baths} Baths</span>
           </div>
             {/* <span>{room?.house?.size}</span> */}
