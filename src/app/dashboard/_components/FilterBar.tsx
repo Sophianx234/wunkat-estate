@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -10,15 +9,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useState } from "react";
 
+import { FiFilter } from "react-icons/fi";
 import {
-  HiOutlineMagnifyingGlass,
-  HiOutlineClock,
   HiOutlineCheckCircle,
+  HiOutlineClock,
+  HiOutlineMagnifyingGlass,
   HiOutlineXCircle,
 } from "react-icons/hi2";
-import { MdLockOutline, MdLockOpen, MdClear } from "react-icons/md";
-import { FiFilter } from "react-icons/fi";
+import { MdClear, MdLockOpen, MdLockOutline } from "react-icons/md";
 
 type FilterValues = {
   search: string;
@@ -26,50 +26,34 @@ type FilterValues = {
   lockStatus: string;
 };
 
-export default function FilterBar() {
+type filterBarProps = {
+  onFilter: (filters: FilterValues) => void;
+};
+
+export default function FilterBar({ onFilter }: filterBarProps) {
   const [filters, setFilters] = useState<FilterValues>({
     search: "",
     rentStatus: "",
     lockStatus: "",
   });
 
-  const [payments, setPayments] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+
 
   // ✅ Update filters in state
   const handleChange = (key: keyof FilterValues, value: string) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
-  // ✅ Call backend
-  const fetchPayments = async (body: FilterValues) => {
-    try {
-      setLoading(true);
-      const res = await fetch("/api/filter", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      const data = await res.json();
-      setPayments(data);
-    } catch (error) {
-      console.error("❌ Error fetching payments:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  
 
-  // ✅ Apply filters
-  const applyFilters = async() => {
-    await fetchPayments(filters);
-  };
+  
 
   // ✅ Clear filters
   const clearFilters = () => {
-    const reset = { search: "", rentStatus: "", lockStatus: "" };
-    setFilters(reset);
-    fetchPayments(reset);
-  };
+  const reset = { search: "", rentStatus: "", lockStatus: "" };
+  setFilters(reset);
+  onFilter(reset);   // ✅ let parent reset too
+};
 
   return (
     <div className="flex flex-col gap-6">
@@ -140,13 +124,13 @@ export default function FilterBar() {
 
         {/* Apply Filters */}
         <Button
-          variant="outline"
-          onClick={applyFilters}
-          className="text-sm px-4 py-2 rounded-lg flex items-center gap-2"
-        >
-          <FiFilter className="w-4 h-4" />
-          Filter
-        </Button>
+  variant="outline"
+  onClick={() => onFilter(filters)}   // ✅ send filters up
+  className="text-sm px-4 py-2 rounded-lg flex items-center gap-2"
+>
+  <FiFilter className="w-4 h-4" />
+  Filter
+</Button>
 
         {/* Clear */}
         <Button

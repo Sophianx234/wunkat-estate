@@ -21,6 +21,8 @@ function CustomerTableRow({payment}: customerRowProps) {
   
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    let dueStatus = 0
+    console.log('payment',dueStatus)
   
     const handleExtendRent = (newDate: string) => {
       Swal.fire("Rent Extended", `New rent expiry: ${newDate}`, "success");
@@ -34,7 +36,9 @@ function CustomerTableRow({payment}: customerRowProps) {
   
     const getDaysLeft = () => {
       const days = differenceInCalendarDays(rentExpiry, today);
+      dueStatus = days
       if (days < 0) return { label: "Expired", color: "text-red-400" };
+
       if (days === 0) return { label: "Expires today", color: "text-gray-500" };
       return {
         label: `${days} day${days > 1 ? "s" : ""} left`,
@@ -107,10 +111,9 @@ function CustomerTableRow({payment}: customerRowProps) {
               {/* Amount */}
               <TableCell className="text-xs text-center">
                 <Badge
-                  variant={payment.roomId.status === "booked"  ? "default" : "secondary"}
-                  className={payment.roomId.status === "pending" ? "bg-gray-200 text-gray-800" :payment.roomId.status === "available"  ? "bg-green-200":''}
+                  className={ dueStatus <=0  ? "bg-red-300 text-red-950" :dueStatus <=10? "bg-amber-300 text-amber-950" : "bg-green-300 text-green-950"}
                 >
-                  {payment.roomId.status}
+                 <span className="text-xs"> {dueStatus <=0  ? "Expired" :dueStatus <=10? "Due Soon" : "Active"}</span>
                 </Badge>
               </TableCell>
                 {/* Due */}

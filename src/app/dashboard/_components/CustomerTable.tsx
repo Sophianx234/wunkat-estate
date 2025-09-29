@@ -27,137 +27,13 @@ import CustomerTableRow from "./CustomerTableRow"
 import ExtendRentModal from "./ExtendRentModal"
 import EditCustomerModal from "./EditCuserModal"
 import { transactionType } from "../transactions/PaymentHistory"
-// import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
-
-// export type Payment = {
-//   id: number
-//   name: string
-//   email: string
-//   amount: string
-//   status: "Paid" | "Pending"
-//   method: "visa" | "mastercard"
-//   avatar: string
-// }
-
-/* const payments: Payment[] = [
-  {
-    id: 1,
-    name: "Jack Alfredo",
-    email: "jack@shadcnstudio.com",
-    amount: "$316.00",
-    status: "Paid",
-    method: "mastercard",
-    avatar: "https://i.pravatar.cc/40?img=1",
-  },
-  {
-    id: 2,
-    name: "Maria Gonzalez",
-    email: "maria.g@shadcnstudio.com",
-    amount: "$253.40",
-    status: "Pending",
-    method: "visa",
-    avatar: "https://i.pravatar.cc/40?img=2",
-  },
-  {
-    id: 3,
-    name: "John Doe",
-    email: "john.doe@shadcnstudio.com",
-    amount: "$852.00",
-    status: "Paid",
-    method: "mastercard",
-    avatar: "https://i.pravatar.cc/40?img=3",
-  },
-  {
-    id: 4,
-    name: "Emily Carter",
-    email: "emily.carter@shadcnstudio.com",
-    amount: "$889.00",
-    status: "Pending",
-    method: "visa",
-    avatar: "https://i.pravatar.cc/40?img=4",
-  },
-  {
-    id: 5,
-    name: "David Lee",
-    email: "david.lee@shadcnstudio.com",
-    amount: "$723.16",
-    status: "Paid",
-    method: "mastercard",
-    avatar: "https://i.pravatar.cc/40?img=5",
-  },
-] */
-/* const customerx = [
-  {
-    id: 1,
-    name: "James Carter",
-    email: "jamescarter@gmail.com",
-    phone: "+233 244 123 456",
-    location: "Brooklyn, NY",
-    apartment: "Willow Apartments",
-    roomNumber: "202",
-    rentExpiry: "2025-08-10",
-    rentStatus: "active",
-    smartLockStatus: "locked",
-    image: "/images/prof-1.jpg",
-  },
-  {
-    id: 2,
-    name: "Sophia West",
-    email: "sophia.west@example.com",
-    phone: "+233 245 876 321",
-    location: "Queens, NY",
-    apartment: "Maple Heights",
-    roomNumber: "305",
-    rentExpiry: "2025-07-20",
-    rentStatus: "pending",
-    smartLockStatus: "unlocked",
-    image: "/images/prof-2.jpg",
-  },
-  {
-    id: 3,
-    name: "Daniel Kim",
-    email: "daniel.kim@gmail.com",
-    phone: "+233 240 777 000",
-    location: "Manhattan, NY",
-    apartment: "Cedar Villas",
-    roomNumber: "101",
-    rentExpiry: "2025-06-30",
-    rentStatus: "expired",
-    smartLockStatus: "locked",
-    image: "/images/prof-3.jpg",
-  },
-  {
-    id: 4,
-    name: "Amina Abubakar",
-    email: "amina.a@gmail.com",
-    phone: "+233 550 123 999",
-    location: "Kumasi, Ghana",
-    apartment: "Zongo Estates",
-    roomNumber: "14B",
-    rentExpiry: "2025-09-01",
-    rentStatus: "active",
-    smartLockStatus: "unlocked",
-    image: "/images/prof-1.jpg",
-  },
-  {
-    id: 5,
-    name: "Kwame Owusu",
-    email: "kwameowusu@example.com",
-    phone: "+233 208 333 111",
-    location: "Accra, Ghana",
-    apartment: "East Legon Hills",
-    roomNumber: "4C",
-    rentExpiry: "2025-07-18",
-    rentStatus: "due_soon",
-    smartLockStatus: "locked",
-    image: "/images/prof-2.jpg",
-  },
-]; */
 
 
+type customerTableProps = {
+  customers: transactionType[];
+};
 
-
-export default function CustomerTable() {
+export default function CustomerTable({ customers }: customerTableProps) {
     const [payments, setPayments] = useState<transactionType[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -165,7 +41,7 @@ export default function CustomerTable() {
     const fetchPayments = async () => {
       try {
         setLoading(true);
-        const res = await fetch("/api/payment", { cache: "no-store" });
+        const res = await fetch("/api/payment",);
         const data = await res.json();
         console.log('dataxxxx',data)
         setPayments(data);
@@ -177,6 +53,8 @@ export default function CustomerTable() {
     };
     fetchPayments();
   }, []);
+
+   const dataToShow = customers && customers.length > 0 ? customers : payments;
   if (loading) return <p className="p-4">Loading...</p>;
   return (
     <div className="   ">
@@ -197,7 +75,7 @@ export default function CustomerTable() {
 </TableHeader>
 
         <TableBody>
-          {payments.map((payment,i) => <CustomerTableRow key={payment._id} payment={payment} />)}
+          {dataToShow.map((payment,i) => <CustomerTableRow key={payment._id} payment={payment} />)}
           
         </TableBody>
       </Table>
