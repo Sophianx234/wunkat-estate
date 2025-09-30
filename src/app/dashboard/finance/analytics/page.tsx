@@ -1,15 +1,20 @@
 // Update the import path below if your Avatar component is located elsewhere
 // Update the import path below if your Avatar component is located elsewhere
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-
-import SubscriptionCard from "@/app/_components/SubscriptionCard";
-import { DashboardAnalytics } from "../../_components/Analytics";
-import TransactionHistory from "../../_components/TransactionTable";
+'use client'
 import ReturningRateCard from "@/app/_components/ReturningRateCard";
+import SubscriptionCard from "@/app/_components/SubscriptionCard";
 import TotalRevenueCard from "@/app/_components/TotalRevenueCard";
+import { DashboardAnalytics } from "../../_components/Analytics";
+import HouseStats from "../../_components/HouseStats";
 import TeamMembersCard from "../../_components/TeamMembersCard";
-import RecentActivity from "./RecentActivity";
+import TransactionHistory from "../../_components/TransactionTable";
 import { VisitorsChart } from "../../_components/VisitorsChart";
+import CustomersPage from "../../tenants/page";
+import RecentActivity from "./RecentActivity";
+import RoomsCard, { HomeStatsCard } from "../../_components/HomeStatsCard";
+import { DoorClosed, Home } from "lucide-react";
+import { GiBed, GiSpookyHouse } from "react-icons/gi";
 
 export default function Finance() {
   return (
@@ -38,8 +43,27 @@ export default function Finance() {
       <RecentActivity/>
       <TeamMembersCard/>
       </div>
+
+
       <VisitorsChart/>
+      <CustomersPage/>
+      <div className="grid grid-cols-[3fr_3fr_.5fr] gap-3  my-6 ">
+         <HomeStatsCard
+        title="Total Houses"
+        value={128}
+        icon={GiSpookyHouse}
+        buttonLabel="View Houses"
+        onButtonClick={() => console.log("View Houses clicked")}
+      />
+      <HomeStatsCard
+        title="Total Rooms"
+        value={732}
+        icon={GiBed}
+        buttonLabel="View Rooms"
+        onButtonClick={() => console.log("View Rooms clicked")}
+      />
       <SubscriptionCard/>
+      </div>
       <TransactionHistory/>
       
       
