@@ -13,6 +13,8 @@ import { MdAccountCircle, MdMessage } from "react-icons/md";
 import { RiBuilding2Line } from "react-icons/ri";
 import { TbHomePlus, TbReportAnalytics } from "react-icons/tb";
 import { ScaleLoader } from "react-spinners";
+import ControlPanel from "./ControlPanel";
+import { GiSpookyHouse } from "react-icons/gi";
 type sidebarProps = {
   type?: "normal" | "slide";
   handleClose?: () => void;
@@ -66,8 +68,8 @@ export default function Sidebar({
               size={30}
               onClick={handleClose}
               className="block self-end stroke-black cursor-pointer"
-            />
-          )}
+              />
+            )}
         </div>
 
         {/* Scrollable nav container */}
@@ -76,10 +78,11 @@ export default function Sidebar({
             onClick={toggleSidebar}
             href="/dashboard/finance/analytics"
             className="dash-nav-item"
-          >
+            >
             <TbReportAnalytics className="size-6" />
             Financial Analytics
           </Link>
+            <ControlPanel/>
 
           <Link
             onClick={toggleSidebar}
@@ -88,24 +91,24 @@ export default function Sidebar({
               pathname === "/dashboard/properties" ? "bg-black text-white" : ""
             }`}
           >
-            <RiBuilding2Line className="size-6" /> Properties
+            <GiSpookyHouse className="size-6" /> Properties
           </Link>
         {/*   <Link
             onClick={toggleSidebar}
             href="/dashboard/agents"
             className={`dash-nav-item ${
               pathname === "/dashboard/agents" ? "bg-black text-white" : ""
-            }`}
-          >
-            <HiOutlineUsers className="size-6" /> Agents
-          </Link> */}
+              }`}
+              >
+              <HiOutlineUsers className="size-6" /> Agents
+              </Link> */}
           <Link
             onClick={toggleSidebar}
             href="/dashboard/tenants"
             className={`dash-nav-item ${
               pathname === "/dashboard/tenants" ? "bg-black text-white" : ""
             }`}
-          >
+            >
             <MdAccountCircle className="size-6" /> Tenants
           </Link>
           <Link
