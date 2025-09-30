@@ -46,7 +46,7 @@ export default function ReturningRateCard() {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow p-6 w-full">
+    <div className="bg-white rounded-xl shadow p-6 ">
       <div className="flex justify-between items-start">
         <div>
           <h2 className="font-semibold text-lg text-gray-800">Returning Rate</h2>

@@ -50,7 +50,7 @@ export default function TotalRevenueCard() {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow p-6 w-full">
+    <div className="bg-white rounded-xl shadow p-6 ">
       <h2 className="font-semibold text-lg text-gray-800">Total Revenue</h2>
       <p className="text-gray-500 text-sm">Income in the last 28 days</p>
 

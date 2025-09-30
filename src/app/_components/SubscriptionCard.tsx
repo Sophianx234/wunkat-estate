@@ -21,14 +21,14 @@ export default function SubscriptionCard() {
       {
         label: "Current",
         data: [10, 20, 15, 30, 25, 40, 22],
-        backgroundColor: "#3B82F6", // blue
+        backgroundColor: "#000", // blue
         borderRadius: 6,
         barThickness: 12,
       },
       {
         label: "Previous",
         data: [12, 15, 20, 18, 22, 25, 30],
-        backgroundColor: "#10B981", // green
+        backgroundColor: "#868e96", // green
         borderRadius: 6,
         barThickness: 12,
       },

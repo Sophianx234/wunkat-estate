@@ -7,6 +7,9 @@ import { DashboardAnalytics } from "../../_components/Analytics";
 import TransactionHistory from "../../_components/TransactionTable";
 import ReturningRateCard from "@/app/_components/ReturningRateCard";
 import TotalRevenueCard from "@/app/_components/TotalRevenueCard";
+import TeamMembersCard from "../../_components/TeamMembersCard";
+import RecentActivity from "./RecentActivity";
+import { VisitorsChart } from "../../_components/VisitorsChart";
 
 export default function Finance() {
   return (
@@ -25,16 +28,19 @@ export default function Finance() {
       {/* <ClientCard /> */}
 
       <DashboardAnalytics/>
-      <div className="grid grid-cols-[1fr_1fr] items-center mb-6 gap-2">
-
-      <TransactionHistory/>
-      <SubscriptionCard/>
-      </div>
-      <div className="grid grid-cols-2 items-center">
+      <div className="grid grid-cols-[2fr_1fr] gap-4 mb-6 ">
 
       <ReturningRateCard/>
       <TotalRevenueCard/>
       </div>
+      <div className="grid grid-cols-[2fr_1fr]  mb-6 gap-4">
+
+      <RecentActivity/>
+      <TeamMembersCard/>
+      </div>
+      <VisitorsChart/>
+      <SubscriptionCard/>
+      <TransactionHistory/>
       
       
     </div>
