@@ -12,6 +12,7 @@ import { HiOutlineUsers } from "react-icons/hi";
 import { MdAccountCircle, MdMessage } from "react-icons/md";
 import { RiBuilding2Line } from "react-icons/ri";
 import { TbHomePlus, TbReportAnalytics } from "react-icons/tb";
+import { CiMoneyCheck1 } from "react-icons/ci";
 import { ScaleLoader } from "react-spinners";
 import ControlPanel from "./ControlPanel";
 import { GiSpookyHouse } from "react-icons/gi";
@@ -120,7 +121,7 @@ export default function Sidebar({
                 : ""
             }`}
           >
-            <TbHomePlus className="size-6" /> Transactions
+            <CiMoneyCheck1 className="size-6" /> Transactions
           </Link>
          
           <Link

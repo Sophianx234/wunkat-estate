@@ -1,16 +1,21 @@
-'use client';
+"use client";
+
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { FaBath, FaBed } from "react-icons/fa";
+import { Bath, BedDouble, Edit, Trash2 } from "lucide-react";
 import { IRoom } from "../properties/page";
-import { Bath, BedDouble } from "lucide-react";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
 
 type propertyCardProps = {
-  room:IRoom
+  room: IRoom;
+  type: "admin" | "user";
 };
 
-export default function PropertyCard({ room }: propertyCardProps) {
+export default function PropertyCard({ room, type = "user" }: propertyCardProps) {
   const router = useRouter();
 
   const getStatusStyle = (status: string) => {
@@ -25,8 +30,37 @@ export default function PropertyCard({ room }: propertyCardProps) {
         return "bg-gray-100 text-gray-600";
     }
   };
+
   const handleReadMore = () => {
-    router.push(`properties/${room._id}`);
+    router.push(`/dashboard/properties/${room._id}`);
+  };
+
+  const handleEdit = () => {
+    router.push(`/dashboard/properties/edit/${room._id}`);
+  };
+
+  const handleDelete = async () => {
+    const result = await MySwal.fire({
+      title: `Are you sure you want to delete room ${room.name}?`,
+      text: "This action cannot be undone!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        // TODO: Call your delete API
+        console.log("Deleting room:", room._id);
+
+        await MySwal.fire("Deleted!", "The room has been deleted.", "success");
+      } catch (err) {
+        await MySwal.fire("Error!", "Something went wrong.", "error");
+      }
+    }
   };
 
   return (
@@ -46,6 +80,27 @@ export default function PropertyCard({ room }: propertyCardProps) {
         >
           {room?.status.charAt(0).toUpperCase() + room?.status.slice(1)}
         </span>
+
+        {type === "admin" && (
+          <div className="absolute top-2 right-2 flex gap-2">
+            <Button
+              onClick={handleEdit}
+              size="icon"
+              variant="outline"
+              className="h-7 w-7"
+            >
+              <Edit className="w-4 h-4" />
+            </Button>
+            <Button
+              onClick={handleDelete}
+              size="icon"
+              variant="destructive"
+              className="h-7 w-7"
+            >
+              <Trash2 className="w-4 h-4" />
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* Content */}
@@ -57,30 +112,37 @@ export default function PropertyCard({ room }: propertyCardProps) {
         <p className="text-xs text-gray-500 mb-2 line-clamp-3">
           {room?.description}
         </p>
-<div className="flex items-center justify-between  gap-4 text-gray-600 text-xs mb-4">
+
+        {/* Beds & Baths */}
+        <div className="flex items-center justify-between gap-4 text-gray-600 text-xs mb-4">
           <div className="flex items-center gap-1">
-            <BedDouble  className="size-4 text-gray-500" />
+            <BedDouble className="size-4 text-gray-500" />
             <span>{room.beds} Beds</span>
           </div>
-          <div className="flex  items-center gap-1">
-            <Bath  className=" size-4 text-gray-500" />
+          <div className="flex items-center gap-1">
+            <Bath className="size-4 text-gray-500" />
             <span>{room.baths} Baths</span>
           </div>
-            {/* <span>{room?.house?.size}</span> */}
-          
         </div>
+
         {/* Footer pinned at bottom */}
-        <div className="mt-auto flex  justify-between items-center text-sm pt-2">
-          <span className="font-semibold text-gray-800 flex-col flex leading-tight">{room.price}<span className="italic text-xs font-medium text-gray-500">
-            {room?.planType.includes("m") ? "/month" : "/year"}
-          </span></span>
-          <Button
-          disabled={!room.status.includes("available")}
-            onClick={handleReadMore}
-            className="text-white text-xs font-medium px-4 py-1"
-          >
-           View & Book
-          </Button>
+        <div className="mt-auto flex justify-between items-center text-sm pt-2">
+          <span className="font-semibold text-gray-800 flex flex-col leading-tight">
+            {room.price}
+            <span className="italic text-xs font-medium text-gray-500">
+              {room?.planType.includes("m") ? "/month" : "/year"}
+            </span>
+          </span>
+
+          
+            <Button
+              disabled={!room.status.includes("available")}
+              onClick={handleReadMore}
+              className="text-white text-xs font-medium px-4 py-1"
+            >
+              View & Book
+            </Button>
+          
         </div>
       </div>
     </div>
