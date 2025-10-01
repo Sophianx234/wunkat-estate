@@ -54,7 +54,7 @@ export default function PropertiesPage({  type = 'user' }: propertiesPageProps) 
     const fetchRooms = async () => {
       try {
         setLoading(true);
-        const res = await fetch("/api/rooms");
+        const res = await fetch(`/api/rooms?${type=='user'&&'type=available'}`);
         if (!res.ok) throw new Error("Failed to fetch rooms");
         const data = await res.json();
         setRooms(data);
@@ -91,7 +91,7 @@ export default function PropertiesPage({  type = 'user' }: propertiesPageProps) 
       }
       </div>
 
-      <Filters />
+      <Filters type={type} />
 
       {loading ? (
         <div className="flex justify-center items-center">

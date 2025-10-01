@@ -70,7 +70,8 @@ export async function GET(req: NextRequest) {
     // ✅ extract query params
     const { searchParams } = new URL(req.url);
     const search = searchParams.get("search") || "";
-    const type: boolean = Boolean(searchParams.get("type")) || false;
+    const type: boolean = searchParams.get("type");
+    const smartLock: boolean = Boolean(searchParams.get("smartLock")) || false;
     const city = searchParams.get("city") || "";
     const status = searchParams.get("status") || "";
 
@@ -90,32 +91,27 @@ export async function GET(req: NextRequest) {
       filter.status = status; // e.g. available / booked / pending
     }
 
-    if (type !== undefined) {
+    if (smartLock) {
       console.log("type", type);
-      filter.smartLockEnabled = type;
+      filter.smartLockEnabled = smartLock;
+    }
+    if (type) {
+      console.log("type", type);
+      filter.status = type;
     }
 
     console.log("filter", filter);
 
     // ✅ query database
-    let rooms:room[];
-    if (filter) {
-      rooms = await Room.find(filter)
+    
+    const  rooms = await Room.find(filter)
         .populate({
           path: "houseId",
           select: "name location smartLockEnabled",
           ...(city && { match: { "location.region": city } }), // ✅ only when city exists
         })
         .lean();
-      rooms = await Room.find()
-        .populate({
-          path: "houseId",
-          select: "name location smartLockEnabled",
-          ...(city && { match: { "location.region": city } }), // ✅ only when city exists
-        })
-        .lean();
-    } else {
-    }
+     
     const filteredRooms = city ? rooms.filter((r) => r.houseId) : rooms;
     console.log("filteredRooms", filteredRooms);
 

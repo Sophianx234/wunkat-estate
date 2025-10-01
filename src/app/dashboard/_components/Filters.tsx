@@ -19,17 +19,12 @@ import { ghanaRegions } from "../properties/add-house/page";
 import { useDashStore } from "@/lib/store";
 
 type FiltersProps = {
-  onFilter: (filters: {
-    search: string;
-    type: string;
-    city: string;
-    status: string;
-  }) => void;
+  type?: 'admin' | 'user';  
 };
 
-export default function Filters() {
+export default function Filters({ type = 'user' }: FiltersProps) {
   const [search, setSearch] = useState("");
-  const [type, setType] = useState("");
+  const [smartLock, setSmartLock] = useState("");
   const [city, setCity] = useState("");
   const [status, setStatus] = useState("");
   const router = useRouter();
@@ -41,7 +36,7 @@ export default function Filters() {
     // ✅ build query string properly
     const params = new URLSearchParams();
     if (search) params.set("search", search);
-    if (type) params.set("type", type);
+    if (smartLock) params.set("type", smartLock);
     if (city) params.set("city", city);
     if (status) params.set("status", status);
   const queryString = params.toString();
@@ -50,7 +45,7 @@ export default function Filters() {
 
       try {
     // ✅ request filtered rooms from backend
-    const res = await fetch(`/api/rooms?${queryString}`);
+    const res = await fetch(`/api/rooms?${type=='user'&&'type=available'}${queryString}`);
     const data = await res.json();
 
     if (res.ok) {
@@ -67,7 +62,7 @@ export default function Filters() {
 
   const handleReset = () => {
     setSearch("");
-    setType("");
+    setSmartLock("");
     setCity("");
     setStatus("");
     setFilteredRooms(null);
@@ -92,7 +87,7 @@ export default function Filters() {
 
       {/* 🏠 Property Type */}
       <div className="relative ">
-        <Select value={type} onValueChange={setType}>
+        <Select value={smartLock} onValueChange={setSmartLock}>
           <SelectTrigger className="pl-9 text-sm rounded-lg">
             <SelectValue placeholder="Smart Lock" />
           </SelectTrigger>
