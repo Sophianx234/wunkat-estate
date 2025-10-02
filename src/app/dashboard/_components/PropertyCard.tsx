@@ -7,6 +7,7 @@ import { Bath, BedDouble, Edit, Trash2 } from "lucide-react";
 import { IRoom } from "../properties/page";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { useDashStore } from "@/lib/store";
 
 const MySwal = withReactContent(Swal);
 
@@ -17,6 +18,7 @@ type propertyCardProps = {
 
 export default function PropertyCard({ room, type = "user" }: propertyCardProps) {
   const router = useRouter();
+  const {setRoom} = useDashStore();
 
   const getStatusStyle = (status: string) => {
     switch (status.toLowerCase()) {
@@ -36,6 +38,7 @@ export default function PropertyCard({ room, type = "user" }: propertyCardProps)
   };
 
   const handleEdit = () => {
+    setRoom(room)
     router.push(`/dashboard/properties/edit/${room._id}`);
   };
 

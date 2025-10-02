@@ -14,6 +14,7 @@ export type signupType = {
 export type storeState = {
   filteredPayments: transactionType[]|[]
   user: userType | null;
+  room: IRoom | null;
   openSidebar: boolean;
   openAddProperty: boolean;
   openAddHouse:boolean
@@ -25,6 +26,7 @@ export type storeState = {
   setAvatar: (url: string) => void;
   setSignupData: (data: signupType) => void;
   setFilteredRooms: (data: IRoom[]|null) => void;
+  setRoom: (data: IRoom|null) => void;
   setFilteredPayments: (data: transactionType[]|[]) => void;
   toggleSidebar: () => void;
   toggleExpandedProperty: () => void;
@@ -37,6 +39,7 @@ export type storeState = {
 
 export const useDashStore = create<storeState>((set) => ({
   filteredPayments: [],
+  room:null,
   openSidebar: false,
   openExpandedProperty: false,
   openAddProperty: false,
@@ -61,5 +64,6 @@ export const useDashStore = create<storeState>((set) => ({
   setAvatar: (url: string) => set(() => ({ avatar: url })), // ✅ Corrected function
   setSignupData: (data: signupType) => set(() => ({ signupData: data })),
   setFilteredRooms: (data: IRoom[] | null) => set(() => ({ filteredRooms: data })),
+  setRoom: (data: IRoom | null) => set(() => ({ room: data })),
   setFilteredPayments: (data: transactionType[] | []) => set(() => ({ filteredPayments: data })),
 }));
