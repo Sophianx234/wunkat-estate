@@ -1,10 +1,10 @@
 "use client";
 
+import Swal from "sweetalert2";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useForm } from "react-hook-form";
-import toast, { Toaster } from "react-hot-toast";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -33,21 +33,20 @@ import { IoBedOutline, IoImageOutline } from "react-icons/io5";
 import Link from "next/link";
 import { useDashStore } from "@/lib/store";
 
-// ✅ Extend schema with beds & baths
+// ✅ Schema
 const roomSchema = z.object({
-  houseId: z.string().min(1, 'Please select a house'),
-  name: z.string().min(2, 'Room name must be at least 2 characters'),
-  price: z.string().min(1, 'Price is required'),
+  houseId: z.string().min(1, "Please select a house"),
+  name: z.string().min(2, "Room name must be at least 2 characters"),
+  price: z.string().min(1, "Price is required"),
   available: z.string().optional(),
   description: z.string().optional(),
-    beds: z
+  beds: z
     .string()
     .transform((val) => (val === "" ? undefined : Number(val)))
     .refine((val) => val === undefined || (!isNaN(val) && val >= 0), {
       message: "Number of beds must be a non-negative number",
     })
     .optional(),
-
   baths: z
     .string()
     .transform((val) => (val === "" ? undefined : Number(val)))
@@ -64,9 +63,9 @@ type RoomFormData = z.infer<typeof roomSchema>;
 type HouseType = { _id: string; name: string };
 
 export type AddPropertyProps = {
-  // 👈 new prop
   type?: "admin" | "user";
 };
+
 export default function AddProperty({ type = "user" }: AddPropertyProps) {
   const [houses, setHouses] = useState<HouseType[]>([]);
   const [images, setImages] = useState<File[]>([]);
@@ -74,9 +73,23 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
   const [allImages, setAllImages] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const {room,setRoom} = useDashStore();
+  const { room, setRoom } = useDashStore();
   const router = useRouter();
   const { id } = useParams();
+
+  // ✅ SweetAlert Toast Config
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
   // Fetch houses
   useEffect(() => {
     async function fetchHouses() {
@@ -85,60 +98,56 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
         const data = await res.json();
         setHouses(data);
       } catch {
-        toast.error("Failed to fetch houses");
+        Toast.fire({ icon: "error", title: "Failed to fetch houses" });
       }
     }
     fetchHouses();
   }, []);
 
-   useEffect(() => {
+  // Fetch room (for edit mode)
+  useEffect(() => {
     async function fetchRoom() {
-      if (!room || room._id !== id && type==='admin') {
+      if (!room || (room._id !== id && type === "admin")) {
         try {
           setIsLoading(true);
           const res = await fetch(`/api/rooms/${id}`);
           if (!res.ok) throw new Error("Failed to fetch room");
           const data = await res.json();
-          setRoom(data); // save to store
+          setRoom(data);
           setAllImages(data.images || []);
-        } catch (err) {
-          toast.error("Could not load room data");
-        }
-        finally {
+        } catch {
+          Toast.fire({ icon: "error", title: "Could not load room data" });
+        } finally {
           setIsLoading(false);
+        }
       }
     }
-  }
     if (id) fetchRoom();
   }, [id]);
 
-  
-  console.log("id", id);
-  console.log("room", room);
+  const form = useForm<RoomFormData>({
+    resolver: zodResolver(roomSchema),
+    defaultValues: {
+      houseId: "",
+      name: "",
+      price: "",
+      available: "",
+      description: "",
+      beds: undefined,
+      baths: undefined,
+      planType: "monthly",
+    },
+  });
 
-  const form = useForm<RoomFormData, any, RoomFormData>({
-  resolver: zodResolver(roomSchema),
-  defaultValues: {
-    houseId: '',
-    name: '',
-    price: '',
-    available: '',
-    description: '',
-    beds: undefined as number | undefined,
-    baths: undefined as number | undefined,
-    planType: "monthly", // 👈 default
-  },
-});
-
-  // Dropzone handler
+  // Dropzone
   const handleDrop = useCallback(
     (acceptedFiles: File[]) => {
       if (images.length + acceptedFiles.length > 4) {
-        toast.error("You can only upload up to 4 images.");
+        Toast.fire({ icon: "error", title: "You can only upload up to 4 images" });
         return;
       }
-      if (type=='admin' && allImages.length + acceptedFiles.length > 4) {
-        toast.error("You can only upload up to 4 images.");
+      if (type === "admin" && allImages.length + acceptedFiles.length > 4) {
+        Toast.fire({ icon: "error", title: "You can only upload up to 4 images" });
         return;
       }
       const newPreviews = acceptedFiles.map((file) =>
@@ -147,9 +156,8 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
       setImages((prev) => [...prev, ...acceptedFiles]);
       setPreviews((prev) => [...prev, ...newPreviews]);
       setAllImages((prev) => [...prev, ...newPreviews]);
-      
     },
-    [images]
+    [images, allImages, type]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -158,9 +166,10 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
     multiple: true,
   });
 
+  // Submit
   const onSubmit = async (data: RoomFormData) => {
-    if (images.length === 0) {
-      toast.error("Please upload at least one image");
+    if (images.length === 0 && type === "user") {
+      Toast.fire({ icon: "error", title: "Please upload at least one image" });
       return;
     }
 
@@ -171,28 +180,46 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
     images.forEach((file) => formData.append("images", file));
 
     try {
-      const res = await fetch("/api/rooms", { method: "POST", body: formData });
-      if (!res.ok) throw new Error("Failed to add room");
-      toast.success("Room added successfully!");
-      router.push("/dashboard/properties");
+      let res;
+      if (type === "admin") {
+        res = await fetch(`/api/rooms/${id}`, { method: "PUT", body: formData });
+      } else {
+        res = await fetch("/api/rooms", { method: "POST", body: formData });
+      }
+
+      if (!res.ok) {
+        throw new Error(type === "admin" ? "Failed to update room" : "Failed to add room");
+      }
+
+      Toast.fire({
+        icon: "success",
+        title: type === "admin" ? "Room updated successfully!" : "Room added successfully!",
+      });
+
+      router.push("/dashboard/manage/rooms");
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Something went wrong");
+      Toast.fire({
+        icon: "error",
+        title: err instanceof Error ? err.message : "Something went wrong",
+      });
     }
   };
 
-  if(isLoading){
-    return <div className="flex justify-center items-center h-64">
-      <p>Loading...</p>
-    </div>
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <p>Loading...</p>
+      </div>
+    );
   }
 
   return (
     <section
       ref={wrapperRef}
-      className=" p-6 rounded-xl   max-w-5xl mx-auto mt-10 w-full"
+      className="p-6 rounded-xl max-w-5xl mx-auto mt-10 w-full"
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="shadow-sm px-3 py-5 bg-white rounded-lg ">
             <h2 className=" font-semibold mb-2 pl-2">Property Information</h2>
 
@@ -215,27 +242,33 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
               </div>
             </div>
           </div>
-          {type=='user'?previews.length > 0 && (
+          {type == "user" ? (
+            previews.length > 0 && (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                {previews.map((src, index) => (
+                  <img
+                    alt=""
+                    key={index}
+                    src={src}
+                    className="rounded-md w-full h-32 object-cover"
+                  />
+                ))}
+              </div>
+            )
+          ) : (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-              {previews.map((src, index) => (
-                <img
-                  alt=""
-                  key={index}
-                  src={src}
-                  className="rounded-md w-full h-32 object-cover"
-                />
-              ))}
+              {allImages &&
+                allImages?.length > 0 &&
+                allImages.map((src, index) => (
+                  <img
+                    alt=""
+                    key={index}
+                    src={src}
+                    className="rounded-md w-full h-32 object-cover"
+                  />
+                ))}
             </div>
-          ):<div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-              {allImages && allImages?.length>0 && allImages.map((src, index) => (
-                <img
-                  alt=""
-                  key={index}
-                  src={src}
-                  className="rounded-md w-full h-32 object-cover"
-                />
-              ))}
-            </div>}
+          )}
 
           {/* PROPERTY INFO */}
           <div className="shadow bg-white px-4 py-3 pt-5 rounded-lg">
@@ -249,7 +282,13 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
                     <FormLabel>Property Name</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger>
-                      <SelectValue placeholder={`${type==='user'?'Select a house':room?.houseId?.name as string}`} />
+                        <SelectValue
+                          placeholder={`${
+                            type === "user"
+                              ? "Select a house"
+                              : (room?.houseId?.name as string)
+                          }`}
+                        />
                       </SelectTrigger>
                       <SelectContent>
                         {Array.isArray(houses) && houses.length > 0 ? (
@@ -278,7 +317,12 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
                   <FormItem>
                     <FormLabel>Room Name</FormLabel>
                     <FormControl>
-                      <Input placeholder={`${type==='user'?'e.g. Master Bedroom':room?.name}`} {...field} />
+                      <Input
+                        placeholder={`${
+                          type === "user" ? "e.g. Master Bedroom" : room?.name
+                        }`}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -296,7 +340,9 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
                       <FiDollarSign className="absolute left-3 top-3 text-gray-400" />
                       <Input
                         type="number"
-                        placeholder={`${type==='user'?"1500":room?.price}`}
+                        placeholder={`${
+                          type === "user" ? "1500" : room?.price
+                        }`}
                         {...field}
                         className="pl-9"
                       />
@@ -305,7 +351,6 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
                   </FormItem>
                 )}
               />
-
 
               {/* Beds */}
               <FormField
@@ -318,7 +363,9 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
                       <IoBedOutline className="absolute left-3 top-3 text-gray-400" />
                       <Input
                         type="number"
-                        placeholder={`${type==='user'?"2":String(room?.beds)}`}
+                        placeholder={`${
+                          type === "user" ? "2" : String(room?.beds)
+                        }`}
                         {...field}
                         className="pl-9"
                       />
@@ -327,7 +374,6 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
                   </FormItem>
                 )}
               />
-             
 
               {/* Baths */}
               <FormField
@@ -340,7 +386,7 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
                       <FiDroplet className="absolute left-3 top-3 text-gray-400" />
                       <Input
                         type="number"
-                        placeholder={`${type==='user'?"1":room?.baths}`}
+                        placeholder={`${type === "user" ? "1" : room?.baths}`}
                         {...field}
                         className="pl-9"
                       />
@@ -349,32 +395,37 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
                   </FormItem>
                 )}
               />
-              
-              
 
-  <FormField
-  control={form.control}
-  name="planType"
-  render={({ field }) => (
-    <FormItem>
-      <FormLabel>Plan Type</FormLabel>
-      <FormControl>
-        <Select onValueChange={field.onChange} value={field.value}>
-          <SelectTrigger>
-            <SelectValue placeholder={`${type==='user'?"Select a plan":room?.planType}`} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="monthly">Monthly</SelectItem>
-            <SelectItem value="yearly">Yearly</SelectItem>
-          </SelectContent>
-        </Select>
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
+              <FormField
+                control={form.control}
+                name="planType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Plan Type</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue
+                            placeholder={`${
+                              type === "user" ? "Select a plan" : room?.planType
+                            }`}
+                          />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="monthly">Monthly</SelectItem>
+                          <SelectItem value="yearly">Yearly</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-{/* Available */}
+              {/* Available */}
               <FormField
                 control={form.control}
                 name="available"
@@ -383,7 +434,9 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
                     <FormControl>
                       <Checkbox
                         checked={field.value === "true"}
-                        onCheckedChange={(checked) => field.onChange(checked ? "true" : "")}
+                        onCheckedChange={(checked) =>
+                          field.onChange(checked ? "true" : "")
+                        }
                       />
                     </FormControl>
                     <FormLabel className="text-sm font-normal">
@@ -392,7 +445,6 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
                   </FormItem>
                 )}
               />
-
             </div>
 
             {/* Description */}
@@ -404,7 +456,11 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
                   <FormLabel className="pt-4">Property Details</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder={`${type==='user'?"Enter property details...":room?.description}`}
+                      placeholder={`${
+                        type === "user"
+                          ? "Enter property details..."
+                          : room?.description
+                      }`}
                       {...field}
                     />
                   </FormControl>
@@ -414,15 +470,25 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
 
             {/* Buttons */}
             <div className="flex justify-end items-center pt-4 gap-4">
-              <Link href="/dashboard/properties" className="border border-gray-500 py-1 rounded-sm px-3">Cancel</Link>
+              <Link
+                href="/dashboard/properties"
+                className="border border-gray-500 py-1 rounded-sm px-3"
+              >
+                Cancel
+              </Link>
               <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? (type === 'user' ? "Adding..." : "Saving Changes...") : (type === 'user' ? "Add Property" : "Save Changes")}
+                {form.formState.isSubmitting
+                  ? type === "user"
+                    ? "Adding..."
+                    : "Saving Changes..."
+                  : type === "user"
+                  ? "Add Property"
+                  : "Save Changes"}
               </Button>
             </div>
           </div>
         </form>
       </Form>
-      <Toaster />
     </section>
   );
 }
