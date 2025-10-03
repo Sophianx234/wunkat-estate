@@ -1,11 +1,481 @@
-import AddProperty from "../../add-property/page"
+"use client";
 
-function page() {
+import Swal from "sweetalert2";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+
+import { useParams, useRouter } from "next/navigation";
+import { FiDollarSign, FiDroplet } from "react-icons/fi";
+import { IoBedOutline, IoImageOutline } from "react-icons/io5";
+import Link from "next/link";
+import { useDashStore } from "@/lib/store";
+
+// ✅ Schema
+const roomSchema = z.object({
+  houseId: z.string().min(1, "Please select a house"),
+  name: z.string().min(2, "Room name must be at least 2 characters"),
+  price: z.string().min(1, "Price is required"),
+  available: z.string().optional(),
+  description: z.string().optional(),
+  beds: z
+    .string()
+    .transform((val) => (val === "" ? undefined : Number(val)))
+    .refine((val) => val === undefined || (!isNaN(val) && val >= 0), {
+      message: "Number of beds must be a non-negative number",
+    })
+    .optional(),
+  baths: z
+    .string()
+    .transform((val) => (val === "" ? undefined : Number(val)))
+    .refine((val) => val === undefined || (!isNaN(val) && val >= 0), {
+      message: "Number of baths must be a non-negative number",
+    })
+    .optional(),
+  planType: z.enum(["monthly", "yearly"], {
+    required_error: "Please select a plan type",
+  }),
+});
+
+type RoomFormData = z.infer<typeof roomSchema>;
+type HouseType = { _id: string; name: string };
+
+export type AddPropertyProps = {
+  type?: "admin" | "user";
+};
+
+export default function Page() {
+  const [houses, setHouses] = useState<HouseType[]>([]);
+  const [images, setImages] = useState<File[]>([]);
+  const [previews, setPreviews] = useState<string[]>([]);
+  const [allImages, setAllImages] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const { room, setRoom } = useDashStore();
+  const router = useRouter();
+  const { id } = useParams();
+
+  // ✅ SweetAlert Toast Config
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
+  // Fetch houses
+  useEffect(() => {
+    async function fetchHouses() {
+      try {
+        const res = await fetch("/api/houses");
+        const data = await res.json();
+        setHouses(data);
+      } catch {
+        Toast.fire({ icon: "error", title: "Failed to fetch houses" });
+      }
+    }
+    fetchHouses();
+  }, []);
+
+  // Fetch room (for edit mode)
+  useEffect(() => {
+    async function fetchRoom() {
+      if (!room || room._id !== id ) {
+        try {
+          setIsLoading(true);
+          const res = await fetch(`/api/rooms/${id}`);
+          if (!res.ok) throw new Error("Failed to fetch room");
+          const data = await res.json();
+          setRoom(data);
+          setAllImages(data.images || []);
+        } catch {
+          Toast.fire({ icon: "error", title: "Could not load room data" });
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    }
+    if (id) fetchRoom();
+  }, [id]);
+
+  const form = useForm<RoomFormData>({
+    resolver: zodResolver(roomSchema),
+    defaultValues: {
+      houseId: "",
+      name: "",
+      price: "",
+      available: "",
+      description: "",
+      beds: undefined,
+      baths: undefined,
+      planType: "monthly",
+    },
+  });
+
+  // Dropzone
+  const handleDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      
+      if (allImages.length + acceptedFiles.length > 4) {
+        Toast.fire({ icon: "error", title: "You can only upload up to 4 images" });
+        return;
+      }
+      const newPreviews = acceptedFiles.map((file) =>
+        URL.createObjectURL(file)
+      );
+      setImages((prev) => [...prev, ...acceptedFiles]);
+      setPreviews((prev) => [...prev, ...newPreviews]);
+      setAllImages((prev) => [...prev, ...newPreviews]);
+    },
+    [images, allImages]
+  );
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop: handleDrop,
+    accept: { "image/*": [] },
+    multiple: true,
+  });
+
+  // Submit
+  const onSubmit = async (data: RoomFormData) => {
+    if (images.length === 0 ) {
+      Toast.fire({ icon: "error", title: "Please upload at least one image" });
+      return;
+    }
+
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(key, String(value));
+    });
+    images.forEach((file) => formData.append("images", file));
+
+    try {
+      const res = await fetch(`/api/rooms/${id}`, { method: "PUT", body: formData }); 
+
+      if (!res.ok) {
+        throw new Error("Failed to update room" );
+      }
+
+      Toast.fire({
+        icon: "success",
+        title: "Room updated successfully!",
+      });
+
+      router.push("/dashboard/manage/rooms");
+    } catch (err) {
+      Toast.fire({
+        icon: "error",
+        title: err instanceof Error ? err.message : "Something went wrong",
+      });
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   return (
-    <div>
-      <AddProperty type="admin"/>
+    <section
+      ref={wrapperRef}
+      className="p-6 rounded-xl max-w-5xl mx-auto mt-10 w-full"
+    >
+      <Form {...form}>
+         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <div className="shadow-sm px-3 py-5 bg-white rounded-lg ">
+            <h2 className=" font-semibold mb-2 pl-2">Property Information</h2>
+
+            {/* IMAGE UPLOAD */}
+            <div className="border-2 border-dashed rounded-xl  p-10 text-center">
+              <div
+                {...getRootProps()}
+                className="cursor-pointer flex flex-col items-center justify-center space-y-2"
+              >
+                <input {...getInputProps()} />
+                <IoImageOutline className="text-4xl text-gray-400" />
+                <p className="text-gray-500">
+                  {isDragActive
+                    ? "Drop the images here..."
+                    : "Drop your images here, or click to browse"}
+                </p>
+                <span className="text-xs text-gray-400">
+                  (max 4 images, PNG/JPG/GIF)
+                </span>
+              </div>
+            </div>
+          </div>
+          
+           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+  {allImages.map((src, index) => (
+    <div key={index} className="relative group">
+      <img
+        alt={`image-${index}`}
+        src={src}
+        className="rounded-md w-full h-32 object-cover"
+      />
+      {/* Delete button */}
+      <button
+        type="button"
+        onClick={() => {
+          setAllImages((prev) => prev.filter((_, i) => i !== index));
+
+          // If it's a preview (local new image), also remove from images/previews
+          setPreviews((prev) => prev.filter((_, i) => i !== index));
+          setImages((prev) => prev.filter((_, i) => i !== index));
+        }}
+        className="absolute top-1 right-1 bg-black/60 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition"
+      >
+        ✕
+      </button>
     </div>
-  )
+  ))}
+</div>
+
+          
+
+          {/* PROPERTY INFO */}
+          <div className="shadow bg-white px-4 py-3 pt-5 rounded-lg">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* House */}
+              <FormField
+                control={form.control}
+                name="houseId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Property Name</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger>
+                        <SelectValue
+                          placeholder={
+                            (room?.houseId?.name)
+                          }
+                        />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Array.isArray(houses) && houses.length > 0 ? (
+                          houses.map((house) => (
+                            <SelectItem key={house._id} value={house._id}>
+                              {house.name}
+                            </SelectItem>
+                          ))
+                        ) : (
+                          <p className="text-gray-500 px-2">
+                            No houses available
+                          </p>
+                        )}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Room Name */}
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Room Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder={
+                          room?.name
+                        }
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Price */}
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Price (GHS)</FormLabel>
+                    <div className="relative">
+                      <FiDollarSign className="absolute left-3 top-3 text-gray-400" />
+                      <Input
+                        type="number"
+                        placeholder={
+                          room?.price
+                        }
+                        {...field}
+                        className="pl-9"
+                      />
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Beds */}
+              <FormField
+                control={form.control}
+                name="beds"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Beds</FormLabel>
+                    <div className="relative">
+                      <IoBedOutline className="absolute left-3 top-3 text-gray-400" />
+                      <Input
+                        type="number"
+                        placeholder={
+                          String(room?.beds)
+                        }
+                        {...field}
+                        className="pl-9"
+                      />
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Baths */}
+              <FormField
+                control={form.control}
+                name="baths"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Baths</FormLabel>
+                    <div className="relative">
+                      <FiDroplet className="absolute left-3 top-3 text-gray-400" />
+                      <Input
+                        type="number"
+                        placeholder={room?.baths}
+                        {...field}
+                        className="pl-9"
+                      />
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="planType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Plan Type</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue
+                            placeholder={`${
+                              room?.planType
+                            }`}
+                          />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="monthly">Monthly</SelectItem>
+                          <SelectItem value="yearly">Yearly</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Available */}
+              <FormField
+                control={form.control}
+                name="available"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center space-x-2 mt-6">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value === "true"}
+                        onCheckedChange={(checked) =>
+                          field.onChange(checked ? "true" : "")
+                        }
+                      />
+                    </FormControl>
+                    <FormLabel className="text-sm font-normal">
+                      Available
+                    </FormLabel>
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* Description */}
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="pt-4">Property Details</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder={
+                          room?.description
+                      }
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            {/* Buttons */}
+            <div className="flex justify-end items-center pt-4 gap-4">
+              <Link
+                href="/dashboard/properties"
+                className="border border-gray-500 py-1 rounded-sm px-3"
+              >
+                Cancel
+              </Link>
+              <Button type="submit" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting
+                  ? "Saving Changes..."
+                  
+                  : "Save Changes"}
+              </Button>
+            </div>
+          </div>
+        </form>
+      </Form>
+    </section>
+  );
 }
 
-export default page

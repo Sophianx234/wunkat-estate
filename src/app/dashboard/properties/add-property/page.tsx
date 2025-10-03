@@ -66,16 +66,12 @@ export type AddPropertyProps = {
   type?: "admin" | "user";
 };
 
-export default function AddProperty({ type = "user" }: AddPropertyProps) {
+export default function AddProperty() {
   const [houses, setHouses] = useState<HouseType[]>([]);
   const [images, setImages] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
-  const [allImages, setAllImages] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const { room, setRoom } = useDashStore();
   const router = useRouter();
-  const { id } = useParams();
 
   // ✅ SweetAlert Toast Config
   const Toast = Swal.mixin({
@@ -104,26 +100,7 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
     fetchHouses();
   }, []);
 
-  // Fetch room (for edit mode)
-  useEffect(() => {
-    async function fetchRoom() {
-      if (!room || (room._id !== id && type === "admin")) {
-        try {
-          setIsLoading(true);
-          const res = await fetch(`/api/rooms/${id}`);
-          if (!res.ok) throw new Error("Failed to fetch room");
-          const data = await res.json();
-          setRoom(data);
-          setAllImages(data.images || []);
-        } catch {
-          Toast.fire({ icon: "error", title: "Could not load room data" });
-        } finally {
-          setIsLoading(false);
-        }
-      }
-    }
-    if (id) fetchRoom();
-  }, [id]);
+  
 
   const form = useForm<RoomFormData>({
     resolver: zodResolver(roomSchema),
@@ -146,18 +123,14 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
         Toast.fire({ icon: "error", title: "You can only upload up to 4 images" });
         return;
       }
-      if (type === "admin" && allImages.length + acceptedFiles.length > 4) {
-        Toast.fire({ icon: "error", title: "You can only upload up to 4 images" });
-        return;
-      }
+      
       const newPreviews = acceptedFiles.map((file) =>
         URL.createObjectURL(file)
       );
       setImages((prev) => [...prev, ...acceptedFiles]);
       setPreviews((prev) => [...prev, ...newPreviews]);
-      setAllImages((prev) => [...prev, ...newPreviews]);
     },
-    [images, allImages, type]
+    [images]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -168,7 +141,7 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
 
   // Submit
   const onSubmit = async (data: RoomFormData) => {
-    if (images.length === 0 && type === "user") {
+    if (images.length === 0 ) {
       Toast.fire({ icon: "error", title: "Please upload at least one image" });
       return;
     }
@@ -180,20 +153,16 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
     images.forEach((file) => formData.append("images", file));
 
     try {
-      let res;
-      if (type === "admin") {
-        res = await fetch(`/api/rooms/${id}`, { method: "PUT", body: formData });
-      } else {
-        res = await fetch("/api/rooms", { method: "POST", body: formData });
-      }
+      const res = await fetch("/api/rooms", { method: "POST", body: formData });
+      
 
       if (!res.ok) {
-        throw new Error(type === "admin" ? "Failed to update room" : "Failed to add room");
+        throw new Error( "Failed to add room");
       }
 
       Toast.fire({
         icon: "success",
-        title: type === "admin" ? "Room updated successfully!" : "Room added successfully!",
+        title: "Room added successfully!",
       });
 
       router.push("/dashboard/manage/rooms");
@@ -205,13 +174,7 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <p>Loading...</p>
-      </div>
-    );
-  }
+
 
   return (
     <section
@@ -242,7 +205,7 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
               </div>
             </div>
           </div>
-          {type == "user" ? (
+          {
             previews.length > 0 && (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
                 {previews.map((src, index) => (
@@ -255,20 +218,7 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
                 ))}
               </div>
             )
-          ) : (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-              {allImages &&
-                allImages?.length > 0 &&
-                allImages.map((src, index) => (
-                  <img
-                    alt=""
-                    key={index}
-                    src={src}
-                    className="rounded-md w-full h-32 object-cover"
-                  />
-                ))}
-            </div>
-          )}
+          }
 
           {/* PROPERTY INFO */}
           <div className="shadow bg-white px-4 py-3 pt-5 rounded-lg">
@@ -283,11 +233,9 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
                     <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger>
                         <SelectValue
-                          placeholder={`${
-                            type === "user"
+                          placeholder={`
                               ? "Select a house"
-                              : (room?.houseId?.name as string)
-                          }`}
+                          `}
                         />
                       </SelectTrigger>
                       <SelectContent>
@@ -319,8 +267,7 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
                     <FormControl>
                       <Input
                         placeholder={`${
-                          type === "user" ? "e.g. Master Bedroom" : room?.name
-                        }`}
+                          "e.g. Master Bedroom" }`}
                         {...field}
                       />
                     </FormControl>
@@ -341,7 +288,7 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
                       <Input
                         type="number"
                         placeholder={`${
-                          type === "user" ? "1500" : room?.price
+                          "1500"
                         }`}
                         {...field}
                         className="pl-9"
@@ -364,7 +311,7 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
                       <Input
                         type="number"
                         placeholder={`${
-                          type === "user" ? "2" : String(room?.beds)
+                          "2" 
                         }`}
                         {...field}
                         className="pl-9"
@@ -386,7 +333,7 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
                       <FiDroplet className="absolute left-3 top-3 text-gray-400" />
                       <Input
                         type="number"
-                        placeholder={`${type === "user" ? "1" : room?.baths}`}
+                        placeholder={`${ "1" }`}
                         {...field}
                         className="pl-9"
                       />
@@ -410,7 +357,7 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
                         <SelectTrigger>
                           <SelectValue
                             placeholder={`${
-                              type === "user" ? "Select a plan" : room?.planType
+                              "Select a plan"
                             }`}
                           />
                         </SelectTrigger>
@@ -457,10 +404,8 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
                   <FormControl>
                     <Textarea
                       placeholder={`${
-                        type === "user"
-                          ? "Enter property details..."
-                          : room?.description
-                      }`}
+                        "Enter property details..."
+                          }`}
                       {...field}
                     />
                   </FormControl>
@@ -478,12 +423,9 @@ export default function AddProperty({ type = "user" }: AddPropertyProps) {
               </Link>
               <Button type="submit" disabled={form.formState.isSubmitting}>
                 {form.formState.isSubmitting
-                  ? type === "user"
-                    ? "Adding..."
-                    : "Saving Changes..."
-                  : type === "user"
-                  ? "Add Property"
-                  : "Save Changes"}
+                  ?  "Adding..."
+                    :  "Add Property"
+                  }
               </Button>
             </div>
           </div>
