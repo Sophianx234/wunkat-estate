@@ -35,9 +35,9 @@ import { useDashStore } from "@/lib/store";
 
 // ✅ Schema
 const roomSchema = z.object({
-  houseId: z.string().min(1, "Please select a house"),
-  name: z.string().min(2, "Room name must be at least 2 characters"),
-  price: z.string().min(1, "Price is required"),
+  houseId: z.string().optional(),
+  name: z.string().optional(),
+  price: z.string().optional(),
   available: z.string().optional(),
   description: z.string().optional(),
   beds: z
@@ -54,10 +54,9 @@ const roomSchema = z.object({
       message: "Number of baths must be a non-negative number",
     })
     .optional(),
-  planType: z.enum(["monthly", "yearly"], {
-    required_error: "Please select a plan type",
-  }),
+  planType: z.enum(["monthly", "yearly"]).optional(),
 });
+
 
 type RoomFormData = z.infer<typeof roomSchema>;
 type HouseType = { _id: string; name: string };
@@ -73,6 +72,8 @@ export default function Page() {
   const [allImages, setAllImages] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const [deletedImages, setDeletedImages] = useState<string[]>([]);
+
   const { room, setRoom } = useDashStore();
   const router = useRouter();
   const { id } = useParams();
@@ -90,6 +91,26 @@ export default function Page() {
     },
   });
 
+  // Fetch room (for edit mode)
+  useEffect(() => {
+    async function fetchRoom() {
+      
+        try {
+          setIsLoading(true);
+          const res = await fetch(`/api/rooms/${id}`);
+          if (!res.ok) throw new Error("Failed to fetch room");
+          const data = await res.json();
+          setRoom(data);
+          setAllImages(data.images || []);
+        } catch {
+          Toast.fire({ icon: "error", title: "Could not load room data" });
+        } finally {
+          setIsLoading(false);
+        }
+      
+    }
+    fetchRoom();
+  }, []);
   // Fetch houses
   useEffect(() => {
     async function fetchHouses() {
@@ -104,26 +125,7 @@ export default function Page() {
     fetchHouses();
   }, []);
 
-  // Fetch room (for edit mode)
-  useEffect(() => {
-    async function fetchRoom() {
-      if (!room || room._id !== id ) {
-        try {
-          setIsLoading(true);
-          const res = await fetch(`/api/rooms/${id}`);
-          if (!res.ok) throw new Error("Failed to fetch room");
-          const data = await res.json();
-          setRoom(data);
-          setAllImages(data.images || []);
-        } catch {
-          Toast.fire({ icon: "error", title: "Could not load room data" });
-        } finally {
-          setIsLoading(false);
-        }
-      }
-    }
-    if (id) fetchRoom();
-  }, [id]);
+  
 
   const form = useForm<RoomFormData>({
     resolver: zodResolver(roomSchema),
@@ -165,37 +167,42 @@ export default function Page() {
 
   // Submit
   const onSubmit = async (data: RoomFormData) => {
-    if (images.length === 0 ) {
-      Toast.fire({ icon: "error", title: "Please upload at least one image" });
-      return;
-    }
 
-    const formData = new FormData();
-    Object.entries(data).forEach(([key, value]) => {
-      formData.append(key, String(value));
+  const formData = new FormData();
+  Object.entries(data).forEach(([key, value]) => {
+    formData.append(key, String(value));
+  });
+
+  // New uploads
+  images.forEach((file) => formData.append("images", file));
+
+  // Deleted server images
+  deletedImages.forEach((url) => formData.append("deletedImages", url));
+
+  try {
+    const res = await fetch(`/api/rooms/${id}`, {
+      method: "PUT",
+      body: formData,
     });
-    images.forEach((file) => formData.append("images", file));
 
-    try {
-      const res = await fetch(`/api/rooms/${id}`, { method: "PUT", body: formData }); 
-
-      if (!res.ok) {
-        throw new Error("Failed to update room" );
-      }
-
-      Toast.fire({
-        icon: "success",
-        title: "Room updated successfully!",
-      });
-
-      router.push("/dashboard/manage/rooms");
-    } catch (err) {
-      Toast.fire({
-        icon: "error",
-        title: err instanceof Error ? err.message : "Something went wrong",
-      });
+    if (!res.ok) {
+      throw new Error("Failed to update room");
     }
-  };
+
+    Toast.fire({
+      icon: "success",
+      title: "Room updated successfully!",
+    });
+
+    router.push("/dashboard/manage/rooms");
+  } catch (err) {
+    Toast.fire({
+      icon: "error",
+      title: err instanceof Error ? err.message : "Something went wrong",
+    });
+  }
+};
+
 
   if (isLoading) {
     return (
@@ -245,18 +252,27 @@ export default function Page() {
       />
       {/* Delete button */}
       <button
-        type="button"
-        onClick={() => {
-          setAllImages((prev) => prev.filter((_, i) => i !== index));
+  type="button"
+  onClick={() => {
+    const imageToRemove = allImages[index];
 
-          // If it's a preview (local new image), also remove from images/previews
-          setPreviews((prev) => prev.filter((_, i) => i !== index));
-          setImages((prev) => prev.filter((_, i) => i !== index));
-        }}
-        className="absolute top-1 right-1 bg-black/60 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition"
-      >
-        ✕
-      </button>
+    // If the image comes from the server (usually a URL in room.images)
+    if (room?.images?.includes(imageToRemove)) {
+      setDeletedImages((prev) => [...prev, imageToRemove]);
+    }
+
+    // Remove from allImages
+    setAllImages((prev) => prev.filter((_, i) => i !== index));
+
+    // Remove from local uploads if it’s a preview
+    setPreviews((prev) => prev.filter((_, i) => i !== index));
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  }}
+  className="absolute top-1 right-1 bg-black/60 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition"
+>
+  ✕
+</button>
+
     </div>
   ))}
 </div>
