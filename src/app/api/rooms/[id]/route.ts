@@ -59,6 +59,7 @@ export async function PUT(
     const beds = formData.get("beds") as string | null;
     const baths = formData.get("baths") as string | null;
     const planType = formData.get("planType") as string | null;
+     const status = formData.get("status") as string | null; // 
 
     // ✅ Handle deleted images
     const deletedImages = formData.getAll("deletedImages") as string[];
@@ -92,6 +93,7 @@ export async function PUT(
     if (beds && !isNaN(Number(beds))) updateData.beds = Number(beds);
     if (baths && !isNaN(Number(baths))) updateData.baths = Number(baths);
     if (planType && planType.trim() !== "") updateData.planType = planType;
+    if (status && status.trim() !== "") updateData.status = status; 
 
     // ✅ Remove deleted images
     if (deletedImages.length > 0) {

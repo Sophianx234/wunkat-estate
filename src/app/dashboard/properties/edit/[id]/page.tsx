@@ -55,6 +55,7 @@ const roomSchema = z.object({
     })
     .optional(),
   planType: z.enum(["monthly", "yearly"]).optional(),
+  status: z.enum(["available", "booked", "pending"]).optional(),
 });
 
 
@@ -127,19 +128,21 @@ export default function Page() {
 
   
 
-  const form = useForm<RoomFormData>({
-    resolver: zodResolver(roomSchema),
-    defaultValues: {
-      houseId: room?.houseId?._id || "",
-      name: "",
-      price: "",
-      available: "",
-      description: "",
-      beds: undefined,
-      baths: undefined,
-      planType: "monthly",
-    },
-  });
+const form = useForm<RoomFormData>({
+  resolver: zodResolver(roomSchema),
+  defaultValues: {
+    houseId: room?.houseId?._id || "",
+    name: "",
+    price: "",
+    available: "",
+    description: "",
+    beds: undefined,
+    baths: undefined,
+    planType: "monthly",
+    status: room?.status || "available", // ✅ NEW
+  },
+});
+
 
   console.log("roomxx", room);
 
@@ -169,6 +172,18 @@ export default function Page() {
 
   // Submit
   const onSubmit = async (data: RoomFormData) => {
+      const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "Do you want to save these changes to the room?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, save it!",
+    cancelButtonText: "No, cancel",
+  });
+
+  if (!result.isConfirmed) {
+    return; // ❌ stop if user cancels
+  }
 
   const formData = new FormData();
   Object.entries(data).forEach(([key, value]) => {
@@ -436,24 +451,29 @@ export default function Page() {
 
               {/* Available */}
               <FormField
-                control={form.control}
-                name="available"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center space-x-2 mt-6">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value === "true"}
-                        onCheckedChange={(checked) =>
-                          field.onChange(checked ? "true" : "")
-                        }
-                      />
-                    </FormControl>
-                    <FormLabel className="text-sm font-normal">
-                      Available
-                    </FormLabel>
-                  </FormItem>
-                )}
-              />
+  control={form.control}
+  name="status"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Status</FormLabel>
+      <Select onValueChange={field.onChange} value={field.value}>
+        <SelectTrigger>
+          <SelectValue placeholder={room?.status || "Select status"} />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="available">Available</SelectItem>
+          <SelectItem value="booked">Booked</SelectItem>
+          <SelectItem value="pending">Pending</SelectItem>
+        </SelectContent>
+      </Select>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
+                    
+                
+              
             </div>
 
             {/* Description */}
