@@ -30,27 +30,34 @@ export default function Filters({ type = 'user' }: FiltersProps) {
   const router = useRouter();
   const {setFilteredRooms}  = useDashStore()
 
-  const handleSubmit = async(e: React.FormEvent) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    // ✅ build query string properly
-    const params = new URLSearchParams();
-    if (search) params.set("search", search);
-    if (smartLock) params.set("type", smartLock);
-    if (city) params.set("city", city);
-    if (status) params.set("status", status);
+  // ✅ build query params safely
+  const params = new URLSearchParams();
+
+  if (search) params.set("search", search);
+  if (smartLock) params.set("smartLock", smartLock); // renamed from type → smartLock
+  if (city) params.set("city", city);
+  if (status) params.set("status", status);
+
+  // ✅ only users should filter by availability
+  if (type === "user") {
+    params.set("type", "available"); // renamed from type=available → availability
+  }
+
   const queryString = params.toString();
-    // ✅ push new URL with query params
-    router.push(`?${params.toString()}`);
 
-      try {
+  // ✅ push to URL
+  router.push(`?${queryString}`);
+
+  try {
     // ✅ request filtered rooms from backend
-    const res = await fetch(`/api/rooms?${type=='user'&&'type=available'}${queryString}`);
+    const res = await fetch(`/api/rooms?${queryString}`);
     const data = await res.json();
 
     if (res.ok) {
-      // 🔥 pass data to parent (so it can render)
-      console.log('data',data);
+      console.log("data", data);
       setFilteredRooms(data);
     } else {
       console.error("Error fetching rooms:", data.error);
@@ -58,7 +65,8 @@ export default function Filters({ type = 'user' }: FiltersProps) {
   } catch (error) {
     console.error("Request failed:", error);
   }
-  };
+};
+
 
   const handleReset = () => {
     setSearch("");

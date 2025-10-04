@@ -95,7 +95,7 @@ export default function PropertiesPage({  type = 'user' }: propertiesPageProps) 
       <Filters type={type} />
 
       {loading ? (
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center h-full">
           <ScaleLoader color="#868e96"  />
         </div>
       ) : (

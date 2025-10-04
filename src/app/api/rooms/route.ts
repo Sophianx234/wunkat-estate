@@ -1,10 +1,10 @@
 import { connectToDatabase } from "@/config/DbConnect";
 import { uploadBufferToCloudinary } from "@/lib/cloudinary";
-import Room, { IRoom } from "@/models/Room";
 import "@/models/House"; // ensures House model is registered
+import House from "@/models/House";
+import Room from "@/models/Room";
 import { UploadApiResponse } from "cloudinary";
 import { NextRequest, NextResponse } from "next/server";
-import House from "@/models/House";
 
 export async function POST(req: NextRequest) {
   try {
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     const houseId = formData.get("houseId") as string;
     const name = formData.get("name") as string;
     const price = Number(formData.get("price"));
-    const available = formData.get("available") === "true";
+    const available = formData.get("available") ;
     const description = formData.get("description") as string;
 
     const beds = Number(formData.get("beds")) || 0;
@@ -70,7 +70,7 @@ export async function GET(req: NextRequest) {
     // ✅ extract query params
     const { searchParams } = new URL(req.url);
     const search = searchParams.get("search") || "";
-    const type: boolean = searchParams.get("type");
+    const type = searchParams.get("type");
     const smartLock: boolean = Boolean(searchParams.get("smartLock")) || false;
     const city = searchParams.get("city") || "";
     const status = searchParams.get("status") || "";

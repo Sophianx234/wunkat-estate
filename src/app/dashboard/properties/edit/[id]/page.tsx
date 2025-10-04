@@ -32,6 +32,7 @@ import { FiDollarSign, FiDroplet } from "react-icons/fi";
 import { IoBedOutline, IoImageOutline } from "react-icons/io5";
 import Link from "next/link";
 import { useDashStore } from "@/lib/store";
+import { ScaleLoader } from "react-spinners";
 
 // ✅ Schema
 const roomSchema = z.object({
@@ -223,8 +224,9 @@ const form = useForm<RoomFormData>({
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <p>Loading...</p>
+      <div className="flex justify-center items-center h-full ">
+                  <ScaleLoader color="#868e96"  />
+        
       </div>
     );
   }

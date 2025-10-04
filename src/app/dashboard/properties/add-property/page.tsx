@@ -38,7 +38,7 @@ const roomSchema = z.object({
   houseId: z.string().min(1, "Please select a house"),
   name: z.string().min(2, "Room name must be at least 2 characters"),
   price: z.string().min(1, "Price is required"),
-  available: z.string().optional(),
+  available: z.enum(["available", "pending"]),
   description: z.string().optional(),
   beds: z
     .string()
@@ -100,8 +100,6 @@ export default function AddProperty() {
     fetchHouses();
   }, []);
 
-  
-
   const form = useForm<RoomFormData>({
     resolver: zodResolver(roomSchema),
     defaultValues: {
@@ -120,10 +118,13 @@ export default function AddProperty() {
   const handleDrop = useCallback(
     (acceptedFiles: File[]) => {
       if (images.length + acceptedFiles.length > 4) {
-        Toast.fire({ icon: "error", title: "You can only upload up to 4 images" });
+        Toast.fire({
+          icon: "error",
+          title: "You can only upload up to 4 images",
+        });
         return;
       }
-      
+
       const newPreviews = acceptedFiles.map((file) =>
         URL.createObjectURL(file)
       );
@@ -141,7 +142,7 @@ export default function AddProperty() {
 
   // Submit
   const onSubmit = async (data: RoomFormData) => {
-    if (images.length === 0 ) {
+    if (images.length === 0) {
       Toast.fire({ icon: "error", title: "Please upload at least one image" });
       return;
     }
@@ -154,10 +155,9 @@ export default function AddProperty() {
 
     try {
       const res = await fetch("/api/rooms", { method: "POST", body: formData });
-      
 
       if (!res.ok) {
-        throw new Error( "Failed to add room");
+        throw new Error("Failed to add room");
       }
 
       Toast.fire({
@@ -174,15 +174,13 @@ export default function AddProperty() {
     }
   };
 
-
-
   return (
     <section
       ref={wrapperRef}
       className="p-6 rounded-xl max-w-5xl mx-auto mt-10 w-full"
     >
       <Form {...form}>
-         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="shadow-sm px-3 py-5 bg-white rounded-lg ">
             <h2 className=" font-semibold mb-2 pl-2">Property Information</h2>
 
@@ -205,20 +203,18 @@ export default function AddProperty() {
               </div>
             </div>
           </div>
-          {
-            previews.length > 0 && (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-                {previews.map((src, index) => (
-                  <img
-                    alt=""
-                    key={index}
-                    src={src}
-                    className="rounded-md w-full h-32 object-cover"
-                  />
-                ))}
-              </div>
-            )
-          }
+          {previews.length > 0 && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+              {previews.map((src, index) => (
+                <img
+                  alt=""
+                  key={index}
+                  src={src}
+                  className="rounded-md w-full h-32 object-cover"
+                />
+              ))}
+            </div>
+          )}
 
           {/* PROPERTY INFO */}
           <div className="shadow bg-white px-4 py-3 pt-5 rounded-lg">
@@ -232,11 +228,7 @@ export default function AddProperty() {
                     <FormLabel>Property Name</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger>
-                        <SelectValue
-                          placeholder={`
-                              ? "Select a house"
-                          `}
-                        />
+                        <SelectValue placeholder={"Select a house"} />
                       </SelectTrigger>
                       <SelectContent>
                         {Array.isArray(houses) && houses.length > 0 ? (
@@ -266,8 +258,7 @@ export default function AddProperty() {
                     <FormLabel>Room Name</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder={`${
-                          "e.g. Master Bedroom" }`}
+                        placeholder={`${"e.g. Master Bedroom"}`}
                         {...field}
                       />
                     </FormControl>
@@ -287,9 +278,7 @@ export default function AddProperty() {
                       <FiDollarSign className="absolute left-3 top-3 text-gray-400" />
                       <Input
                         type="number"
-                        placeholder={`${
-                          "1500"
-                        }`}
+                        placeholder={`${"1500"}`}
                         {...field}
                         className="pl-9"
                       />
@@ -310,9 +299,7 @@ export default function AddProperty() {
                       <IoBedOutline className="absolute left-3 top-3 text-gray-400" />
                       <Input
                         type="number"
-                        placeholder={`${
-                          "2" 
-                        }`}
+                        placeholder={`${"2"}`}
                         {...field}
                         className="pl-9"
                       />
@@ -333,7 +320,7 @@ export default function AddProperty() {
                       <FiDroplet className="absolute left-3 top-3 text-gray-400" />
                       <Input
                         type="number"
-                        placeholder={`${ "1" }`}
+                        placeholder={`${"1"}`}
                         {...field}
                         className="pl-9"
                       />
@@ -355,11 +342,7 @@ export default function AddProperty() {
                         value={field.value}
                       >
                         <SelectTrigger>
-                          <SelectValue
-                            placeholder={`${
-                              "Select a plan"
-                            }`}
-                          />
+                          <SelectValue placeholder={`${"Select a plan"}`} />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="monthly">Monthly</SelectItem>
@@ -377,18 +360,23 @@ export default function AddProperty() {
                 control={form.control}
                 name="available"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-center space-x-2 mt-6">
+                  <FormItem>
+                    <FormLabel>Availability</FormLabel>
                     <FormControl>
-                      <Checkbox
-                        checked={field.value === "true"}
-                        onCheckedChange={(checked) =>
-                          field.onChange(checked ? "true" : "")
-                        }
-                      />
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value || ""}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="available">Available</SelectItem>
+                          <SelectItem value="pending">Pending</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
-                    <FormLabel className="text-sm font-normal">
-                      Available
-                    </FormLabel>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -403,9 +391,7 @@ export default function AddProperty() {
                   <FormLabel className="pt-4">Property Details</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder={`${
-                        "Enter property details..."
-                          }`}
+                      placeholder={`${"Enter property details..."}`}
                       {...field}
                     />
                   </FormControl>
@@ -422,10 +408,7 @@ export default function AddProperty() {
                 Cancel
               </Link>
               <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting
-                  ?  "Adding..."
-                    :  "Add Property"
-                  }
+                {form.formState.isSubmitting ? "Adding..." : "Add Property"}
               </Button>
             </div>
           </div>
