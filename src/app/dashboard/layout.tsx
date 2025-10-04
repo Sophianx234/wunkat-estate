@@ -42,7 +42,7 @@ function Layout({ children }: LayoutProps) {
       {openNotifications && <NotificationList/>}
 
       {/* Scrollable Main Content */}
-      <main className="sm:pl-64 sm:pt-28 pb-24 pt-0  h-dvh   overflow-y-auto sm:px-8 sm:py-6">
+      <main className="sm:pl-64 sm:pt-28 pb-24 pt-0     overflow-y-auto sm:px-8 sm:py-6">
         <Breadcrumbs/>
         
         {children}

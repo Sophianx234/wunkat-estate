@@ -173,6 +173,14 @@ const form = useForm<RoomFormData>({
 
   // Submit
   const onSubmit = async (data: RoomFormData) => {
+
+     if (allImages.length === 0 && images.length === 0) {
+    Toast.fire({
+      icon: "error",
+      title: "You must keep at least one image. Please add an image before saving.",
+    });
+    return;
+  }
       const result = await Swal.fire({
     title: "Are you sure?",
     text: "Do you want to save these changes to the room?",

@@ -1,14 +1,13 @@
 "use client";
 
-import Swal from "sweetalert2";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -27,18 +26,17 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FiDollarSign, FiDroplet } from "react-icons/fi";
 import { IoBedOutline, IoImageOutline } from "react-icons/io5";
-import Link from "next/link";
-import { useDashStore } from "@/lib/store";
 
 // ✅ Schema
 const roomSchema = z.object({
   houseId: z.string().min(1, "Please select a house"),
   name: z.string().min(2, "Room name must be at least 2 characters"),
   price: z.string().min(1, "Price is required"),
-  available: z.enum(["available", "pending"]),
+  status: z.enum(["available", "pending"]),
   description: z.string().optional(),
   beds: z
     .string()
@@ -46,14 +44,14 @@ const roomSchema = z.object({
     .refine((val) => val === undefined || (!isNaN(val) && val >= 0), {
       message: "Number of beds must be a non-negative number",
     })
-    .optional(),
+    ,
   baths: z
     .string()
     .transform((val) => (val === "" ? undefined : Number(val)))
     .refine((val) => val === undefined || (!isNaN(val) && val >= 0), {
       message: "Number of baths must be a non-negative number",
     })
-    .optional(),
+    ,
   planType: z.enum(["monthly", "yearly"], {
     required_error: "Please select a plan type",
   }),
@@ -106,7 +104,7 @@ export default function AddProperty() {
       houseId: "",
       name: "",
       price: "",
-      available: "",
+      status: "available",
       description: "",
       beds: undefined,
       baths: undefined,
@@ -152,6 +150,7 @@ export default function AddProperty() {
       formData.append(key, String(value));
     });
     images.forEach((file) => formData.append("images", file));
+    console.log('data',data)
 
     try {
       const res = await fetch("/api/rooms", { method: "POST", body: formData });
@@ -204,17 +203,32 @@ export default function AddProperty() {
             </div>
           </div>
           {previews.length > 0 && (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-              {previews.map((src, index) => (
-                <img
-                  alt=""
-                  key={index}
-                  src={src}
-                  className="rounded-md w-full h-32 object-cover"
-                />
-              ))}
-            </div>
-          )}
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+    {previews.map((src, index) => (
+      <div key={index} className="relative group">
+        {/* Preview Image */}
+        <img
+          alt="preview"
+          src={src}
+          className="rounded-md w-full h-32 object-cover"
+        />
+        {/* Remove Button */}
+        <button
+          type="button"
+          onClick={() => {
+            // Remove image + preview by index
+            setImages((prev) => prev.filter((_, i) => i !== index));
+            setPreviews((prev) => prev.filter((_, i) => i !== index));
+          }}
+          className="absolute top-1 right-1 bg-black/60 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition"
+        >
+          ✕
+        </button>
+      </div>
+    ))}
+  </div>
+)}
+
 
           {/* PROPERTY INFO */}
           <div className="shadow bg-white px-4 py-3 pt-5 rounded-lg">
@@ -358,7 +372,7 @@ export default function AddProperty() {
               {/* Available */}
               <FormField
                 control={form.control}
-                name="available"
+                name="status"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Availability</FormLabel>

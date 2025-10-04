@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     const houseId = formData.get("houseId") as string;
     const name = formData.get("name") as string;
     const price = Number(formData.get("price"));
-    const available = formData.get("available") ;
+    const status = formData.get("status") ;
     const description = formData.get("description") as string;
 
     const beds = Number(formData.get("beds")) || 0;
@@ -27,7 +27,6 @@ export async function POST(req: NextRequest) {
     // ✅ Handle images
     const images: string[] = [];
     const imageFiles = formData.getAll("images") as File[];
-
     for (const file of imageFiles) {
       const buffer = Buffer.from(await file.arrayBuffer());
       const result = await uploadBufferToCloudinary(buffer, undefined, "rooms");
@@ -45,7 +44,7 @@ export async function POST(req: NextRequest) {
       houseId,
       name,
       price,
-      available,
+      status,
       description,
       images,
       beds,
@@ -104,13 +103,15 @@ export async function GET(req: NextRequest) {
 
     // ✅ query database
     
-    const  rooms = await Room.find(filter)
-        .populate({
-          path: "houseId",
-          select: "name location smartLockEnabled",
-          ...(city && { match: { "location.region": city } }), // ✅ only when city exists
-        })
-        .lean();
+const rooms = await Room.find(filter)
+  .populate({
+    path: "houseId",
+    select: "name location smartLockEnabled",
+    ...(city && { match: { "location.region": city } }),
+  })
+  .sort({ createdAt: -1 }) // ✅ newest first
+  .lean();
+
      
     const filteredRooms = city ? rooms.filter((r) => r.houseId) : rooms;
     console.log("filteredRooms", filteredRooms);
