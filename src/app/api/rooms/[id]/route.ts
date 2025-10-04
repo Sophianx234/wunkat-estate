@@ -24,7 +24,7 @@ export async function GET(
       );
     }
 
-    const room = await Room.findById(id);
+    const room = await Room.findById(id).populate('houseId');
     if (!room) {
       return NextResponse.json(
         { msg: "could not fetch room with specified ID" },

@@ -130,7 +130,7 @@ export default function Page() {
   const form = useForm<RoomFormData>({
     resolver: zodResolver(roomSchema),
     defaultValues: {
-      houseId: "",
+      houseId: room?.houseId?._id || "",
       name: "",
       price: "",
       available: "",
@@ -140,6 +140,8 @@ export default function Page() {
       planType: "monthly",
     },
   });
+
+  console.log("roomxx", room);
 
   // Dropzone
   const handleDrop = useCallback(
@@ -220,7 +222,7 @@ export default function Page() {
       <Form {...form}>
          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="shadow-sm px-3 py-5 bg-white rounded-lg ">
-            <h2 className=" font-semibold mb-2 pl-2">Property Information</h2>
+            <h2 className=" font-semibold mb-2 pl-2">Edit Property Information</h2>
 
             {/* IMAGE UPLOAD */}
             <div className="border-2 border-dashed rounded-xl  p-10 text-center">

@@ -28,6 +28,7 @@ export interface IRoom {
   planType: string;
   status: string;
   houseId?: {
+    _id:string;
     name: string;
     location: {
       address: string;
