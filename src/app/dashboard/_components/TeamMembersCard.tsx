@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { X } from "lucide-react";
 
 type Member = {
   id: number;
@@ -62,15 +63,33 @@ const members: Member[] = [
   },
 ];
 
-export default function TeamMembersCard() {
+type TeamMembersCardProps = {
+  type?: "admin" | "user";
+  onClose?: () => void;
+};
+
+export default function TeamMembersCard({ type = "user", onClose }: TeamMembersCardProps) {
   return (
-    <Card className="w-full max-w-sm rounded-xl shadow">
-      <CardHeader>
-        <CardTitle>Team Members</CardTitle>
-        <CardDescription>
-          Invite your team members to collaborate...
-        </CardDescription>
+    <Card className="w-full h-fit max-w-sm rounded-xl shadow relative">
+      <CardHeader className="flex flex-row items-start justify-between">
+        <div>
+          <CardTitle>Team Members</CardTitle>
+          <CardDescription>
+            Invite your team members to collaborate...
+          </CardDescription>
+        </div>
+
+        {/* Show close button only if type is admin and onClose provided */}
+        {type === "admin" && onClose && (
+          <button
+            onClick={onClose}
+            className="p-1 rounded-full hover:bg-gray-100 transition"
+          >
+            <X className="w-5 h-5 text-gray-600" />
+          </button>
+        )}
       </CardHeader>
+
       <CardContent className="space-y-4">
         {members.map((member) => (
           <div

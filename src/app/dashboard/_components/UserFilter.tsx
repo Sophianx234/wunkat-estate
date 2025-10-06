@@ -13,6 +13,7 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarDays, X } from "lucide-react";
+import { FiFilter } from "react-icons/fi";
 
 type UserFilterProps = {
   onFilter?: (filters: {
@@ -39,7 +40,7 @@ export default function UserFilter({ onFilter }: UserFilterProps) {
   };
 
   return (
-    <div className="w-full bg-white p-4 rounded-xl shadow flex flex-col md:flex-row gap-4 items-center">
+    <div className="w-full bg-white p-4  rounded-xl shadow flex flex-col md:flex-row gap-4 items-center">
       {/* Search */}
       <Input
         placeholder="Search by name, email or phone..."
@@ -84,7 +85,7 @@ export default function UserFilter({ onFilter }: UserFilterProps) {
 
       {/* Buttons */}
       <div className="flex gap-2 ml-auto">
-        <Button onClick={handleApply}>Apply</Button>
+        <Button onClick={handleApply}><FiFilter/> Apply</Button>
         <Button
           variant="outline"
           onClick={handleReset}
