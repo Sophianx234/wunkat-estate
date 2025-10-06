@@ -56,10 +56,11 @@ export default function PropertyCard({ room, type = "user" }: propertyCardProps)
 
     if (result.isConfirmed) {
       try {
-        // TODO: Call your delete API
+        await fetch(`/api/rooms/${room._id}`, { method: "DELETE" });
         console.log("Deleting room:", room._id);
 
         await MySwal.fire("Deleted!", "The room has been deleted.", "success");
+        router.refresh();
       } catch (err) {
         await MySwal.fire("Error!", "Something went wrong.", "error");
       }

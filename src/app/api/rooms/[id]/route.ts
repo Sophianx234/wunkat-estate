@@ -122,3 +122,22 @@ export async function PUT(
     return NextResponse.json({ error: "Failed to update room" }, { status: 500 });
   }
 }
+
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+  try{
+    connectToDatabase()
+    const {id} = params
+    if(!id){
+      return NextResponse.json({msg:"could not find ID"},{status:400})
+    }
+    const room = await Room.findByIdAndDelete(id)
+    if(!room){
+      return NextResponse.json({msg:"could not delete room with specified ID"},{status:404})
+    }
+    return NextResponse.json({msg:"Room deleted successfully"},{status:200})
+    
+  }catch(err){
+    return NextResponse.json({error:(err as Error).message},{status:500})
+  }
+
+}
