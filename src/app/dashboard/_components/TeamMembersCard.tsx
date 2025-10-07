@@ -16,70 +16,107 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { X } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { userDocumentType } from "@/models/User";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
-type Member = {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-  avatar: string;
-};
-
-const members: Member[] = [
-  {
-    id: 1,
-    name: "Dale Komen",
-    email: "dale@example.com",
-    role: "Member",
-    avatar: "https://randomuser.me/api/portraits/men/10.jpg",
-  },
-  {
-    id: 2,
-    name: "Sofia Davis",
-    email: "m@example.com",
-    role: "Owner",
-    avatar: "https://randomuser.me/api/portraits/women/20.jpg",
-  },
-  {
-    id: 3,
-    name: "Jackson Lee",
-    email: "p@example.com",
-    role: "Member",
-    avatar: "https://randomuser.me/api/portraits/men/30.jpg",
-  },
-  {
-    id: 4,
-    name: "Isabella Nguyen",
-    email: "i@example.com",
-    role: "Member",
-    avatar: "https://randomuser.me/api/portraits/women/40.jpg",
-  },
-  {
-    id: 5,
-    name: "Hugan Romex",
-    email: "kai@example.com",
-    role: "Member",
-    avatar: "https://randomuser.me/api/portraits/men/50.jpg",
-  },
-];
+const MySwal = withReactContent(Swal);
+const Toast = MySwal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+});
 
 type TeamMembersCardProps = {
   type?: "admin" | "user";
   onClose?: () => void;
 };
 
-export default function TeamMembersCard({ type = "user", onClose }: TeamMembersCardProps) {
+export default function TeamMembersCard({
+  type = "user",
+  onClose,
+}: TeamMembersCardProps) {
+  const [members, setMembers] = useState<userDocumentType[]>([]);
+  const [loading, setLoading] = useState(true);
+
+   const fetchAdmins = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/user?role=admin", { cache: "no-store" }); 
+      if (!res.ok) throw new Error("Failed to fetch users");
+      const data = await res.json();
+      setMembers(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchAdmins();
+  }, [fetchAdmins]);
+
+  const handleRoleChange = async (userId: string, newRole: "buyer" | "admin") => {
+    try {
+      const result = await MySwal.fire({
+        title: "Are you sure?",
+        text: `Do you want to change this user's role to ${newRole}?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, change it!",
+        cancelButtonText: "Cancel",
+      });
+
+      if (!result.isConfirmed) return;
+
+      const res = await fetch(`/api/user/${userId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ role: newRole }),
+      });
+
+      if (!res.ok) throw new Error("Failed to change role");
+      const updatedUser = await res.json();
+
+      Toast.fire({
+        icon: "success",
+        title: `Role updated to ${updatedUser.role}`,
+      });
+
+      // ✅ Re-fetch updated list instead of local patch
+      await fetchAdmins();
+    } catch (err) {
+      console.error(err);
+      Toast.fire({
+        icon: "error",
+        title: "Error updating role",
+      });
+    }
+  };
+  if (loading) {
+    return <p className="text-gray-500">Loading team members...</p>;
+  }
+
+  if (members.length === 0) {
+    return <p className="text-gray-500">No team members found</p>;
+  }
+
   return (
     <Card className="w-full h-fit max-w-sm rounded-xl shadow relative">
       <CardHeader className="flex flex-row items-start justify-between">
         <div>
           <CardTitle>Team Members</CardTitle>
           <CardDescription>
-            Invite your team members to collaborate...
+            These administrators are part of your core team.
           </CardDescription>
         </div>
 
-        {/* Show close button only if type is admin and onClose provided */}
         {type === "admin" && onClose && (
           <button
             onClick={onClose}
@@ -93,13 +130,16 @@ export default function TeamMembersCard({ type = "user", onClose }: TeamMembersC
       <CardContent className="space-y-4">
         {members.map((member) => (
           <div
-            key={member.id}
+            key={member._id}
             className="flex items-center justify-between gap-2"
           >
             {/* Avatar + Info */}
             <div className="flex items-center gap-3">
               <Avatar>
-                <AvatarImage src={member.avatar} alt={member.name} />
+                <AvatarImage
+                  src={member.avatar || member.profile}
+                  alt={member.name}
+                />
                 <AvatarFallback>
                   {member.name.charAt(0).toUpperCase()}
                 </AvatarFallback>
@@ -111,14 +151,18 @@ export default function TeamMembersCard({ type = "user", onClose }: TeamMembersC
             </div>
 
             {/* Role Select */}
-            <Select defaultValue={member.role}>
+            <Select
+              value={member.role}
+              onValueChange={(val) =>
+                handleRoleChange(member._id!, val as "buyer" | "admin")
+              }
+            >
               <SelectTrigger className="w-[100px] h-8 text-xs">
                 <SelectValue placeholder="Select role" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Owner">Owner</SelectItem>
-                <SelectItem value="Member">Member</SelectItem>
-                <SelectItem value="Viewer">Viewer</SelectItem>
+                <SelectItem value="admin">Admin</SelectItem>
+                <SelectItem value="buyer">Buyer</SelectItem>
               </SelectContent>
             </Select>
           </div>

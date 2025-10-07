@@ -15,32 +15,37 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { CalendarDays, X } from "lucide-react";
 import { FiFilter } from "react-icons/fi";
 
-type UserFilterProps = {
-  onFilter?: (filters: {
-    search?: string;
-    role?: string;
-    date?: Date | null;
-  }) => void;
-};
-
-export default function UserFilter({ onFilter }: UserFilterProps) {
+export default function UserFilter() {
   const [search, setSearch] = useState("");
   const [role, setRole] = useState<string | undefined>();
   const [date, setDate] = useState<Date | null>(null);
+  const [users, setUsers] = useState<any[]>([]);
 
-  const handleApply = () => {
-    onFilter({ search, role, date });
+  const handleApply = async () => {
+    const params = new URLSearchParams();
+    if (search) params.append("search", search);
+    if (role) params.append("role", role);
+    if (date) params.append("date", date.toISOString().split("T")[0]); // YYYY-MM-DD
+
+    try {
+      const res = await fetch(`/api/users?${params.toString()}`, { cache: "no-store" });
+      if (!res.ok) throw new Error("Failed to fetch users");
+      const data = await res.json();
+      setUsers(data);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const handleReset = () => {
+  const handleReset = async () => {
     setSearch("");
     setRole(undefined);
     setDate(null);
-    onFilter({});
+    
   };
 
   return (
-    <div className="w-full bg-white p-4  rounded-xl shadow flex flex-col md:flex-row gap-4 items-center">
+    <div className="w-full bg-white p-4 rounded-xl shadow flex flex-col md:flex-row gap-4 items-center">
       {/* Search */}
       <Input
         placeholder="Search by name, email or phone..."
@@ -85,7 +90,7 @@ export default function UserFilter({ onFilter }: UserFilterProps) {
 
       {/* Buttons */}
       <div className="flex gap-2 ml-auto">
-        <Button onClick={handleApply}><FiFilter/> Apply</Button>
+        <Button onClick={handleApply}><FiFilter /> Apply</Button>
         <Button
           variant="outline"
           onClick={handleReset}
@@ -94,6 +99,18 @@ export default function UserFilter({ onFilter }: UserFilterProps) {
           <X size={14} /> Reset
         </Button>
       </div>
+
+      {/* Result preview */}
+      {users.length > 0 && (
+        <div className="w-full mt-4">
+          <h3 className="font-semibold">Results:</h3>
+          <ul className="list-disc pl-5">
+            {users.map((u) => (
+              <li key={u._id}>{u.name} ({u.role}) - {u.email}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
