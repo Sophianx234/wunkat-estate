@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { userType } from "./jwtConfig";
 import { IRoom } from "@/app/dashboard/properties/page";
 import { transactionType } from "@/app/dashboard/transactions/PaymentHistory";
+import { userDocumentType } from "@/models/User";
 
 export type signupType = {
   email: string;
@@ -14,6 +15,7 @@ export type signupType = {
 export type storeState = {
   filteredPayments: transactionType[]|[]
   user: userType | null;
+  users: userDocumentType[] | null;
   room: IRoom | null;
   openSidebar: boolean;
   openAddProperty: boolean;
@@ -33,6 +35,7 @@ export type storeState = {
   toggleAddProperty: () => void;
   toggleAddHouse: ()=>void
   setUser: (user: userType) => void;
+  setUsers: (user: userDocumentType[]|null) => void;
   openNotifications: boolean;
   toggleNotification: () => void;
 };
@@ -45,6 +48,7 @@ export const useDashStore = create<storeState>((set) => ({
   openAddProperty: false,
   openNotifications: false,
   user: null,
+  users: null,
   signupData: null,
   avatar: '', // ✅ Initial value for avatar
   openAddHouse:false,
@@ -61,6 +65,7 @@ export const useDashStore = create<storeState>((set) => ({
     set((state) => ({ openNotifications: !state.openNotifications })),
 
   setUser: (user: userType) => set(() => ({ user })),
+  setUsers: (users: userDocumentType[]|null) => set(() => ({ users })),
   setAvatar: (url: string) => set(() => ({ avatar: url })), // ✅ Corrected function
   setSignupData: (data: signupType) => set(() => ({ signupData: data })),
   setFilteredRooms: (data: IRoom[] | null) => set(() => ({ filteredRooms: data })),

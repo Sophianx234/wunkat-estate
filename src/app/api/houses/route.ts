@@ -8,7 +8,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   try {
     await connectToDatabase();
-    const houses = await House.find().select('name smartLockSupport'); // only return name and _id
+    const houses = await House.find() // only return name and _id
     return NextResponse.json(houses);
   } catch (error) {
     console.error('Error fetching houses:', error);

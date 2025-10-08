@@ -6,6 +6,7 @@ import TeamMembersCard from "../../_components/TeamMembersCard";
 import UserCard from "../../_components/UserCard";
 import UserFilter from "../../_components/UserFilter";
 import { userDocumentType } from "@/models/User";
+import { useDashStore } from "@/lib/store";
 
 type User = {
   _id: string;
@@ -20,6 +21,7 @@ export default function Page() {
   const [showTeamMembers, setShowTeamMembers] = useState(false);
   const [users, setUsers] = useState<userDocumentType[]>([]);
   const [loading, setLoading] = useState(true);
+  const {users:filteredUsers} = useDashStore()
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -47,20 +49,27 @@ export default function Page() {
           <UserFilter />
         </div>
 
-        {loading ? (
-          <p className="text-gray-500">Loading users...</p>
-        ) : users.length === 0 ? (
-          <p className="text-gray-500">No users found</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {users.map((user) => (
-              <UserCard
-                key={user._id}
-                user={user}
-              />
-            ))}
-          </div>
-        )}
+       {loading ? (
+  <p className="text-gray-500">Loading users...</p>
+) : filteredUsers !== null ? (
+  filteredUsers.length > 0 ? (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {filteredUsers.map((user) => (
+        <UserCard key={user._id} user={user} />
+      ))}
+    </div>
+  ) : (
+    <p className="text-gray-500">Not found results</p>
+  )
+) : users.length === 0 ? (
+  <p className="text-gray-500">No users found</p>
+) : (
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    {users.map((user) => (
+      <UserCard key={user._id} user={user} />
+    ))}
+  </div>
+)}
       </>
 
       {/* Floating Button */}

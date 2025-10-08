@@ -12,6 +12,7 @@ export type LocationType = {
 };
 
 export interface IHouse extends Document {
+  _id: string;
   name: string;
   description?: string;
   location: LocationType;

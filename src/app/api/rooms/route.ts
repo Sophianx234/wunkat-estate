@@ -66,20 +66,24 @@ export async function GET(req: NextRequest) {
   try {
     await connectToDatabase();
 
-    // ✅ extract query params
     const { searchParams } = new URL(req.url);
+
+    // ✅ Extract query params
     const search = searchParams.get("search") || "";
     const type = searchParams.get("type");
-    const smartLock: boolean = Boolean(searchParams.get("smartLock")) || false;
+    const smartLock = searchParams.get("smartLock");
     const city = searchParams.get("city") || "";
     const status = searchParams.get("status") || "";
+    const houseId = searchParams.get("houseId"); // ✅ new
 
     // ✅ build filter dynamically
-
     const filter: any = {};
 
+    if (houseId) {
+      filter.houseId = houseId; // fetch rooms for specific house
+    }
+
     if (search) {
-      // fuzzy match on description or name
       filter.$or = [
         { name: { $regex: search, $options: "i" } },
         { description: { $regex: search, $options: "i" } },
@@ -91,30 +95,26 @@ export async function GET(req: NextRequest) {
     }
 
     if (smartLock) {
-      console.log("type", type);
-      filter.smartLockEnabled = smartLock;
+      filter.smartLockEnabled = smartLock === "true"; // ensure boolean
     }
+
     if (type) {
-      console.log("type", type);
-      filter.status = type;
+      filter.type = type; // e.g. bedroom, studio etc.
     }
 
     console.log("filter", filter);
 
     // ✅ query database
-    
-const rooms = await Room.find(filter)
-  .populate({
-    path: "houseId",
-    select: "name location smartLockEnabled",
-    ...(city && { match: { "location.region": city } }),
-  })
-  .sort({ createdAt: -1 }) // ✅ newest first
-  .lean();
+    const rooms = await Room.find(filter)
+      .populate({
+        path: "houseId",
+        select: "name location smartLockSupport",
+        ...(city && { match: { "location.region": city } }),
+      })
+      .sort({ createdAt: -1 })
+      .lean();
 
-     
     const filteredRooms = city ? rooms.filter((r) => r.houseId) : rooms;
-    console.log("filteredRooms", filteredRooms);
 
     return NextResponse.json(filteredRooms);
   } catch (error) {

@@ -14,12 +14,14 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarDays, X } from "lucide-react";
 import { FiFilter } from "react-icons/fi";
+import { useDashStore } from "@/lib/store";
 
 export default function UserFilter() {
   const [search, setSearch] = useState("");
   const [role, setRole] = useState<string | undefined>();
   const [date, setDate] = useState<Date | null>(null);
-  const [users, setUsers] = useState<any[]>([]);
+  // const [users, setUsers] = useState<any[]>([]);
+  const {setUsers} = useDashStore()
 
   const handleApply = async () => {
     const params = new URLSearchParams();
@@ -28,9 +30,10 @@ export default function UserFilter() {
     if (date) params.append("date", date.toISOString().split("T")[0]); // YYYY-MM-DD
 
     try {
-      const res = await fetch(`/api/users?${params.toString()}`, { cache: "no-store" });
+      const res = await fetch(`/api/user?${params.toString()}`, { cache: "no-store" });
       if (!res.ok) throw new Error("Failed to fetch users");
       const data = await res.json();
+      console.log("Filtered users:", data);
       setUsers(data);
     } catch (err) {
       console.error(err);
@@ -41,6 +44,7 @@ export default function UserFilter() {
     setSearch("");
     setRole(undefined);
     setDate(null);
+    setUsers(null)
     
   };
 
@@ -101,16 +105,7 @@ export default function UserFilter() {
       </div>
 
       {/* Result preview */}
-      {users.length > 0 && (
-        <div className="w-full mt-4">
-          <h3 className="font-semibold">Results:</h3>
-          <ul className="list-disc pl-5">
-            {users.map((u) => (
-              <li key={u._id}>{u.name} ({u.role}) - {u.email}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+     
     </div>
   );
 }
