@@ -17,9 +17,8 @@ export interface IHouse extends Document {
   description?: string;
   location: LocationType;
   rooms?: Types.ObjectId[];
-  owner: string;
-  amenities?: string[];
-  smartLockSupport?: boolean; // ✅ Indicates if this house supports smart locks
+  amenities?: string[];          // ✅ Added amenities
+  smartLockSupport?: boolean;    // ✅ Indicates if this house supports smart locks
 }
 
 const LocationSchema = new Schema<LocationType>({
@@ -39,7 +38,8 @@ const HouseSchema = new Schema<IHouse>(
     description: String,
     location: { type: LocationSchema, required: true },
     rooms: [{ type: Schema.Types.ObjectId, ref: "Room" }],
-    smartLockSupport: { type: Boolean, default: false }, // ✅ New field
+    amenities: [{ type: String, default: [] }],   // ✅ New field in schema
+    smartLockSupport: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
@@ -47,4 +47,5 @@ const HouseSchema = new Schema<IHouse>(
 // ✅ Avoid OverwriteModelError
 const House =
   mongoose.models.House || mongoose.model<IHouse>("House", HouseSchema);
+
 export default House;

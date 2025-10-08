@@ -4,10 +4,12 @@ import { IHouse } from "@/models/House";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import HouseCard from "../../_components/HouseCard";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [houses, setHouses] = useState<IHouse[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   // Fetch houses
   useEffect(() => {
@@ -31,8 +33,9 @@ export default function Page() {
   // Add/Edit/Room Handlers (can be expanded later)
   
 
-  const handleEditHouse = (houseId: string) =>
-    alert(`Edit house: ${houseId}`);
+  const handleEditHouse = (houseId: string) =>{
+    router.push(`/dashboard/properties/add-house/edit/${houseId}`);
+  }
 
   // ✅ Delete with SweetAlert + fetch
   const handleDeleteHouse = async (houseId: string) => {
