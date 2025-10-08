@@ -1,19 +1,52 @@
 import { connectToDatabase } from '@/config/DbConnect';
 import House from '@/models/House';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 // MongoDB connection helper
 
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     await connectToDatabase();
-    const houses = await House.find() // only return name and _id
-    return NextResponse.json(houses);
-  } catch (error) {
-    console.error('Error fetching houses:', error);
+
+    const { searchParams } = new URL(req.url);
+
+    const name = searchParams.get("name") || "";
+    const city = searchParams.get("city") || "";
+    const region = searchParams.get("region") || "";
+    const country = searchParams.get("country") || "";
+    const smartLockSupport = searchParams.get("smartLockSupport");
+    const amenities = searchParams.getAll("amenities"); // multiple amenities
+
+    const query: any = {};
+
+    // 🔎 Name (partial match, case insensitive)
+    if (name) {
+      query.name = { $regex: name, $options: "i" };
+    }
+
+    // 📍 Location filters
+    if (city) query["location.city"] = city;
+    if (region) query["location.region"] = region;
+    if (country) query["location.country"] = country;
+
+    // 🔐 Smart lock support
+    if (smartLockSupport !== null && smartLockSupport !== "") {
+      query.smartLockSupport = smartLockSupport === "true";
+    }
+
+    // 🛠️ Amenities (at least one match)
+    if (amenities.length > 0) {
+      query.amenities = { $in: amenities };
+    }
+
+    const houses = await House.find(query).populate("rooms");
+
+    return NextResponse.json(houses, { status: 200 });
+  } catch (error: any) {
+    console.error("Error fetching houses:", error);
     return NextResponse.json(
-      { error: 'Failed to fetch houses' },
+      { error: "Failed to fetch houses" },
       { status: 500 }
     );
   }

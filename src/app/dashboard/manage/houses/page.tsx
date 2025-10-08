@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import HouseCard from "../../_components/HouseCard";
 import { useRouter } from "next/navigation";
+import HouseFilter from "../../_components/HouseFilter";
 
 export default function Page() {
   const [houses, setHouses] = useState<IHouse[]>([]);
@@ -72,6 +73,11 @@ export default function Page() {
 
   return (
     <div className="p-6">
+      
+        <h1 className="text-lg mb-3 font-bold">Manage Houses</h1>
+        <HouseFilter/>
+
+        
       {loading ? (
         <p className="text-gray-500">Loading houses...</p>
       ) : houses.length === 0 ? (

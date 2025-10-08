@@ -3,6 +3,7 @@ import { userType } from "./jwtConfig";
 import { IRoom } from "@/app/dashboard/properties/page";
 import { transactionType } from "@/app/dashboard/transactions/PaymentHistory";
 import { userDocumentType } from "@/models/User";
+import { IHouse } from "@/models/House";
 
 export type signupType = {
   email: string;
@@ -13,48 +14,50 @@ export type signupType = {
 };
 
 export type storeState = {
-  filteredPayments: transactionType[]|[]
+  filteredPayments: transactionType[] | [];
   user: userType | null;
   users: userDocumentType[] | null;
   room: IRoom | null;
   openSidebar: boolean;
   openAddProperty: boolean;
-  openAddHouse:boolean
+  openAddHouse: boolean;
   openExpandedProperty: boolean;
   signupData: signupType | null;
   avatar: string;
   filteredRooms: IRoom[] | null;
+  filteredHouses: IHouse[] | null;
 
   setAvatar: (url: string) => void;
   setSignupData: (data: signupType) => void;
-  setFilteredRooms: (data: IRoom[]|null) => void;
-  setRoom: (data: IRoom|null) => void;
-  setFilteredPayments: (data: transactionType[]|[]) => void;
+  setFilteredRooms: (data: IRoom[] | null) => void;
+  setFilteredHouses: (data: IHouse[] | null) => void;
+  setRoom: (data: IRoom | null) => void;
+  setFilteredPayments: (data: transactionType[] | []) => void;
   toggleSidebar: () => void;
   toggleExpandedProperty: () => void;
   toggleAddProperty: () => void;
-  toggleAddHouse: ()=>void
+  toggleAddHouse: () => void;
   setUser: (user: userType) => void;
-  setUsers: (user: userDocumentType[]|null) => void;
+  setUsers: (user: userDocumentType[] | null) => void;
   openNotifications: boolean;
   toggleNotification: () => void;
 };
 
 export const useDashStore = create<storeState>((set) => ({
   filteredPayments: [],
-  room:null,
+  room: null,
   openSidebar: false,
+  filteredHouses: null,
   openExpandedProperty: false,
   openAddProperty: false,
   openNotifications: false,
   user: null,
   users: null,
   signupData: null,
-  avatar: '', // ✅ Initial value for avatar
-  openAddHouse:false,
-  filteredRooms:null,
-  toggleAddHouse: () =>
-    set((state) => ({ openAddHouse: !state.openAddHouse })),
+  avatar: "", // ✅ Initial value for avatar
+  openAddHouse: false,
+  filteredRooms: null,
+  toggleAddHouse: () => set((state) => ({ openAddHouse: !state.openAddHouse })),
 
   toggleSidebar: () => set((state) => ({ openSidebar: !state.openSidebar })),
   toggleExpandedProperty: () =>
@@ -63,12 +66,16 @@ export const useDashStore = create<storeState>((set) => ({
     set((state) => ({ openAddProperty: !state.openAddProperty })),
   toggleNotification: () =>
     set((state) => ({ openNotifications: !state.openNotifications })),
+  setFilteredHouses: (data: IHouse[] | null) =>
+    set(() => ({ filteredHouses: data })),
 
   setUser: (user: userType) => set(() => ({ user })),
-  setUsers: (users: userDocumentType[]|null) => set(() => ({ users })),
+  setUsers: (users: userDocumentType[] | null) => set(() => ({ users })),
   setAvatar: (url: string) => set(() => ({ avatar: url })), // ✅ Corrected function
   setSignupData: (data: signupType) => set(() => ({ signupData: data })),
-  setFilteredRooms: (data: IRoom[] | null) => set(() => ({ filteredRooms: data })),
+  setFilteredRooms: (data: IRoom[] | null) =>
+    set(() => ({ filteredRooms: data })),
   setRoom: (data: IRoom | null) => set(() => ({ room: data })),
-  setFilteredPayments: (data: transactionType[] | []) => set(() => ({ filteredPayments: data })),
+  setFilteredPayments: (data: transactionType[] | []) =>
+    set(() => ({ filteredPayments: data })),
 }));
