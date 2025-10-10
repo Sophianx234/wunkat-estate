@@ -40,13 +40,12 @@ export default function CustomersPage() {
     const fetchPayments = async () => {
       try {
         setLoading(true);
-           const res = await fetch("/api/filter", {
+       const res = await fetch("/api/filter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({}),
       });
         const data = await res.json();
-        console.log("dataxxxx", data);
         console.log("dataxxxx", data);
         setPayments(data);
       } catch (error) {
@@ -68,10 +67,18 @@ export default function CustomersPage() {
             <Loader2 className="w-6 h-6 animate-spin" />
             <span>Loading Tenants...</span>
           </div>
-        ) : (
+        ) : filtered === null ? (
           // ✅ No filter → show all payments
           <CustomerTable customers={payments} />
-        ) }
+        ) : filtered.length === 0 ? (
+          // ✅ Filter applied but no matches
+          <div className="text-gray-500 text-sm italic">
+            No Tenants match your filter.
+          </div>
+        ) : (
+          // ✅ Filter applied → show filtered results
+          <CustomerTable customers={filtered} />
+        )}
       </div>
     </div>
   );
