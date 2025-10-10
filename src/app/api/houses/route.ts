@@ -1,9 +1,8 @@
-import { connectToDatabase } from '@/config/DbConnect';
-import House from '@/models/House';
-import { NextRequest, NextResponse } from 'next/server';
+import { connectToDatabase } from "@/config/DbConnect";
+import House from "@/models/House";
+import { NextRequest, NextResponse } from "next/server";
 
 // MongoDB connection helper
-
 
 export async function GET(req: NextRequest) {
   try {
@@ -31,13 +30,16 @@ export async function GET(req: NextRequest) {
     if (country) query["location.country"] = country;
 
     // 🔐 Smart lock support
-    if (smartLockSupport !== null && smartLockSupport !== "") {
-      query.smartLockSupport = smartLockSupport === "true";
-    }
+    // Smart lock support
+    // 🔐 Smart lock support
+if (smartLockSupport && ["true", "false"].includes(smartLockSupport.toLowerCase())) {
+  query.smartLockSupport = smartLockSupport.toLowerCase() === "true";
+}
 
-    // 🛠️ Amenities (at least one match)
+
+    // Amenities
     if (amenities.length > 0) {
-      query.amenities = { $in: amenities };
+      query.amenities = { $all: amenities }; // OR use $all if you want "must have all"
     }
 
     const houses = await House.find(query).populate("rooms");
@@ -59,20 +61,19 @@ export async function POST(request: Request) {
 
     const body = await request.json();
 
-    
     const {
       name,
       description,
       location,
       amenities,
       smartLockSupport,
-      lockStatus
+      lockStatus,
     } = body;
 
     // Basic validation
     if (!name || !location?.address || !location?.city || !location?.region) {
       return NextResponse.json(
-        { error: 'Name, address, city, and region are required' },
+        { error: "Name, address, city, and region are required" },
         { status: 400 }
       );
     }
@@ -90,13 +91,13 @@ export async function POST(request: Request) {
     await newHouse.save();
 
     return NextResponse.json(
-      { message: 'House created successfully', house: newHouse },
+      { message: "House created successfully", house: newHouse },
       { status: 201 }
     );
   } catch (error) {
-    console.error('Error creating house:', error);
+    console.error("Error creating house:", error);
     return NextResponse.json(
-      { error: 'Failed to create house' },
+      { error: "Failed to create house" },
       { status: 500 }
     );
   }

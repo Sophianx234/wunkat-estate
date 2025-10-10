@@ -5,16 +5,14 @@
 import ReturningRateCard from "@/app/_components/ReturningRateCard";
 import SubscriptionCard from "@/app/_components/SubscriptionCard";
 import TotalRevenueCard from "@/app/_components/TotalRevenueCard";
+import { GiBed, GiSpookyHouse } from "react-icons/gi";
 import { DashboardAnalytics } from "../../_components/Analytics";
-import HouseStats from "../../_components/HouseStats";
-import TeamMembersCard from "../../_components/TeamMembersCard";
+import { HomeStatsCard } from "../../_components/HomeStatsCard";
 import TransactionHistory from "../../_components/TransactionTable";
 import { VisitorsChart } from "../../_components/VisitorsChart";
 import CustomersPage from "../../tenants/page";
 import RecentActivity from "./RecentActivity";
-import RoomsCard, { HomeStatsCard } from "../../_components/HomeStatsCard";
-import { DoorClosed, Home } from "lucide-react";
-import { GiBed, GiSpookyHouse } from "react-icons/gi";
+import TeamMembersCard from "../../_components/TeamMembersCard";
 
 export default function Finance() {
   return (

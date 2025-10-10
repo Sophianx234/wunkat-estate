@@ -1,9 +1,8 @@
 "use client";
-import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react"
+import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
 // import { Bar } from "react-chartjs-2";
-import { Badge } from "@/components/ui/badge"
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import BalanceCard from "../finance/BalanceCard";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 
 
@@ -69,10 +68,8 @@ const chartOptions = {
     },
   },
 };
-type customerRowProps = {
-  customer: Customer;
-};
-export function DashboardAnalytics({ customer }: customerRowProps) {
+
+export function DashboardAnalytics() {
   return (
     <div className="grid grid-cols-2 gap-4 mb-6  *:data-[slot=card]:shadow-xs  @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
       <Card className="@container/card">

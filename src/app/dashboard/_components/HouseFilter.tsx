@@ -10,12 +10,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useDashStore } from "@/lib/store";
 import { useState } from "react";
 import { LiaFilterSolid } from "react-icons/lia";
 import { ghanaRegions } from "../properties/add-house/page";
-import { useDashStore } from "@/lib/store";
 
-export default function HouseFilter() {
+type houseFilterProps = {
+setIsLoading: (loading: boolean) => void;
+}
+export default function HouseFilter({setIsLoading}: houseFilterProps) {
   const cities = ["Tamale", "Accra", "Kumasi"];
   const countries = ["Ghana"];
   const amenities = ["Pool", "WiFi", "Parking", "Gym"];
@@ -24,7 +27,7 @@ export default function HouseFilter() {
   const [city, setCity] = useState("");
   const [region, setRegion] = useState("");
   const [country, setCountry] = useState("");
-  const [smartLockSupport, setSmartLockSupport] = useState(false);
+  const [smartLockSupport, setSmartLockSupport] = useState<string>("");
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
   const {setFilteredHouses} = useDashStore()
 
@@ -43,27 +46,33 @@ const handleSubmit = async () => {
   if (city) params.append("city", city);
   if (region) params.append("region", region);
   if (country) params.append("country", country);
-  if (smartLockSupport) params.append("smartLockSupport", "true");
+
+  // always send smartLockSupport
+if (smartLockSupport !== "") {
+  params.append("smartLockSupport", smartLockSupport);
+}
+
+
   selectedAmenities.forEach((a) => params.append("amenities", a));
 
   try {
+    setIsLoading(true);
     const res = await fetch(`/api/houses?${params.toString()}`, {
       method: "GET",
       cache: "no-store",
     });
-
     if (!res.ok) throw new Error("Failed to fetch houses");
 
     const data = await res.json();
     console.log("Filtered houses:", data);
     setFilteredHouses(data);
-    // TODO: you can store them in a state to display in your UI
-    // setFilteredHouses(data);
-
   } catch (error) {
     console.error("Error fetching houses:", error);
+  } finally {
+    setIsLoading(false);
   }
 };
+
 
 
   const handleReset = () => {
@@ -71,7 +80,7 @@ const handleSubmit = async () => {
     setCity("");
     setRegion("");
     setCountry("");
-    setSmartLockSupport(false);
+    setSmartLockSupport("");
     setSelectedAmenities([]);
     console.log("Filters reset");
     setFilteredHouses(null); // Reset filtered houses in the store
@@ -130,16 +139,16 @@ const handleSubmit = async () => {
       </Select>
 
       {/* Smart Lock */}
-      <div className="flex items-center gap-2">
-        <Checkbox
-          id="smart-lock"
-          checked={smartLockSupport}
-          onCheckedChange={(checked) => setSmartLockSupport(checked as boolean)}
-        />
-        <label htmlFor="smart-lock" className="text-sm">
-          Smart Lock
-        </label>
-      </div>
+    <Select value={smartLockSupport as string} onValueChange={(v) => setSmartLockSupport(v)}>
+  <SelectTrigger className="w-36">
+    <SelectValue placeholder="Smart Lock" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="true">Yes</SelectItem>
+    <SelectItem value="false">No</SelectItem>
+  </SelectContent>
+</Select>
+
 
       {/* Amenities */}
       <div className="flex items-center gap-2">

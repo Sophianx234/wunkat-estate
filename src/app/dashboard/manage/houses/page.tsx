@@ -6,11 +6,13 @@ import Swal from "sweetalert2";
 import HouseCard from "../../_components/HouseCard";
 import { useRouter } from "next/navigation";
 import HouseFilter from "../../_components/HouseFilter";
+import { useDashStore } from "@/lib/store";
 
 export default function Page() {
   const [houses, setHouses] = useState<IHouse[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const { filteredHouses } = useDashStore();
 
   // Fetch houses
   useEffect(() => {
@@ -31,14 +33,10 @@ export default function Page() {
     fetchHouses();
   }, []);
 
-  // Add/Edit/Room Handlers (can be expanded later)
-  
-
-  const handleEditHouse = (houseId: string) =>{
+  const handleEditHouse = (houseId: string) => {
     router.push(`/dashboard/properties/add-house/edit/${houseId}`);
-  }
+  };
 
-  // ✅ Delete with SweetAlert + fetch
   const handleDeleteHouse = async (houseId: string) => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -69,29 +67,42 @@ export default function Page() {
     }
   };
 
- 
+  // Decide which data to render
+ let displayHouses: IHouse[] = [];
+let notFoundMessage: string | null = null;
+
+if (filteredHouses === null || filteredHouses === undefined) {
+  // show all houses
+  displayHouses = houses;
+  if (houses.length === 0) {
+    notFoundMessage = "No houses found";
+  }
+} else if (Array.isArray(filteredHouses) && filteredHouses.length === 0) {
+  // search ran but found nothing
+  notFoundMessage = "Results not found";
+} else if (Array.isArray(filteredHouses)) {
+  // search returned results
+  displayHouses = filteredHouses;
+}
+
 
   return (
     <div className="p-6">
-      
-        <h1 className="text-lg mb-3 font-bold">Manage Houses</h1>
-        <HouseFilter/>
+      <h1 className="text-lg mb-3 font-bold">Manage Houses</h1>
+      <HouseFilter setIsLoading={setLoading} />
 
-        
       {loading ? (
         <p className="text-gray-500">Loading houses...</p>
-      ) : houses.length === 0 ? (
-        <p className="text-gray-500">No houses found</p>
+      ) : notFoundMessage ? (
+        <p className="text-gray-500">{notFoundMessage}</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {houses.map((house) => (
+          {displayHouses.map((house) => (
             <HouseCard
               key={house._id}
               house={house}
-              // onAddRoom={handleAddRoom}
               onEditHouse={handleEditHouse}
-              onDeleteHouse={handleDeleteHouse} // ✅ wired up
-              
+              onDeleteHouse={handleDeleteHouse}
             />
           ))}
         </div>
