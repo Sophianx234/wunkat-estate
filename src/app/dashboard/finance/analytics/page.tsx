@@ -13,6 +13,8 @@ import { VisitorsChart } from "../../_components/VisitorsChart";
 import CustomersPage from "../../tenants/page";
 import RecentActivity from "./RecentActivity";
 import TeamMembersCard from "../../_components/TeamMembersCard";
+import StatCard from "../../_components/StatCard";
+import DashboardNav from "../../_components/DashNav";
 
 export default function Finance() {
   return (
@@ -30,7 +32,33 @@ export default function Finance() {
       {/* New Clients */}
       {/* <ClientCard /> */}
 
-      <DashboardAnalytics/>
+      {/* <DashboardAnalytics/> */}
+      <div className="grid grid-cols-[1fr_2fr] mb-3">
+
+      <DashboardNav/>
+      <div></div>
+      </div>
+      <div className="grid grid-cols-3 gap-4 mb-5">
+
+        <StatCard
+        title="New Subscriptions"
+        value={4682}
+        trendData={[10, 8, 12, 9, 11, 10, 13]}
+        changePercent={15.54}
+      />
+      <StatCard
+        title="New Orders"
+        value={1226}
+        trendData={[8, 10, 7, 6, 8, 7, 9]}
+        changePercent={-40.2}
+      />
+      <StatCard
+        title="Avg Order Revenue"
+        value={1080}
+        trendData={[9, 11, 10, 12, 13, 14, 15]}
+        changePercent={10.8}
+        />
+        </div>
       <div className="grid grid-cols-[2fr_1fr] gap-4 mb-6 ">
 
       <ReturningRateCard/>
