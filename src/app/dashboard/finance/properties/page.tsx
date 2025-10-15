@@ -7,6 +7,7 @@ import { HomeStatsCard } from "../../_components/HomeStatsCard";
 import { Lock, Unlock, Clock, KeyRound } from "lucide-react";
 import VacancyRateCard from "../../_components/VacancyRateCard";
 import RoomLockStatusTable from "../../_components/RoomLockStatus";
+import FinancialStats from "../../_components/FinancialStats";
 
 export default function Overview() {
   // Mock stats — these can later be fetched dynamically from your backend
@@ -119,6 +120,7 @@ export default function Overview() {
         ))}
       <SubscriptionCard />
       </motion.div>
+      <FinancialStats/>
 
       {/* Summary + Analytics Section */}
       <motion.div
@@ -127,6 +129,7 @@ export default function Overview() {
         transition={{ duration: 0.5, delay: 0.2 }}
         className="grid grid-cols-1 lg:grid-cols-[1fr_1fr_1fr] gap-4"
       >
+
         {/* Summary Section */}
         <div className="p-6 rounded-xl col-span-2 bg-white dark:bg-neutral-900 shadow-sm border border-gray-100 dark:border-neutral-800">
           <h3 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-3">

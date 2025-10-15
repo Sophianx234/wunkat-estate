@@ -87,8 +87,8 @@ export default function NotificationList() {
   
 
   return (
-    <div className="relative">
-      <div className="absolute bg-red-400 top-[8px] left-[10.5rem] w-4 h-4 rotate-45 shadow -z-20" />
+    <div className="fixed w-60 h-60 right-3 top-20 z-10">
+      <div className="fixed bg-red-400 top-[8px] left-[10.5rem] w-4 h-4 rotate-45 shadow -z-20" />
 
       <div
         ref={panelRef}

@@ -13,6 +13,8 @@ import TransactionHistory from "../../_components/TransactionTable";
 import { VisitorsChart } from "../../_components/VisitorsChart";
 import CustomersPage from "../../tenants/page";
 import RecentActivity from "../overview/RecentActivity";
+import FinancialStats from "../../_components/FinancialStats";
+import ActivityAnalytics from "../../_components/ActivityAnalytics";
 
 export default function Finance() {
   return (
@@ -47,7 +49,7 @@ export default function Finance() {
       <TeamMembersCard/>
       </div>
 
-
+<ActivityAnalytics/>
       <VisitorsChart/>
       <CustomersPage/>
       <div className="grid grid-cols-[3fr_3fr_.5fr] gap-3  my-6 ">
