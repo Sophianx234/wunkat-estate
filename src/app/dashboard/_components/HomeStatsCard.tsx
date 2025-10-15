@@ -15,7 +15,7 @@ type StatsCardProps = {
 
 export function HomeStatsCard({ title, value, icon: Icon, buttonLabel, onButtonClick }: StatsCardProps) {
   return (
-    <Card className="py-5 px-6  w-full shadow-sm border rounded-xl hover:shadow-md transition bg-white">
+    <Card className="py-5 px-6  w-full h-full shadow-sm border rounded-xl hover:shadow-md transition bg-white">
       <CardHeader className="space-y-4 p-0">
         {/* Icon + Title + Button */}
         <div className="flex justify-between gap-4 items-center ">

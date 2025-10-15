@@ -6,6 +6,7 @@ import { GiBed, GiSpookyHouse } from "react-icons/gi";
 import { HomeStatsCard } from "../../_components/HomeStatsCard";
 import { Lock, Unlock, Clock, KeyRound } from "lucide-react";
 import VacancyRateCard from "../../_components/VacancyRateCard";
+import RoomLockStatusTable from "../../_components/RoomLockStatus";
 
 export default function Overview() {
   // Mock stats — these can later be fetched dynamically from your backend
@@ -101,6 +102,7 @@ export default function Overview() {
         {stats.map((stat, index) => (
           <motion.div
             key={index}
+            className={index === stats.length - 1 && "col-span-2"}
             variants={{
               hidden: { opacity: 0, y: 15 },
               visible: { opacity: 1, y: 0 },
@@ -115,6 +117,7 @@ export default function Overview() {
             />
           </motion.div>
         ))}
+      <SubscriptionCard />
       </motion.div>
 
       {/* Summary + Analytics Section */}
@@ -125,7 +128,7 @@ export default function Overview() {
         className="grid grid-cols-1 lg:grid-cols-[1fr_1fr_1fr] gap-4"
       >
         {/* Summary Section */}
-        <div className="p-6 rounded-xl bg-white dark:bg-neutral-900 shadow-sm border border-gray-100 dark:border-neutral-800">
+        <div className="p-6 rounded-xl col-span-2 bg-white dark:bg-neutral-900 shadow-sm border border-gray-100 dark:border-neutral-800">
           <h3 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-3">
             Summary
           </h3>
@@ -140,8 +143,8 @@ export default function Overview() {
 
         {/* Vacancy Rate and Subscription */}
         <VacancyRateCard totalRooms={732} availableRooms={260} />
-        <SubscriptionCard />
       </motion.div>
+        <RoomLockStatusTable/>
     </div>
   );
 }
