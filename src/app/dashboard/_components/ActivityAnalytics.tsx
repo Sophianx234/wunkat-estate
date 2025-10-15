@@ -95,7 +95,7 @@ export default function ActivityAnalytics() {
   };
 
   return (
-    <div className="space-y-6 mt-8">
+    <div className="space-y-6 mb-3 mt-8">
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -137,49 +137,7 @@ export default function ActivityAnalytics() {
       </div>
 
       {/* 🏠 Houses Added per Month */}
-   <Card className="p-3 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-all">
-  <CardHeader className="pb-2">
-    <CardTitle className="text-sm font-medium text-gray-800 dark:text-gray-100">
-      Houses Added per Month
-    </CardTitle>
-  </CardHeader>
-  <CardContent>
-    {loading ? (
-      <Skeleton className="h-[160px]" />
-    ) : (
-      <Bar
-        options={{
-          ...lineOptions,
-          plugins: {
-            legend: { display: false },
-          },
-          scales: {
-            x: {
-              grid: { display: false },
-              ticks: { color: "#94A3B8", font: { size: 10 } },
-            },
-            y: {
-              grid: { color: "rgba(226,232,240,0.2)" },
-              ticks: { color: "#94A3B8", font: { size: 10 } },
-            },
-          },
-        }}
-        data={{
-          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
-          datasets: [
-            {
-              label: "Houses Added",
-              data: [2, 3, 5, 1, 4, 6, 4, 7],
-              borderRadius: 8,
-              backgroundColor: "#da77f2",
-            },
-          ],
-        }}
-        height={160}
-      />
-    )}
-  </CardContent>
-</Card>
+   
 
     </div>
   );

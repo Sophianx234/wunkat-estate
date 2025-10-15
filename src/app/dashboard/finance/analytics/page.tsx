@@ -15,6 +15,7 @@ import CustomersPage from "../../tenants/page";
 import RecentActivity from "../overview/RecentActivity";
 import FinancialStats from "../../_components/FinancialStats";
 import ActivityAnalytics from "../../_components/ActivityAnalytics";
+import HousesAddedTable from "../../_components/HouseAddedTable";
 
 export default function Finance() {
   return (
@@ -50,25 +51,8 @@ export default function Finance() {
       </div>
 
 <ActivityAnalytics/>
-      <VisitorsChart/>
-      <CustomersPage/>
-      <div className="grid grid-cols-[3fr_3fr_.5fr] gap-3  my-6 ">
-         <HomeStatsCard
-        title="Total Houses"
-        value={128}
-        icon={GiSpookyHouse}
-        buttonLabel="View Houses"
-        onButtonClick={() => console.log("View Houses clicked")}
-      />
-      <HomeStatsCard
-        title="Total Rooms"
-        value={732}
-        icon={GiBed}
-        buttonLabel="View Rooms"
-        onButtonClick={() => console.log("View Rooms clicked")}
-      />
-      <SubscriptionCard/>
-      </div>
+<HousesAddedTable loading={false}/>
+     
       <TransactionHistory/>
       
       
