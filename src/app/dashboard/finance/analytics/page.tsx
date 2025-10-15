@@ -6,39 +6,20 @@ import ReturningRateCard from "@/app/_components/ReturningRateCard";
 import SubscriptionCard from "@/app/_components/SubscriptionCard";
 import TotalRevenueCard from "@/app/_components/TotalRevenueCard";
 import { GiBed, GiSpookyHouse } from "react-icons/gi";
-import { DashboardAnalytics } from "../../_components/Analytics";
 import { HomeStatsCard } from "../../_components/HomeStatsCard";
+import StatCard from "../../_components/StatCard";
+import TeamMembersCard from "../../_components/TeamMembersCard";
 import TransactionHistory from "../../_components/TransactionTable";
 import { VisitorsChart } from "../../_components/VisitorsChart";
 import CustomersPage from "../../tenants/page";
-import RecentActivity from "./RecentActivity";
-import TeamMembersCard from "../../_components/TeamMembersCard";
-import StatCard from "../../_components/StatCard";
-import DashboardNav from "../../_components/DashNav";
+import RecentActivity from "../overview/RecentActivity";
 
 export default function Finance() {
   return (
-    <div className="ml-4">
-      {/* Total Income & Revenue */}
-    <h1 className="text-xl font-inter pt-4 pl-2 font-bold mb-3">WunkatHomes Dashboard</h1>
-      {/* <IncomeCard /> */}
-
-      {/* Sales Analytics */}
-      {/* <SalesAnalytics /> */}
-
-      {/* Sold Properties */}
-      {/* <SoldAnalytics /> */}
-
-      {/* New Clients */}
-      {/* <ClientCard /> */}
-
-      {/* <DashboardAnalytics/> */}
-      <div className="grid grid-cols-[1fr_2fr] mb-3">
-
-      <DashboardNav/>
-      <div></div>
-      </div>
-      <div className="grid grid-cols-3 gap-4 mb-5">
+    <div className="">
+     
+      
+      <div className="grid grid-cols-3 gap-4 w-full mb-5">
 
         <StatCard
         title="New Subscriptions"
@@ -59,11 +40,7 @@ export default function Finance() {
         changePercent={10.8}
         />
         </div>
-      <div className="grid grid-cols-[2fr_1fr] gap-4 mb-6 ">
-
-      <ReturningRateCard/>
-      <TotalRevenueCard/>
-      </div>
+      
       <div className="grid grid-cols-[2fr_1fr]  mb-6 gap-4">
 
       <RecentActivity/>

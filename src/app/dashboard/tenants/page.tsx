@@ -5,7 +5,10 @@ import FilterBar from "../_components/FilterBar";
 import { Loader2 } from "lucide-react";
 import { transactionType } from "../transactions/PaymentHistory";
 
-export default function CustomersPage() {
+type customerPageType = {
+  type?:'user'|'admin'
+}
+export default function CustomersPage({ type='user' }:customerPageType) {
   const [filtered, setFiltered] = useState<transactionType[] | null>(null);
   const [payments, setPayments] = useState<transactionType[]>([]);
   const [loading, setLoading] = useState(false);
@@ -58,8 +61,8 @@ export default function CustomersPage() {
   }, []);
 
   return (
-    <div className="p-6 space-y-6 mt-24 sm:mt-0">
-      <FilterBar onFilter={handleFilter} />
+    <div className={`${type==='user'&&'p-6'} space-y-6 mt-24 sm:mt-0`}>
+      {type==='user'&&<FilterBar onFilter={handleFilter} />}
 
       <div className="space-y-4 min-h-[200px] flex justify-center items-center">
         {loading ? (

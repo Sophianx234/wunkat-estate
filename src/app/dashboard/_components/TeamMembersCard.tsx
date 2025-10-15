@@ -108,7 +108,7 @@ export default function TeamMembersCard({
   }
 
   return (
-    <Card className="w-full h-fit max-w-sm rounded-xl shadow relative">
+    <Card className="w-full h-full max-w-sm rounded-xl shadow relative">
       <CardHeader className="flex flex-row items-start justify-between">
         <div>
           <CardTitle>Team Members</CardTitle>

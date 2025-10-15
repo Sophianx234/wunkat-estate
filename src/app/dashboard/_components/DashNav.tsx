@@ -5,16 +5,18 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Cog, Eye, FileText, Bell } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const tabs = [
-  { name: "Overview", icon: Cog },
-  { name: "Analytics", icon: Eye },
-  { name: "Reports", icon: FileText },
-  { name: "Notifications", icon: Bell },
+  { name: "Overview", icon: Cog ,link: "/dashboard/finance/overview"},
+  { name: "Analytics", icon: Eye ,link: "/dashboard/finance/analytics"},
+  { name: "Properties", icon: FileText, link: "/dashboard/finance/properties" },
+  { name: "Notifications", icon: Bell, link: "/dashboard/finance/notifications" },
 ];
 
 export default function DashboardNav() {
   const [active, setActive] = useState("Analytics");
+  const router = useRouter();
 
   return (
     <div className="flex items-center justify-center py-1 px-2 bg-muted/40 rounded-lg border">
@@ -26,7 +28,10 @@ export default function DashboardNav() {
             <Button
               key={tab.name}
               variant="ghost"
-              onClick={() => setActive(tab.name)}
+              onClick={() => {
+                setActive(tab.name)
+                router.push(tab.link)
+              }}
               className={cn(
                 "relative flex items-center  px-3 py-1 text-xs font-medium rounded-md transition-all",
                 "hover:bg-muted",

@@ -52,7 +52,7 @@ export default function StatCard({
   };
 
   return (
-    <div className="bg-white border rounded-2xl p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+    <div className="bg-white border w-full rounded-2xl p-5 shadow-sm  transition-all flex flex-col justify-between">
       {/* Header */}
       <div className="flex justify-between items-start">
         <p className="text-sm font-semibold text-gray-700">{title}</p>
