@@ -1,15 +1,9 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import {
-  Bell,
-  Mail,
-  Home,
-  CalendarCheck,
-  Trash2,
-} from 'lucide-react';
+import { Bell, Mail, Home, CalendarCheck, Trash2 } from 'lucide-react';
 import { useDashStore } from '@/lib/store';
-
+import { getSocket } from '@/lib/socket';
 type Notification = {
   id: number;
   title: string;
@@ -19,38 +13,63 @@ type Notification = {
   read: boolean;
 };
 
-const initialNotifications: Notification[] = [
-  {
-    id: 1,
-    title: 'New message from Agent Jane',
-    description: 'Hey! Are you still interested in the 3-bed apartment?',
-    type: 'message',
-    time: '2m ago',
-    read: false,
-  },
-  {
-    id: 2,
-    title: 'New Listing: Luxury Penthouse',
-    description: 'A new property was just listed in East Legon.',
-    type: 'listing',
-    time: '1h ago',
-    read: true,
-  },
-  {
-    id: 3,
-    title: 'Property Viewing Reminder',
-    description: 'You have a viewing scheduled tomorrow at 3PM.',
-    type: 'reminder',
-    time: 'Yesterday',
-    read: true,
-  },
-];
-
 export default function NotificationList() {
-  const [notifications, setNotifications] = useState(initialNotifications);
-  const {toggleNotification}= useDashStore()
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const { toggleNotification } = useDashStore();
   const panelRef = useRef<HTMLDivElement>(null);
 
+  // ✅ Handle socket connection and listen for notifications
+ /*  useEffect(() => {
+    const socket = getSocket()
+
+    socket.on('connection', () => {
+      console.log('✅ Connected to Socket.IO:', socket.id);
+    });
+
+    socket.on('newNotification', (data: Omit<Notification, 'id' | 'read'>) => {
+      const newNotif: Notification = {
+        id: Date.now(),
+        read: false,
+        ...data,
+      };
+      console.log('📩 New notification:', newNotif);
+
+      setNotifications((prev) => [newNotif, ...prev]);
+    });
+
+    // ✅ Important: only remove the event listener, don't disconnect globally
+    return () => {
+      socket.off('newNotification');
+      socket.off('connect');
+    };
+  }, []) */;
+  useEffect(() => {
+  const socket = getSocket();
+  socket.emit("sendNotification", { message: "New property added!" });
+
+
+
+    // handle notification
+
+  return () => {
+    socket.disconnect();
+  };
+}, []);
+
+
+
+  // ✅ Handle click outside to close the panel
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
+        toggleNotification();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [toggleNotification]);
+
+  // ✅ Icon logic
   const getIcon = (type: Notification['type']) => {
     switch (type) {
       case 'message':
@@ -62,34 +81,19 @@ export default function NotificationList() {
     }
   };
 
+  // ✅ Mark as read
   const markAsRead = (id: number) => {
     setNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, read: true } : n))
     );
   };
 
-  const clearNotifications = () => {
-    setNotifications([]);
-  };
-
-  // Close panel when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (panelRef.current && !panelRef.current.contains(event.target as Node)) {
-        toggleNotification()
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [toggleNotification]);
-
-  
+  // ✅ Clear all
+  const clearNotifications = () => setNotifications([]);
 
   return (
-    <div className="fixed w-60 h-60 right-3 top-20 z-10">
+    <div className="fixed w-60 h-60 right-3 top-1 z-10">
       <div className="fixed bg-red-400 top-[8px] left-[10.5rem] w-4 h-4 rotate-45 shadow -z-20" />
-
       <div
         ref={panelRef}
         className="max-w-md mx-auto absolute right-5 z-10 top-24 bg-white rounded-xl shadow p-4 space-y-4 w-[22rem]"
@@ -111,7 +115,9 @@ export default function NotificationList() {
 
         <div className="min-h-[250px]">
           {notifications.length === 0 ? (
-            <p className="text-sm text-gray-500 text-center">No notifications</p>
+            <p className="text-sm text-gray-500 text-center">
+              No notifications
+            </p>
           ) : (
             <ul className="space-y-3">
               {notifications.map((n) => (

@@ -27,6 +27,9 @@ function Layout({ children }: LayoutProps) {
 }
     getMe()
   },[]) 
+   useEffect(() => {
+        fetch("/api/socket"); // Initialize the WebSocket server
+    }, []);
 
   return (
     <div className="bg-gray-50">
