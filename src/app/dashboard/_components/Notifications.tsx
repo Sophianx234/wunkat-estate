@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Bell, Mail, Home, CalendarCheck, Trash2 } from 'lucide-react';
 import { useDashStore } from '@/lib/store';
-import { getSocket } from '@/lib/socket';
 type Notification = {
   id: number;
   title: string;
@@ -17,6 +16,7 @@ export default function NotificationList() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const { toggleNotification } = useDashStore();
   const panelRef = useRef<HTMLDivElement>(null);
+
 
   // ✅ Handle socket connection and listen for notifications
  /*  useEffect(() => {
@@ -43,18 +43,9 @@ export default function NotificationList() {
       socket.off('connect');
     };
   }, []) */;
-  useEffect(() => {
-  const socket = getSocket();
-  socket.emit("sendNotification", { message: "New property added!" });
 
 
 
-    // handle notification
-
-  return () => {
-    socket.disconnect();
-  };
-}, []);
 
 
 

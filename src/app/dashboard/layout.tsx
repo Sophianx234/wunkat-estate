@@ -13,7 +13,7 @@ type LayoutProps = {
 };
 
 function Layout({ children }: LayoutProps) {
-  const {openNotifications,setUser} = useDashStore()
+  const {openNotifications,setUser,setNotifications} = useDashStore()
   useEffect(()=>{
     const getMe = async()=>{
       const res = await fetch('/api/auth/me')
@@ -27,9 +27,58 @@ function Layout({ children }: LayoutProps) {
 }
     getMe()
   },[]) 
-   useEffect(() => {
-        fetch("/api/socket"); // Initialize the WebSocket server
-    }, []);
+
+  useEffect(() => {
+    // 🟢 This runs ONCE when the component mounts
+    const eventSource = new EventSource("/api/sse");
+    eventSource.onerror = (error) => {
+      console.error("❌ SSE Error:", error);
+      eventSource.close();
+    };
+
+    return () => {
+      console.log("🔌 Closing SSE connection");
+      eventSource.close();
+    };
+  }, []);
+
+  useEffect(() => {
+  // Connect to the SSE notifications endpoint
+  const eventSource = new EventSource("/api/notification");
+
+  eventSource.onopen = () => {
+    console.log("✅ Connected to SSE notifications");
+  };
+
+  eventSource.onmessage = (event) => {
+    try {
+      const data = event.data;
+      const newNotif= {
+        id: Date.now(),
+        title: "New Update",
+        description: data,
+        type: "listing",
+        time: new Date().toLocaleTimeString(),
+        read: false,
+      };
+
+      console.log("📩 New SSE Notification:", newNotif);
+      setNotifications((prev) => [newNotif, ...prev]);
+    } catch (error) {
+      console.error("Error parsing SSE data:", error);
+    }
+  };
+
+  eventSource.onerror = (error) => {
+    console.error("❌ SSE Error:", error);
+    eventSource.close();
+  };
+
+  return () => {
+    eventSource.close();
+  };
+}, [setNotifications]);
+
 
   return (
     <div className="bg-gray-50">

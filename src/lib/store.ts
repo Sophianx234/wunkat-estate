@@ -4,6 +4,7 @@ import { IRoom } from "@/app/dashboard/properties/page";
 import { transactionType } from "@/app/dashboard/transactions/PaymentHistory";
 import { userDocumentType } from "@/models/User";
 import { IHouse } from "@/models/House";
+import { INotification } from "@/models/Notification";
 
 export type signupType = {
   email: string;
@@ -26,11 +27,13 @@ export type storeState = {
   avatar: string;
   filteredRooms: IRoom[] | null;
   filteredHouses: IHouse[] | null;
+  notifications: INotification[]|null
 
   setAvatar: (url: string) => void;
   setSignupData: (data: signupType) => void;
   setFilteredRooms: (data: IRoom[] | null) => void;
   setFilteredHouses: (data: IHouse[] | null) => void;
+  setNotifications: (data: INotification[] | null) => void;
   setRoom: (data: IRoom | null) => void;
   setFilteredPayments: (data: transactionType[] | []) => void;
   toggleSidebar: () => void;
@@ -41,10 +44,12 @@ export type storeState = {
   setUsers: (user: userDocumentType[] | null) => void;
   openNotifications: boolean;
   toggleNotification: () => void;
+  
 };
 
 export const useDashStore = create<storeState>((set) => ({
   filteredPayments: [],
+  notifications:[],
   room: null,
   openSidebar: false,
   filteredHouses: null,
@@ -66,6 +71,8 @@ export const useDashStore = create<storeState>((set) => ({
     set((state) => ({ openAddProperty: !state.openAddProperty })),
   toggleNotification: () =>
     set((state) => ({ openNotifications: !state.openNotifications })),
+  setNotifications: (data: INotification[] | null) =>
+    set(() => ({ notifications: data })),
   setFilteredHouses: (data: IHouse[] | null) =>
     set(() => ({ filteredHouses: data })),
 

@@ -39,7 +39,7 @@ export default function Topbar() {
             onClick={toggleNotification}
             className="border hover:scale-105 duration-200 cursor border-gray-200 dark:border-gray-600 rounded-full p-2 relative"
           >
-            <span className="absolute bg-green-200 rounded-full size-3 top-0 -right-1"></span>
+            <span className="absolute bg-green-200 rounded-full text-green-900 font-semibold  -top-2 size-6 justify-center flex items-center -right-3 text-xs text-center">24</span>
             <FaBell className="text-gray-500 dark:text-gray-300" />
           </div>
           <Profile />

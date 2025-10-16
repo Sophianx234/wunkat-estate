@@ -1,5 +1,7 @@
 import { connectToDatabase } from "@/config/DbConnect";
+import { broadcast } from "@/lib/sse";
 import House from "@/models/House";
+import Notification from "@/models/Notification";
 import { NextRequest, NextResponse } from "next/server";
 
 // MongoDB connection helper
@@ -55,6 +57,8 @@ if (smartLockSupport && ["true", "false"].includes(smartLockSupport.toLowerCase(
 }
 
 // POST: Create a new house
+
+
 export async function POST(request: Request) {
   try {
     await connectToDatabase();
@@ -70,7 +74,7 @@ export async function POST(request: Request) {
       lockStatus,
     } = body;
 
-    // Basic validation
+    // 🧩 Basic validation
     if (!name || !location?.address || !location?.city || !location?.region) {
       return NextResponse.json(
         { error: "Name, address, city, and region are required" },
@@ -78,7 +82,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // ✅ If smart lock is enabled, include lockStatus
+    // ✅ Create new house
     const newHouse = new House({
       name,
       description,
@@ -90,10 +94,27 @@ export async function POST(request: Request) {
 
     await newHouse.save();
 
+    // 🧩 Create a notification document
+    const notification = await Notification.create({
+      title: "New House Added",
+      message: `A new house named "${newHouse.name}" has been added in ${newHouse.location.city}.`,
+      type: "system",     // or "booking"/"payment"/etc. based on your use case
+      audience: "all",    // can be "admin" or "user" depending on target
+    });
+
+    // 🧩 Broadcast the message to connected clients via SSE
+    broadcast(`🏠 ${notification.message}`);
+
+    // ✅ Return response
     return NextResponse.json(
-      { message: "House created successfully", house: newHouse },
+      {
+        message: "House created successfully",
+        house: newHouse,
+        notification,
+      },
       { status: 201 }
     );
+
   } catch (error) {
     console.error("Error creating house:", error);
     return NextResponse.json(
