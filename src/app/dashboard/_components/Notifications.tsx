@@ -1,15 +1,19 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Bell, Mail, CalendarCheck, Trash2 } from 'lucide-react';
+import { Bell, Mail, CalendarCheck, Trash2, Wrench, CreditCard, Info } from 'lucide-react';
 import { BiBuildingHouse } from 'react-icons/bi';
 import { useDashStore } from '@/lib/store';
+import { RiSecurePaymentLine } from 'react-icons/ri';
+
+// Match your Mongoose schema’s types
+type NotificationType = 'system' | 'maintenance' | 'payment' | 'booking';
 
 type Notification = {
-  id: string; // use string since MongoDB _id is a string
+  id: string;
   title: string;
   description: string;
-  type: 'message' | 'listing' | 'reminder';
+  type: NotificationType;
   time: string;
   read: boolean;
 };
@@ -18,10 +22,9 @@ export default function NotificationList() {
   const panelRef = useRef<HTMLDivElement>(null);
   const { notifications: backendNotifications, toggleNotification } = useDashStore();
 
-  // ✅ Local state to track read status without mutating Zustand directly
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  // ✅ Map Zustand backend data → frontend Notification type
+  // ✅ Map backend data → UI-friendly structure
   useEffect(() => {
     if (!backendNotifications) return;
 
@@ -29,7 +32,7 @@ export default function NotificationList() {
       id: n._id,
       title: n.title,
       description: n.message,
-      type: 'listing', // since these are system "house added" notifications
+      type: n.type as NotificationType,
       time: new Date(n.createdAt).toLocaleString(),
       read: false,
     }));
@@ -48,19 +51,23 @@ export default function NotificationList() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [toggleNotification]);
 
-  // ✅ Icon logic
+  // ✅ Icon logic – now matches your Mongoose schema types
   const getIcon = (type: Notification['type']) => {
     switch (type) {
-      case 'message':
-        return <Mail className="text-blue-500" />;
-      case 'listing':
-        return <BiBuildingHouse className="text-green-500" />;
-      case 'reminder':
-        return <CalendarCheck className="text-yellow-500" />;
+      case 'system':
+        return <Info className="text-blue-500" title="System Notification" />;
+      case 'maintenance':
+        return <Wrench className="text-yellow-500" title="Maintenance Alert" />;
+      case 'payment':
+        return <RiSecurePaymentLine className="text-green-500" title="Payment Update" />;
+      case 'booking':
+        return <BiBuildingHouse className="text-purple-500" title="Booking Info" />;
+      default:
+        return <Bell className="text-gray-400" title="General Notification" />;
     }
   };
 
-  // ✅ Mark as read
+  // ✅ Mark as read (local only for now)
   const markAsRead = (id: string) => {
     setNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, read: true } : n))
@@ -94,9 +101,7 @@ export default function NotificationList() {
 
         <div className="h-[350px] overflow-y-scroll scrollbar-hide">
           {notifications.length === 0 ? (
-            <p className="text-sm text-gray-500 text-center">
-              No notifications
-            </p>
+            <p className="text-sm text-gray-500 text-center">No notifications</p>
           ) : (
             <ul className="space-y-3">
               {notifications.map((n) => (
@@ -109,15 +114,11 @@ export default function NotificationList() {
                 >
                   <div className="mt-1">{getIcon(n.type)}</div>
                   <div className="flex-1">
-                    <h4 className="font-medium text-sm text-gray-800">
-                      {n.title}
-                    </h4>
+                    <h4 className="font-medium text-sm text-gray-800">{n.title}</h4>
                     <p className="text-xs text-gray-500">{n.description}</p>
                     <span className="text-xs text-gray-400">{n.time}</span>
                   </div>
-                  {!n.read && (
-                    <span className="w-2 h-2 mt-2 rounded-full bg-blue-500" />
-                  )}
+                  {!n.read && <span className="w-2 h-2 mt-2 rounded-full bg-blue-500" />}
                 </li>
               ))}
             </ul>
