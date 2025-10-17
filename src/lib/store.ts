@@ -27,13 +27,13 @@ export type storeState = {
   avatar: string;
   filteredRooms: IRoom[] | null;
   filteredHouses: IHouse[] | null;
-  notifications: INotification[]|null
+  notifications: INotification[]
 
   setAvatar: (url: string) => void;
   setSignupData: (data: signupType) => void;
   setFilteredRooms: (data: IRoom[] | null) => void;
   setFilteredHouses: (data: IHouse[] | null) => void;
-  setNotifications: (data: INotification[] | null) => void;
+  setNotifications: (data: INotification[]) => void;
   setRoom: (data: IRoom | null) => void;
   setFilteredPayments: (data: transactionType[] | []) => void;
   toggleSidebar: () => void;
@@ -71,8 +71,11 @@ export const useDashStore = create<storeState>((set) => ({
     set((state) => ({ openAddProperty: !state.openAddProperty })),
   toggleNotification: () =>
     set((state) => ({ openNotifications: !state.openNotifications })),
-  setNotifications: (data: INotification[] | null) =>
-    set(() => ({ notifications: data })),
+ setNotifications: (data: INotification[]) =>
+  set((state) => ({
+    notifications: [...state.notifications, ...data],
+  })),
+
   setFilteredHouses: (data: IHouse[] | null) =>
     set(() => ({ filteredHouses: data })),
 

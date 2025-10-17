@@ -3,25 +3,34 @@ type SSEClient = {
   controller: ReadableStreamDefaultController;
 };
 
-let clients: SSEClient[] = [];
-let clientId = 0;
+// Ensure globalThis has a shared store (singleton)
+const globalForSSE = globalThis as unknown as {
+  clients: SSEClient[];
+  clientId: number;
+};
+
+if (!globalForSSE.clients) {
+  globalForSSE.clients = [];
+  globalForSSE.clientId = 0;
+}
 
 export function addClient(controller: ReadableStreamDefaultController) {
-  const id = ++clientId;
-  clients.push({ id, controller });
-  console.log(`🔗 Client connected (${clients.length} total)`);
+  const id = ++globalForSSE.clientId;
+  globalForSSE.clients.push({ id, controller });
+  console.log(`🔗 Client connected (${globalForSSE.clients.length} total)`);
   return id;
 }
 
 export function removeClient(id: number) {
-  clients = clients.filter((client) => client.id !== id);
-  console.log(`❌ Client disconnected (${clients.length} total)`);
+  globalForSSE.clients = globalForSSE.clients.filter((client) => client.id !== id);
+  console.log(`❌ Client disconnected (${globalForSSE.clients.length} total)`);
 }
 
 export function broadcast(data: string) {
   const message = `data: ${data}\n\n`;
   const encoder = new TextEncoder();
-  for (const client of clients) {
+  console.log(`📢 Broadcasting to ${globalForSSE.clients.length} clients`);
+  for (const client of globalForSSE.clients) {
     try {
       client.controller.enqueue(encoder.encode(message));
     } catch (e) {

@@ -28,19 +28,7 @@ function Layout({ children }: LayoutProps) {
     getMe()
   },[]) 
 
-  useEffect(() => {
-    // 🟢 This runs ONCE when the component mounts
-    const eventSource = new EventSource("/api/sse");
-    eventSource.onerror = (error) => {
-      console.error("❌ SSE Error:", error);
-      eventSource.close();
-    };
-
-    return () => {
-      console.log("🔌 Closing SSE connection");
-      eventSource.close();
-    };
-  }, []);
+  
 
   useEffect(() => {
   // Connect to the SSE notifications endpoint
@@ -52,18 +40,21 @@ function Layout({ children }: LayoutProps) {
 
   eventSource.onmessage = (event) => {
     try {
-      const data = event.data;
-      const newNotif= {
-        id: Date.now(),
-        title: "New Update",
-        description: data,
-        type: "listing",
-        time: new Date().toLocaleTimeString(),
-        read: false,
-      };
+     if (!event.data || event.data === "Connected to notifications") return;
+
+    const data = JSON.parse(event.data); 
+    const newNotif = {
+      id: Date.now(),
+      title: data.title, // use the real title
+      description: data.message, // use the message field
+      type: data.type || "system",
+      time: new Date().toLocaleTimeString(),
+      read: false,
+    };
+    console.log(data,'12344xx')
 
       console.log("📩 New SSE Notification:", newNotif);
-      setNotifications((prev) => [newNotif, ...prev]);
+      setNotifications(newNotif);
     } catch (error) {
       console.error("Error parsing SSE data:", error);
     }

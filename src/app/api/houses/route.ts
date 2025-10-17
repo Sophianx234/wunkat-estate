@@ -103,7 +103,12 @@ export async function POST(request: Request) {
     });
 
     // 🧩 Broadcast the message to connected clients via SSE
-    broadcast(`🏠 ${notification.message}`);
+   broadcast(JSON.stringify({
+  title: notification.title,
+  message: notification.message,
+  type: notification.type,
+  createdAt: notification.createdAt,
+}));
 
     // ✅ Return response
     return NextResponse.json(

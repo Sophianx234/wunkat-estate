@@ -18,34 +18,6 @@ export default function NotificationList() {
   const panelRef = useRef<HTMLDivElement>(null);
 
 
-  // ✅ Handle socket connection and listen for notifications
- /*  useEffect(() => {
-    const socket = getSocket()
-
-    socket.on('connection', () => {
-      console.log('✅ Connected to Socket.IO:', socket.id);
-    });
-
-    socket.on('newNotification', (data: Omit<Notification, 'id' | 'read'>) => {
-      const newNotif: Notification = {
-        id: Date.now(),
-        read: false,
-        ...data,
-      };
-      console.log('📩 New notification:', newNotif);
-
-      setNotifications((prev) => [newNotif, ...prev]);
-    });
-
-    // ✅ Important: only remove the event listener, don't disconnect globally
-    return () => {
-      socket.off('newNotification');
-      socket.off('connect');
-    };
-  }, []) */;
-
-
-
 
 
 
