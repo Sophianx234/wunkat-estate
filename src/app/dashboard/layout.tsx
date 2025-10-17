@@ -70,6 +70,25 @@ function Layout({ children }: LayoutProps) {
   };
 }, [setNotifications]);
 
+useEffect(() => {
+  const fetchAllNotifications = async () => {
+    try {
+      const res = await fetch("/api/notification/all");
+      const data = await res.json();
+
+      if (res.ok ) {
+        console.log('data notifications', data)
+        setNotifications(data.notifications);
+      }
+    } catch (error) {
+      console.error("Failed to load notifications:", error);
+    }
+  };
+
+  fetchAllNotifications();
+}, [setNotifications]);
+
+
 
   return (
     <div className="bg-gray-50">

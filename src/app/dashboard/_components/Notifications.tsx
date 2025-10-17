@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Bell, Mail, Home, CalendarCheck, Trash2 } from 'lucide-react';
+import { Bell, Mail, CalendarCheck, Trash2 } from 'lucide-react';
+import { BiBuildingHouse } from 'react-icons/bi';
 import { useDashStore } from '@/lib/store';
+
 type Notification = {
-  id: number;
+  id: string; // use string since MongoDB _id is a string
   title: string;
   description: string;
   type: 'message' | 'listing' | 'reminder';
@@ -13,13 +15,27 @@ type Notification = {
 };
 
 export default function NotificationList() {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const { toggleNotification } = useDashStore();
   const panelRef = useRef<HTMLDivElement>(null);
+  const { notifications: backendNotifications, toggleNotification } = useDashStore();
 
+  // ✅ Local state to track read status without mutating Zustand directly
+  const [notifications, setNotifications] = useState<Notification[]>([]);
 
+  // ✅ Map Zustand backend data → frontend Notification type
+  useEffect(() => {
+    if (!backendNotifications) return;
 
+    const mapped = backendNotifications.map((n: any) => ({
+      id: n._id,
+      title: n.title,
+      description: n.message,
+      type: 'listing', // since these are system "house added" notifications
+      time: new Date(n.createdAt).toLocaleString(),
+      read: false,
+    }));
 
+    setNotifications(mapped);
+  }, [backendNotifications]);
 
   // ✅ Handle click outside to close the panel
   useEffect(() => {
@@ -38,14 +54,14 @@ export default function NotificationList() {
       case 'message':
         return <Mail className="text-blue-500" />;
       case 'listing':
-        return <Home className="text-green-500" />;
+        return <BiBuildingHouse className="text-green-500" />;
       case 'reminder':
         return <CalendarCheck className="text-yellow-500" />;
     }
   };
 
   // ✅ Mark as read
-  const markAsRead = (id: number) => {
+  const markAsRead = (id: string) => {
     setNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, read: true } : n))
     );
@@ -76,7 +92,7 @@ export default function NotificationList() {
           )}
         </div>
 
-        <div className="min-h-[250px]">
+        <div className="h-[350px] overflow-y-scroll scrollbar-hide">
           {notifications.length === 0 ? (
             <p className="text-sm text-gray-500 text-center">
               No notifications

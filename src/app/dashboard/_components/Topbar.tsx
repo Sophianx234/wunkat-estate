@@ -9,7 +9,7 @@ export const revalidate = 0;
 import ThemeToggle from "./ThemeToggle"; // adjust path
 
 export default function Topbar() {
-  const { toggleNotification } = useDashStore();
+  const { toggleNotification, notifications } = useDashStore();
 
   return (
     <div className="fixed sm:relative left-0 right-0 z-20 shadow sm:shadow-none bg-white dark:bg-gray-900 border-b border-b-gray-200 dark:border-b-gray-700 pt-7 pb-4 pl-5 px-10">
@@ -39,7 +39,7 @@ export default function Topbar() {
             onClick={toggleNotification}
             className="border hover:scale-105 duration-200 cursor border-gray-200 dark:border-gray-600 rounded-full p-2 relative"
           >
-            <span className="absolute bg-green-200 rounded-full text-green-900 font-semibold  -top-2 size-6 justify-center flex items-center -right-3 text-xs text-center">24</span>
+            {notifications.length?<span className="absolute bg-green-200 rounded-full text-green-900 font-semibold  -top-2 size-6 justify-center flex items-center -right-3 text-xs text-center">{notifications.length}</span>:null}
             <FaBell className="text-gray-500 dark:text-gray-300" />
           </div>
           <Profile />
