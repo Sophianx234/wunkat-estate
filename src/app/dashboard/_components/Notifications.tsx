@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { Bell, Mail, CalendarCheck, Trash2, Wrench, CreditCard, Info } from 'lucide-react';
-import { BiBuildingHouse } from 'react-icons/bi';
 import { useDashStore } from '@/lib/store';
+import { Bell, Trash2, Wrench } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { BiBuildingHouse } from 'react-icons/bi';
+import { LuBedDouble } from "react-icons/lu";
 import { RiSecurePaymentLine } from 'react-icons/ri';
 
 // Match your Mongoose schema’s types
@@ -55,7 +56,7 @@ export default function NotificationList() {
   const getIcon = (type: Notification['type']) => {
     switch (type) {
       case 'system':
-        return <Info className="text-blue-500" title="System Notification" />;
+        return <LuBedDouble className="text-blue-500" title="System Notification" />;
       case 'maintenance':
         return <Wrench className="text-yellow-500" title="Maintenance Alert" />;
       case 'payment':
