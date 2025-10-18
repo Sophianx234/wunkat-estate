@@ -26,20 +26,23 @@ export default function NotificationList() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
   // ✅ Map backend data → UI-friendly structure
-  useEffect(() => {
-    if (!backendNotifications) return;
+ useEffect(() => {
+  if (!backendNotifications) return;
 
-    const mapped = backendNotifications.map((n: any) => ({
+  const mapped = backendNotifications
+    .map((n: any) => ({
       id: n._id,
       title: n.title,
       description: n.message,
       type: n.type as NotificationType,
       time: new Date(n.createdAt).toLocaleString(),
       read: false,
-    }));
+    }))
+    .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()); // 🆕 Sort newest first
 
-    setNotifications(mapped);
-  }, [backendNotifications]);
+  setNotifications(mapped);
+}, [backendNotifications]);
+
 
   // ✅ Handle click outside to close the panel
   useEffect(() => {

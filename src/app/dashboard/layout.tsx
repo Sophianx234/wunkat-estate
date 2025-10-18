@@ -13,7 +13,7 @@ type LayoutProps = {
 };
 
 function Layout({ children }: LayoutProps) {
-  const {openNotifications,setUser,setNotifications} = useDashStore()
+  const {openNotifications,setUser,setNotifications,loadNotifications} = useDashStore()
   useEffect(()=>{
     const getMe = async()=>{
       const res = await fetch('/api/auth/me')
@@ -43,18 +43,11 @@ function Layout({ children }: LayoutProps) {
      if (!event.data || event.data === "Connected to notifications") return;
 
     const data = JSON.parse(event.data); 
-    const newNotif = {
-      id: Date.now(),
-      title: data.title, // use the real title
-      description: data.message, // use the message field
-      type: data.type || "system",
-      time: new Date().toLocaleTimeString(),
-      read: false,
-    };
+    
     console.log(data,'12344xx')
 
-      console.log("📩 New SSE Notification:", newNotif);
-      setNotifications(newNotif);
+      console.log("📩 New SSE Notification:", data.notification);
+      setNotifications(data.notification);
     } catch (error) {
       console.error("Error parsing SSE data:", error);
     }
@@ -77,8 +70,7 @@ useEffect(() => {
       const data = await res.json();
 
       if (res.ok ) {
-        console.log('data notifications', data)
-        setNotifications(data.notifications);
+        loadNotifications(data.notifications);
       }
     } catch (error) {
       console.error("Failed to load notifications:", error);

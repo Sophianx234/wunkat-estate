@@ -1,10 +1,9 @@
-import { create } from "zustand";
-import { userType } from "./jwtConfig";
 import { IRoom } from "@/app/dashboard/properties/page";
 import { transactionType } from "@/app/dashboard/transactions/PaymentHistory";
-import { userDocumentType } from "@/models/User";
 import { IHouse } from "@/models/House";
-import { INotification } from "@/models/Notification";
+import { userDocumentType } from "@/models/User";
+import { create } from "zustand";
+import { userType } from "./jwtConfig";
 
 export type signupType = {
   email: string;
@@ -12,6 +11,16 @@ export type signupType = {
   name: string;
   confirmPassword: string;
   acceptTerms: true;
+};
+export type notificationType = {
+  title: string;
+   message: string;
+   type: "system" | "maintenance" | "payment" | "booking";
+   audience: "all" | "user" | "admin"; // who should see it
+   userId?:string; // if specific user
+   isReadBy?: string; // users who have read it
+   createdAt: Date;
+   updatedAt: Date;
 };
 
 export type storeState = {
@@ -27,13 +36,14 @@ export type storeState = {
   avatar: string;
   filteredRooms: IRoom[] | null;
   filteredHouses: IHouse[] | null;
-  notifications: INotification[]
+  notifications: notificationType[];
 
   setAvatar: (url: string) => void;
   setSignupData: (data: signupType) => void;
   setFilteredRooms: (data: IRoom[] | null) => void;
   setFilteredHouses: (data: IHouse[] | null) => void;
-  setNotifications: (data: INotification[]) => void;
+  setNotifications: (data: notificationType) => void;
+  loadNotifications: (data: notificationType[]) => void;
   setRoom: (data: IRoom | null) => void;
   setFilteredPayments: (data: transactionType[] | []) => void;
   toggleSidebar: () => void;
@@ -44,12 +54,11 @@ export type storeState = {
   setUsers: (user: userDocumentType[] | null) => void;
   openNotifications: boolean;
   toggleNotification: () => void;
-  
 };
 
 export const useDashStore = create<storeState>((set) => ({
   filteredPayments: [],
-  notifications:[],
+  notifications: [],
   room: null,
   openSidebar: false,
   filteredHouses: null,
@@ -71,10 +80,14 @@ export const useDashStore = create<storeState>((set) => ({
     set((state) => ({ openAddProperty: !state.openAddProperty })),
   toggleNotification: () =>
     set((state) => ({ openNotifications: !state.openNotifications })),
- setNotifications: (data: INotification[]) =>
-  set((state) => ({
-    notifications: [...state.notifications, ...data],
-  })),
+  setNotifications: (data: notificationType) =>
+    set((state) => ({
+  notifications: [...state.notifications, data],
+})),
+  loadNotifications: (data: notificationType[]) =>
+    set(() => ({
+      notifications: data,
+    })),
 
   setFilteredHouses: (data: IHouse[] | null) =>
     set(() => ({ filteredHouses: data })),

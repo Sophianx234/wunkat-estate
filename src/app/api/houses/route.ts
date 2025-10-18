@@ -104,10 +104,7 @@ export async function POST(request: Request) {
 
     // 🧩 Broadcast the message to connected clients via SSE
    broadcast(JSON.stringify({
-  title: notification.title,
-  message: notification.message,
-  type: notification.type,
-  createdAt: notification.createdAt,
+  notification
 }));
 
     // ✅ Return response
@@ -128,3 +125,4 @@ export async function POST(request: Request) {
     );
   }
 }
+
