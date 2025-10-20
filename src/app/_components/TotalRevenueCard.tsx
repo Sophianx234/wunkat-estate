@@ -17,14 +17,14 @@ export default function TotalRevenueCard() {
     labels: ["January", "February", "March", "April", "May", "June"],
     datasets: [
       {
-        label: "Desktop",
+        label: "Smart Lock Rooms",
         data: [12000, 18000, 17000, 10000, 9000, 19000],
         backgroundColor: "#000000", // black
         borderRadius: 6,
         barThickness: 24,
       },
       {
-        label: "Mobile",
+        label: "Manual Lock Rooms",
         data: [11000, 16000, 15000, 12000, 10000, 15000],
         backgroundColor: "#6B7280", // gray
         borderRadius: 6,
@@ -57,11 +57,11 @@ export default function TotalRevenueCard() {
       {/* Stats */}
       <div className="flex gap-6 mt-4 text-center">
         <div className="bg-gray-50 px-4 py-2 rounded-md flex-1">
-          <p className="text-xs text-gray-500">DESKTOP</p>
+          <p className="text-xs text-gray-500">Smart Lock Rooms</p>
           <p className="text-2xl font-bold text-gray-800">24,828</p>
         </div>
         <div className="bg-gray-50 px-4 py-2 rounded-md flex-1">
-          <p className="text-xs text-gray-500">MOBILE</p>
+          <p className="text-xs text-gray-500">Manual Lock Rooms</p>
           <p className="text-2xl font-bold text-gray-800">25,010</p>
         </div>
       </div>
