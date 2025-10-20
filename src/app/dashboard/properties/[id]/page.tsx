@@ -10,6 +10,7 @@ import { IoArrowBack } from "react-icons/io5";
 import { ToastContainer } from "react-toastify";
 import Swal from "sweetalert2";
 import TenancyTermsModal from "../../_components/TermsAgreement";
+import { formatNumber } from "@/lib/utils";
 
 /* type ExpandedPropertyProps = {
   price?: string;
@@ -237,7 +238,7 @@ const handlePay = async () => {
               {room?.planType} Rent
             </p>
             <p className="mt-2 text-4xl sm:text-5xl font-extrabold text-white drop-shadow-md">
-              GHS {room?.price}
+              GHS {room?.price && formatNumber(room?.price as number)}
             </p>
           </div>
 

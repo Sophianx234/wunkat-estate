@@ -89,7 +89,7 @@ if (filteredHouses === null || filteredHouses === undefined) {
   return (
     <div className="p-6">
       <h1 className="text-lg mb-3 font-bold">Manage Houses</h1>
-      <HouseFilter setIsLoading={setLoading} />
+      {!loading &&<HouseFilter houses={houses} setIsLoading={setLoading} />}
 
       {loading ? (
         <p className="text-gray-500">Loading houses...</p>

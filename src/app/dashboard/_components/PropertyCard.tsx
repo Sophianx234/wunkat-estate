@@ -95,12 +95,12 @@ export default function PropertyCard({ room, type = "user" }: propertyCardProps)
             >
               <Edit className="w-4 h-4" />
             </Button>
-            <Button
-              onClick={handleDelete}
-              size="icon"
-              variant="destructive"
-              className="h-7 w-7"
-            >
+          <Button
+  onClick={handleDelete}
+  size="icon"
+  className="h-7 w-7 bg-red-100 hover:bg-red-200 text-red-600 border border-red-200"
+>
+
               <Trash2 className="w-4 h-4" />
             </Button>
           </div>
@@ -140,7 +140,7 @@ export default function PropertyCard({ room, type = "user" }: propertyCardProps)
 
           
             <Button
-              disabled={!room.status.includes("available")}
+              disabled={!room.status.includes("available")&&type==='user'}
               onClick={handleReadMore}
               className="text-white text-xs font-medium px-4 py-1"
             >
