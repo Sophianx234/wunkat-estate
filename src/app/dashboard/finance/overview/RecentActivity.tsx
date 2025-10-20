@@ -1,113 +1,122 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 
-const activities = [
+const properties = [
   {
-    name: "Idella",
-    email: "idella_koch50@gmail.com",
-    status: "Delete",
-    id: "#329341",
-    date: "28 min ago",
-    amount: "$319.84",
+    name: "Palm Heights",
+    city: "Accra",
+    smartLock: true,
+    occupancy: "92%",
+    units: "12 / 13",
+    revenue: "₵14,200",
   },
   {
-    name: "Eino",
-    email: "eino_oberbrunner87@hotmail.com",
-    status: "Invited",
-    id: "#329341",
-    date: "39 min ago",
-    amount: "$793.24",
+    name: "Garden Court",
+    city: "Tamale",
+    smartLock: false,
+    occupancy: "75%",
+    units: "9 / 12",
+    revenue: "₵10,500",
   },
   {
-    name: "Tod",
-    email: "tod73@hotmail.com",
-    status: "Delete",
-    id: "#329341",
-    date: "59 min ago",
-    amount: "$115.59",
+    name: "Azure Lodge",
+    city: "Kumasi",
+    smartLock: true,
+    occupancy: "88%",
+    units: "8 / 9",
+    revenue: "₵11,900",
   },
   {
-    name: "Kraig",
-    email: "kraig91@hotmail.com",
-    status: "Suspended",
-    id: "#329341",
-    date: "37 min ago",
-    amount: "$558.77",
+    name: "Sunset Villa",
+    city: "Takoradi",
+    smartLock: true,
+    occupancy: "80%",
+    units: "10 / 12",
+    revenue: "₵9,800",
   },
   {
-    name: "Trudie",
-    email: "trudie84@yahoo.com",
-    status: "New",
-    id: "#329341",
-    date: "38 min ago",
-    amount: "$687.72",
+    name: "Hilltop Apartments",
+    city: "Cape Coast",
+    smartLock: false,
+    occupancy: "70%",
+    units: "7 / 10",
+    revenue: "₵8,600",
   },
 ];
 
-export default function RecentActivity() {
+export default function PropertyOverview() {
   return (
-    <Card className="w-full max-w-3xl mx-auto">
+    <Card className="w-full max-w-5xl mx-auto mb-4">
       <CardContent className="p-6">
+        {/* Header */}
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">Recent Activity</h2>
-          <Button variant="outline" size="sm">Period</Button>
+          <h2 className="text-lg font-semibold">Property Overview</h2>
+          <Button variant="outline" size="sm">
+            View All
+          </Button>
         </div>
-        <div className="grid grid-cols-5 text-sm font-medium text-gray-500 mb-2">
-          <span>User</span>
-          <span>Status</span>
-          <span>ID</span>
-          <span>Date</span>
-          <span className="text-right">Amount</span>
-        </div>
-        <div className="space-y-3">
-          {activities.map((a, idx) => (
-            <div
-              key={idx}
-              className="grid grid-cols-5 items-center text-sm border-b pb-2 last:border-0 last:pb-0"
-            >
-              {/* User */}
-              <div className="flex items-center space-x-3">
-                <Avatar className="h-8 w-8">
-                  <AvatarFallback>
-                    {a.name.slice(0, 2)}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="font-medium">{a.name}</p>
-                  <p className="text-xs text-gray-500">{a.email}</p>
-                </div>
-              </div>
 
-              {/* Status */}
-              <div>
-                {a.status === "Delete" && (
-                  <Button variant="destructive" size="sm">Delete</Button>
-                )}
-                {a.status === "Invited" && (
-                  <Badge variant="secondary">Invited</Badge>
-                )}
-                {a.status === "Suspended" && (
-                  <Badge className="bg-orange-100 text-orange-700">Suspended</Badge>
-                )}
-                {a.status === "New" && (
-                  <Badge className="bg-blue-100 text-blue-700">New</Badge>
-                )}
-              </div>
+        {/* Table */}
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Property</TableHead>
+              <TableHead>City</TableHead>
+              <TableHead>Smart Lock</TableHead>
+              <TableHead>Occupancy</TableHead>
+              <TableHead>Units</TableHead>
+              <TableHead className="text-right">Revenue</TableHead>
+            </TableRow>
+          </TableHeader>
 
-              {/* ID */}
-              <span>{a.id}</span>
+          <TableBody>
+            {properties.map((p, idx) => (
+              <TableRow key={idx}>
+                {/* Property Name */}
+                <TableCell>
+                  <div className="flex items-center space-x-3">
+                    <Avatar className="h-8 w-8">
+                      <AvatarFallback>{p.name.slice(0, 2)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-medium">{p.name}</p>
+                    </div>
+                  </div>
+                </TableCell>
 
-              {/* Date */}
-              <span>{a.date}</span>
+                {/* City */}
+                <TableCell>{p.city}</TableCell>
 
-              {/* Amount */}
-              <span className="text-right font-medium">{a.amount}</span>
-            </div>
-          ))}
-        </div>
-        <p className="text-xs text-gray-500 mt-4">A list of your recent activity.</p>
+                {/* Smart Lock */}
+                <TableCell>
+                  {p.smartLock ? (
+                    <Badge className="bg-green-100 text-green-700 hover:bg-green-100">
+                      Enabled
+                    </Badge>
+                  ) : (
+                    <Badge variant="secondary">No Lock</Badge>
+                  )}
+                </TableCell>
+
+                {/* Occupancy */}
+                <TableCell>{p.occupancy}</TableCell>
+
+                {/* Units */}
+                <TableCell>{p.units}</TableCell>
+
+                {/* Revenue */}
+                <TableCell className="text-right font-medium">{p.revenue}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+
+        
       </CardContent>
     </Card>
   );

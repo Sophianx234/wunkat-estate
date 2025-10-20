@@ -3,8 +3,7 @@
 import { FC } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MoreHorizontal } from "lucide-react"; // ✅ only the icon here
-import Image from "next/image";
+import { MoreHorizontal } from "lucide-react";
 import {
   Table,
   TableHeader,
@@ -12,12 +11,13 @@ import {
   TableRow,
   TableBody,
   TableCell,
-} from "@/components/ui/table"; // ✅ import Table and related parts here
+} from "@/components/ui/table";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 type Transaction = {
   id: string;
   name: string;
-  avatar: string;
+  avatar?: string;
   date: string;
   propertyType: string;
   propertyName: string;
@@ -38,7 +38,7 @@ const transactions: Transaction[] = [
   },
   {
     id: "#ID768237",
-    name: "David Nurmi",
+    name: "Sarah Connor",
     avatar: "/avatars/avatar2.png",
     date: "14 Dec 2024",
     propertyType: "Land",
@@ -48,7 +48,7 @@ const transactions: Transaction[] = [
   },
   {
     id: "#ID856434",
-    name: "David Nurmi",
+    name: "Michael Scott",
     avatar: "/avatars/avatar3.png",
     date: "12 Dec 2024",
     propertyType: "Commercial",
@@ -60,13 +60,13 @@ const transactions: Transaction[] = [
 
 const TransactionHistory: FC = () => {
   return (
-    <Card className="">
+    <Card className="w-full">
       <CardContent>
         <h2 className="text-lg font-semibold mb-4">Recent Transaction History</h2>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Orders</TableHead>
+              <TableHead>Tenant</TableHead>
               <TableHead>Date</TableHead>
               <TableHead>Property Type</TableHead>
               <TableHead>Property Name</TableHead>
@@ -79,13 +79,12 @@ const TransactionHistory: FC = () => {
             {transactions.map((tx) => (
               <TableRow key={tx.id}>
                 <TableCell className="flex items-center gap-2">
-                  <Image
-                    src={tx.avatar}
-                    alt={tx.name}
-                    width={32}
-                    height={32}
-                    className="rounded-full"
-                  />
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={tx.avatar} alt={tx.name} />
+                    <AvatarFallback>
+                      {tx.name.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
                   <div>
                     <p className="font-medium">{tx.name}</p>
                     <p className="text-xs text-muted-foreground">{tx.id}</p>
@@ -95,7 +94,14 @@ const TransactionHistory: FC = () => {
                 <TableCell>{tx.propertyType}</TableCell>
                 <TableCell>{tx.propertyName}</TableCell>
                 <TableCell>
-                  <Badge variant={tx.status === "Paid" ? "success" : "destructive"}>
+                  <Badge
+                    variant={tx.status === "Paid" ? "default" : "destructive"}
+                    className={`text-xs ${
+                      tx.status === "Paid"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                    }`}
+                  >
                     {tx.status}
                   </Badge>
                 </TableCell>

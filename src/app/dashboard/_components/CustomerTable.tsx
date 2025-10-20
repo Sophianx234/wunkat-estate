@@ -40,7 +40,7 @@ export default function CustomerTable({ customers }: customerTableProps) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="pl-12 text-gray-500 py-4">Customer</TableHead>
+              <TableHead className="pl-8 text-gray-500 py-4">Customer</TableHead>
               <TableHead className="py-4 text-gray-500">House Name</TableHead>
               <TableHead className="py-4 text-gray-500">Room Name</TableHead>
               <TableHead className="py-4 text-gray-500">Amount</TableHead>
