@@ -1,0 +1,738 @@
+[
+  {
+    "_id": "62701dcfcb8ec69edf3b8e8f",
+    "title": "Payment Notification 1",
+    "message": "This is a payment notification generated for testing.",
+    "type": "payment",
+    "audience": "all",
+    "userId": "e0880a9b877ad7d52dc45e63",
+    "isReadBy": [
+      "d092f8de876fc35b465ebcd5",
+      "f3fff0f79e24fa2a6a43267a"
+    ],
+    "createdAt": "2025-08-26T23:48:06Z",
+    "updatedAt": "2025-05-27T19:27:28Z"
+  },
+  {
+    "_id": "22b4ed700ca5d0890c04cada",
+    "title": "Booking Notification 2",
+    "message": "This is a booking notification generated for testing.",
+    "type": "booking",
+    "audience": "admin",
+    "userId": "750b29e782584b60ba8d8fdc",
+    "isReadBy": [
+      "f8796b0f54c851db14dbfc50",
+      "52faf475554ab3681440a95b",
+      "1a6d14c2a6c124c39c06461a"
+    ],
+    "createdAt": "2025-05-04T06:05:02Z",
+    "updatedAt": "2025-02-27T12:23:48Z"
+  },
+  {
+    "_id": "c822c9b39a128be3de45e158",
+    "title": "Payment Notification 3",
+    "message": "This is a payment notification generated for testing.",
+    "type": "payment",
+    "audience": "all",
+    "userId": "a4f2f69da098cfffb3ba1ad9",
+    "isReadBy": [],
+    "createdAt": "2025-05-01T01:15:31Z",
+    "updatedAt": "2025-01-03T04:58:02Z"
+  },
+  {
+    "_id": "1a4e29fededfdfc3f85d9e13",
+    "title": "Maintenance Notification 4",
+    "message": "This is a maintenance notification generated for testing.",
+    "type": "maintenance",
+    "audience": "admin",
+    "userId": null,
+    "isReadBy": [
+      "f6dac11cdc673b1553172a7e",
+      "ef261ed4c2b1d5f142bb6b96",
+      "f14ac98003668a5f128c9719",
+      "3f0c242cf866d8ba7d4c2d8c",
+      "3e405b446079dca20dffb57f"
+    ],
+    "createdAt": "2025-03-29T08:31:38Z",
+    "updatedAt": "2025-07-18T06:52:50Z"
+  },
+  {
+    "_id": "0d5fbbbf55a6c164571e97ef",
+    "title": "Booking Notification 5",
+    "message": "This is a booking notification generated for testing.",
+    "type": "booking",
+    "audience": "all",
+    "userId": "3f0c242cf866d8ba7d4c2d8c",
+    "isReadBy": [],
+    "createdAt": "2025-06-08T22:02:05Z",
+    "updatedAt": "2025-06-21T19:44:06Z"
+  },
+  {
+    "_id": "8c22ca8a883aa8b0e8fbc43e",
+    "title": "Payment Notification 6",
+    "message": "This is a payment notification generated for testing.",
+    "type": "payment",
+    "audience": "user",
+    "userId": "bac08bb6e366cbdd1cf1fede",
+    "isReadBy": [
+      "942b629095fd429e590f21c5",
+      "d092f8de876fc35b465ebcd5",
+      "0ab9f4e7d8bdeab50a5f7ca5",
+      "3651639696a18503f2e9d0d4"
+    ],
+    "createdAt": "2024-11-19T22:54:33Z",
+    "updatedAt": "2024-10-31T03:23:48Z"
+  },
+  {
+    "_id": "34d69469c59558fdb114f4de",
+    "title": "System Notification 7",
+    "message": "This is a system notification generated for testing.",
+    "type": "system",
+    "audience": "admin",
+    "userId": null,
+    "isReadBy": [],
+    "createdAt": "2025-02-24T00:49:47Z",
+    "updatedAt": "2025-07-30T21:14:22Z"
+  },
+  {
+    "_id": "e442b920ab7799db2bf82fd8",
+    "title": "Payment Notification 8",
+    "message": "This is a payment notification generated for testing.",
+    "type": "payment",
+    "audience": "all",
+    "userId": "68a70fe8468c9dfd5cdf2368",
+    "isReadBy": [
+      "8e690042a6662f1094dd03eb",
+      "58411bdad23e0b464436171e",
+      "3c56e993faf110346469ada7",
+      "3983e007e970b641b42278d9",
+      "750b29e782584b60ba8d8fdc"
+    ],
+    "createdAt": "2025-02-18T06:25:22Z",
+    "updatedAt": "2025-03-01T13:56:45Z"
+  },
+  {
+    "_id": "ea89b17934ea4e2b18b289eb",
+    "title": "Payment Notification 9",
+    "message": "This is a payment notification generated for testing.",
+    "type": "payment",
+    "audience": "admin",
+    "userId": "aeeaeec698dc69978a1a6a50",
+    "isReadBy": [
+      "f54417335b592d82aaff8df7",
+      "59de0f40a2a33c9770623048",
+      "63ea0027e641b46dd981f040",
+      "71c6f99e0d6498a9f7f24616"
+    ],
+    "createdAt": "2025-07-01T02:59:25Z",
+    "updatedAt": "2024-11-05T14:18:26Z"
+  },
+  {
+    "_id": "1e06167c0714801a6673827c",
+    "title": "System Notification 10",
+    "message": "This is a system notification generated for testing.",
+    "type": "system",
+    "audience": "admin",
+    "userId": null,
+    "isReadBy": [
+      "7d49f488cc1f55870e3501ba",
+      "a4f2f69da098cfffb3ba1ad9",
+      "58411bdad23e0b464436171e"
+    ],
+    "createdAt": "2025-09-10T15:27:34Z",
+    "updatedAt": "2025-08-24T09:45:06Z"
+  },
+  {
+    "_id": "97f042d7e061ce1bbb80361a",
+    "title": "Maintenance Notification 11",
+    "message": "This is a maintenance notification generated for testing.",
+    "type": "maintenance",
+    "audience": "admin",
+    "userId": null,
+    "isReadBy": [
+      "9f3369d7f76214470b84c961",
+      "7685949101b3ff0ade1d2156",
+      "3f0c242cf866d8ba7d4c2d8c",
+      "7d49f488cc1f55870e3501ba"
+    ],
+    "createdAt": "2025-03-08T07:46:05Z",
+    "updatedAt": "2024-11-06T04:31:18Z"
+  },
+  {
+    "_id": "a4603d8499e33ee6efd3a6af",
+    "title": "Booking Notification 12",
+    "message": "This is a booking notification generated for testing.",
+    "type": "booking",
+    "audience": "admin",
+    "userId": "3e405b446079dca20dffb57f",
+    "isReadBy": [
+      "463c73346d50958afee8abc7",
+      "162a917f6bdabce11811d044",
+      "750b29e782584b60ba8d8fdc"
+    ],
+    "createdAt": "2025-01-30T20:52:30Z",
+    "updatedAt": "2025-02-28T15:28:08Z"
+  },
+  {
+    "_id": "55776c3187533baec497a840",
+    "title": "System Notification 13",
+    "message": "This is a system notification generated for testing.",
+    "type": "system",
+    "audience": "admin",
+    "userId": null,
+    "isReadBy": [
+      "8e78d519219672602698d146",
+      "5bc5de63c6cfd56a293d503f",
+      "942b629095fd429e590f21c5"
+    ],
+    "createdAt": "2025-10-08T21:35:03Z",
+    "updatedAt": "2025-06-12T11:53:25Z"
+  },
+  {
+    "_id": "f3d99ae746c86902ee4c0204",
+    "title": "Maintenance Notification 14",
+    "message": "This is a maintenance notification generated for testing.",
+    "type": "maintenance",
+    "audience": "admin",
+    "userId": null,
+    "isReadBy": [],
+    "createdAt": "2025-09-26T20:34:26Z",
+    "updatedAt": "2025-04-27T09:40:43Z"
+  },
+  {
+    "_id": "8de9a2f5edc266e6c25dc509",
+    "title": "System Notification 15",
+    "message": "This is a system notification generated for testing.",
+    "type": "system",
+    "audience": "all",
+    "userId": null,
+    "isReadBy": [
+      "e0880a9b877ad7d52dc45e63",
+      "8e690042a6662f1094dd03eb",
+      "aeeaeec698dc69978a1a6a50"
+    ],
+    "createdAt": "2025-07-20T07:04:10Z",
+    "updatedAt": "2024-11-25T12:29:04Z"
+  },
+  {
+    "_id": "f7d18051d4e18ad4d883b3f0",
+    "title": "Booking Notification 16",
+    "message": "This is a booking notification generated for testing.",
+    "type": "booking",
+    "audience": "user",
+    "userId": "58411bdad23e0b464436171e",
+    "isReadBy": [
+      "9de580c0977c7df767929efb",
+      "3e405b446079dca20dffb57f",
+      "8e78d519219672602698d146"
+    ],
+    "createdAt": "2024-11-15T16:21:53Z",
+    "updatedAt": "2025-08-12T12:12:20Z"
+  },
+  {
+    "_id": "c4496540cdfd815ac5ee99e4",
+    "title": "Payment Notification 17",
+    "message": "This is a payment notification generated for testing.",
+    "type": "payment",
+    "audience": "all",
+    "userId": "1a6d14c2a6c124c39c06461a",
+    "isReadBy": [
+      "f6dac11cdc673b1553172a7e",
+      "7d49f488cc1f55870e3501ba",
+      "750b29e782584b60ba8d8fdc",
+      "942b629095fd429e590f21c5"
+    ],
+    "createdAt": "2025-06-28T11:52:25Z",
+    "updatedAt": "2025-10-09T01:08:13Z"
+  },
+  {
+    "_id": "dc3aaf4a44b9df622b4ad918",
+    "title": "Booking Notification 18",
+    "message": "This is a booking notification generated for testing.",
+    "type": "booking",
+    "audience": "admin",
+    "userId": "8e78d519219672602698d146",
+    "isReadBy": [
+      "ef261ed4c2b1d5f142bb6b96",
+      "63ea0027e641b46dd981f040",
+      "9de580c0977c7df767929efb",
+      "3983e007e970b641b42278d9"
+    ],
+    "createdAt": "2025-06-15T19:13:45Z",
+    "updatedAt": "2025-04-26T06:21:08Z"
+  },
+  {
+    "_id": "0a01d2bf576c339e67aeba05",
+    "title": "Payment Notification 19",
+    "message": "This is a payment notification generated for testing.",
+    "type": "payment",
+    "audience": "admin",
+    "userId": "52faf475554ab3681440a95b",
+    "isReadBy": [],
+    "createdAt": "2025-10-03T20:44:10Z",
+    "updatedAt": "2024-12-10T11:25:50Z"
+  },
+  {
+    "_id": "9c222e2a963da3e2be8f24ed",
+    "title": "Maintenance Notification 20",
+    "message": "This is a maintenance notification generated for testing.",
+    "type": "maintenance",
+    "audience": "all",
+    "userId": null,
+    "isReadBy": [],
+    "createdAt": "2025-08-29T14:22:31Z",
+    "updatedAt": "2025-10-02T19:44:45Z"
+  },
+  {
+    "_id": "d6502cf68586ae91eb9003e2",
+    "title": "System Notification 21",
+    "message": "This is a system notification generated for testing.",
+    "type": "system",
+    "audience": "all",
+    "userId": null,
+    "isReadBy": [
+      "e0880a9b877ad7d52dc45e63",
+      "f6dac11cdc673b1553172a7e",
+      "a4cccb5aba39b7791560a4bd",
+      "3983e007e970b641b42278d9",
+      "63ea0027e641b46dd981f040"
+    ],
+    "createdAt": "2025-07-01T09:56:42Z",
+    "updatedAt": "2025-08-09T17:39:14Z"
+  },
+  {
+    "_id": "6d48418f4d068e65615375b7",
+    "title": "Payment Notification 22",
+    "message": "This is a payment notification generated for testing.",
+    "type": "payment",
+    "audience": "admin",
+    "userId": "3983e007e970b641b42278d9",
+    "isReadBy": [
+      "3f0c242cf866d8ba7d4c2d8c",
+      "d092f8de876fc35b465ebcd5",
+      "f3fff0f79e24fa2a6a43267a",
+      "5b105a59466bccaffee42329"
+    ],
+    "createdAt": "2024-11-10T00:19:30Z",
+    "updatedAt": "2025-06-21T01:00:48Z"
+  },
+  {
+    "_id": "6fd40513f0967e8a96105ffa",
+    "title": "Maintenance Notification 23",
+    "message": "This is a maintenance notification generated for testing.",
+    "type": "maintenance",
+    "audience": "admin",
+    "userId": null,
+    "isReadBy": [
+      "3983e007e970b641b42278d9",
+      "aeeaeec698dc69978a1a6a50",
+      "5bc5de63c6cfd56a293d503f",
+      "f8796b0f54c851db14dbfc50"
+    ],
+    "createdAt": "2025-09-18T15:43:50Z",
+    "updatedAt": "2024-12-22T05:37:25Z"
+  },
+  {
+    "_id": "3584432505a3b6e119a86947",
+    "title": "Booking Notification 24",
+    "message": "This is a booking notification generated for testing.",
+    "type": "booking",
+    "audience": "user",
+    "userId": "e5dd387d71bdf4f52d0399ea",
+    "isReadBy": [],
+    "createdAt": "2025-04-26T12:34:40Z",
+    "updatedAt": "2024-11-10T22:07:22Z"
+  },
+  {
+    "_id": "6423c0bb05cc897c07abd725",
+    "title": "Payment Notification 25",
+    "message": "This is a payment notification generated for testing.",
+    "type": "payment",
+    "audience": "user",
+    "userId": "68a70fe8468c9dfd5cdf2368",
+    "isReadBy": [
+      "9f3369d7f76214470b84c961",
+      "5bc5de63c6cfd56a293d503f",
+      "9de580c0977c7df767929efb"
+    ],
+    "createdAt": "2025-07-17T16:24:53Z",
+    "updatedAt": "2025-02-20T03:13:36Z"
+  },
+  {
+    "_id": "8c10418eafa834934a2978e5",
+    "title": "Maintenance Notification 26",
+    "message": "This is a maintenance notification generated for testing.",
+    "type": "maintenance",
+    "audience": "user",
+    "userId": null,
+    "isReadBy": [
+      "9f3369d7f76214470b84c961",
+      "162a917f6bdabce11811d044",
+      "463c73346d50958afee8abc7",
+      "e5dd387d71bdf4f52d0399ea",
+      "aeeaeec698dc69978a1a6a50"
+    ],
+    "createdAt": "2025-03-20T15:42:36Z",
+    "updatedAt": "2025-01-22T07:07:05Z"
+  },
+  {
+    "_id": "8db0c2eaae4a42f007e18c4c",
+    "title": "Booking Notification 27",
+    "message": "This is a booking notification generated for testing.",
+    "type": "booking",
+    "audience": "user",
+    "userId": "1a3d99407392b4899a7461fc",
+    "isReadBy": [
+      "bac08bb6e366cbdd1cf1fede"
+    ],
+    "createdAt": "2024-11-23T09:07:17Z",
+    "updatedAt": "2025-03-03T22:29:23Z"
+  },
+  {
+    "_id": "344ea15ce70f68833b74a1f4",
+    "title": "System Notification 28",
+    "message": "This is a system notification generated for testing.",
+    "type": "system",
+    "audience": "admin",
+    "userId": null,
+    "isReadBy": [
+      "52faf475554ab3681440a95b",
+      "463c73346d50958afee8abc7",
+      "f8796b0f54c851db14dbfc50",
+      "9de580c0977c7df767929efb",
+      "8e78d519219672602698d146"
+    ],
+    "createdAt": "2024-12-14T14:02:54Z",
+    "updatedAt": "2025-09-30T09:21:01Z"
+  },
+  {
+    "_id": "cfb17ba190df50e150dcc804",
+    "title": "Maintenance Notification 29",
+    "message": "This is a maintenance notification generated for testing.",
+    "type": "maintenance",
+    "audience": "admin",
+    "userId": null,
+    "isReadBy": [
+      "71c6f99e0d6498a9f7f24616",
+      "e5dd387d71bdf4f52d0399ea",
+      "533023dafb7f2c73d73bcde7",
+      "f54417335b592d82aaff8df7",
+      "bac08bb6e366cbdd1cf1fede"
+    ],
+    "createdAt": "2025-05-18T11:26:31Z",
+    "updatedAt": "2025-07-04T05:04:54Z"
+  },
+  {
+    "_id": "2b2f44878035ffaf06eaedbb",
+    "title": "System Notification 30",
+    "message": "This is a system notification generated for testing.",
+    "type": "system",
+    "audience": "admin",
+    "userId": null,
+    "isReadBy": [
+      "1a3d99407392b4899a7461fc",
+      "68a70fe8468c9dfd5cdf2368",
+      "f3fff0f79e24fa2a6a43267a"
+    ],
+    "createdAt": "2024-10-25T04:33:15Z",
+    "updatedAt": "2025-03-31T03:17:11Z"
+  },
+  {
+    "_id": "e93ab6ae5aeae512abd145e1",
+    "title": "Payment Notification 31",
+    "message": "This is a payment notification generated for testing.",
+    "type": "payment",
+    "audience": "user",
+    "userId": "5b105a59466bccaffee42329",
+    "isReadBy": [
+      "162a917f6bdabce11811d044",
+      "63ea0027e641b46dd981f040",
+      "6cfe5251935460997104b547"
+    ],
+    "createdAt": "2025-04-20T00:46:15Z",
+    "updatedAt": "2025-06-08T22:54:21Z"
+  },
+  {
+    "_id": "ae6900af859fd828479e4eff",
+    "title": "Booking Notification 32",
+    "message": "This is a booking notification generated for testing.",
+    "type": "booking",
+    "audience": "all",
+    "userId": "162a917f6bdabce11811d044",
+    "isReadBy": [
+      "f54417335b592d82aaff8df7",
+      "59de0f40a2a33c9770623048",
+      "3f0c242cf866d8ba7d4c2d8c",
+      "533023dafb7f2c73d73bcde7",
+      "58411bdad23e0b464436171e"
+    ],
+    "createdAt": "2025-05-12T20:55:46Z",
+    "updatedAt": "2025-09-26T15:31:09Z"
+  },
+  {
+    "_id": "c821c824009370fbfe679230",
+    "title": "Maintenance Notification 33",
+    "message": "This is a maintenance notification generated for testing.",
+    "type": "maintenance",
+    "audience": "admin",
+    "userId": null,
+    "isReadBy": [
+      "c9e3db4f31ac77df98219b2b"
+    ],
+    "createdAt": "2025-06-08T15:51:17Z",
+    "updatedAt": "2024-12-24T14:54:51Z"
+  },
+  {
+    "_id": "65130cee776adc3fc3d7809f",
+    "title": "Booking Notification 34",
+    "message": "This is a booking notification generated for testing.",
+    "type": "booking",
+    "audience": "all",
+    "userId": "8e690042a6662f1094dd03eb",
+    "isReadBy": [
+      "bac08bb6e366cbdd1cf1fede"
+    ],
+    "createdAt": "2025-06-24T22:10:14Z",
+    "updatedAt": "2025-01-02T03:03:12Z"
+  },
+  {
+    "_id": "0d54e7e04418b317d7828ea0",
+    "title": "Booking Notification 35",
+    "message": "This is a booking notification generated for testing.",
+    "type": "booking",
+    "audience": "admin",
+    "userId": "e5dd387d71bdf4f52d0399ea",
+    "isReadBy": [
+      "bac08bb6e366cbdd1cf1fede",
+      "3651639696a18503f2e9d0d4",
+      "59de0f40a2a33c9770623048",
+      "8531139c6e3f9dfd0f52ac8a",
+      "942b629095fd429e590f21c5"
+    ],
+    "createdAt": "2024-11-25T18:08:17Z",
+    "updatedAt": "2025-02-27T05:52:30Z"
+  },
+  {
+    "_id": "010cde1ae95de86cf23b02c9",
+    "title": "Payment Notification 36",
+    "message": "This is a payment notification generated for testing.",
+    "type": "payment",
+    "audience": "all",
+    "userId": "7685949101b3ff0ade1d2156",
+    "isReadBy": [
+      "63ea0027e641b46dd981f040",
+      "8531139c6e3f9dfd0f52ac8a",
+      "1527005b383817eaa861b6e0",
+      "6cfe5251935460997104b547",
+      "463c73346d50958afee8abc7"
+    ],
+    "createdAt": "2025-01-25T10:46:07Z",
+    "updatedAt": "2025-09-12T10:14:02Z"
+  },
+  {
+    "_id": "49446b76b86f501fbfc91afc",
+    "title": "System Notification 37",
+    "message": "This is a system notification generated for testing.",
+    "type": "system",
+    "audience": "user",
+    "userId": null,
+    "isReadBy": [
+      "b5451e2e40849c398075ab71"
+    ],
+    "createdAt": "2025-06-24T09:31:32Z",
+    "updatedAt": "2024-10-23T06:30:05Z"
+  },
+  {
+    "_id": "8693b410422274958c64e7c0",
+    "title": "System Notification 38",
+    "message": "This is a system notification generated for testing.",
+    "type": "system",
+    "audience": "all",
+    "userId": null,
+    "isReadBy": [
+      "162a917f6bdabce11811d044",
+      "58411bdad23e0b464436171e",
+      "463c73346d50958afee8abc7",
+      "3c56e993faf110346469ada7"
+    ],
+    "createdAt": "2024-11-27T13:33:12Z",
+    "updatedAt": "2025-02-14T18:14:16Z"
+  },
+  {
+    "_id": "d65bcca3eed9277fdf32372c",
+    "title": "System Notification 39",
+    "message": "This is a system notification generated for testing.",
+    "type": "system",
+    "audience": "all",
+    "userId": null,
+    "isReadBy": [
+      "e5dd387d71bdf4f52d0399ea",
+      "aeeaeec698dc69978a1a6a50",
+      "0ab9f4e7d8bdeab50a5f7ca5",
+      "c9e3db4f31ac77df98219b2b"
+    ],
+    "createdAt": "2025-01-22T01:59:50Z",
+    "updatedAt": "2025-01-19T01:33:44Z"
+  },
+  {
+    "_id": "00a496a3f94f410bb2b9a764",
+    "title": "System Notification 40",
+    "message": "This is a system notification generated for testing.",
+    "type": "system",
+    "audience": "admin",
+    "userId": null,
+    "isReadBy": [
+      "8e78d519219672602698d146",
+      "ef261ed4c2b1d5f142bb6b96",
+      "1527005b383817eaa861b6e0",
+      "ee10788598013f4a3169ff70",
+      "7d49f488cc1f55870e3501ba"
+    ],
+    "createdAt": "2025-08-05T03:13:36Z",
+    "updatedAt": "2025-07-13T13:26:05Z"
+  },
+  {
+    "_id": "116d8871c6b82bf6e8560c5c",
+    "title": "Payment Notification 41",
+    "message": "This is a payment notification generated for testing.",
+    "type": "payment",
+    "audience": "user",
+    "userId": "7449dddd9d1368445317edba",
+    "isReadBy": [
+      "3e405b446079dca20dffb57f",
+      "58411bdad23e0b464436171e",
+      "f6dac11cdc673b1553172a7e"
+    ],
+    "createdAt": "2025-02-26T15:25:45Z",
+    "updatedAt": "2025-06-18T03:46:37Z"
+  },
+  {
+    "_id": "7f907941b412d3fd7eca1c9b",
+    "title": "Payment Notification 42",
+    "message": "This is a payment notification generated for testing.",
+    "type": "payment",
+    "audience": "all",
+    "userId": "8e78d519219672602698d146",
+    "isReadBy": [
+      "6cfe5251935460997104b547",
+      "59de0f40a2a33c9770623048",
+      "e0880a9b877ad7d52dc45e63",
+      "3e405b446079dca20dffb57f",
+      "f6dac11cdc673b1553172a7e"
+    ],
+    "createdAt": "2025-04-08T22:16:04Z",
+    "updatedAt": "2025-01-10T18:40:10Z"
+  },
+  {
+    "_id": "8d2160e9bc5161ab6f13303e",
+    "title": "System Notification 43",
+    "message": "This is a system notification generated for testing.",
+    "type": "system",
+    "audience": "admin",
+    "userId": null,
+    "isReadBy": [],
+    "createdAt": "2024-10-26T05:45:37Z",
+    "updatedAt": "2025-09-07T17:48:03Z"
+  },
+  {
+    "_id": "7c66aaf283e7e144f14543c0",
+    "title": "Booking Notification 44",
+    "message": "This is a booking notification generated for testing.",
+    "type": "booking",
+    "audience": "user",
+    "userId": "6cfe5251935460997104b547",
+    "isReadBy": [
+      "ee10788598013f4a3169ff70",
+      "7d49f488cc1f55870e3501ba",
+      "e0880a9b877ad7d52dc45e63",
+      "3983e007e970b641b42278d9"
+    ],
+    "createdAt": "2025-07-03T15:21:51Z",
+    "updatedAt": "2025-02-19T02:07:48Z"
+  },
+  {
+    "_id": "78ab76b0a2fe6a58b0118957",
+    "title": "System Notification 45",
+    "message": "This is a system notification generated for testing.",
+    "type": "system",
+    "audience": "all",
+    "userId": null,
+    "isReadBy": [
+      "f8796b0f54c851db14dbfc50",
+      "63ea0027e641b46dd981f040",
+      "d092f8de876fc35b465ebcd5",
+      "71c6f99e0d6498a9f7f24616",
+      "e0880a9b877ad7d52dc45e63"
+    ],
+    "createdAt": "2025-07-21T00:33:00Z",
+    "updatedAt": "2025-10-12T04:27:28Z"
+  },
+  {
+    "_id": "d2b1c4d3370bab36c6bdfa96",
+    "title": "Maintenance Notification 46",
+    "message": "This is a maintenance notification generated for testing.",
+    "type": "maintenance",
+    "audience": "admin",
+    "userId": null,
+    "isReadBy": [
+      "67fc5d68677fbd2871cb1f71",
+      "5bc5de63c6cfd56a293d503f",
+      "7685949101b3ff0ade1d2156"
+    ],
+    "createdAt": "2025-01-05T03:14:41Z",
+    "updatedAt": "2025-01-02T21:49:53Z"
+  },
+  {
+    "_id": "6a64e5444d67f122398eeb8c",
+    "title": "Payment Notification 47",
+    "message": "This is a payment notification generated for testing.",
+    "type": "payment",
+    "audience": "admin",
+    "userId": "9de580c0977c7df767929efb",
+    "isReadBy": [
+      "68a70fe8468c9dfd5cdf2368"
+    ],
+    "createdAt": "2025-09-09T17:46:01Z",
+    "updatedAt": "2025-04-26T10:02:42Z"
+  },
+  {
+    "_id": "1da511a606f84d3407675508",
+    "title": "System Notification 48",
+    "message": "This is a system notification generated for testing.",
+    "type": "system",
+    "audience": "user",
+    "userId": null,
+    "isReadBy": [
+      "67fc5d68677fbd2871cb1f71"
+    ],
+    "createdAt": "2025-04-28T13:58:00Z",
+    "updatedAt": "2024-12-09T14:18:53Z"
+  },
+  {
+    "_id": "c1960aa55795460559c91c1a",
+    "title": "Booking Notification 49",
+    "message": "This is a booking notification generated for testing.",
+    "type": "booking",
+    "audience": "user",
+    "userId": "5b105a59466bccaffee42329",
+    "isReadBy": [],
+    "createdAt": "2024-11-30T02:02:55Z",
+    "updatedAt": "2025-03-03T18:08:16Z"
+  },
+  {
+    "_id": "38808cfec419dcc54bd44748",
+    "title": "Maintenance Notification 50",
+    "message": "This is a maintenance notification generated for testing.",
+    "type": "maintenance",
+    "audience": "user",
+    "userId": null,
+    "isReadBy": [
+      "9de580c0977c7df767929efb",
+      "ef261ed4c2b1d5f142bb6b96",
+      "1527005b383817eaa861b6e0",
+      "8e78d519219672602698d146"
+    ],
+    "createdAt": "2024-12-24T22:09:44Z",
+    "updatedAt": "2025-09-06T13:28:37Z"
+  }
+]

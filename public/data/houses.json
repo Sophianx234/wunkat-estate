@@ -1,0 +1,1135 @@
+[
+  {
+    "_id": "ec06707288e2a466f50780b5",
+    "name": "Hilltop Court",
+    "description": "Spacious property in Obuasi with modern amenities.",
+    "location": {
+      "address": "68 High St, Obuasi",
+      "city": "Obuasi",
+      "region": "Ashanti",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 10.215477,
+        "lng": -0.753058
+      }
+    },
+    "amenities": [
+      "Garden",
+      "Security"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-08-02T02:05:03Z"
+  },
+  {
+    "_id": "e546e8049e3ea2b977164eb8",
+    "name": "Sunset Villa",
+    "description": "Spacious property in Cape Coast with modern amenities.",
+    "location": {
+      "address": "163 Civic Ln, Cape Coast",
+      "city": "Cape Coast",
+      "region": "Central",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 9.895545,
+        "lng": -3.336879
+      }
+    },
+    "amenities": [
+      "Parking",
+      "Security",
+      "Gym",
+      "AC"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-05-03T07:14:14Z"
+  },
+  {
+    "_id": "307bc89f40a4f9b8dd8a16c0",
+    "name": "Riverside Heights",
+    "description": "Spacious property in Cape Coast with modern amenities.",
+    "location": {
+      "address": "10 Kingsway, Cape Coast",
+      "city": "Cape Coast",
+      "region": "Central",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 8.587301,
+        "lng": -2.952053
+      }
+    },
+    "amenities": [
+      "Garden",
+      "Washer",
+      "WiFi",
+      "Gym",
+      "Balcony"
+    ],
+    "smartLockSupport": true,
+    "createdAt": "2025-08-16T10:28:38Z"
+  },
+  {
+    "_id": "d026be829fdf9054097c1cf8",
+    "name": "Ocean Apartments",
+    "description": "Spacious property in Cape Coast with modern amenities.",
+    "location": {
+      "address": "27 Kingsway, Cape Coast",
+      "city": "Cape Coast",
+      "region": "Central",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 9.634616,
+        "lng": -0.228702
+      }
+    },
+    "amenities": [
+      "Kitchen",
+      "Parking"
+    ],
+    "smartLockSupport": true,
+    "createdAt": "2025-03-25T13:24:09Z"
+  },
+  {
+    "_id": "51b27f24f8017d329039568a",
+    "name": "Sunset Court",
+    "description": "Spacious property in Tamale with modern amenities.",
+    "location": {
+      "address": "189 Kingsway, Tamale",
+      "city": "Tamale",
+      "region": "Northern",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 9.646648,
+        "lng": -1.976661
+      }
+    },
+    "amenities": [
+      "AC",
+      "Balcony",
+      "Washer"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2024-11-12T02:57:53Z"
+  },
+  {
+    "_id": "51749ffbb7c05b7206a6963a",
+    "name": "Silver Court",
+    "description": "Spacious property in Cape Coast with modern amenities.",
+    "location": {
+      "address": "52 Civic Ln, Cape Coast",
+      "city": "Cape Coast",
+      "region": "Central",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 7.35319,
+        "lng": -0.464015
+      }
+    },
+    "amenities": [
+      "Washer",
+      "WiFi"
+    ],
+    "smartLockSupport": true,
+    "createdAt": "2025-06-26T03:53:01Z"
+  },
+  {
+    "_id": "a520e54db93d44df85d52985",
+    "name": "Maple Apartments",
+    "description": "Spacious property in Accra with modern amenities.",
+    "location": {
+      "address": "131 Civic Ln, Accra",
+      "city": "Accra",
+      "region": "Greater Accra",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 9.101446,
+        "lng": -0.378454
+      }
+    },
+    "amenities": [
+      "Kitchen",
+      "Security",
+      "Pool",
+      "Washer",
+      "AC"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-05-04T10:59:43Z"
+  },
+  {
+    "_id": "e59b6378b17dd7207a13a2c8",
+    "name": "Palm Lodge",
+    "description": "Spacious property in Kumasi with modern amenities.",
+    "location": {
+      "address": "89 Oxford St, Kumasi",
+      "city": "Kumasi",
+      "region": "Ashanti",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 9.668069,
+        "lng": -1.885343
+      }
+    },
+    "amenities": [
+      "AC",
+      "Security",
+      "WiFi",
+      "Gym"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-02-01T07:47:23Z"
+  },
+  {
+    "_id": "9c89d3d8c312dd7a7452b69d",
+    "name": "Sunset Heights",
+    "description": "Spacious property in Bolgatanga with modern amenities.",
+    "location": {
+      "address": "138 Oxford St, Bolgatanga",
+      "city": "Bolgatanga",
+      "region": "Upper East",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 9.312979,
+        "lng": -0.754785
+      }
+    },
+    "amenities": [
+      "Security",
+      "WiFi",
+      "Washer"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2024-11-11T04:49:35Z"
+  },
+  {
+    "_id": "c20bad9af852ceb6d397a3c1",
+    "name": "Vista Heights",
+    "description": "Spacious property in Ho with modern amenities.",
+    "location": {
+      "address": "80 Oxford St, Ho",
+      "city": "Ho",
+      "region": "Volta",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 7.664482,
+        "lng": -2.011119
+      }
+    },
+    "amenities": [
+      "Balcony",
+      "Kitchen",
+      "Pool",
+      "Garden"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-05-21T15:48:53Z"
+  },
+  {
+    "_id": "10a45e3b7f4227ac4b61a19b",
+    "name": "Vista Residency",
+    "description": "Spacious property in Tamale with modern amenities.",
+    "location": {
+      "address": "54 Civic Ln, Tamale",
+      "city": "Tamale",
+      "region": "Northern",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 9.664522,
+        "lng": -1.255352
+      }
+    },
+    "amenities": [
+      "AC",
+      "Security",
+      "Washer",
+      "Garden",
+      "WiFi"
+    ],
+    "smartLockSupport": true,
+    "createdAt": "2025-05-08T19:04:14Z"
+  },
+  {
+    "_id": "91e51bffb6738de67b90d6d8",
+    "name": "Hilltop Residency",
+    "description": "Spacious property in Sunyani with modern amenities.",
+    "location": {
+      "address": "132 Oxford St, Sunyani",
+      "city": "Sunyani",
+      "region": "Bono",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 8.854587,
+        "lng": -2.259803
+      }
+    },
+    "amenities": [
+      "Garden",
+      "Gym",
+      "AC"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-06-22T00:41:53Z"
+  },
+  {
+    "_id": "3fbab72b89e76af94038922d",
+    "name": "Silver Heights",
+    "description": "Spacious property in Takoradi with modern amenities.",
+    "location": {
+      "address": "197 High St, Takoradi",
+      "city": "Takoradi",
+      "region": "Western",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 7.913706,
+        "lng": -0.221293
+      }
+    },
+    "amenities": [
+      "WiFi",
+      "Balcony",
+      "Parking"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2024-12-30T04:55:15Z"
+  },
+  {
+    "_id": "adc0475eb7fdda75df0c8864",
+    "name": "Golden Court",
+    "description": "Spacious property in Bolgatanga with modern amenities.",
+    "location": {
+      "address": "46 Oxford St, Bolgatanga",
+      "city": "Bolgatanga",
+      "region": "Upper East",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 8.245176,
+        "lng": -3.314192
+      }
+    },
+    "amenities": [
+      "AC",
+      "WiFi",
+      "Pool"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-06-15T07:34:54Z"
+  },
+  {
+    "_id": "1a6e78206c546f6566e4dceb",
+    "name": "Palm Apartments",
+    "description": "Spacious property in Sunyani with modern amenities.",
+    "location": {
+      "address": "130 Civic Ln, Sunyani",
+      "city": "Sunyani",
+      "region": "Bono",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 9.902017,
+        "lng": -1.472874
+      }
+    },
+    "amenities": [
+      "Garden",
+      "Balcony",
+      "Kitchen",
+      "Washer",
+      "Parking"
+    ],
+    "smartLockSupport": true,
+    "createdAt": "2025-07-30T18:43:04Z"
+  },
+  {
+    "_id": "0c54140508a8f9c51aba3ddc",
+    "name": "Ocean Residency",
+    "description": "Spacious property in Sunyani with modern amenities.",
+    "location": {
+      "address": "113 High St, Sunyani",
+      "city": "Sunyani",
+      "region": "Bono",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 9.281788,
+        "lng": -2.632374
+      }
+    },
+    "amenities": [
+      "Security",
+      "Garden",
+      "Gym"
+    ],
+    "smartLockSupport": true,
+    "createdAt": "2025-05-02T00:21:36Z"
+  },
+  {
+    "_id": "2e460b0a70a0c76f4900197c",
+    "name": "Ocean Villa",
+    "description": "Spacious property in Koforidua with modern amenities.",
+    "location": {
+      "address": "107 Civic Ln, Koforidua",
+      "city": "Koforidua",
+      "region": "Eastern",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 7.253671,
+        "lng": -1.77608
+      }
+    },
+    "amenities": [
+      "Parking",
+      "Washer",
+      "AC"
+    ],
+    "smartLockSupport": true,
+    "createdAt": "2025-09-19T04:28:10Z"
+  },
+  {
+    "_id": "450dcb86d86c99736c76191d",
+    "name": "Silver Villa",
+    "description": "Spacious property in Bolgatanga with modern amenities.",
+    "location": {
+      "address": "91 Kingsway, Bolgatanga",
+      "city": "Bolgatanga",
+      "region": "Upper East",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 9.493418,
+        "lng": -0.342243
+      }
+    },
+    "amenities": [
+      "Balcony",
+      "Washer"
+    ],
+    "smartLockSupport": true,
+    "createdAt": "2025-03-19T16:24:15Z"
+  },
+  {
+    "_id": "2b921599152474352766da6b",
+    "name": "Golden Lodge",
+    "description": "Spacious property in Koforidua with modern amenities.",
+    "location": {
+      "address": "8 Civic Ln, Koforidua",
+      "city": "Koforidua",
+      "region": "Eastern",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 7.281487,
+        "lng": -0.987175
+      }
+    },
+    "amenities": [
+      "Gym",
+      "Parking",
+      "Security"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-03-27T05:59:28Z"
+  },
+  {
+    "_id": "0de4ce29928d0c27140f0468",
+    "name": "Hilltop Apartments",
+    "description": "Spacious property in Sunyani with modern amenities.",
+    "location": {
+      "address": "110 Market Rd, Sunyani",
+      "city": "Sunyani",
+      "region": "Bono",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 10.094312,
+        "lng": -2.827603
+      }
+    },
+    "amenities": [
+      "Washer",
+      "WiFi"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-06-08T22:11:51Z"
+  },
+  {
+    "_id": "c6a1b419374df2b4f70e9b4c",
+    "name": "Golden Residency",
+    "description": "Spacious property in Ho with modern amenities.",
+    "location": {
+      "address": "21 Civic Ln, Ho",
+      "city": "Ho",
+      "region": "Volta",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 5.602731,
+        "lng": -1.50415
+      }
+    },
+    "amenities": [
+      "Kitchen",
+      "Washer",
+      "Security",
+      "Garden"
+    ],
+    "smartLockSupport": true,
+    "createdAt": "2025-04-24T03:50:11Z"
+  },
+  {
+    "_id": "4570c2e1b39bdad3a95c2eb6",
+    "name": "Ocean Villa",
+    "description": "Spacious property in Kumasi with modern amenities.",
+    "location": {
+      "address": "160 Market Rd, Kumasi",
+      "city": "Kumasi",
+      "region": "Ashanti",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 6.764288,
+        "lng": -1.747824
+      }
+    },
+    "amenities": [
+      "WiFi",
+      "Parking"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-08-22T15:28:00Z"
+  },
+  {
+    "_id": "ee315f0a4d331e4ad17d50ac",
+    "name": "Riverside Residency",
+    "description": "Spacious property in Takoradi with modern amenities.",
+    "location": {
+      "address": "28 Airport Rd, Takoradi",
+      "city": "Takoradi",
+      "region": "Western",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 5.636096,
+        "lng": -2.345758
+      }
+    },
+    "amenities": [
+      "Kitchen",
+      "AC",
+      "Pool",
+      "Washer"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2024-11-07T22:20:08Z"
+  },
+  {
+    "_id": "f37e27e6b07676b5d47e2c3f",
+    "name": "Vista Apartments",
+    "description": "Spacious property in Bolgatanga with modern amenities.",
+    "location": {
+      "address": "154 High St, Bolgatanga",
+      "city": "Bolgatanga",
+      "region": "Upper East",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 9.720004,
+        "lng": -1.40605
+      }
+    },
+    "amenities": [
+      "Pool",
+      "Parking",
+      "Balcony"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-09-28T23:21:32Z"
+  },
+  {
+    "_id": "903c8bad28c3a8f683e934e5",
+    "name": "Golden Lodge",
+    "description": "Spacious property in Koforidua with modern amenities.",
+    "location": {
+      "address": "28 Civic Ln, Koforidua",
+      "city": "Koforidua",
+      "region": "Eastern",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 10.592174,
+        "lng": -1.148335
+      }
+    },
+    "amenities": [
+      "Pool",
+      "Garden",
+      "Kitchen",
+      "WiFi"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-02-27T06:25:48Z"
+  },
+  {
+    "_id": "ad04d5bda6d437617d0ddc81",
+    "name": "Golden Apartments",
+    "description": "Spacious property in Bolgatanga with modern amenities.",
+    "location": {
+      "address": "152 Kingsway, Bolgatanga",
+      "city": "Bolgatanga",
+      "region": "Upper East",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 7.208214,
+        "lng": -2.591668
+      }
+    },
+    "amenities": [
+      "Balcony",
+      "Garden",
+      "Gym",
+      "Parking"
+    ],
+    "smartLockSupport": true,
+    "createdAt": "2025-09-06T01:50:41Z"
+  },
+  {
+    "_id": "44e08a878a36806fa8b530f6",
+    "name": "Maple Court",
+    "description": "Spacious property in Sunyani with modern amenities.",
+    "location": {
+      "address": "125 Market Rd, Sunyani",
+      "city": "Sunyani",
+      "region": "Bono",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 7.380572,
+        "lng": -2.544096
+      }
+    },
+    "amenities": [
+      "Balcony",
+      "Washer",
+      "Kitchen",
+      "WiFi",
+      "Parking"
+    ],
+    "smartLockSupport": true,
+    "createdAt": "2025-05-29T14:17:41Z"
+  },
+  {
+    "_id": "01de1aa4474ae502f26f10e9",
+    "name": "Silver Heights",
+    "description": "Spacious property in Cape Coast with modern amenities.",
+    "location": {
+      "address": "195 Market Rd, Cape Coast",
+      "city": "Cape Coast",
+      "region": "Central",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 9.160229,
+        "lng": -1.110159
+      }
+    },
+    "amenities": [
+      "Pool",
+      "Parking",
+      "Washer"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-02-10T19:40:57Z"
+  },
+  {
+    "_id": "da243412c8f0b0bc1546f262",
+    "name": "Palm Residency",
+    "description": "Spacious property in Accra with modern amenities.",
+    "location": {
+      "address": "122 Airport Rd, Accra",
+      "city": "Accra",
+      "region": "Greater Accra",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 8.313886,
+        "lng": -1.925636
+      }
+    },
+    "amenities": [
+      "Washer",
+      "Parking",
+      "Security"
+    ],
+    "smartLockSupport": true,
+    "createdAt": "2025-01-11T23:57:23Z"
+  },
+  {
+    "_id": "d022d00299873ca69ab5996f",
+    "name": "Ocean Residency",
+    "description": "Spacious property in Ho with modern amenities.",
+    "location": {
+      "address": "31 Oxford St, Ho",
+      "city": "Ho",
+      "region": "Volta",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 8.340079,
+        "lng": -0.679898
+      }
+    },
+    "amenities": [
+      "Security",
+      "Balcony",
+      "Parking",
+      "WiFi"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-07-18T05:01:35Z"
+  },
+  {
+    "_id": "f0f6dc02f6c298b29a7ad91f",
+    "name": "Ocean Residency",
+    "description": "Spacious property in Takoradi with modern amenities.",
+    "location": {
+      "address": "59 Kingsway, Takoradi",
+      "city": "Takoradi",
+      "region": "Western",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 6.45104,
+        "lng": -3.447651
+      }
+    },
+    "amenities": [
+      "Balcony",
+      "Garden",
+      "Security",
+      "WiFi"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-01-20T07:23:29Z"
+  },
+  {
+    "_id": "709fd6084bb67886b22a73e7",
+    "name": "Riverside Apartments",
+    "description": "Spacious property in Cape Coast with modern amenities.",
+    "location": {
+      "address": "193 Civic Ln, Cape Coast",
+      "city": "Cape Coast",
+      "region": "Central",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 6.043715,
+        "lng": -3.454618
+      }
+    },
+    "amenities": [
+      "Garden",
+      "Security"
+    ],
+    "smartLockSupport": true,
+    "createdAt": "2025-05-27T18:54:36Z"
+  },
+  {
+    "_id": "08a4d4243b43a70abfd1f6db",
+    "name": "Hilltop Villa",
+    "description": "Spacious property in Sunyani with modern amenities.",
+    "location": {
+      "address": "103 Civic Ln, Sunyani",
+      "city": "Sunyani",
+      "region": "Bono",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 5.892636,
+        "lng": -1.171051
+      }
+    },
+    "amenities": [
+      "WiFi",
+      "Security",
+      "Gym"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-09-23T06:28:33Z"
+  },
+  {
+    "_id": "148dd448f9c5ff3eca41dc70",
+    "name": "Golden Heights",
+    "description": "Spacious property in Tamale with modern amenities.",
+    "location": {
+      "address": "153 Airport Rd, Tamale",
+      "city": "Tamale",
+      "region": "Northern",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 6.696142,
+        "lng": -1.566482
+      }
+    },
+    "amenities": [
+      "Pool",
+      "Parking",
+      "Balcony",
+      "Security"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-03-03T19:52:52Z"
+  },
+  {
+    "_id": "192a30cf860e591478d96cb3",
+    "name": "Ocean Residency",
+    "description": "Spacious property in Cape Coast with modern amenities.",
+    "location": {
+      "address": "170 High St, Cape Coast",
+      "city": "Cape Coast",
+      "region": "Central",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 6.332403,
+        "lng": -2.85689
+      }
+    },
+    "amenities": [
+      "Security",
+      "WiFi",
+      "Pool",
+      "Washer",
+      "Gym"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-09-12T06:18:03Z"
+  },
+  {
+    "_id": "a7f36f5445f82cec37f21e5c",
+    "name": "Vista Apartments",
+    "description": "Spacious property in Accra with modern amenities.",
+    "location": {
+      "address": "117 High St, Accra",
+      "city": "Accra",
+      "region": "Greater Accra",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 9.14314,
+        "lng": -0.081529
+      }
+    },
+    "amenities": [
+      "Security",
+      "WiFi",
+      "Parking",
+      "AC",
+      "Kitchen"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2024-12-03T14:31:36Z"
+  },
+  {
+    "_id": "9d75c6a5b8a8a0ed678b0437",
+    "name": "Hilltop Villa",
+    "description": "Spacious property in Takoradi with modern amenities.",
+    "location": {
+      "address": "43 Kingsway, Takoradi",
+      "city": "Takoradi",
+      "region": "Western",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 8.653733,
+        "lng": -0.450311
+      }
+    },
+    "amenities": [
+      "AC",
+      "Security",
+      "Balcony"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-05-25T20:00:40Z"
+  },
+  {
+    "_id": "785f3cb9a5af4d2df731a80f",
+    "name": "Hilltop Heights",
+    "description": "Spacious property in Kumasi with modern amenities.",
+    "location": {
+      "address": "11 Civic Ln, Kumasi",
+      "city": "Kumasi",
+      "region": "Ashanti",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 9.39303,
+        "lng": -1.26626
+      }
+    },
+    "amenities": [
+      "Washer",
+      "Security",
+      "Gym",
+      "Parking"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-10-07T08:40:30Z"
+  },
+  {
+    "_id": "1fe4d2f08cb8f287b944606e",
+    "name": "Riverside Lodge",
+    "description": "Spacious property in Takoradi with modern amenities.",
+    "location": {
+      "address": "133 Oxford St, Takoradi",
+      "city": "Takoradi",
+      "region": "Western",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 7.843816,
+        "lng": -2.470821
+      }
+    },
+    "amenities": [
+      "Security",
+      "WiFi"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2024-12-24T20:07:48Z"
+  },
+  {
+    "_id": "0247d31e86a4f375136d1cc0",
+    "name": "Hilltop Court",
+    "description": "Spacious property in Sunyani with modern amenities.",
+    "location": {
+      "address": "85 Civic Ln, Sunyani",
+      "city": "Sunyani",
+      "region": "Bono",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 9.17647,
+        "lng": -2.433594
+      }
+    },
+    "amenities": [
+      "Kitchen",
+      "Washer",
+      "Balcony",
+      "AC",
+      "Gym"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-03-28T15:58:18Z"
+  },
+  {
+    "_id": "68b6ee45a4a01d6e1bc192ad",
+    "name": "Golden Heights",
+    "description": "Spacious property in Accra with modern amenities.",
+    "location": {
+      "address": "1 Oxford St, Accra",
+      "city": "Accra",
+      "region": "Greater Accra",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 10.107648,
+        "lng": -1.790688
+      }
+    },
+    "amenities": [
+      "Security",
+      "Kitchen",
+      "Pool",
+      "Washer"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-09-23T05:10:14Z"
+  },
+  {
+    "_id": "143c219fd86c57cdea31fabe",
+    "name": "Riverside Residency",
+    "description": "Spacious property in Koforidua with modern amenities.",
+    "location": {
+      "address": "113 Oxford St, Koforidua",
+      "city": "Koforidua",
+      "region": "Eastern",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 8.068973,
+        "lng": -3.393183
+      }
+    },
+    "amenities": [
+      "Gym",
+      "WiFi",
+      "Parking",
+      "AC",
+      "Security"
+    ],
+    "smartLockSupport": true,
+    "createdAt": "2024-12-01T13:49:54Z"
+  },
+  {
+    "_id": "b75fd7bb4ca40d4a10c0ecd3",
+    "name": "Ocean Villa",
+    "description": "Spacious property in Takoradi with modern amenities.",
+    "location": {
+      "address": "119 High St, Takoradi",
+      "city": "Takoradi",
+      "region": "Western",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 8.932861,
+        "lng": -2.930307
+      }
+    },
+    "amenities": [
+      "Garden",
+      "WiFi",
+      "Washer",
+      "Balcony"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-05-23T17:28:22Z"
+  },
+  {
+    "_id": "2c3cc9f7183bb41a09b63ff3",
+    "name": "Golden Court",
+    "description": "Spacious property in Cape Coast with modern amenities.",
+    "location": {
+      "address": "154 Airport Rd, Cape Coast",
+      "city": "Cape Coast",
+      "region": "Central",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 9.45535,
+        "lng": -2.994919
+      }
+    },
+    "amenities": [
+      "Gym",
+      "Parking",
+      "Balcony",
+      "Security",
+      "Pool"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-09-15T01:56:32Z"
+  },
+  {
+    "_id": "861730bb541fc395e4a218a4",
+    "name": "Palm Heights",
+    "description": "Spacious property in Bolgatanga with modern amenities.",
+    "location": {
+      "address": "169 Civic Ln, Bolgatanga",
+      "city": "Bolgatanga",
+      "region": "Upper East",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 10.085881,
+        "lng": -1.847775
+      }
+    },
+    "amenities": [
+      "WiFi",
+      "Security",
+      "Garden",
+      "Washer"
+    ],
+    "smartLockSupport": true,
+    "createdAt": "2025-02-14T23:26:04Z"
+  },
+  {
+    "_id": "3088f099d1651a54325cd32b",
+    "name": "Palm Lodge",
+    "description": "Spacious property in Ho with modern amenities.",
+    "location": {
+      "address": "60 Civic Ln, Ho",
+      "city": "Ho",
+      "region": "Volta",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 5.731331,
+        "lng": -0.744591
+      }
+    },
+    "amenities": [
+      "Gym",
+      "Kitchen",
+      "Parking",
+      "Garden",
+      "Pool"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2024-10-23T22:07:12Z"
+  },
+  {
+    "_id": "8c38640e47f6e9f5d6538300",
+    "name": "Royal Heights",
+    "description": "Spacious property in Bolgatanga with modern amenities.",
+    "location": {
+      "address": "85 High St, Bolgatanga",
+      "city": "Bolgatanga",
+      "region": "Upper East",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 10.133209,
+        "lng": -1.870867
+      }
+    },
+    "amenities": [
+      "Gym",
+      "WiFi",
+      "AC"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2025-01-23T19:21:50Z"
+  },
+  {
+    "_id": "30ce46ec5032b997de2c7ca5",
+    "name": "Maple Heights",
+    "description": "Spacious property in Accra with modern amenities.",
+    "location": {
+      "address": "178 Civic Ln, Accra",
+      "city": "Accra",
+      "region": "Greater Accra",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 8.944134,
+        "lng": -0.348468
+      }
+    },
+    "amenities": [
+      "AC",
+      "Pool",
+      "Gym",
+      "Washer",
+      "Balcony"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2024-11-08T16:34:18Z"
+  },
+  {
+    "_id": "16363dccac554c55f707cb7a",
+    "name": "Vista Court",
+    "description": "Spacious property in Bolgatanga with modern amenities.",
+    "location": {
+      "address": "192 High St, Bolgatanga",
+      "city": "Bolgatanga",
+      "region": "Upper East",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 7.800049,
+        "lng": -3.13576
+      }
+    },
+    "amenities": [
+      "Garden",
+      "WiFi",
+      "Pool",
+      "Gym",
+      "Kitchen"
+    ],
+    "smartLockSupport": false,
+    "createdAt": "2024-11-30T08:20:27Z"
+  },
+  {
+    "_id": "4daec26679cf06878867d1b9",
+    "name": "Sunset Residency",
+    "description": "Spacious property in Sunyani with modern amenities.",
+    "location": {
+      "address": "92 Kingsway, Sunyani",
+      "city": "Sunyani",
+      "region": "Bono",
+      "country": "Ghana",
+      "coordinates": {
+        "lat": 7.78264,
+        "lng": -2.59647
+      }
+    },
+    "amenities": [
+      "WiFi",
+      "Balcony",
+      "Kitchen",
+      "Washer"
+    ],
+    "smartLockSupport": true,
+    "createdAt": "2025-03-23T15:23:43Z"
+  }
+]

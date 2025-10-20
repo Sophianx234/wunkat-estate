@@ -1,0 +1,952 @@
+[
+  {
+    "_id": "c9aaf1469ee5ca8940a32180",
+    "houseId": "2c3cc9f7183bb41a09b63ff3",
+    "name": "Room 187",
+    "description": "Cozy room in Golden Court.",
+    "price": 1446,
+    "status": "booked",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 3,
+    "baths": 2,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2024-12-26T06:47:22Z",
+    "updatedAt": "2025-06-23T19:12:37Z"
+  },
+  {
+    "_id": "7dcf9f327951d572559acae5",
+    "houseId": "68b6ee45a4a01d6e1bc192ad",
+    "name": "Room 230",
+    "description": "Modern room in Golden Heights.",
+    "price": 876,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 2,
+    "baths": 2,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2025-04-26T14:36:26Z",
+    "updatedAt": "2025-05-19T12:44:14Z"
+  },
+  {
+    "_id": "e353dadf3ad742b497212a2f",
+    "houseId": "01de1aa4474ae502f26f10e9",
+    "name": "Room 333",
+    "description": "Spacious room in Silver Heights.",
+    "price": 2431,
+    "status": "booked",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 2,
+    "baths": 2,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2024-12-31T22:55:51Z",
+    "updatedAt": "2024-12-30T01:13:40Z"
+  },
+  {
+    "_id": "7f9ec8e658e9372ce8bece5d",
+    "houseId": "861730bb541fc395e4a218a4",
+    "name": "Room 437",
+    "description": "Spacious room in Palm Heights.",
+    "price": 3048,
+    "status": "pending",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 1,
+    "baths": 1,
+    "smartLockEnabled": true,
+    "lockStatus": "unlocked",
+    "planType": "monthly",
+    "createdAt": "2025-05-27T03:37:18Z",
+    "updatedAt": "2024-12-13T23:10:21Z"
+  },
+  {
+    "_id": "3df4ff80e16fb00b51f197ac",
+    "houseId": "1a6e78206c546f6566e4dceb",
+    "name": "Room 447",
+    "description": "Modern room in Palm Apartments.",
+    "price": 1920,
+    "status": "booked",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 3,
+    "baths": 1,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2025-03-09T10:47:07Z",
+    "updatedAt": "2024-12-27T22:42:57Z"
+  },
+  {
+    "_id": "a5761aae37a99cac5e11c65f",
+    "houseId": "8c38640e47f6e9f5d6538300",
+    "name": "Room 251",
+    "description": "Spacious room in Royal Heights.",
+    "price": 4203,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 1,
+    "baths": 1,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2025-04-15T16:40:21Z",
+    "updatedAt": "2025-02-06T02:04:40Z"
+  },
+  {
+    "_id": "51b27dbfeafc31b98c0329aa",
+    "houseId": "10a45e3b7f4227ac4b61a19b",
+    "name": "Room 346",
+    "description": "Spacious room in Vista Residency.",
+    "price": 3574,
+    "status": "booked",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 1,
+    "baths": 2,
+    "smartLockEnabled": true,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2025-06-26T21:31:51Z",
+    "updatedAt": "2025-01-07T22:40:58Z"
+  },
+  {
+    "_id": "f7dd8252116e1ff100f2c326",
+    "houseId": "51749ffbb7c05b7206a6963a",
+    "name": "Room 374",
+    "description": "Cozy room in Silver Court.",
+    "price": 4525,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 2,
+    "baths": 2,
+    "smartLockEnabled": false,
+    "lockStatus": "unlocked",
+    "planType": "monthly",
+    "createdAt": "2025-04-13T08:03:19Z",
+    "updatedAt": "2024-11-09T03:29:13Z"
+  },
+  {
+    "_id": "763d60f99b0dd6ec650459af",
+    "houseId": "f0f6dc02f6c298b29a7ad91f",
+    "name": "Room 387",
+    "description": "Spacious room in Ocean Residency.",
+    "price": 5797,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 1,
+    "baths": 1,
+    "smartLockEnabled": false,
+    "lockStatus": "unlocked",
+    "planType": "yearly",
+    "createdAt": "2025-05-18T12:21:43Z",
+    "updatedAt": "2025-03-25T07:45:08Z"
+  },
+  {
+    "_id": "5e6bb8cd818ab078c5b38efd",
+    "houseId": "9c89d3d8c312dd7a7452b69d",
+    "name": "Room 119",
+    "description": "Spacious room in Sunset Heights.",
+    "price": 4835,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 1,
+    "baths": 1,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "yearly",
+    "createdAt": "2025-08-11T21:51:00Z",
+    "updatedAt": "2025-03-01T22:29:31Z"
+  },
+  {
+    "_id": "66de68570ac1d693d127414c",
+    "houseId": "b75fd7bb4ca40d4a10c0ecd3",
+    "name": "Room 456",
+    "description": "Modern room in Ocean Villa.",
+    "price": 4233,
+    "status": "pending",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 3,
+    "baths": 1,
+    "smartLockEnabled": false,
+    "lockStatus": "unlocked",
+    "planType": "monthly",
+    "createdAt": "2025-02-11T13:35:06Z",
+    "updatedAt": "2025-03-26T01:48:54Z"
+  },
+  {
+    "_id": "9188f7ce48a55a626d7edc4c",
+    "houseId": "307bc89f40a4f9b8dd8a16c0",
+    "name": "Room 327",
+    "description": "Cozy room in Riverside Heights.",
+    "price": 3771,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 1,
+    "baths": 2,
+    "smartLockEnabled": false,
+    "lockStatus": "unlocked",
+    "planType": "monthly",
+    "createdAt": "2025-06-01T05:05:22Z",
+    "updatedAt": "2025-08-18T19:26:40Z"
+  },
+  {
+    "_id": "d9e063c0f5adecf91b83e3c1",
+    "houseId": "51749ffbb7c05b7206a6963a",
+    "name": "Room 405",
+    "description": "Cozy room in Silver Court.",
+    "price": 1214,
+    "status": "booked",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 2,
+    "baths": 1,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2025-07-07T09:30:08Z",
+    "updatedAt": "2025-01-10T04:27:28Z"
+  },
+  {
+    "_id": "cbed92bf6fb2d2a5b2475aa2",
+    "houseId": "785f3cb9a5af4d2df731a80f",
+    "name": "Room 219",
+    "description": "Spacious room in Hilltop Heights.",
+    "price": 2008,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 3,
+    "baths": 1,
+    "smartLockEnabled": false,
+    "lockStatus": "unlocked",
+    "planType": "yearly",
+    "createdAt": "2025-08-07T07:16:02Z",
+    "updatedAt": "2025-01-17T02:52:27Z"
+  },
+  {
+    "_id": "b9cbfacb4fd3b7f3291f8342",
+    "houseId": "91e51bffb6738de67b90d6d8",
+    "name": "Room 113",
+    "description": "Cozy room in Hilltop Residency.",
+    "price": 921,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 2,
+    "baths": 1,
+    "smartLockEnabled": false,
+    "lockStatus": "unlocked",
+    "planType": "monthly",
+    "createdAt": "2025-06-07T10:05:32Z",
+    "updatedAt": "2025-08-16T20:40:24Z"
+  },
+  {
+    "_id": "595339540d36509aadb4839c",
+    "houseId": "148dd448f9c5ff3eca41dc70",
+    "name": "Room 132",
+    "description": "Spacious room in Golden Heights.",
+    "price": 4472,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 2,
+    "baths": 1,
+    "smartLockEnabled": false,
+    "lockStatus": "unlocked",
+    "planType": "monthly",
+    "createdAt": "2024-12-10T10:25:17Z",
+    "updatedAt": "2024-11-16T17:00:53Z"
+  },
+  {
+    "_id": "5f93d0029cf846eca564656e",
+    "houseId": "0de4ce29928d0c27140f0468",
+    "name": "Room 115",
+    "description": "Cozy room in Hilltop Apartments.",
+    "price": 4723,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 2,
+    "baths": 2,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2025-03-07T09:19:28Z",
+    "updatedAt": "2025-09-09T00:16:21Z"
+  },
+  {
+    "_id": "85ffd32bc9067cd7143b5403",
+    "houseId": "1fe4d2f08cb8f287b944606e",
+    "name": "Room 164",
+    "description": "Spacious room in Riverside Lodge.",
+    "price": 5914,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 3,
+    "baths": 2,
+    "smartLockEnabled": false,
+    "lockStatus": "unlocked",
+    "planType": "yearly",
+    "createdAt": "2025-01-22T01:15:48Z",
+    "updatedAt": "2025-03-01T17:35:37Z"
+  },
+  {
+    "_id": "0901e2323b837d905a81adb5",
+    "houseId": "1fe4d2f08cb8f287b944606e",
+    "name": "Room 459",
+    "description": "Cozy room in Riverside Lodge.",
+    "price": 5316,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 3,
+    "baths": 1,
+    "smartLockEnabled": false,
+    "lockStatus": "unlocked",
+    "planType": "monthly",
+    "createdAt": "2025-06-25T20:56:01Z",
+    "updatedAt": "2025-04-29T19:29:19Z"
+  },
+  {
+    "_id": "207e1d57bcc602c718d13936",
+    "houseId": "ad04d5bda6d437617d0ddc81",
+    "name": "Room 318",
+    "description": "Spacious room in Golden Apartments.",
+    "price": 2888,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 2,
+    "baths": 1,
+    "smartLockEnabled": true,
+    "lockStatus": "unlocked",
+    "planType": "monthly",
+    "createdAt": "2025-09-07T08:36:21Z",
+    "updatedAt": "2025-03-13T08:29:04Z"
+  },
+  {
+    "_id": "7e866f9929ca99d48bfcb89f",
+    "houseId": "30ce46ec5032b997de2c7ca5",
+    "name": "Room 166",
+    "description": "Modern room in Maple Heights.",
+    "price": 1291,
+    "status": "booked",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 3,
+    "baths": 2,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2024-11-13T20:36:05Z",
+    "updatedAt": "2025-09-24T01:31:40Z"
+  },
+  {
+    "_id": "dcb51b1714ada66636ce8795",
+    "houseId": "1fe4d2f08cb8f287b944606e",
+    "name": "Room 153",
+    "description": "Modern room in Riverside Lodge.",
+    "price": 4956,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 1,
+    "baths": 1,
+    "smartLockEnabled": false,
+    "lockStatus": "unlocked",
+    "planType": "monthly",
+    "createdAt": "2025-08-25T23:15:10Z",
+    "updatedAt": "2025-01-08T22:37:04Z"
+  },
+  {
+    "_id": "f975782bcdd16b86662ccbc0",
+    "houseId": "e59b6378b17dd7207a13a2c8",
+    "name": "Room 393",
+    "description": "Cozy room in Palm Lodge.",
+    "price": 4315,
+    "status": "booked",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 3,
+    "baths": 1,
+    "smartLockEnabled": false,
+    "lockStatus": "unlocked",
+    "planType": "monthly",
+    "createdAt": "2025-06-03T00:45:01Z",
+    "updatedAt": "2025-04-29T23:13:11Z"
+  },
+  {
+    "_id": "4c9293e4a594a63a64c044de",
+    "houseId": "ec06707288e2a466f50780b5",
+    "name": "Room 173",
+    "description": "Modern room in Hilltop Court.",
+    "price": 4083,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 1,
+    "baths": 1,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2025-01-22T04:10:03Z",
+    "updatedAt": "2025-04-10T20:42:52Z"
+  },
+  {
+    "_id": "922c2f7fbf1ac85dd739606c",
+    "houseId": "d022d00299873ca69ab5996f",
+    "name": "Room 289",
+    "description": "Spacious room in Ocean Residency.",
+    "price": 3457,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 3,
+    "baths": 1,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2024-12-08T10:11:18Z",
+    "updatedAt": "2024-11-09T09:01:47Z"
+  },
+  {
+    "_id": "fb04e750e1ca73be28efe4df",
+    "houseId": "450dcb86d86c99736c76191d",
+    "name": "Room 410",
+    "description": "Spacious room in Silver Villa.",
+    "price": 4192,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 2,
+    "baths": 1,
+    "smartLockEnabled": true,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2025-08-25T01:41:15Z",
+    "updatedAt": "2024-11-06T14:24:17Z"
+  },
+  {
+    "_id": "1d7767b3434cc67896c60b69",
+    "houseId": "709fd6084bb67886b22a73e7",
+    "name": "Room 212",
+    "description": "Spacious room in Riverside Apartments.",
+    "price": 5709,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 1,
+    "baths": 1,
+    "smartLockEnabled": true,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2025-07-04T07:00:13Z",
+    "updatedAt": "2025-06-12T01:27:42Z"
+  },
+  {
+    "_id": "27b8cf3bab7d0de0f1e50371",
+    "houseId": "c6a1b419374df2b4f70e9b4c",
+    "name": "Room 320",
+    "description": "Cozy room in Golden Residency.",
+    "price": 1858,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 2,
+    "baths": 1,
+    "smartLockEnabled": true,
+    "lockStatus": "unlocked",
+    "planType": "monthly",
+    "createdAt": "2025-09-28T20:07:04Z",
+    "updatedAt": "2025-10-10T19:15:40Z"
+  },
+  {
+    "_id": "d3ac27f0c153e964c821a6a5",
+    "houseId": "51b27f24f8017d329039568a",
+    "name": "Room 394",
+    "description": "Spacious room in Sunset Court.",
+    "price": 5497,
+    "status": "pending",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 2,
+    "baths": 2,
+    "smartLockEnabled": false,
+    "lockStatus": "unlocked",
+    "planType": "monthly",
+    "createdAt": "2025-10-10T00:10:32Z",
+    "updatedAt": "2025-07-24T13:29:42Z"
+  },
+  {
+    "_id": "7ec20862fb300b74e46a8e71",
+    "houseId": "d022d00299873ca69ab5996f",
+    "name": "Room 285",
+    "description": "Cozy room in Ocean Residency.",
+    "price": 4377,
+    "status": "booked",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 1,
+    "baths": 1,
+    "smartLockEnabled": false,
+    "lockStatus": "unlocked",
+    "planType": "monthly",
+    "createdAt": "2025-01-25T09:08:12Z",
+    "updatedAt": "2025-04-01T00:42:12Z"
+  },
+  {
+    "_id": "e353f18b3e83fb4e249cd2a6",
+    "houseId": "30ce46ec5032b997de2c7ca5",
+    "name": "Room 270",
+    "description": "Cozy room in Maple Heights.",
+    "price": 1425,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 3,
+    "baths": 1,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "yearly",
+    "createdAt": "2025-04-24T23:13:01Z",
+    "updatedAt": "2024-11-24T06:37:22Z"
+  },
+  {
+    "_id": "b3f0104d233a75882239765b",
+    "houseId": "0c54140508a8f9c51aba3ddc",
+    "name": "Room 188",
+    "description": "Modern room in Ocean Residency.",
+    "price": 2052,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 3,
+    "baths": 1,
+    "smartLockEnabled": true,
+    "lockStatus": "locked",
+    "planType": "yearly",
+    "createdAt": "2024-12-02T18:00:36Z",
+    "updatedAt": "2025-02-24T15:28:31Z"
+  },
+  {
+    "_id": "1e9ea4168703a0b74c59296b",
+    "houseId": "16363dccac554c55f707cb7a",
+    "name": "Room 448",
+    "description": "Modern room in Vista Court.",
+    "price": 5916,
+    "status": "booked",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 2,
+    "baths": 2,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2025-02-21T19:53:59Z",
+    "updatedAt": "2024-12-01T00:58:29Z"
+  },
+  {
+    "_id": "73b90d8915d3121fe56075eb",
+    "houseId": "450dcb86d86c99736c76191d",
+    "name": "Room 137",
+    "description": "Spacious room in Silver Villa.",
+    "price": 4582,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 2,
+    "baths": 1,
+    "smartLockEnabled": true,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2025-05-27T09:12:23Z",
+    "updatedAt": "2024-11-24T08:42:45Z"
+  },
+  {
+    "_id": "7caa10e81514aa4d867b5b42",
+    "houseId": "0247d31e86a4f375136d1cc0",
+    "name": "Room 296",
+    "description": "Spacious room in Hilltop Court.",
+    "price": 5554,
+    "status": "booked",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 3,
+    "baths": 1,
+    "smartLockEnabled": false,
+    "lockStatus": "unlocked",
+    "planType": "yearly",
+    "createdAt": "2024-12-31T12:16:03Z",
+    "updatedAt": "2025-07-16T00:17:37Z"
+  },
+  {
+    "_id": "d13bcfe2888b119523fedc3f",
+    "houseId": "1fe4d2f08cb8f287b944606e",
+    "name": "Room 177",
+    "description": "Cozy room in Riverside Lodge.",
+    "price": 4490,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 1,
+    "baths": 2,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2025-07-24T10:34:30Z",
+    "updatedAt": "2025-06-15T20:03:43Z"
+  },
+  {
+    "_id": "fa77b5e72bd5fed5f57e21a3",
+    "houseId": "da243412c8f0b0bc1546f262",
+    "name": "Room 286",
+    "description": "Spacious room in Palm Residency.",
+    "price": 3117,
+    "status": "booked",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 2,
+    "baths": 2,
+    "smartLockEnabled": true,
+    "lockStatus": "unlocked",
+    "planType": "monthly",
+    "createdAt": "2025-09-23T13:01:49Z",
+    "updatedAt": "2024-11-22T23:48:57Z"
+  },
+  {
+    "_id": "0d7806bef844e2b022ad8a60",
+    "houseId": "51b27f24f8017d329039568a",
+    "name": "Room 385",
+    "description": "Modern room in Sunset Court.",
+    "price": 3966,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 2,
+    "baths": 2,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2024-12-26T06:51:03Z",
+    "updatedAt": "2025-04-24T00:42:18Z"
+  },
+  {
+    "_id": "27764063a7571928810872d9",
+    "houseId": "143c219fd86c57cdea31fabe",
+    "name": "Room 404",
+    "description": "Modern room in Riverside Residency.",
+    "price": 1494,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 2,
+    "baths": 2,
+    "smartLockEnabled": false,
+    "lockStatus": "unlocked",
+    "planType": "monthly",
+    "createdAt": "2024-11-10T16:50:05Z",
+    "updatedAt": "2025-09-02T12:28:45Z"
+  },
+  {
+    "_id": "2a14fa47c80212b3c7c71f64",
+    "houseId": "b75fd7bb4ca40d4a10c0ecd3",
+    "name": "Room 285",
+    "description": "Cozy room in Ocean Villa.",
+    "price": 3770,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 2,
+    "baths": 1,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2025-02-14T05:00:34Z",
+    "updatedAt": "2025-06-27T06:59:30Z"
+  },
+  {
+    "_id": "b8ab977011c5734bff06a59b",
+    "houseId": "c20bad9af852ceb6d397a3c1",
+    "name": "Room 151",
+    "description": "Modern room in Vista Heights.",
+    "price": 5221,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 3,
+    "baths": 1,
+    "smartLockEnabled": false,
+    "lockStatus": "unlocked",
+    "planType": "yearly",
+    "createdAt": "2024-12-08T07:13:44Z",
+    "updatedAt": "2024-12-18T22:17:03Z"
+  },
+  {
+    "_id": "6bcd7a01ce32d111a22eb34b",
+    "houseId": "c20bad9af852ceb6d397a3c1",
+    "name": "Room 454",
+    "description": "Modern room in Vista Heights.",
+    "price": 2156,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 3,
+    "baths": 2,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2024-11-08T03:21:07Z",
+    "updatedAt": "2025-03-06T13:46:09Z"
+  },
+  {
+    "_id": "92f891534902731949674e54",
+    "houseId": "2b921599152474352766da6b",
+    "name": "Room 329",
+    "description": "Cozy room in Golden Lodge.",
+    "price": 5174,
+    "status": "booked",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 1,
+    "baths": 2,
+    "smartLockEnabled": false,
+    "lockStatus": "unlocked",
+    "planType": "yearly",
+    "createdAt": "2025-07-12T22:36:27Z",
+    "updatedAt": "2024-11-06T15:13:54Z"
+  },
+  {
+    "_id": "25b626ee106af3f52c9983a5",
+    "houseId": "da243412c8f0b0bc1546f262",
+    "name": "Room 295",
+    "description": "Modern room in Palm Residency.",
+    "price": 5120,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 2,
+    "baths": 1,
+    "smartLockEnabled": true,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2025-08-11T02:53:52Z",
+    "updatedAt": "2025-09-23T12:39:20Z"
+  },
+  {
+    "_id": "2ea1cb47992c1e42c0e4b213",
+    "houseId": "f0f6dc02f6c298b29a7ad91f",
+    "name": "Room 383",
+    "description": "Cozy room in Ocean Residency.",
+    "price": 5026,
+    "status": "pending",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 1,
+    "baths": 2,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2025-06-02T19:38:27Z",
+    "updatedAt": "2025-01-31T06:38:07Z"
+  },
+  {
+    "_id": "5b4831d1272b9d9747bf4d2e",
+    "houseId": "01de1aa4474ae502f26f10e9",
+    "name": "Room 213",
+    "description": "Spacious room in Silver Heights.",
+    "price": 3663,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 1,
+    "baths": 2,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2025-04-12T03:24:57Z",
+    "updatedAt": "2025-04-06T09:01:44Z"
+  },
+  {
+    "_id": "4f22d584457d6500f4910839",
+    "houseId": "f37e27e6b07676b5d47e2c3f",
+    "name": "Room 263",
+    "description": "Cozy room in Vista Apartments.",
+    "price": 3546,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 1,
+    "baths": 1,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2025-02-21T06:56:49Z",
+    "updatedAt": "2024-10-23T18:55:13Z"
+  },
+  {
+    "_id": "1aa9ad2671f0cf858c931c0e",
+    "houseId": "da243412c8f0b0bc1546f262",
+    "name": "Room 109",
+    "description": "Spacious room in Palm Residency.",
+    "price": 2566,
+    "status": "pending",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 1,
+    "baths": 2,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2025-06-21T01:02:08Z",
+    "updatedAt": "2025-08-19T10:15:42Z"
+  },
+  {
+    "_id": "785c9b2584ef15c58ca4ce98",
+    "houseId": "0c54140508a8f9c51aba3ddc",
+    "name": "Room 334",
+    "description": "Cozy room in Ocean Residency.",
+    "price": 1708,
+    "status": "booked",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 2,
+    "baths": 1,
+    "smartLockEnabled": true,
+    "lockStatus": "locked",
+    "planType": "monthly",
+    "createdAt": "2025-05-23T20:22:19Z",
+    "updatedAt": "2025-10-19T13:36:56Z"
+  },
+  {
+    "_id": "ab8e9b015580768abffdcab9",
+    "houseId": "ee315f0a4d331e4ad17d50ac",
+    "name": "Room 313",
+    "description": "Cozy room in Riverside Residency.",
+    "price": 1501,
+    "status": "available",
+    "images": [
+      "/images/room1.jpg",
+      "/images/room2.jpg"
+    ],
+    "beds": 3,
+    "baths": 2,
+    "smartLockEnabled": false,
+    "lockStatus": "locked",
+    "planType": "yearly",
+    "createdAt": "2025-01-14T17:31:44Z",
+    "updatedAt": "2025-02-02T15:49:27Z"
+  }
+]
