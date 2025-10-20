@@ -29,7 +29,6 @@ export default function DashboardNotifications() {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
 
-  // 🔔 Mock Notifications
   const [notifications, setNotifications] = useState([
     {
       _id: "1",
@@ -37,6 +36,7 @@ export default function DashboardNotifications() {
       message:
         "There will be a water supply interruption in Block B tomorrow from 9 AM to 12 PM.",
       type: "maintenance",
+      audience: "all",
       createdAt: "2025-10-13T08:00:00Z",
     },
     {
@@ -45,6 +45,7 @@ export default function DashboardNotifications() {
       message:
         "Your subscription payment for October is due in 2 days. Kindly renew to avoid service interruption.",
       type: "payment",
+      audience: "user",
       createdAt: "2025-10-12T11:45:00Z",
     },
     {
@@ -53,6 +54,7 @@ export default function DashboardNotifications() {
       message:
         "Your booking for Room 23 has been approved. Welcome to WunkatHomes!",
       type: "booking",
+      audience: "user",
       createdAt: "2025-10-10T14:30:00Z",
     },
   ]);
@@ -61,9 +63,10 @@ export default function DashboardNotifications() {
     title: "",
     message: "",
     type: "system",
+    audience: "all",
   });
 
-  // 🗑️ Handle Delete Notification
+  // 🗑️ Delete notification
   const handleDelete = (id: string) => {
     Swal.fire({
       title: "Delete Notification?",
@@ -88,7 +91,7 @@ export default function DashboardNotifications() {
     });
   };
 
-  // ➕ Handle Create Notification
+  // ➕ Create notification
   const handleCreate = () => {
     if (!newNotification.title || !newNotification.message) {
       Swal.fire({
@@ -106,7 +109,7 @@ export default function DashboardNotifications() {
     };
 
     setNotifications((prev) => [newNotif, ...prev]);
-    setNewNotification({ title: "", message: "", type: "system" });
+    setNewNotification({ title: "", message: "", type: "system", audience: "all" });
     setOpen(false);
 
     Swal.fire({
@@ -127,7 +130,7 @@ export default function DashboardNotifications() {
 
   return (
     <div className="py-6 space-y-6">
-      {/* Page Header */}
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Bell className="text-primary" />
@@ -136,89 +139,143 @@ export default function DashboardNotifications() {
           </h2>
         </div>
 
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button className="flex items-center gap-2">
-              <Plus className="w-4 h-4" />
-              Create Notification
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-md">
-            <DialogHeader>
-              <DialogTitle>Create New Notification</DialogTitle>
-            </DialogHeader>
+       <Dialog open={open} onOpenChange={setOpen}>
+  <DialogTrigger asChild>
+    <Button className="flex items-center gap-2">
+      <Plus className="w-4 h-4" />
+      Create Notification
+    </Button>
+  </DialogTrigger>
 
-            <div className="space-y-3 py-2">
-              <Input
-                placeholder="Notification Title"
-                value={newNotification.title}
-                onChange={(e) =>
-                  setNewNotification({ ...newNotification, title: e.target.value })
-                }
-              />
-              <Textarea
-                placeholder="Notification Message"
-                rows={4}
-                value={newNotification.message}
-                onChange={(e) =>
-                  setNewNotification({ ...newNotification, message: e.target.value })
-                }
-              />
-              <Select
-                value={newNotification.type}
-                onValueChange={(value) =>
-                  setNewNotification({ ...newNotification, type: value })
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="system">System</SelectItem>
-                  <SelectItem value="maintenance">Maintenance</SelectItem>
-                  <SelectItem value="payment">Payment</SelectItem>
-                  <SelectItem value="booking">Booking</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+  <DialogContent className="max-w-md">
+    <DialogHeader>
+      <DialogTitle>Create New Notification</DialogTitle>
+    </DialogHeader>
 
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setOpen(false)}>
-                Cancel
-              </Button>
-              <Button onClick={handleCreate}>Create</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+    <div className="space-y-3 py-2">
+      {/* 📝 Title */}
+      <Input
+        placeholder="Notification Title"
+        value={newNotification.title}
+        onChange={(e) =>
+          setNewNotification({ ...newNotification, title: e.target.value })
+        }
+      />
+
+      {/* 💬 Message */}
+      <Textarea
+        placeholder="Notification Message"
+        rows={4}
+        value={newNotification.message}
+        onChange={(e) =>
+          setNewNotification({ ...newNotification, message: e.target.value })
+        }
+      />
+
+      {/* Type + Audience */}
+      <div className="flex items-center justify-between gap-2">
+        {/* Type */}
+        <Select
+          value={newNotification.type}
+          onValueChange={(value) =>
+            setNewNotification({ ...newNotification, type: value })
+          }
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select Type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="system">System</SelectItem>
+            <SelectItem value="maintenance">Maintenance</SelectItem>
+            <SelectItem value="payment">Payment</SelectItem>
+            <SelectItem value="booking">Booking</SelectItem>
+          </SelectContent>
+        </Select>
+
+        {/* Audience */}
+        <Select
+          value={newNotification.audience}
+          onValueChange={(value) =>
+            setNewNotification({ ...newNotification, audience: value })
+          }
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select Audience" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All users</SelectItem>
+            <SelectItem value="user">Tenants only</SelectItem>
+            <SelectItem value="admin">Admins only</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* 📧 Email Notification Option */}
+      <div className="flex items-start gap-2 mt-3">
+        <input
+          id="emailNotify"
+          type="checkbox"
+          checked={newNotification.sendEmail || false}
+          onChange={(e) =>
+            setNewNotification({ ...newNotification, sendEmail: e.target.checked })
+          }
+          className="mt-1 accent-primary"
+        />
+        <label
+          htmlFor="emailNotify"
+          className="text-sm text-gray-700 dark:text-gray-300 cursor-pointer"
+        >
+          Also send this notification to the user’s email inbox
+        </label>
+      </div>
+
+      {/* ℹ️ Explanation (shown when checked) */}
+      {newNotification.sendEmail && (
+        <p className="text-xs text-muted-foreground bg-muted/40 p-2 rounded-md border border-muted mt-1">
+          When enabled, this notification will also be delivered via email to all
+          selected recipients. Depending on your email settings, delivery might
+          take a few seconds.
+        </p>
+      )}
+    </div>
+
+    <DialogFooter>
+      <Button variant="outline" onClick={() => setOpen(false)}>
+        Cancel
+      </Button>
+      <Button onClick={handleCreate}>Create</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap gap-3  justify-between items-center">
+      <div className="flex flex-wrap gap-3 justify-between items-center">
         <div className="flex items-center gap-3">
-
-        <Input
-          placeholder="Search notifications..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="max-w-xs"
-        />
-        <Select onValueChange={setFilter} defaultValue="all">
-          <SelectTrigger className="w-[160px]">
-            <SelectValue placeholder="All Types" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All</SelectItem>
-            <SelectItem value="payment">Payment</SelectItem>
-            <SelectItem value="booking">Booking</SelectItem>
-            <SelectItem value="maintenance">Maintenance</SelectItem>
-            <SelectItem value="system">System</SelectItem>
-          </SelectContent>
-        </Select>
-          </div>
+          <Input
+            placeholder="Search notifications..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="max-w-xs"
+          />
+          <Select onValueChange={setFilter} defaultValue="all">
+            <SelectTrigger className="w-[160px]">
+              <SelectValue placeholder="All Types" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="payment">Payment</SelectItem>
+              <SelectItem value="booking">Booking</SelectItem>
+              <SelectItem value="maintenance">Maintenance</SelectItem>
+              <SelectItem value="system">System</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
         <Badge variant="outline">{filtered.length} Total</Badge>
       </div>
 
-      {/* Notification List */}
+      {/* Notifications List */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -229,9 +286,6 @@ export default function DashboardNotifications() {
           filtered.map((n) => (
             <motion.div
               key={n._id}
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.2 }}
               className="border border-gray-300 dark:border-neutral-800 rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-neutral-800/40 transition group"
             >
               <div className="flex justify-between items-start">
@@ -243,26 +297,18 @@ export default function DashboardNotifications() {
                     {n.message}
                   </p>
                   <div className="mt-2 flex items-center gap-2">
-                    <span
-                      className={`text-xs px-2 py-1 rounded-full capitalize ${
-                        n.type === "maintenance"
-                          ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-800/30 dark:text-yellow-300"
-                          : n.type === "payment"
-                          ? "bg-red-100 text-red-700 dark:bg-red-800/30 dark:text-red-300"
-                          : n.type === "booking"
-                          ? "bg-blue-100 text-blue-700 dark:bg-blue-800/30 dark:text-blue-300"
-                          : "bg-gray-100 text-gray-700 dark:bg-gray-800/30 dark:text-gray-300"
-                      }`}
-                    >
+                    <Badge variant="outline" className="capitalize">
                       {n.type}
-                    </span>
+                    </Badge>
+                    <Badge variant="secondary" className="capitalize">
+                      {n.audience}
+                    </Badge>
                     <span className="text-xs text-gray-500">
                       {new Date(n.createdAt).toLocaleDateString()}
                     </span>
                   </div>
                 </div>
 
-                {/* 🗑️ Delete Button */}
                 <button
                   onClick={() => handleDelete(n._id)}
                   className="opacity-0 group-hover:opacity-100 transition text-gray-400 hover:text-red-500"
