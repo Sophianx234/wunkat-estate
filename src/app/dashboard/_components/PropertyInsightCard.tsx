@@ -10,6 +10,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { TrendingUp, TrendingDown, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Property = {
   _id?: string;
@@ -28,42 +29,56 @@ type PropertyInsightCardProps = {
 export default function PropertyInsightCard({ onClose }: PropertyInsightCardProps) {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Mock data – replace with fetch("/api/properties/insights")
-    const timer = setTimeout(() => {
-      setProperties([
-        {
-          name: "Palm Heights",
-          city: "Accra",
-          occupancy: 95,
-          revenue: 18200,
-          image: "/images/palm-heights.jpg",
-          growth: 12.5,
-        },
-        {
-          name: "Azure Lodge",
-          city: "Kumasi",
-          occupancy: 89,
-          revenue: 14900,
-          image: "/images/azure-lodge.jpg",
-          growth: -3.2,
-        },
-        {
-          name: "Sunset Villa",
-          city: "Takoradi",
-          occupancy: 80,
-          revenue: 13200,
-          growth: 8.1,
-        },
-      ]);
-      setLoading(false);
-    }, 800);
-    return () => clearTimeout(timer);
+    const fetchProperties = async () => {
+      try {
+        const res = await fetch("/api/dashboard/properties-insights");
+        if (!res.ok) throw new Error("Failed to fetch property insights");
+        const data = await res.json();
+        setProperties(data);
+      } catch (err: any) {
+        console.error(err);
+        setError("Failed to load property insights");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProperties();
   }, []);
 
-  if (loading) return <p className="text-gray-500">Loading property insights...</p>;
+  if (loading) {
+    // 🩶 Skeleton Loader (3 rows)
+    return (
+      <Card className="w-full h-full max-w-sm rounded-xl shadow">
+        <CardHeader>
+          <CardTitle>Top Performing Properties</CardTitle>
+          <CardDescription>Insights from current rent revenue trends</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <Skeleton className="h-10 w-10 rounded-full" />
+                <div className="space-y-2">
+                  <Skeleton className="h-3 w-24" />
+                  <Skeleton className="h-3 w-16" />
+                </div>
+              </div>
+              <div className="space-y-2 text-right">
+                <Skeleton className="h-3 w-14 ml-auto" />
+                <Skeleton className="h-3 w-10 ml-auto" />
+              </div>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+    );
+  }
 
+  if (error) return <p className="text-red-500 text-sm">{error}</p>;
   if (properties.length === 0)
     return <p className="text-gray-500">No property insights available.</p>;
 
@@ -72,7 +87,9 @@ export default function PropertyInsightCard({ onClose }: PropertyInsightCardProp
       <CardHeader className="flex flex-row items-start justify-between">
         <div>
           <CardTitle>Top Performing Properties</CardTitle>
-          <CardDescription>Insights from current rent revenue trends</CardDescription>
+          <CardDescription>
+            Insights from current rent revenue trends
+          </CardDescription>
         </div>
         {onClose && (
           <button

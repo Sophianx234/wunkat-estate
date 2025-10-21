@@ -1,7 +1,5 @@
-// Update the import path below if your Avatar component is located elsewhere
-// Update the import path below if your Avatar component is located elsewhere
-// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 'use client'
+
 import { useEffect, useState } from "react";
 import DevicesOverviewCard from "../../_components/DevicesOverviewCard";
 import HousesAddedTable from "../../_components/HouseAddedTable";
@@ -12,6 +10,8 @@ import TeamMembersCard from "../../_components/TeamMembersCard";
 import TenantSummary from "../../_components/TenantSummary";
 import TransactionHistory from "../../_components/TransactionTable";
 import RecentActivity from "../overview/RecentActivity";
+import { Skeleton } from "@/components/ui/skeleton";
+import StatCardSkeleton from "@/components/skeletons/StatsCardSkeleton";
 
 export interface StatData {
   title: string;
@@ -27,57 +27,58 @@ export interface DashboardStats {
 }
 
 export default function Finance() {
-  const [cardStats,setCardStats] = useState<DashboardStats>({})
-  const [isLoading,setIsLoading] = useState(true)
+  const [cardStats, setCardStats] = useState<DashboardStats | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    const getStats = async()=>{
-      try{
-
-        
-        const res = await fetch("/api/dashboard/stats")
-        const data = await res.json()
-        if(res.ok){
-          console.log(data)
-          setCardStats(data)
+    const getStats = async () => {
+      try {
+        const res = await fetch("/api/dashboard/stats");
+        if (res.ok) {
+          const data = await res.json();
+          console.log(data);
+          setCardStats(data);
         }
-      }catch(err){
-        console.log(err)
-
-      }finally{
-        setIsLoading(false)
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setIsLoading(false);
       }
-      
-    }
-    getStats()
+    };
+    getStats();
   }, []);
 
-  if(isLoading) return <>loading</>
   return (
     <div className="">
-     
-      
+      {/* Stat cards */}
       <div className="grid grid-cols-3 gap-4 w-full mb-5">
-
-        <StatCard {...cardStats.newSubscriptions} />
-      <StatCard {...cardStats.totalRevenue} curr={true} />
-      <StatCard {...cardStats.avgRent}  curr={true}/>
-        </div>
-      
-      <RecentActivity/>
-      <TenantSummary/>
-      <SmartLockOverview/>
-      <div className="grid grid-cols-[1.5fr_1.5fr_1fr]  mb-6 gap-2">
-      <PropertyInsightCard/>
-      <DevicesOverviewCard/>
-
-      <TeamMembersCard/>
+        {isLoading ? (
+          <>
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+          </>
+        ) : (
+          <>
+            <StatCard {...cardStats!.newSubscriptions} />
+            <StatCard {...cardStats!.totalRevenue} curr={true} />
+            <StatCard {...cardStats!.avgRent} curr={true} />
+          </>
+        )}
       </div>
 
-<HousesAddedTable loading={false}/>
-     
-      <TransactionHistory/>
-      
-      
+      <RecentActivity />
+      <TenantSummary />
+      <SmartLockOverview />
+
+      <div className="grid grid-cols-[1.5fr_1.5fr_1fr] mb-6 gap-2">
+        <PropertyInsightCard />
+        <DevicesOverviewCard />
+        <TeamMembersCard />
+      </div>
+
+      <HousesAddedTable loading={false} />
+      <TransactionHistory />
     </div>
   );
 }

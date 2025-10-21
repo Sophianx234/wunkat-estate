@@ -5,59 +5,50 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useEffect, useState } from "react";
 
-const properties = [
-  {
-    name: "Palm Heights",
-    city: "Accra",
-    smartLock: true,
-    occupancy: "92%",
-    units: "12 / 13",
-    revenue: "₵14,200",
-  },
-  {
-    name: "Garden Court",
-    city: "Tamale",
-    smartLock: false,
-    occupancy: "75%",
-    units: "9 / 12",
-    revenue: "₵10,500",
-  },
-  {
-    name: "Azure Lodge",
-    city: "Kumasi",
-    smartLock: true,
-    occupancy: "88%",
-    units: "8 / 9",
-    revenue: "₵11,900",
-  },
-  {
-    name: "Sunset Villa",
-    city: "Takoradi",
-    smartLock: true,
-    occupancy: "80%",
-    units: "10 / 12",
-    revenue: "₵9,800",
-  },
-  {
-    name: "Hilltop Apartments",
-    city: "Cape Coast",
-    smartLock: false,
-    occupancy: "70%",
-    units: "7 / 10",
-    revenue: "₵8,600",
-  },
-];
+export type PropertyOverviewType = {
+  name: string;
+  city: string;
+  smartLock: boolean;
+  occupancy: string;
+  units: string;
+  revenue: string;
+};
 
 export default function PropertyOverview() {
+  const [properties, setProperties] = useState<PropertyOverviewType[]>([]);
+  const [showAll, setShowAll] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getOverview = async () => {
+      try {
+        const res = await fetch("/api/dashboard/property-overview");
+        if (res.ok) {
+          const data = await res.json();
+          setProperties(data);
+        }
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getOverview();
+  }, []);
+
+  const visibleProperties = showAll ? properties : properties.slice(0, 5);
+
   return (
     <Card className="w-full max-w-5xl mx-auto mb-4">
       <CardContent className="p-6">
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">Property Overview</h2>
-          <Button variant="outline" size="sm">
-            View All
+          <Button variant="outline" size="sm" onClick={() => setShowAll(!showAll)}>
+            {showAll ? "Show Less" : "View All"}
           </Button>
         </div>
 
@@ -75,48 +66,79 @@ export default function PropertyOverview() {
           </TableHeader>
 
           <TableBody>
-            {properties.map((p, idx) => (
-              <TableRow key={idx}>
-                {/* Property Name */}
-                <TableCell>
-                  <div className="flex items-center space-x-3">
-                    <Avatar className="h-8 w-8">
-                      <AvatarFallback>{p.name.slice(0, 2)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="font-medium">{p.name}</p>
-                    </div>
-                  </div>
-                </TableCell>
+            {loading
+              ? Array.from({ length: 5 }).map((_, i) => (
+                  <TableRow key={i}>
+                    <TableCell>
+                      <div className="flex items-center space-x-3">
+                        <Skeleton className="h-8 w-8 rounded-full" />
+                        <div>
+                          <Skeleton className="h-4 w-32 mb-1" />
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-20" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-16" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-16" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-12" />
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Skeleton className="h-4 w-20 ml-auto" />
+                    </TableCell>
+                  </TableRow>
+                ))
+              : visibleProperties.map((p, idx) => (
+                  <TableRow key={idx}>
+                    {/* Property Name */}
+                    <TableCell>
+                      <div className="flex items-center space-x-3">
+                        <Avatar className="h-8 w-8">
+                          <AvatarFallback>{p.name.slice(0, 2)}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-medium">{p.name}</p>
+                        </div>
+                      </div>
+                    </TableCell>
 
-                {/* City */}
-                <TableCell>{p.city}</TableCell>
+                    {/* City */}
+                    <TableCell>{p.city}</TableCell>
 
-                {/* Smart Lock */}
-                <TableCell>
-                  {p.smartLock ? (
-                    <Badge className="bg-green-100 text-green-700 hover:bg-green-100">
-                      Enabled
-                    </Badge>
-                  ) : (
-                    <Badge variant="secondary">No Lock</Badge>
-                  )}
-                </TableCell>
+                    {/* Smart Lock */}
+                    <TableCell>
+                      {p.smartLock ? (
+                        <Badge className="bg-green-100 text-green-700 hover:bg-green-100">Enabled</Badge>
+                      ) : (
+                        <Badge variant="secondary">No Lock</Badge>
+                      )}
+                    </TableCell>
 
-                {/* Occupancy */}
-                <TableCell>{p.occupancy}</TableCell>
+                    {/* Occupancy */}
+                    <TableCell>{p.occupancy}</TableCell>
 
-                {/* Units */}
-                <TableCell>{p.units}</TableCell>
+                    {/* Units */}
+                    <TableCell>{p.units}</TableCell>
 
-                {/* Revenue */}
-                <TableCell className="text-right font-medium">{p.revenue}</TableCell>
-              </TableRow>
-            ))}
+                    {/* Revenue */}
+                    <TableCell className="text-right font-medium">{p.revenue}</TableCell>
+                  </TableRow>
+                ))}
           </TableBody>
         </Table>
 
-        
+        {/* If collapsed and there are more items */}
+        {!showAll && !loading && properties.length > 5 && (
+          <p className="text-sm text-muted-foreground text-center mt-3">
+            Showing 5 of {properties.length} properties
+          </p>
+        )}
       </CardContent>
     </Card>
   );

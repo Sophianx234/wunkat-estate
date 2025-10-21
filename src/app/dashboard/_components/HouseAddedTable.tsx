@@ -1,9 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   Card,
   CardHeader,
-  CardTitle,
   CardContent,
 } from "@/components/ui/card";
 import {
@@ -19,52 +19,54 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 import { Lock, Unlock } from "lucide-react";
 
-export default function RecentlyAddedHousesTable({
-  loading = false,
-}: {
-  loading?: boolean;
-}) {
-  const recentHouses = [
-    {
-      id: 1,
-      name: "Sunset Villa",
-      location: "East Legon, Accra",
-      smartlock: true,
-      createdAt: "2025-10-13T10:00:00Z",
-    },
-    {
-      id: 2,
-      name: "Palm Heights",
-      location: "Osu, Accra",
-      smartlock: false,
-      createdAt: "2025-10-12T15:30:00Z",
-    },
-    {
-      id: 3,
-      name: "Ocean Breeze Apartments",
-      location: "Labadi, Accra",
-      smartlock: true,
-      createdAt: "2025-10-10T11:45:00Z",
-    },
-    {
-      id: 4,
-      name: "Wunkat Deluxe House",
-      location: "Tema Community 25",
-      smartlock: false,
-      createdAt: "2025-10-08T09:10:00Z",
-    },
-  ];
+type House = {
+  id: string;
+  name: string;
+  location: string;
+  smartlock: boolean;
+  createdAt: string;
+};
+
+export default function RecentlyAddedHousesTable() {
+  const [recentHouses, setRecentHouses] = useState<House[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch recent houses from backend
+  useEffect(() => {
+    const fetchRecentHouses = async () => {
+      try {
+        const res = await fetch("/api/dashboard/recent-houses");
+        if (!res.ok) throw new Error("Failed to fetch");
+        const data = await res.json();
+        setRecentHouses(data);
+      } catch (error) {
+        console.error("Error loading recent houses:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecentHouses();
+  }, []);
 
   return (
     <Card className="p-3 rounded-xl border mb-3 border-gray-200 dark:border-neutral-800 shadow-sm hover:shadow-md transition-all">
       <CardHeader className="pt-2">
-        
-          <h2 className="text-lg font-semibold"> Recently Added Houses</h2>
-
+        <h2 className="text-lg font-semibold">Recently Added Houses</h2>
       </CardHeader>
+
       <CardContent>
         {loading ? (
-          <Skeleton className="h-[180px]" />
+          // 🧱 Skeleton Loading State
+          <div className="space-y-3">
+            {[...Array(4)].map((_, i) => (
+              <Skeleton key={i} className="h-[40px] w-full" />
+            ))}
+          </div>
+        ) : recentHouses.length === 0 ? (
+          <p className="text-center text-sm text-gray-500 dark:text-gray-400 py-6">
+            No houses added yet.
+          </p>
         ) : (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -81,7 +83,7 @@ export default function RecentlyAddedHousesTable({
                   <TableHead className="text-xs uppercase text-gray-500 dark:text-gray-400">
                     Location
                   </TableHead>
-                  <TableHead className="text-xs uppercase text-gray-500 dark:text-gray-400 ">
+                  <TableHead className="text-xs uppercase text-gray-500 dark:text-gray-400">
                     Smartlock
                   </TableHead>
                   <TableHead className="text-xs uppercase text-gray-500 dark:text-gray-400 text-right">
@@ -99,9 +101,11 @@ export default function RecentlyAddedHousesTable({
                     <TableCell className="font-medium text-gray-800 dark:text-gray-200">
                       {house.name}
                     </TableCell>
+
                     <TableCell className="text-gray-600 dark:text-gray-400">
                       {house.location}
                     </TableCell>
+
                     <TableCell className="text-center">
                       {house.smartlock ? (
                         <Badge
@@ -119,6 +123,7 @@ export default function RecentlyAddedHousesTable({
                         </Badge>
                       )}
                     </TableCell>
+
                     <TableCell className="text-right text-sm text-gray-500 dark:text-gray-400">
                       {new Date(house.createdAt).toLocaleDateString("en-GB", {
                         day: "2-digit",
