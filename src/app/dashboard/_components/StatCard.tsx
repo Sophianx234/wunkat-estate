@@ -13,6 +13,7 @@ interface StatCardProps {
   trendData: number[];
   trendLabel?: string;
   changePercent: number;
+  curr?:boolean
 }
 
 export default function StatCard({
@@ -21,6 +22,7 @@ export default function StatCard({
   trendData,
   trendLabel = "Since last week",
   changePercent,
+  curr=false
 }: StatCardProps) {
   const isPositive = changePercent >= 0;
 
@@ -60,7 +62,7 @@ export default function StatCard({
       </div>
 
       {/* Value */}
-      <h2 className="text-3xl font-bold mt-2">{value.toLocaleString()}</h2>
+      <h2 className="text-3xl font-bold mt-2">{curr&&'GH₵'} {value.toLocaleString()}</h2>
 
       {/* Chart */}
       <div className="h-10 mt-2">
