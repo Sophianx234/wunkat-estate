@@ -77,7 +77,7 @@ export default function Finance() {
         <TeamMembersCard />
       </div>
 
-      <HousesAddedTable loading={false} />
+      <HousesAddedTable />
       <TransactionHistory />
     </div>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -15,46 +16,50 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue, // ✅ Add this import
+  SelectValue,
 } from "@/components/ui/select";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
 
 export default function ReturningRateCard() {
-  const data = {
-    labels: [
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "October",
-      "December",
-    ],
-    datasets: [
-      {
-        label: "Monthly rent revenue for 2025",
-        data: [20000, 22000, 25000, 18000, 24000, 23000, 22000, 30000],
-        borderColor: "#000000",
-        backgroundColor: "#000000",
-        borderWidth: 2,
-        tension: 0.4,
-        pointRadius: 3,
-        pointBackgroundColor: "#000000",
-      },
-      {
-        label: "Monthly rent revenue for 2024",
-        data: [15000, 18000, 19000, 17000, 18000, 19000, 21000, 23000],
-        borderColor: "#9CA3AF",
-        backgroundColor: "#9CA3AF",
-        borderWidth: 2,
-        tension: 0.4,
-        pointRadius: 3,
-        pointBackgroundColor: "#9CA3AF",
-      },
-    ],
-  };
+  const currentYear = new Date().getFullYear().toString();
+  const [year, setYear] = useState(currentYear);
+  const [chartData, setChartData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [rateChange, setRateChange] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchChartData = async () => {
+      setIsLoading(true);
+      try {
+        const res = await fetch(`/api/dashboard/returning-rate?year=${year}`);
+        const data = await res.json();
+
+        setChartData(data);
+
+        // ✅ Calculate the total revenue for both years
+        const currentYearData = data?.datasets?.[0]?.data || [];
+        const prevYearData = data?.datasets?.[1]?.data || [];
+
+        const currentTotal = currentYearData.reduce((a: number, b: number) => a + b, 0);
+        const prevTotal = prevYearData.reduce((a: number, b: number) => a + b, 0);
+
+        // ✅ Calculate growth rate
+        if (prevTotal > 0) {
+          const change = ((currentTotal - prevTotal) / prevTotal) * 100;
+          setRateChange(change);
+        } else {
+          setRateChange(null);
+        }
+      } catch (err) {
+        console.error("Error loading returning rate data:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchChartData();
+  }, [year]);
 
   const options = {
     responsive: true,
@@ -96,17 +101,39 @@ export default function ReturningRateCard() {
     },
   };
 
+  const currentTotal =
+    chartData?.datasets?.[0]?.data?.reduce((a: number, b: number) => a + b, 0) || 0;
+
   return (
     <div className="bg-white rounded-xl shadow p-6">
       <div className="flex justify-between items-start">
         <div>
           <h2 className="font-semibold text-lg text-gray-800">Returning Rate</h2>
-          <p className="text-2xl font-bold mt-2">₵42,379</p>
-          <p className="text-green-600 text-sm font-medium">+2.5%</p>
+
+          {isLoading ? (
+            <p className="text-gray-500 text-sm mt-2">Loading...</p>
+          ) : (
+            <>
+              <p className="text-2xl font-bold mt-2">
+                GH₵ {currentTotal.toLocaleString()}
+              </p>
+
+              {rateChange !== null && (
+                <p
+                  className={`text-sm font-medium ${
+                    rateChange >= 0 ? "text-green-600" : "text-red-600"
+                  }`}
+                >
+                  {rateChange >= 0 ? "+" : ""}
+                  {rateChange.toFixed(1)}%
+                </p>
+              )}
+            </>
+          )}
         </div>
 
-        {/* ✅ Fixed Select dropdown */}
-        <Select defaultValue="2025">
+        {/* Year Select */}
+        <Select value={year} onValueChange={setYear}>
           <SelectTrigger className="w-[100px] border px-3 py-1 rounded-md text-sm">
             <SelectValue placeholder="Year" />
           </SelectTrigger>
@@ -120,7 +147,25 @@ export default function ReturningRateCard() {
 
       {/* Chart */}
       <div className="h-48 mt-6">
-        <Line data={data} options={options} />
+        {chartData ? (
+          <Line
+            data={{
+              labels: chartData.labels,
+              datasets: chartData.datasets.map((d: any) => ({
+                ...d,
+                borderWidth: 2,
+                tension: 0.4,
+                pointRadius: 3,
+                pointBackgroundColor: d.borderColor,
+              })),
+            }}
+            options={options}
+          />
+        ) : (
+          <div className="flex items-center justify-center h-full text-gray-400 text-sm">
+            Loading chart...
+          </div>
+        )}
       </div>
     </div>
   );
