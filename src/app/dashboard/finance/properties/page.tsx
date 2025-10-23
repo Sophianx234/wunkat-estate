@@ -18,14 +18,20 @@ import {
 } from "@/components/ui/dialog";
 import HouseCard from "../../_components/HouseCard";
 import PropertyCard from "../../_components/PropertyCard";
-
+import { IHouse } from "@/models/House";
+import { IRoom } from "../../properties/page";
+export interface ModalDataResponse {
+    description: string;
+    items: (IRoom|IHouse)[];
+  
+}
 export default function Overview() {
   const [stats, setStats] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
 
   // 🔹 Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalData, setModalData] = useState<any[]>([]);
+  const [modalData, setModalData] = useState<ModalDataResponse|null>(null);
   const [modalLoading, setModalLoading] = useState(false);
   const [selectedType, setSelectedType] = useState<string>("");
 
@@ -50,14 +56,14 @@ export default function Overview() {
     setSelectedType(type);
     setIsModalOpen(true);
     setModalLoading(true);
-    setModalData([]);
+    setModalData(null);
 
     try {
       const res = await fetch(`/api/dashboard/property/${type}`);
       const data = await res.json();
       if (res.ok){
         console.log("Fetched modal data:", data.data);
-        setModalData(data.data.items);
+        setModalData(data.data);
       } 
     } catch (error) {
       console.error("Failed to fetch modal data:", error);
@@ -101,49 +107,49 @@ export default function Overview() {
       title: "Total Houses",
       value: stats.totalHouses,
       icon: GiSpookyHouse,
-      buttonLabel: "View Houses",
+      buttonLabel: "View ",
       key: "houses",
     },
     {
       title: "Total Rooms",
       value: stats.totalRooms,
       icon: GiBed,
-      buttonLabel: "View Rooms",
+      buttonLabel: "View ",
       key: "rooms",
     },
     {
       title: "Smartlock Rooms",
       value: stats.smartLockRooms,
       icon: Lock,
-      buttonLabel: "Manage Locks",
+      buttonLabel: "view",
       key: "smartlocks",
     },
     {
       title: "Available Rooms",
       value: stats.availableRooms,
       icon: Unlock,
-      buttonLabel: "View Available",
+      buttonLabel: "View ",
       key: "available",
     },
     {
       title: "Booked Rooms",
       value: stats.bookedRooms,
       icon: GiBed,
-      buttonLabel: "View Booked",
+      buttonLabel: "View ",
       key: "booked",
     },
     {
       title: "Pending Rooms",
       value: stats.pendingRooms,
       icon: Clock,
-      buttonLabel: "View Pending",
+      buttonLabel: "View ",
       key: "pending",
     },
     {
       title: "Manually Locked Rooms",
       value: stats.manuallyLockedRooms,
       icon: KeyRound,
-      buttonLabel: "View Locked",
+      buttonLabel: "View",
       key: "locked",
     },
   ];
@@ -218,7 +224,7 @@ export default function Overview() {
       <RoomLockStatusTable />
 
       {/* 🔹 Modal Section */}
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
   <DialogContent
     className="sm:max-w-3xl p-6 rounded-2xl shadow-lg max-h-[80vh] flex flex-col"
   >
@@ -229,26 +235,34 @@ export default function Overview() {
     </DialogHeader>
 
     {/* Scrollable content container */}
-    <div className="overflow-y-auto scrollbar-hide mt-4 flex-1 pr-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-neutral-700 scrollbar-track-transparent">
+    <div className="overflow-y-auto scrollbar-hide flex-1 mt-4 pr-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-neutral-700 scrollbar-track-transparent">
       {modalLoading ? (
         <div className="space-y-3">
           <Skeleton className="h-5 w-1/2" />
           <Skeleton className="h-4 w-full" />
           <Skeleton className="h-4 w-5/6" />
         </div>
-      ) : modalData.length > 0 ? (
+      ) : modalData && modalData.items?.length > 0 ? (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
           className="space-y-4"
         >
+          {/* 🔹 Description */}
+          {modalData.description && (
+            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed border-b border-gray-200 dark:border-neutral-800 pb-3 mb-3">
+              {modalData.description}
+            </p>
+          )}
+
+          {/* 🔹 Items Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {selectedType === "houses"
-              ? modalData.map((house) => (
+              ? modalData.items.map((house: any) => (
                   <HouseCard key={house._id} house={house} />
                 ))
-              : modalData.map((room) => (
+              : modalData.items.map((room: any) => (
                   <PropertyCard key={room._id} room={room} type="admin" />
                 ))}
           </div>
@@ -261,6 +275,7 @@ export default function Overview() {
     </div>
   </DialogContent>
 </Dialog>
+
 
     </div>
   );
