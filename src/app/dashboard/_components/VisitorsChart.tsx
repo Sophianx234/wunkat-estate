@@ -35,11 +35,11 @@ const chartConfig = {
   visitors: {
     label: "Visitors",
   },
-  desktop: {
+  thisYear: {
     label: "This Year",
     color: "#228be6", // blue
   },
-  mobile: {
+  lastYear: {
     label: "Last Year",
     color: "#be4bdb", // purple
   },
@@ -51,17 +51,19 @@ export function VisitorsChart() {
   const [data, setData] = React.useState<any[]>([])
   const [loading, setLoading] = React.useState(true)
 
+  // 📱 Auto-set to 7d for mobile
   React.useEffect(() => {
     if (isMobile) setTimeRange("7d")
   }, [isMobile])
 
-  // 🧩 Fetch from backend
+  // 🧩 Fetch visitor data (for the whole year)
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await fetch("/api/dashboard/visitors")
+        if (!res.ok) throw new Error("Failed to fetch data")
         const json = await res.json()
-        if(res.ok) setData(json)
+        setData(json)
       } catch (err) {
         console.error("Failed to fetch visitor insights:", err)
       } finally {
@@ -72,6 +74,7 @@ export function VisitorsChart() {
     fetchData()
   }, [])
 
+  // 🧮 Filter data by selected time range (client-side)
   const filteredData = React.useMemo(() => {
     if (!data.length) return []
 
@@ -83,9 +86,16 @@ export function VisitorsChart() {
     const startDate = new Date(referenceDate)
     startDate.setDate(referenceDate.getDate() - daysToSubtract)
 
-    return data.filter((item) => new Date(item.date) >= startDate)
+    return data
+      .filter((item) => new Date(item.date) >= startDate)
+      .map((item) => ({
+        date: item.date,
+        thisYear: item.thisYear || item.desktop || 0,
+        lastYear: item.lastYear || item.mobile || 0,
+      }))
   }, [data, timeRange])
 
+  // ⏳ Loading state
   if (loading) {
     return (
       <Card className="@container/card">
@@ -94,23 +104,27 @@ export function VisitorsChart() {
           <CardDescription>Loading visitor data...</CardDescription>
         </CardHeader>
         <CardContent className="flex items-center justify-center h-[250px]">
-          <div className="animate-pulse text-muted-foreground">Fetching data...</div>
+          <div className="animate-pulse text-muted-foreground">
+            Fetching data...
+          </div>
         </CardContent>
       </Card>
     )
   }
 
+  // 📊 Chart
   return (
     <Card className="@container/card">
       <CardHeader>
         <CardTitle>Total Visitors</CardTitle>
         <CardDescription>
           <span className="hidden @[540px]/card:block">
-            Total for the last 3 months
+            Total for the selected period
           </span>
-          <span className="@[540px]/card:hidden">Last 3 months</span>
+          <span className="@[540px]/card:hidden">Visitors trend</span>
         </CardDescription>
         <CardAction>
+          {/* 🖥️ Desktop toggle buttons */}
           <ToggleGroup
             type="single"
             value={timeRange}
@@ -123,13 +137,14 @@ export function VisitorsChart() {
             <ToggleGroupItem value="7d">Last 7 days</ToggleGroupItem>
           </ToggleGroup>
 
+          {/* 📱 Mobile select dropdown */}
           <Select value={timeRange} onValueChange={setTimeRange}>
             <SelectTrigger
               className="flex w-40 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate @[767px]/card:hidden"
               size="sm"
-              aria-label="Select a value"
+              aria-label="Select a range"
             >
-              <SelectValue placeholder="Last 3 months" />
+              <SelectValue placeholder="Select range" />
             </SelectTrigger>
             <SelectContent className="rounded-xl">
               <SelectItem value="90d" className="rounded-lg">
@@ -153,15 +168,32 @@ export function VisitorsChart() {
         >
           <AreaChart data={filteredData}>
             <defs>
-              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-desktop)" stopOpacity={1.0} />
-                <stop offset="95%" stopColor="var(--color-desktop)" stopOpacity={0.1} />
+              <linearGradient id="fillThisYear" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="5%"
+                  stopColor="var(--color-thisYear)"
+                  stopOpacity={1}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="var(--color-thisYear)"
+                  stopOpacity={0.1}
+                />
               </linearGradient>
-              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-mobile)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--color-mobile)" stopOpacity={0.1} />
+              <linearGradient id="fillLastYear" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="5%"
+                  stopColor="var(--color-lastYear)"
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="var(--color-lastYear)"
+                  stopOpacity={0.1}
+                />
               </linearGradient>
             </defs>
+
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="date"
@@ -192,17 +224,17 @@ export function VisitorsChart() {
               }
             />
             <Area
-              dataKey="mobile"
+              dataKey="lastYear"
               type="natural"
-              fill="url(#fillMobile)"
-              stroke="var(--color-mobile)"
+              fill="url(#fillLastYear)"
+              stroke="var(--color-lastYear)"
               stackId="a"
             />
             <Area
-              dataKey="desktop"
+              dataKey="thisYear"
               type="natural"
-              fill="url(#fillDesktop)"
-              stroke="var(--color-desktop)"
+              fill="url(#fillThisYear)"
+              stroke="var(--color-thisYear)"
               stackId="a"
             />
           </AreaChart>

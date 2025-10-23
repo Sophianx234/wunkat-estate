@@ -11,7 +11,7 @@ const monthNames = [
 ];
 
 
-export async function GET() {
+export async function GET(req:NextRequest) {
   await connectToDatabase();
 
   const thisYear = new Date().getFullYear();

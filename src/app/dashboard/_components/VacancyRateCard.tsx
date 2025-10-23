@@ -7,11 +7,12 @@ import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 type VacancyRateCardProps = {
   totalRooms: number;
   availableRooms: number;
+  bookedRooms?: number;
 };
 
 export default function VacancyRateCard({
   totalRooms,
-  availableRooms,
+  availableRooms
 }: VacancyRateCardProps) {
   const vacancyRate =
     totalRooms > 0 ? ((availableRooms / totalRooms) * 100).toFixed(1) : "0";

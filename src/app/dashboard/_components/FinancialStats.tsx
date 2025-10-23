@@ -4,22 +4,43 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowUpRight, ArrowDownRight, Lock, Wallet, TrendingUp, Clock } from "lucide-react";
+import {
+  ArrowUpRight,
+  ArrowDownRight,
+  Lock,
+  Wallet,
+  TrendingUp,
+  Clock,
+} from "lucide-react";
 
 export default function FinancialStats() {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
-    totalRevenue: 12450,
-    monthlyRevenue: 2250,
-    activeSubscriptions: 48,
-    expiredSubscriptions: 7,
-    autoLockedRooms: 4,
-    monthlyGrowth: 12.5,
+    totalRevenue: 0,
+    monthlyRevenue: 0,
+    activeSubscriptions: 0,
+    expiredSubscriptions: 0,
+    autoLockedRooms: 0,
+    monthlyGrowth: 0,
   });
 
   useEffect(() => {
-    const timeout = setTimeout(() => setLoading(false), 800);
-    return () => clearTimeout(timeout);
+    async function fetchStats() {
+      try {
+        const res = await fetch("/api/dashboard/financial-stats");
+        const json = await res.json();
+
+        if (res.ok) {
+          setStats(json.data);
+        }
+      } catch (err) {
+        console.error("Error fetching financial stats:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchStats();
   }, []);
 
   const StatCard = ({
@@ -49,9 +70,10 @@ export default function FinancialStats() {
           </CardTitle>
           <Icon className="w-5 h-5 text-primary" />
         </CardHeader>
+
         <CardContent>
           {loading ? (
-            <>loading</>
+            <p className="text-sm text-gray-400">Loading...</p>
           ) : (
             <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
               {value}
@@ -59,7 +81,7 @@ export default function FinancialStats() {
           )}
 
           <div className="flex items-center gap-2 mt-2">
-            {trend !== undefined && (
+            {trend !== undefined && !loading && (
               <div
                 className={`flex items-center text-sm ${
                   positive
@@ -87,39 +109,27 @@ export default function FinancialStats() {
   );
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4 my-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 my-6">
       <StatCard
         title="Total Revenue"
         value={`₵${stats.totalRevenue.toLocaleString()}`}
         icon={Wallet}
         badge="All-Time"
       />
-      <StatCard
-        title="This Month's Revenue"
-        value={`₵${stats.monthlyRevenue.toLocaleString()}`}
-        icon={TrendingUp}
-        trend={stats.monthlyGrowth}
-        positive={stats.monthlyGrowth >= 0}
-      />
+        <StatCard
+          title="Expired Subscriptions"
+          value={stats.expiredSubscriptions}
+          icon={Clock}
+          badge="Expired"
+          />
+      
       <StatCard
         title="Active Subscriptions"
         value={stats.activeSubscriptions}
         icon={Clock}
         badge="Active"
       />
-      <StatCard
-        title="Expired Subscriptions"
-        value={stats.expiredSubscriptions}
-        icon={Clock}
-        positive={false}
-        badge="Expired"
-      />
-      <StatCard
-        title="Auto-Locked Rooms"
-        value={stats.autoLockedRooms}
-        icon={Lock}
-        badge="Smartlocks"
-      />
+      
     </div>
   );
 }

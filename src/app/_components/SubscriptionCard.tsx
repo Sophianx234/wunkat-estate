@@ -6,10 +6,9 @@ import {
   Chart as ChartJS,
   Legend,
   Tooltip,
-  LinearScale
+  LinearScale,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-
 import {
   Card,
   CardHeader,
@@ -17,41 +16,68 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
+import { useEffect, useState } from "react";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 export default function SubscriptionCard() {
-  // ✅ Chart data
-  const data = {
-    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+  const [data, setData] = useState<any>(null);
+
+  useEffect(() => {
+    async function fetchStats() {
+      const res = await fetch("/api/dashboard/subscriptions");
+      const json = await res.json();
+      if (json.success) setData(json.data);
+    }
+    fetchStats();
+  }, []);
+
+  if (!data)
+    return (
+      <Card className="w-full max-w-sm p-6 rounded-xl animate-pulse bg-neutral-100 dark:bg-neutral-900 h-[280px]" />
+    );
+
+  // ✅ All month labels
+  const allMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  // ✅ Determine which 6 months to show
+  const currentMonth = new Date().getMonth(); // 0-based (0 = Jan)
+  const showSecondHalf = currentMonth >= 6; // July (6) or later
+  const startIndex = showSecondHalf ? 6 : 0;
+  const endIndex = showSecondHalf ? 12 : 6;
+
+  const visibleLabels = allMonths.slice(startIndex, endIndex);
+  const visibleCurrent = data.currentYearData.slice(startIndex, endIndex);
+  const visiblePrevious = data.previousYearData.slice(startIndex, endIndex);
+
+  // 🧮 Prepare chart data (same structure)
+  const chartData = {
+    labels: visibleLabels,
     datasets: [
       {
         label: "Current",
-        data: [10, 20, 15, 30, 25, 40, 22],
-        backgroundColor: "#868e96",
+        data: visibleCurrent,
+        backgroundColor: "#000",
         borderRadius: 6,
         barThickness: 12,
       },
       {
         label: "Previous",
-        data: [12, 15, 20, 18, 22, 25, 30],
-        backgroundColor: "#000",
+        data: visiblePrevious,
+        backgroundColor: "#868e96",
         borderRadius: 6,
         barThickness: 12,
       },
     ],
   };
 
-  // ✅ Chart options
+  // 🧾 Chart options (same as before)
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
-      tooltip: {
-        mode: "index" as const,
-        intersect: false,
-      },
+      tooltip: { mode: "index" as const, intersect: false },
     },
     scales: {
       x: {
@@ -69,14 +95,27 @@ export default function SubscriptionCard() {
     <Card className="w-full max-w-sm shadow-sm hover:shadow-md transition rounded-xl">
       <CardHeader>
         <CardDescription>Subscriptions</CardDescription>
-        <CardTitle className="text-3xl font-bold text-gray-900">+2350</CardTitle>
-        <p className="text-green-500 text-sm">+180.1% from last month</p>
+        <CardTitle className="text-3xl font-bold text-gray-900">
+          +{data.totalThisYear}
+        </CardTitle>
+        <p
+          className={`text-sm ${
+            parseFloat(data.growthRate) >= 0
+              ? "text-green-500"
+              : "text-red-500"
+          }`}
+        >
+          {data.growthRate}% from last year
+        </p>
       </CardHeader>
 
       <CardContent>
         <div className="h-40">
-          <Bar data={data} options={options} />
+          <Bar data={chartData} options={options} />
         </div>
+        <p className="text-xs text-gray-500 mt-2 text-center">
+          Showing {visibleLabels[0]} – {visibleLabels[visibleLabels.length - 1]}
+        </p>
       </CardContent>
     </Card>
   );

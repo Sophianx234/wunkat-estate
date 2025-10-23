@@ -31,8 +31,8 @@ const MySwal = withReactContent(Swal);
 
 type HouseCardProps = {
   house: IHouse;
-  onEditHouse: (houseId: string) => void;
-  onDeleteHouse: (houseId: string) => void;
+  onEditHouse?: (houseId: string) => void;
+  onDeleteHouse?: (houseId: string) => void;
 };
 
 export default function HouseCard({
