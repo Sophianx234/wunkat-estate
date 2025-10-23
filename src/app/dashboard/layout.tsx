@@ -28,6 +28,20 @@ function Layout({ children }: LayoutProps) {
     getMe()
   },[]) 
 
+  // frontend (client)
+useEffect(() => {
+  if (!localStorage.getItem("visitor_id")) {
+    const id = crypto.randomUUID();
+    localStorage.setItem("visitor_id", id);
+    fetch("/api/dashboard/visitors", {
+      method: "POST",
+      body: JSON.stringify({ id }),
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+}, []);
+
+
   
 
   useEffect(() => {
