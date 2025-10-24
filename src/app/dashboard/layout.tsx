@@ -13,7 +13,7 @@ type LayoutProps = {
 };
 
 function Layout({ children }: LayoutProps) {
-  const {openNotifications,setUser,setNotifications,loadNotifications} = useDashStore()
+  const {openNotifications,setUser,setNotifications,loadNotifications,user} = useDashStore()
   useEffect(()=>{
     const getMe = async()=>{
       const res = await fetch('/api/auth/me')
@@ -46,7 +46,8 @@ useEffect(() => {
 
   useEffect(() => {
   // Connect to the SSE notifications endpoint
-  const eventSource = new EventSource("/api/notification");
+const eventSource = new EventSource(`/api/notification?userId=${user?._id}&role=${user?.role}`);
+
 
   eventSource.onopen = () => {
     console.log("✅ Connected to SSE notifications");

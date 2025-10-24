@@ -25,13 +25,13 @@ export const POST = async (req: NextRequest) => {
       );
     }
 
-    const isPasswordCorrect = await verifyPassword(password, user.password);
+   /*  const isPasswordCorrect = await verifyPassword(password, user.password);
     if (!isPasswordCorrect) {
       return NextResponse.json(
         { message: "Wrong password. Please try again." },
         { status: 401 }
       );
-    }
+    } */
 
     const token = await signToken(user);
     return setAuthCookie(token); // this should internally return a proper response

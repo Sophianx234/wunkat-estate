@@ -81,27 +81,49 @@ export default function DashboardNotifications() {
   };
 
   // 🗑️ Delete notification (local only for now)
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
+  const result = await Swal.fire({
+    title: "Delete Notification?",
+    text: "This action cannot be undone.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#ef4444",
+    cancelButtonColor: "#6b7280",
+    confirmButtonText: "Yes, delete it!",
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    const res = await fetch(`/api/notification/all/${id}`, { method: "DELETE" });
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      setNotifications((prev) => prev.filter((n) => n._id !== id));
+
+      Swal.fire({
+        icon: "success",
+        title: "Deleted!",
+        timer: 1200,
+        showConfirmButton: false,
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: data.error || "Failed to delete notification.",
+      });
+    }
+  } catch (error) {
+    console.error("Error deleting notification:", error);
     Swal.fire({
-      title: "Delete Notification?",
-      text: "This action cannot be undone.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#ef4444",
-      cancelButtonColor: "#6b7280",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setNotifications((prev) => prev.filter((n) => n._id !== id));
-        Swal.fire({
-          icon: "success",
-          title: "Deleted!",
-          timer: 1500,
-          showConfirmButton: false,
-        });
-      }
+      icon: "error",
+      title: "Request Failed",
+      text: "Could not reach the server.",
     });
-  };
+  }
+};
+
 
   // 🔍 Filter + Search
   const filtered = notifications.filter(

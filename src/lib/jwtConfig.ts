@@ -5,6 +5,7 @@ export type userType = {
   profile:string
   name: string ;
   email:string;
+  role:string
 
   
   
