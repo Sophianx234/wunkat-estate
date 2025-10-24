@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Lock, Unlock, KeyRound, Search } from "lucide-react";
+import { Lock, Unlock, KeyRound, Search, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
@@ -18,6 +18,11 @@ type Room = {
   name: string;
   smartLock: boolean;
   status: "Locked" | "Unlocked" | "Manually Locked";
+  location: {
+    address: string;
+    city: string;
+    region: string;
+  };
 };
 
 export default function RoomLockStatusTable() {
@@ -26,7 +31,6 @@ export default function RoomLockStatusTable() {
   const [filterStatus, setFilterStatus] = useState("All");
   const [loading, setLoading] = useState(true);
 
-  // ✅ Fetch room data from backend
   useEffect(() => {
     const fetchRooms = async () => {
       try {
@@ -47,9 +51,10 @@ export default function RoomLockStatusTable() {
   }, []);
 
   const filteredRooms = rooms.filter((room) => {
+    const locationText = `${room.location.address} ${room.location.city} ${room.location.region}`.toLowerCase();
     const matchesSearch =
       room.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      room.id.toLowerCase().includes(searchTerm.toLowerCase());
+      locationText.includes(searchTerm.toLowerCase());
     const matchesFilter =
       filterStatus === "All" ? true : room.status === filterStatus;
     return matchesSearch && matchesFilter;
@@ -60,21 +65,21 @@ export default function RoomLockStatusTable() {
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="bg-white dark:bg-neutral-900 rounded-xl border border-gray-100 dark:border-neutral-800 shadow-sm p-6"
+      className=" rounded-2xl  "
     >
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
-        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
-          Room Lock Status
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 shadow-sm gap-4 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-6">
+        <h3 className="text-lg font-semibold text-neutral-800 dark:text-neutral-100 tracking-tight">
+          Room Lock Overview
         </h3>
 
         <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
           {/* Search */}
           <div className="relative w-full sm:w-64">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-neutral-400" />
             <Input
-              placeholder="Search by room ID or name..."
-              className="pl-8 text-sm"
+              placeholder="Search rooms or locations..."
+              className="pl-9 text-sm border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-800/50 focus-visible:ring-neutral-300 dark:focus-visible:ring-neutral-700"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -82,7 +87,7 @@ export default function RoomLockStatusTable() {
 
           {/* Filter */}
           <Select value={filterStatus} onValueChange={setFilterStatus}>
-            <SelectTrigger className="w-full sm:w-[180px]">
+            <SelectTrigger className="w-full sm:w-[180px] bg-white/70 dark:bg-neutral-800/50 border-neutral-200 dark:border-neutral-800 focus:ring-0">
               <SelectValue placeholder="Filter by status" />
             </SelectTrigger>
             <SelectContent>
@@ -97,78 +102,108 @@ export default function RoomLockStatusTable() {
 
       {/* Table */}
       {loading ? (
-        <p className="text-center text-gray-500 dark:text-gray-400 py-4">
+        <p className="text-center text-neutral-500 dark:text-neutral-400 py-6">
           Loading rooms...
         </p>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left border-collapse">
+        <div className="overflow-x-auto bg-neutral-50 dark:bg-neutral-900 border shadow-sm border-neutral-200 dark:border-neutral-800 p-6">
+          <table className="w-full text-sm border-separate border-spacing-y-2">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-neutral-700">
-                <th className="py-2 px-3 text-gray-600 dark:text-gray-400">
-                  Room ID
-                </th>
-                <th className="py-2 px-3 text-gray-600 dark:text-gray-400">
-                  Name
-                </th>
-                <th className="py-2 px-3 text-gray-600 dark:text-gray-400">
-                  Smart Lock
-                </th>
-                <th className="py-2 px-3 text-gray-600 dark:text-gray-400">
-                  Status
-                </th>
+              <tr className="text-neutral-500 dark:text-neutral-400 text-xs uppercase tracking-wide">
+                <th className="py-2 px-4 text-left">Room Name</th>
+                <th className="py-2 px-4 text-left">Location</th>
+                <th className="py-2 px-4 text-left">Smart Lock</th>
+                <th className="py-2 px-4 text-left">Status</th>
               </tr>
             </thead>
             <tbody>
               {filteredRooms.length > 0 ? (
                 filteredRooms.map((room) => (
-                  <tr
+                  <motion.tr
                     key={room.id}
-                    className="border-b last:border-none border-gray-100 dark:border-neutral-800 hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition"
+                    whileHover={{ scale: 1.01 }}
+                    className="bg-white dark:bg-neutral-800/60 rounded-xl  duration-200"
                   >
-                    <td className="py-2 px-3 font-medium text-gray-800 dark:text-gray-200">
-                      {room.id}
-                    </td>
-                    <td className="py-2 px-3 text-gray-700 dark:text-gray-300">
+                    {/* Room Name */}
+                    <td className="py-3 px-4 font-medium text-neutral-800 dark:text-neutral-100">
                       {room.name}
                     </td>
-                    <td className="py-2 px-3">
+
+                    {/* Location */}
+                    <td className="py-3 px-4 text-neutral-600 dark:text-neutral-400">
+                      <div className="flex items-center gap-1.5">
+                        <MapPin className="w-4 h-4 text-neutral-400" />
+                        <span>{room.location.city}</span>
+                      </div>
+                      <p className="text-xs text-neutral-400 mt-0.5">
+                        {room.location.address}, {room.location.region}
+                      </p>
+                    </td>
+
+                    {/* Smart Lock */}
+                    <td className="py-3 px-4">
                       {room.smartLock ? (
-                        <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+                        <Badge className="bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 border border-neutral-300 dark:border-neutral-600">
                           Yes
                         </Badge>
                       ) : (
-                        <Badge className="bg-gray-100 text-gray-600 dark:bg-neutral-800 dark:text-gray-400">
+                        <Badge className="bg-neutral-100 dark:bg-neutral-900 text-neutral-500 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800">
                           No
                         </Badge>
                       )}
                     </td>
-                    <td className="py-2 px-3">
-                      {room.status === "Locked" && (
-                        <span className="flex items-center gap-1 text-rose-600 dark:text-rose-400 font-medium">
-                          <Lock className="w-4 h-4" /> Locked
-                        </span>
-                      )}
-                      {room.status === "Unlocked" && (
-                        <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium">
-                          <Unlock className="w-4 h-4" /> Unlocked
-                        </span>
-                      )}
-                      {room.status === "Manually Locked" && (
-                        <span className="flex items-center gap-1 text-amber-600 dark:text-amber-400 font-medium">
-                          <KeyRound className="w-4 h-4" /> Manually Locked
-                        </span>
-                      )}
-                    </td>
-                  </tr>
+
+                    {/* Status */}
+                   <td className="py-3 px-4 font-medium">
+  {room.status === "Locked" && (
+    <motion.span
+      initial={{ opacity: 0, y: 4 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25 }}
+      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-sm
+                 bg-neutral-100 text-neutral-700 border border-neutral-200
+                 dark:bg-neutral-800 dark:text-neutral-300 dark:border-neutral-700"
+    >
+      <Lock className="w-3.5 h-3.5 text-neutral-500 dark:text-neutral-400" /> Locked
+    </motion.span>
+  )}
+
+  {room.status === "Unlocked" && (
+    <motion.span
+      initial={{ opacity: 0, y: 4 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25 }}
+      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-sm
+                 bg-neutral-100 text-neutral-700 border border-neutral-200
+                 dark:bg-neutral-800 dark:text-neutral-300 dark:border-neutral-700"
+    >
+      <Unlock className="w-3.5 h-3.5 text-neutral-500 dark:text-neutral-400" /> Unlocked
+    </motion.span>
+  )}
+
+  {room.status === "Manually Locked" && (
+    <motion.span
+      initial={{ opacity: 0, y: 4 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25 }}
+      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-sm
+                 bg-neutral-100 text-neutral-700 border border-neutral-200
+                 dark:bg-neutral-800 dark:text-neutral-300 dark:border-neutral-700"
+    >
+      <KeyRound className="w-3.5 h-3.5 text-neutral-500 dark:text-neutral-400" /> Manual
+    </motion.span>
+  )}
+</td>
+
+                  </motion.tr>
                 ))
               ) : (
                 <tr>
                   <td
                     colSpan={4}
-                    className="py-4 text-center text-gray-500 dark:text-gray-400"
+                    className="py-6 text-center text-neutral-500 dark:text-neutral-400"
                   >
-                    No rooms match your search or filter.
+                    No rooms found matching your filters.
                   </td>
                 </tr>
               )}

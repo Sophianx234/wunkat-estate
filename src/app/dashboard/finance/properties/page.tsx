@@ -20,6 +20,8 @@ import HouseCard from "../../_components/HouseCard";
 import PropertyCard from "../../_components/PropertyCard";
 import { IHouse } from "@/models/House";
 import { IRoom } from "../../properties/page";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 export interface ModalDataResponse {
     description: string;
     items: (IRoom|IHouse)[];
@@ -28,6 +30,8 @@ export interface ModalDataResponse {
 export default function Overview() {
   const [stats, setStats] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const [houses, setHouses] = useState<IHouse[]>([]);
 
   // 🔹 Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,6 +55,39 @@ export default function Overview() {
     fetchStats();
   }, []);
 
+   const handleDeleteHouse = async (houseId: string) => {
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "This action will permanently delete the house and its rooms.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!",
+      });
+  
+      if (result.isConfirmed) {
+        try {
+          const res = await fetch(`/api/houses/${houseId}`, {
+            method: "DELETE",
+          });
+  
+          if (!res.ok) throw new Error("Failed to delete house");
+  
+          // Remove house from UI without reload
+          setHouses((prev) => prev.filter((h) => h._id !== houseId));
+  
+          Swal.fire("Deleted!", "The house has been deleted.", "success");
+        } catch (err) {
+          console.error("Error deleting house:", err);
+          Swal.fire("Error", "Something went wrong while deleting.", "error");
+        }
+      }
+    };
+
+    const handleEditHouse = (houseId: string) => {
+    router.push(`/dashboard/properties/add-house/edit/${houseId}`);
+  };
   // 🔹 Handle "View" button click
   const handleViewClick = async (type: string) => {
     setSelectedType(type);
@@ -260,7 +297,7 @@ export default function Overview() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {selectedType === "houses"
               ? modalData.items.map((house: any) => (
-                  <HouseCard key={house._id} house={house} />
+                  <HouseCard key={house._id} house={house} onEditHouse={handleEditHouse} onDeleteHouse={()=>handleDeleteHouse(house._id)} />
                 ))
               : modalData.items.map((room: any) => (
                   <PropertyCard key={room._id} room={room} type="admin" />
