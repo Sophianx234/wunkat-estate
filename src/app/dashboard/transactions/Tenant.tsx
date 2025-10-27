@@ -19,85 +19,124 @@ export type TenantCardProps = {
 
 export default function TenantCard({ currTransaction }: TenantCardProps) {
   const { user } = useDashStore();
+  const isActive =
+    currTransaction?.expiresAt &&
+    daysLeft(currTransaction.expiresAt) > 0;
 
   return (
-    <div className="md:fixed col-span-2 mt-20 md:mt-0 md:w-64 md:-translate-y-8">
-      <h1 className="text-xl font-semibold text-gray-800 mb-4">
-        Tenant Details
-      </h1>
+    <aside className=" md:w-72 md:-translate-y-6">
+    
 
-      <div className="bg-white p-5 rounded-xl shadow border transition-all hover:shadow-md">
+      <div className="bg-white rounded-2xl h-fit border border-gray-100 shadow-sm hover:shadow-md transition-all p-6">
         {/* Profile Section */}
         <div className="flex flex-col items-center text-center">
-          <div className="relative rounded-full overflow-hidden size-20 border">
+          <div className="relative w-20 h-20 rounded-full border-2 border-gray-200 overflow-hidden shadow-sm">
             <img
               src={user?.profile || "/placeholder.png"}
               alt="Tenant Profile"
-              className="rounded-full object-cover w-full h-full"
+              className="object-cover w-full h-full"
             />
           </div>
 
-          <h2 className="mt-3 text-base font-semibold">{user?.name}</h2>
-          <p className="text-sm text-muted-foreground">{user?.email}</p>
+          <h2 className="mt-3 text-lg font-semibold text-gray-900">
+            {user?.name}
+          </h2>
+          <p className="text-sm text-gray-500">{user?.email}</p>
+
+          <div
+            className={`mt-3 px-3 py-1 text-xs font-medium rounded-full ${
+              isActive
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
+            }`}
+          >
+            {isActive ? "Active Tenant" : "Expired Lease"}
+          </div>
         </div>
 
-        {/* Info Section */}
-        <div className="mt-5 space-y-2 text-sm text-gray-700">
+        {/* Divider */}
+        <hr className="my-5 border-gray-100" />
+
+        {/* Info Grid */}
+        <div className="space-y-3 text-sm text-gray-700">
           {/* Lease Type */}
-          <div className="flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-lg">
-            <FileText className="w-4 h-4 text-gray-600" />
-            <span className="font-medium">Lease:</span>
-            <span className="ml-auto">{currTransaction?.roomId?.planType}</span>
-          </div>
-
-          {/* Status */}
-          <div className="flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-lg">
-            {currTransaction?.expiresAt &&
-            daysLeft(currTransaction.expiresAt) > 0 ? (
-              <>
-                <BadgeCheck className="w-4 h-4 text-green-600" />
-                <span className="font-medium">Status:</span>
-                <span className="ml-auto text-green-700">Active</span>
-              </>
-            ) : (
-              <>
-                <BadgeCheck className="w-4 h-4 text-red-600" />
-                <span className="font-medium">Status:</span>
-                <span className="ml-auto text-red-700">Expired</span>
-              </>
-            )}
-          </div>
-
-          {/* Location */}
-          <div className="flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-lg">
-            <MapPin className="w-4 h-4 text-gray-600" />
-            <span className="font-medium">Location:</span>
-            <span className="ml-auto text-xs">
-              {currTransaction?.roomId?.houseId?.location?.city}
-            </span>
-          </div>
+          <InfoRow
+            icon={<FileText className="w-4 h-4 text-gray-500" />}
+            label="Lease Type"
+            value={currTransaction?.roomId?.planType || "--"}
+          />
 
           {/* Rent */}
-          <div className="flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-lg">
-            <DollarSign className="w-4 h-4 text-gray-600" />
-            <span className="font-medium">Rent:</span>
-            <span className="ml-auto">
-              {currTransaction?.roomId?.price &&
-                formatNumber(+currTransaction.roomId.price)}
-            </span>
-          </div>
+          <InfoRow
+            icon={<DollarSign className="w-4 h-4 text-gray-500" />}
+            label="Rent"
+            value={
+              currTransaction?.roomId?.price
+                ? `₵${formatNumber(currTransaction.roomId.price)}`
+                : "--"
+            }
+          />
+
+          {/* Location */}
+          <InfoRow
+            icon={<MapPin className="w-4 h-4 text-gray-500" />}
+            label="Location"
+            value={
+              currTransaction?.roomId?.houseId?.location?.city || "N/A"
+            }
+          />
 
           {/* Lease End Date */}
-          <div className="flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-lg">
-            <CalendarDays className="w-4 h-4 text-gray-600" />
-            <span className="font-medium">Ends:</span>
-            <span className="ml-auto">
-              {currTransaction?.expiresAt &&
-                formatDate(currTransaction.expiresAt)}
-            </span>
-          </div>
+          <InfoRow
+            icon={<CalendarDays className="w-4 h-4 text-gray-500" />}
+            label="Ends"
+            value={
+              currTransaction?.expiresAt
+                ? formatDate(currTransaction.expiresAt)
+                : "--"
+            }
+          />
+
+          {/* Lease Status */}
+          <InfoRow
+            icon={
+              <BadgeCheck
+                className={`w-4 h-4 ${
+                  isActive ? "text-green-500" : "text-red-500"
+                }`}
+              />
+            }
+            label="Status"
+            value={
+              isActive ? (
+                <span className="text-green-700 font-medium">Active</span>
+              ) : (
+                <span className="text-red-700 font-medium">Expired</span>
+              )
+            }
+          />
         </div>
       </div>
+    </aside>
+  );
+}
+
+function InfoRow({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: React.ReactNode;
+}) {
+  return (
+    <div className="flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors px-3 py-2 rounded-lg">
+      <div className="flex items-center gap-2">
+        {icon}
+        <span className="font-medium text-gray-700">{label}</span>
+      </div>
+      <span className="text-gray-800 text-sm font-medium">{value}</span>
     </div>
   );
 }

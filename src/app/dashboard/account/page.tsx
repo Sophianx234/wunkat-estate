@@ -1,16 +1,17 @@
 "use client";
 
+import { useState, useRef } from "react";
 import { useDashStore } from "@/lib/store";
-import {
-  Lock,
-  Mail,
-  User
-} from "lucide-react";
-import Image from "next/image";
-import { useRef, useState } from "react";
-import toast from "react-hot-toast";
-import Swal from "sweetalert2";
 import { z } from "zod";
+import Swal from "sweetalert2";
+import toast from "react-hot-toast";
+import Image from "next/image";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Lock, Mail, User, ImageIcon } from "lucide-react";
 
 const passwordSchema = z
   .object({
@@ -23,13 +24,9 @@ const passwordSchema = z
     path: ["confirmPassword"],
   });
 
-
 export default function AccountPage() {
-  /* const [theme, setTheme] = useState("light");
-  const [language, setLanguage] = useState("english");
-  const [timezone, setTimezone] = useState(""); */
-  const [name, setName] = useState("");
   const { user, setUser } = useDashStore();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [avatar, setAvatar] = useState("");
   const [oldPassword, setOldPassword] = useState("");
@@ -37,97 +34,25 @@ export default function AccountPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-
-  const handleChangePassword = async () => {
-
-  const result = passwordSchema.safeParse({
-    oldPassword,
-    newPassword,
-    confirmPassword,
-  });
-
-  if (!result.success) {
-    toast.dismiss()
-    toast.error('failed')
-    const fieldErrors: { [key: string]: string } = {};
-    result.error.errors.forEach((err) => {
-      if (err.path.length > 0) fieldErrors[err.path[0]] = err.message;
-    });
-    setErrors(fieldErrors);
-    return;
-  }
-
-  setErrors({});
-
-  Swal.fire({
-    title: "Change Password?",
-    icon: "question",
-    showCancelButton: true,
-    confirmButtonText: "Yes, change it!",
-  }).then(async(result) => {
-    if (result.isConfirmed) {
-  toast.loading('Changing password...')
-
-      const res = await fetch('/api/user/change-password',{
-        method:'PATCH',
-        
-        headers:{
-        'Content-Type': 'application/json',  
-        },
-        body: JSON.stringify({newPassword,oldPassword})
-      })
-      if(res.ok){
-        toast.dismiss()
-        toast.success('Password change successful')
-        Swal.fire("Updated!", "Your password has been changed.", "success");
-        setOldPassword("");
-        setNewPassword("");
-        setConfirmPassword("");
-
-      }else{
-        toast.dismiss()
-        toast.error('Password change failed')
-
-      }
-
-      // Reset fields
-    }
-  });
-};
-
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const scrollToSection = (id: string) => {
-    const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  const handleAvatarClick = () => {
-    fileInputRef.current?.click();
-  };
+  const handleAvatarClick = () => fileInputRef.current?.click();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     const reader = new FileReader();
-
     reader.onload = () => {
       Swal.fire({
         title: "Change Profile Picture?",
-        text: "Do you want to update your profile picture?",
         imageUrl: reader.result as string,
         imageAlt: "New Profile Picture",
         showCancelButton: true,
-        confirmButtonText: "Yes, change it!",
-        cancelButtonText: "Cancel",
+        confirmButtonText: "Yes, update it!",
       }).then(async (result) => {
         if (result.isConfirmed) {
           const formData = new FormData();
           formData.append("image", file);
-
           try {
             toast.loading("Updating image...");
             const res = await fetch("/api/user/update-image", {
@@ -135,264 +60,213 @@ export default function AccountPage() {
               body: formData,
             });
             const data = await res.json();
+            toast.dismiss();
             if (res.ok) {
-              toast.dismiss();
-              toast.success("Picture updated successfully!");
-              setAvatar(reader.result as string); // Update avatar in UI
+              toast.success("Profile picture updated");
+              setAvatar(reader.result as string);
               setUser(data.user);
-              Swal.fire(
-                "Updated!",
-                "Your profile picture has been changed.",
-                "success"
-              );
-            } else {
-              const { msg } = await res.json();
-              toast.dismiss();
-              toast.error(msg || "Failed to update image");
-            }
-          } catch (error) {
-            Swal.fire("Error", "Failed to upload image.", "error");
-            console.log(error)
+            } else toast.error(data.msg || "Failed to update image");
+          } catch {
+            toast.dismiss();
+            toast.error("Upload failed");
           }
         }
       });
     };
-
     reader.readAsDataURL(file);
   };
 
-  const handleUpdateInfo = async() => {
-    const updatedInfo: Partial<{name:string;email:string}> = {}
-    if(!email && !name) return 
-    if(email) updatedInfo.email = email
-    if(name) updatedInfo.name = name
-    
+  const handleUpdateInfo = async () => {
+    const updated: Partial<{ name: string; email: string }> = {};
+    if (name) updated.name = name;
+    if (email) updated.email = email;
+    if (!name && !email) return;
+
     Swal.fire({
-      title: "Update Information?",
-      html: `${name&&`<b>Name:</b> ${name}<br/>`}${email&&`<b>Email:</b> ${email}`}`,
+      title: "Update Info?",
+      html: `${name ? `<b>Name:</b> ${name}<br/>` : ""}${email ? `<b>Email:</b> ${email}` : ""}`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonText: "Yes, update it!",
-    }).then(async(result) => {
+      confirmButtonText: "Yes, update",
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        toast.loading('Updating information....')
-        
-       const  res = await fetch('/api/user/update-me',{
-        method: 'PATCH',
-        headers: {
-    'Content-Type': 'application/json',
-  },
-        body:JSON.stringify(updatedInfo)
-
-        })
-        const data = await res.json()
-        if(res.ok){
-          toast.dismiss()
-          toast.success('update successful')
-          setUser(data.user)
-          
-          
-        }else{
-          toast.dismiss()
-          toast.error('update failed')
-        }
-        Swal.fire("Success!", "Your information has been updated.", "success");
-        // Optionally send to server here
+        toast.loading("Updating info...");
+        const res = await fetch("/api/user/update-me", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updated),
+        });
+        const data = await res.json();
+        toast.dismiss();
+        if (res.ok) {
+          toast.success("Information updated");
+          setUser(data.user);
+        } else toast.error("Update failed");
       }
     });
   };
+
+  const handleChangePassword = async () => {
+    const result = passwordSchema.safeParse({ oldPassword, newPassword, confirmPassword });
+    if (!result.success) {
+      const errs: { [key: string]: string } = {};
+      result.error.errors.forEach((err) => {
+        if (err.path.length > 0) errs[err.path[0]] = err.message;
+      });
+      setErrors(errs);
+      toast.error("Validation failed");
+      return;
+    }
+
+    Swal.fire({
+      title: "Change Password?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes, change it!",
+    }).then(async (res) => {
+      if (res.isConfirmed) {
+        toast.loading("Changing password...");
+        const response = await fetch("/api/user/change-password", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ oldPassword, newPassword }),
+        });
+        toast.dismiss();
+        if (response.ok) {
+          toast.success("Password updated");
+          setOldPassword("");
+          setNewPassword("");
+          setConfirmPassword("");
+          setErrors({});
+        } else toast.error("Password change failed");
+      }
+    });
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 px-4 md:px-10 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 px-4 md:px-10 py-8">
+      <div className="max-w-4xl mx-auto space-y-8">
+        <h1 className="text-2xl font-semibold text-gray-800 tracking-tight">
+          Account Settings
+        </h1>
 
-      <div className="flex flex-col md:flex-row gap-6">
-        {/* Sidebar */}
-        <div className="md:fixed pt-24 md:pt-0 md:-translate-y-9">
-      <h1 className="text-2xl font-bold  md:mb-8 mb-0 text-gray-800">Settings</h1>
-
-        <div className="w-full md:w-64 md:block hidden  bg-white rounded-xl shadow-sm p-4 space-y-3 text-sm font-medium text-gray-600">
-          {[
-            {
-              label: "Personal Information",
-              icon: <User />,
-              id: "personal-info",
-            },
-            { label: "Change Password", icon: <Lock />, id: "change-password" },
-            
-          ].map(({ label, icon, id }) => (
-            <div
-              key={id}
-              onClick={() => scrollToSection(id)}
-              className="flex hover:bg-black px-2 py-4 items-center gap-2 cursor-pointer hover:text-white shadow rounded-lg transition-all duration-200"
-            >
-              {icon}
-              {label}
-            </div>
-          ))}
-        </div>
-        </div>
-        <div className="w-full md:w-64  ">
-
-        </div>
-
-        {/* Main Content */}
-        <div className="flex-1 space-y-6">
-          {/* Personal Info */}
-          <div id="personal-info" className="bg-white rounded-xl shadow-sm p-6">
-            <h2 className="text-lg font-semibold text-gray-700 mb-4">
+        {/* 🧍 Profile Card */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-gray-700">
+              <User className="w-5 h-5 text-gray-600" />
               Personal Information
-            </h2>
-
-            <div className="flex  items-center gap-4 mb-4">
+            </CardTitle>
+          </CardHeader>
+          <Separator />
+          <CardContent className="pt-6 space-y-5">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-5">
               <div
-                className="relative size-24 rounded-full overflow-hidden border-2 border-gray-300 cursor-pointer group"
+                className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-gray-300 cursor-pointer group"
                 onClick={handleAvatarClick}
               >
-                {avatar ? (
-                  <Image
-                    src={avatar}
-                    alt="User"
-                    fill
-                    className="object-cover group-hover:opacity-80 transition"
-                  />
-                ) : (
-                  <img
-                    src={user?.profile as string}
-                    alt="User"
-                    className="object-cover group-hover:opacity-80 transition"
-                  />
-                )}
+                <Image
+                  src={avatar || (user?.profile as string)}
+                  alt="User avatar"
+                  fill
+                  className="object-cover group-hover:opacity-80 transition"
+                />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
+                  <ImageIcon className="text-white w-5 h-5" />
+                </div>
                 <input
-                  type="file"
                   ref={fileInputRef}
+                  type="file"
                   accept="image/*"
                   className="hidden"
                   onChange={handleFileChange}
                 />
               </div>
-              <p className="text-sm text-gray-500">Click to change</p>
+
+              <div className="text-sm text-gray-500">Click the image to change your profile picture</div>
             </div>
 
-            {/* Input Fields */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="text-sm text-gray-600 block mb-1">Name</label>
-                <div className="relative">
-                  <User className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
-                  <input
-                    placeholder={user?.name}
-
-                    
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full border rounded-md px-10 py-2 text-sm focus:outline-none focus:ring focus:ring-blue-200"
-                  />
-                </div>
+                <Label>Name</Label>
+                <Input
+                  placeholder={user?.name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="mt-1"
+                />
               </div>
               <div>
-                <label className="text-sm text-gray-600 block mb-1">
-                  Email
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
-                  <input
-                    placeholder={user?.email}
-                    
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full border rounded-md px-10 py-2 text-sm focus:outline-none focus:ring focus:ring-blue-200"
-                  />
-                </div>
+                <Label>Email</Label>
+                <Input
+                  placeholder={user?.email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="mt-1"
+                />
               </div>
             </div>
 
-            {/* Update Button */}
-            <div className="mt-6">
-              <button
-                onClick={handleUpdateInfo}
-                className="bg-gray-950 hover:bg-zinc-800   text-white px-5 py-2 rounded-md text-sm font-medium transition"
-              >
-                Update Info
-              </button>
+            <Button onClick={handleUpdateInfo} className="mt-3">
+              Update Information
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* 🔒 Password Card */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-gray-700">
+              <Lock className="w-5 h-5 text-gray-600" />
+              Change Password
+            </CardTitle>
+          </CardHeader>
+          <Separator />
+          <CardContent className="pt-6 space-y-4">
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div>
+                <Label>Old Password</Label>
+                <Input
+                  type="password"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                  placeholder="Enter old password"
+                />
+                {errors.oldPassword && (
+                  <p className="text-xs text-red-500 mt-1">{errors.oldPassword}</p>
+                )}
+              </div>
+              <div>
+                <Label>New Password</Label>
+                <Input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Enter new password"
+                />
+                {errors.newPassword && (
+                  <p className="text-xs text-red-500 mt-1">{errors.newPassword}</p>
+                )}
+              </div>
+              <div className="sm:col-span-2">
+                <Label>Confirm New Password</Label>
+                <Input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Confirm new password"
+                />
+                {errors.confirmPassword && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.confirmPassword}
+                  </p>
+                )}
+              </div>
             </div>
-          </div>
 
-          {/* Remaining sections (change-password, preferences, etc.) remain the same... */}
-          <div id="change-password" className="bg-white rounded-xl shadow-sm p-6">
-  <h2 className="text-lg font-semibold  text-gray-700 mb-4">
-    Change Password
-  </h2>
-  <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
-    <div>
-      <label className="text-sm text-gray-600 block mb-1">
-        Old Password
-      </label>
-      <div className="relative">
-        <Lock className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
-        <input
-          type="password"
-          placeholder="Enter old password"
-          value={oldPassword}
-          onChange={(e) => setOldPassword(e.target.value)}
-          className="w-full border rounded-md px-10 py-2 text-sm focus:outline-none focus:ring focus:ring-blue-200"
-        />
-      </div>
-      {errors.oldPassword && (
-        <p className="text-sm text-red-600 mt-1">{errors.oldPassword}</p>
-      )}
-    </div>
-
-    <div>
-      <label className="text-sm text-gray-600 block mb-1">
-        New Password
-      </label>
-      <div className="relative">
-        <Lock className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
-        <input
-          type="password"
-          placeholder="Enter new password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          className="w-full border rounded-md px-10 py-2 text-sm focus:outline-none focus:ring focus:ring-blue-200"
-        />
-      </div>
-      {errors.newPassword && (
-        <p className="text-sm text-red-600 mt-1">{errors.newPassword}</p>
-      )}
-    </div>
-
-    <div>
-      <label className="text-sm text-gray-600 block mb-1">
-        Confirm New Password
-      </label>
-      <div className="relative">
-        <Lock className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
-        <input
-          type="password"
-          placeholder="Confirm new password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          className="w-full border rounded-md px-10 py-2 text-sm focus:outline-none focus:ring focus:ring-blue-200"
-        />
-      </div>
-      {errors.confirmPassword && (
-        <p className="text-sm text-red-600 mt-1">
-          {errors.confirmPassword}
-        </p>
-      )}
-    </div>
-  </div>
-
-  <div className="mt-6">
-    <button
-      onClick={handleChangePassword}
-      className="bg-gray-950 hover:bg-zinc-800 text-white px-5 py-2 rounded-md text-sm font-medium transition"
-    >
-      Confirm Password Change
-    </button>
-  </div>
-</div>
-
-
-          
-        </div>
+            <Button onClick={handleChangePassword} className="mt-3 bg-gray-900 hover:bg-gray-800">
+              Confirm Password Change
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

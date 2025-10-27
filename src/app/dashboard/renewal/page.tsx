@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import Swal from "sweetalert2";
+import { formatNumber } from "@/lib/utils"; // optional if you want nice number formatting
+
 import { ShieldAlert } from "lucide-react";
 import {
   FaChartLine,
@@ -18,6 +21,7 @@ import { IoBedOutline, IoLocationOutline } from "react-icons/io5";
 import { PiBathtubLight } from "react-icons/pi";
 import { LuClipboardList, LuHeadphones, LuSettings2 } from "react-icons/lu";
 import { useDashStore } from "@/lib/store";
+import { startPaystackPayment } from "@/lib/paystackConfig";
 
 type RoomInfo = {
   _id: string;
@@ -106,14 +110,124 @@ export default function RenewalPageTenant() {
     );
   }, [status.expiresAt]);
 
-const handleRenew = (plan: "monthly" | "yearly") => {
+
+
+const handleRenew = async (plan: "monthly" | "yearly") => {
+  if (!user || !room) {
+    Swal.fire({
+      icon: "error",
+      title: "Missing Info",
+      text: "User or room information is missing.",
+      confirmButtonColor: "#000",
+    });
+    return;
+  }
+
+  // Calculate renewal amount
+  const renewalAmount =
+    plan === "yearly" ? room.price * 12 : room.price;
+
+  // 🧾 Step 1 — Ask for confirmation
+  const result = await Swal.fire({
+    title: `Renew ${plan === "yearly" ? "Yearly" : "Monthly"} Plan?`,
+    html: `
+      <p class="text-gray-700">
+        You’re about to renew your <strong>${plan}</strong> plan.
+      </p>
+      <p class="mt-2 text-lg font-semibold text-gray-900">
+        ₵${formatNumber(renewalAmount)}
+      </p>
+      <p class="text-sm text-gray-500 mt-1">Do you want to continue?</p>
+    `,
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonColor: "#000",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, Renew",
+    cancelButtonText: "Cancel",
+    backdrop: `rgba(0,0,0,0.4)`,
+  });
+
+  if (!result.isConfirmed) return;
+
   setRenewType(plan);
   setRenewing(true);
 
-  setTimeout(() => {
+  try {
+    // 🧩 Step 2 — Start Paystack payment
+    startPaystackPayment(
+      {
+        email: user.email,
+        amount: renewalAmount * 100, // convert GHS to kobo
+        currency: "GHS",
+      },
+      async (response) => {
+        if (response.status === "success") {
+          Swal.fire({
+            icon: "success",
+            title: "Payment successful!",
+            text: "Verifying your renewal...",
+            timer: 1500,
+            showConfirmButton: false,
+          });
+
+          try {
+            const res = await fetch("/api/payment", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                reference: response.reference,
+                userId: user._id,
+                roomId: room._id,
+                amount: renewalAmount,
+                duration: plan === "monthly" ? 1 : 12,
+                renewal: true, // flag for backend if needed
+              }),
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+              Swal.fire({
+                icon: "success",
+                title: "Subscription Renewed!",
+                text: "Your access has been restored successfully.",
+                confirmButtonColor: "#000",
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Verification Failed",
+                text: data.error || "Could not verify payment.",
+              });
+            }
+          } catch (err) {
+            console.error(err);
+            Swal.fire({
+              icon: "error",
+              title: "Network Error",
+              text: "Error verifying payment. Please try again.",
+            });
+          }
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Payment Cancelled",
+            text: "You cancelled the renewal process.",
+          });
+        }
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Something went wrong starting your renewal.",
+    });
+  } finally {
     setRenewing(false);
-    alert(`(Stub) Redirecting to checkout for ${plan} plan`);
-  }, 700);
+  }
 };
 
 
@@ -270,12 +384,14 @@ const handleRenew = (plan: "monthly" | "yearly") => {
       {status.shouldRenew && (
         <div className="flex items-start gap-3 rounded-lg bg-amber-50 border border-amber-200 p-4 text-sm text-amber-800 shadow-inner">
           <ShieldAlert className="w-5 h-5 shrink-0 text-amber-700" />
-          <div>
-            <p className="font-medium">Your subscription has expired.</p>
-            <p className="text-xs text-amber-700 mt-1">
-              Renew to restore access. Smart-lock access is currently paused.
-            </p>
-          </div>
+           <div>
+                  <p>
+                    To maintain uninterrupted access, please renew your subscription prior to expiry.
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    <strong>Important:</strong> Smart-lock access will be automatically restricted after expiry.
+                  </p>
+                </div>
         </div>
       )}
 
