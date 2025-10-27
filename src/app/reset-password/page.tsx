@@ -66,7 +66,6 @@ export default function ResetPassword() {
           confirmButtonColor: "#111827",
         });
         reset();
-
         router.push("/login");
       } else {
         Swal.fire({
