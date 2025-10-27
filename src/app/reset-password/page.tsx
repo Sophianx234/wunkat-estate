@@ -3,9 +3,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { useSearchParams, useRouter } from "next/navigation";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { ScaleLoader } from "react-spinners";
 import Swal from "sweetalert2";
 import { z } from "zod";
@@ -28,7 +28,6 @@ type ResetInputs = z.infer<typeof resetSchema>;
 
 export default function ResetPassword() {
   const [isLoading, setIsLoading] = useState(false);
-  const searchParams = useSearchParams();
   const router = useRouter();
   const [token,setToken] = useState<string | null>(null);
   
