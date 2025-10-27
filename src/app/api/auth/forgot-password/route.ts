@@ -22,8 +22,8 @@ export async function POST(req: NextRequest) {
   user.resetTokenExpire = Date.now() + 60 * 60 * 1000; // 1 hour
   await user.save();
 
-  const resetUrl = `http://localhost:3000/reset-password?token=${resetToken}`;
-  // const resetUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/reset-password?token=${resetToken}`;
+  // const resetUrl = `http://localhost:3000/reset-password?token=${resetToken}`;
+  const resetUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/reset-password?token=${resetToken}`;
 
 
   // Email template (keep your styled version)
