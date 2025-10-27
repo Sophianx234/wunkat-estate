@@ -1,4 +1,3 @@
-// src/app/renewal/page.tsx
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
@@ -14,22 +13,11 @@ import {
   FaCrown,
   FaHandshake,
   FaLock,
-  FaMapMarkerAlt,
-  FaDoorOpen,
-  FaBath,
-  FaClipboardList,
 } from "react-icons/fa";
-import { LuClipboardList, LuHeadphones, LuSettings2 } from "react-icons/lu";
 import { IoBedOutline, IoLocationOutline } from "react-icons/io5";
 import { PiBathtubLight } from "react-icons/pi";
-
-type DummyUser = {
-  _id: string;
-  name: string;
-  email: string;
-  avatar?: string;
-  role?: string;
-};
+import { LuClipboardList, LuHeadphones, LuSettings2 } from "react-icons/lu";
+import { useDashStore } from "@/lib/store";
 
 type RoomInfo = {
   _id: string;
@@ -44,45 +32,71 @@ type RoomInfo = {
   images?: string[];
 };
 
+type HouseInfo = {
+  _id: string;
+  name: string;
+  location: {
+    address: string;
+    city: string;
+    region: string;
+    country: string;
+  };
+  amenities?: string[];
+  smartLockSupport?: boolean;
+};
+
+type PaymentInfo = {
+  _id: string;
+  expiresAt: string;
+  amount: number;
+  reference: string;
+  createdAt: string;
+};
+
 export default function RenewalPageTenant() {
   const router = useRouter();
-
-  const [user] = useState<DummyUser>({
-    _id: "tenant_001",
-    name: "Kofi Mensah",
-    email: "kofi@example.com",
-    avatar: "/images/user-default.png",
-    role: "buyer",
-  });
+  const { user } = useDashStore();
 
   const [room, setRoom] = useState<RoomInfo | null>(null);
-  const [renewing, setRenewing] = useState(false);
-  const [status, setStatus] = useState({
-    shouldRenew: true,
-    expiresAt: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
-  });
+  const [house, setHouse] = useState<HouseInfo | null>(null);
+  const [payment, setPayment] = useState<PaymentInfo | null>(null);
+  const [status, setStatus] = useState({ shouldRenew: false, expiresAt: "" });
+  const [renewType, setRenewType] = useState<"monthly" | "yearly">("monthly");
 
-  // simulate fetching user's active room payment
+  const [renewing, setRenewing] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // 🔹 Fetch user's renewal data
   useEffect(() => {
-    async function fetchRoom() {
-      // 🔹 in a real app, call /api/payments/active?userId=...
-      // and populate room details.
-      const fakeRoom: RoomInfo = {
-        _id: "room_101",
-        name: "Deluxe Apartment - Tamale",
-        price: 850,
-        status: "booked",
-        beds: 2,
-        baths: 1,
-        smartLockEnabled: true,
-        lockStatus: "unlocked",
-        planType: "monthly",
-        images: ["https://images.unsplash.com/photo-1600585154340-be6161a56a0c"],
-      };
-      setRoom(fakeRoom);
+    async function fetchRenewalData() {
+      try {
+        const res = await fetch(`/api/dashboard/renewal?userId=${user?._id}`);
+        const data = await res.json();
+
+        if (res.ok && data.payment) {
+          console.log("Renewal data:", data);
+          setRoom(data.room);
+          setHouse(data.house);
+          setPayment(data.payment);
+          setStatus({
+            shouldRenew: data.expired ?? false,
+            expiresAt: data.payment.expiresAt,
+          });
+        } else {
+          setRoom(null);
+          setHouse(null);
+          setPayment(null);
+          setStatus({ shouldRenew: true, expiresAt: "" });
+        }
+      } catch (error) {
+        console.error("❌ Error loading renewal data:", error);
+      } finally {
+        setLoading(false);
+      }
     }
-    fetchRoom();
-  }, []);
+
+    if (user?._id) fetchRenewalData();
+  }, [user?._id]);
 
   const daysLeft = useMemo(() => {
     if (!status.expiresAt) return undefined;
@@ -92,60 +106,41 @@ export default function RenewalPageTenant() {
     );
   }, [status.expiresAt]);
 
-  const handleRenew = (plan?: "monthly" | "yearly") => {
-    setRenewing(true);
-    setTimeout(() => {
-      setRenewing(false);
-      alert(`(Stub) Would redirect to checkout for plan: ${plan ?? "monthly"}`);
-    }, 700);
-  };
+const handleRenew = (plan: "monthly" | "yearly") => {
+  setRenewType(plan);
+  setRenewing(true);
+
+  setTimeout(() => {
+    setRenewing(false);
+    alert(`(Stub) Redirecting to checkout for ${plan} plan`);
+  }, 700);
+};
+
 
   const bannerTitle = status.shouldRenew
-    ? "Subscription expiring soon"
-    : "Subscription status";
+    ? "Subscription expired"
+    : "Subscription active";
+
   const bannerSubtitle = status.expiresAt
     ? `Expires on ${format(new Date(status.expiresAt), "PPP")}`
     : "No active subscription found";
 
   const perks = [
-    {
-      title: "Uninterrupted Bookings",
-      subtitle:
-        "Keep upcoming bookings and reservations active, no risk of auto cancel.",
-      points: "Priority",
-      icon: <FaCrown className="w-6 h-6" />,
-    },
-    {
-      title: "Smart Lock Access",
-      subtitle: "Maintain remote access to smart-lock enabled rooms.",
-      points: "Access",
-      icon: <FaLock className="w-6 h-6" />,
-    },
-    {
-      title: "Priority Rebooking",
-      subtitle: "Faster rebooking of favorite rooms with priority windows.",
-      points: "Convenience",
-      icon: <FaChartLine className="w-6 h-6" />,
-    },
-    {
-      title: "Dedicated Support",
-      subtitle: "Priority email and chat assistance for subscribers.",
-      points: "Support",
-      icon: <LuHeadphones className="w-6 h-6" />,
-    },
-    {
-      title: "Partner Discounts",
-      subtitle: "Exclusive discounts on cleaning and maintenance services.",
-      points: "Savings",
-      icon: <FaHandshake className="w-6 h-6" />,
-    },
-    {
-      title: "Flexible Plans",
-      subtitle: "Switch between monthly and yearly renewals with ease.",
-      points: "Flexibility",
-      icon: <LuSettings2 className="w-6 h-6" />,
-    },
+    { title: "Uninterrupted Bookings", subtitle: "Keep upcoming bookings active — no auto cancellations.", points: "Priority", icon: <FaCrown className="w-6 h-6" /> },
+    { title: "Smart Lock Access", subtitle: "Maintain seamless remote access to smart-lock enabled rooms.", points: "Access", icon: <FaLock className="w-6 h-6" /> },
+    { title: "Priority Rebooking", subtitle: "Quickly rebook your favorite rooms with faster priority windows.", points: "Convenience", icon: <FaChartLine className="w-6 h-6" /> },
+    { title: "Dedicated Support", subtitle: "Get premium support with faster response times.", points: "Support", icon: <LuHeadphones className="w-6 h-6" /> },
+    { title: "Partner Discounts", subtitle: "Access exclusive partner discounts on services.", points: "Savings", icon: <FaHandshake className="w-6 h-6" /> },
+    { title: "Flexible Plans", subtitle: "Easily switch between monthly and yearly renewal plans.", points: "Flexibility", icon: <LuSettings2 className="w-6 h-6" /> },
   ];
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-[60vh] text-gray-500">
+        Loading renewal information...
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
@@ -153,12 +148,12 @@ export default function RenewalPageTenant() {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
           <Avatar>
-            <img src={user.avatar ?? "/images/user-default.png"} alt={user.name} />
+            <img src={user?.profile ?? "/images/user-default.png"} alt={user?.name} />
           </Avatar>
           <div>
             <h1 className="text-2xl font-semibold">Subscription Renewal</h1>
             <p className="text-sm text-muted-foreground">
-              Hello, <span className="font-medium">{user.name}</span>
+              Hello, <span className="font-medium">{user?.name}</span>
             </p>
           </div>
         </div>
@@ -176,150 +171,183 @@ export default function RenewalPageTenant() {
         </div>
       </div>
 
-      {/* Room Information Section */}
-      {room && (
-    <Card className="mb-8 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 rounded-2xl overflow-hidden">
-  <CardContent className="flex flex-col sm:flex-row ">
-    {/* Image Section */}
-    <div className="sm:w-1/3 relative">
-      <img
-        src={
-          room.images?.[0] ??
-          "https://images.unsplash.com/photo-1600585154340-be6161a56a0c"
-        }
-        alt={room.name}
-        className="w-full h-48 sm:h-full object-cover transition-transform duration-300 hover:scale-105"
-      />
-      {room.smartLockEnabled && (
-        <Badge
-          className="absolute top-3 left-3 bg-white/90 text-gray-800 backdrop-blur-sm shadow-sm"
-          variant="outline"
-        >
-          Smart Lock: {room.lockStatus}
-        </Badge>
-      )}
-    </div>
+      {/* Room & House Information */}
+      {room && house && (
+        <Card className="mb-8 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 rounded-2xl overflow-hidden">
+          <CardContent className="flex flex-col sm:flex-row">
+            {/* Image */}
+            <div className="sm:w-1/3 relative">
+              <img
+                src={room.images?.[0] ?? "/images/default-room.jpg"}
+                alt={room.name}
+                className="w-full h-48 sm:h-full object-cover transition-transform duration-300 hover:scale-105"
+              />
+              {room.smartLockEnabled && (
+                <Badge className="absolute top-3 left-3 bg-white/90 text-gray-800 backdrop-blur-sm shadow-sm" variant="outline">
+                  Smart Lock: {room.lockStatus}
+                </Badge>
+              )}
+            </div>
 
-    {/* Content Section */}
-    <div className="flex-1 p-6 flex flex-col justify-between">
-      <div className="space-y-3">
-        <h3 className="text-xl font-semibold tracking-tight text-gray-900">
-          {room.name}
-        </h3>
+            {/* Details */}
+            <div className="flex-1 p-6 flex flex-col justify-between">
+              <div className="space-y-3">
+                <h3 className="text-xl font-semibold tracking-tight text-gray-900">{room.name}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {house.name} • {house.location.city}, {house.location.country}
+                </p>
 
-        <div className="flex flex-wrap gap-3 text-sm text-gray-600">
-          <span className="flex items-center gap-1">
-            <IoLocationOutline className="w-4 h-4 text-gray-500" /> Tamale, Ghana
-          </span>
-          <span className="flex items-center gap-1">
-            <IoBedOutline className="w-4 h-4 text-gray-500" /> {room.beds} beds
-          </span>
-         
-        </div>
-       <div className="flex flex-wrap gap-3 text-sm text-gray-600">
-  <span className="flex items-center gap-1">
-   <PiBathtubLight  className="w-4 h-4 text-gray-500" /> {room.baths} bath(s)
-  </span>
+                <div className="flex flex-wrap gap-3 text-sm text-gray-600">
+                  <span className="flex items-center gap-1">
+                    <IoLocationOutline className="w-4 h-4 text-gray-500" /> {house.location.address}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <IoBedOutline className="w-4 h-4 text-gray-500" /> {room.beds} beds
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <PiBathtubLight className="w-4 h-4 text-gray-500" /> {room.baths} bath(s)
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <LuClipboardList className="w-4 h-4 text-gray-500" /> Plan: {room.planType}
+                  </span>
+                </div>
+              </div>
 
-  <span className="flex items-center gap-1">
-    <LuClipboardList className="w-4 h-4 text-gray-500" />
-    <strong className="text-gray-700">Plan:</strong> {room.planType}
-  </span>
-</div>
-
-      </div>
-
-      <div className="flex items-center justify-between pt-4 border-t mt-4">
-        <p className="font-semibold text-lg text-gray-900">
-          ₵{room.price.toLocaleString()}{" "}
-          <span className="text-gray-500 font-normal text-sm">
-            / {room.planType}
-          </span>
-        </p>
-        <Badge
-          variant={room.status === "booked" ? "default" : "secondary"}
-          className="capitalize px-3 py-1 text-sm"
-        >
-          {room.status}
-        </Badge>
-      </div>
-    </div>
-  </CardContent>
-</Card>
-
+              <div className="flex items-center justify-between pt-4 border-t mt-4">
+                <p className="font-semibold text-lg text-gray-900">
+                  ₵{room.price.toLocaleString()}{" "}
+                  <span className="text-gray-500 font-normal text-sm">/ {room.planType}</span>
+                </p>
+                <Badge variant={room.status === "booked" ? "default" : "secondary"} className="capitalize px-3 py-1 text-sm">
+                  {room.status}
+                </Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       )}
 
       {/* Subscription Banner */}
-      <section
-        aria-labelledby="subscription-banner"
-        className={`rounded-lg p-6 mb-6 shadow-sm ${
-          status.shouldRenew ? "bg-rose-50" : "bg-slate-50"
-        }`}
+    <section
+  aria-labelledby="subscription-banner"
+  className={`relative overflow-hidden rounded-xl border shadow-sm mb-8 transition-all ${
+    status.shouldRenew
+      ? "bg-gradient-to-r from-rose-50 via-white to-rose-50 border-rose-200"
+      : "bg-gradient-to-r from-green-50 via-white to-green-50 border-green-200"
+  }`}
+>
+  {/* Banner Header */}
+  <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+    <div>
+      <h2
+        id="subscription-banner"
+        className="text-xl sm:text-2xl font-semibold text-gray-900"
       >
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div className="min-w-0">
-            <h2 id="subscription-banner" className="text-xl font-semibold text-gray-900">
-              {bannerTitle}
-            </h2>
-            <p className="mt-1 text-sm text-muted-foreground">{bannerSubtitle}</p>
+        {bannerTitle}
+      </h2>
+      <p className="text-sm text-gray-500 mt-1">{bannerSubtitle}</p>
+    </div>
 
-            {status.shouldRenew && (
-              <div className="mt-4 flex items-start gap-3 text-sm text-amber-800 bg-amber-50 border border-amber-100 rounded-md p-3 max-w-2xl">
-                <ShieldAlert className="w-5 h-5 shrink-0 text-amber-700" />
-                <div>
-                  <p>
-                    To maintain uninterrupted access, please renew your subscription prior to expiry.
-                  </p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    <strong>Important:</strong> Smart-lock access will be automatically restricted after expiry.
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
+    {payment && (
+      <div className="text-sm text-gray-600 text-right">
+        <p>
+          Expiry:{" "}
+          <span className="font-medium text-gray-900">
+            {format(new Date(payment.expiresAt), "PPP")}
+          </span>
+        </p>
+        <p className="text-xs text-muted-foreground">
+          {daysLeft ?? "--"} day(s) left
+        </p>
+      </div>
+    )}
+  </div>
 
-          {/* Right side actions */}
-          <div className="flex flex-col sm:items-end gap-3">
-            <div className="text-right">
-              {status.expiresAt && (
-                <p className="text-sm text-muted-foreground">
-                  Expiry:{" "}
-                  <span className="font-medium">
-                    {format(new Date(status.expiresAt), "PPP")}
-                  </span>
-                </p>
-              )}
-              <p className="text-lg font-semibold">
-                {daysLeft ?? "--"}{" "}
-                <span className="text-sm font-normal text-muted-foreground">day(s) left</span>
-              </p>
-            </div>
-
-            <div className="flex gap-2">
-              <Button
-                onClick={() => handleRenew("monthly")}
-                disabled={renewing || !status.shouldRenew}
-              >
-                Renew Monthly
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={() => handleRenew("yearly")}
-                disabled={renewing || !status.shouldRenew}
-              >
-                Renew Yearly
-              </Button>
-            </div>
+  {/* Main Content */}
+  <div className="px-6 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+    {/* Left: Renewal Notice */}
+    <div className="flex-1 space-y-3">
+      {status.shouldRenew && (
+        <div className="flex items-start gap-3 rounded-lg bg-amber-50 border border-amber-200 p-4 text-sm text-amber-800 shadow-inner">
+          <ShieldAlert className="w-5 h-5 shrink-0 text-amber-700" />
+          <div>
+            <p className="font-medium">Your subscription has expired.</p>
+            <p className="text-xs text-amber-700 mt-1">
+              Renew to restore access. Smart-lock access is currently paused.
+            </p>
           </div>
         </div>
-      </section>
+      )}
+
+     
+
+    {/* Right: Action Buttons */}
+    <div className="flex items-center justify-between">
+
+    <div className="flex flex-col sm:items-end items-center gap-3">
+       {room && (
+        <div className="pt-1">
+          <p className="text-gray-700">
+            Plan:{" "}
+            <span className="font-semibold text-gray-900">
+              {room.planType}
+            </span>
+          </p>
+          <p className="mt-1 text-base font-semibold text-gray-900">
+            ₵
+            {renewType === "yearly"
+              ? (room.price * 12).toLocaleString()
+              : room.price.toLocaleString()}{" "}
+            <span className="text-sm font-normal text-gray-500">
+              / {renewType === "yearly" ? "year" : room.planType}
+            </span>
+          </p>
+        </div>
+      )}
+    </div>
+      <div className="flex  gap-2">
+        <Button
+          onClick={() => handleRenew("monthly")}
+          disabled={renewing}
+          className={`rounded-full px-5 ${
+            renewType === "monthly"
+            ? "bg-black text-white shadow"
+              : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+          }`}
+        >
+          Renew Monthly
+        </Button>
+
+        <Button
+          onClick={() => handleRenew("yearly")}
+          disabled={renewing}
+          className={`rounded-full px-5 ${
+            renewType === "yearly"
+              ? "bg-black text-white shadow"
+              : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+          }`}
+        >
+          Renew Yearly
+        </Button>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  {/* Decorative Accent */}
+  <div
+    className={`absolute top-0 left-0 h-1 w-full ${
+      status.shouldRenew ? "bg-rose-400" : "bg-green-400"
+    } rounded-t-xl`}
+  />
+</section>
+
+
 
       {/* Why Renew Section */}
       <section className="text-center mt-12">
         <h3 className="text-2xl font-semibold mb-2">Why renew? Benefits for tenants</h3>
-        <p className="text-sm text-muted-foreground mb-8">
-          Retain access, conveniences and exclusive benefits.
-        </p>
+        <p className="text-sm text-muted-foreground mb-8">Retain access, convenience, and exclusive benefits.</p>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {perks.map((card, i) => (
