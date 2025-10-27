@@ -120,7 +120,7 @@ const handleLogin: SubmitHandler<formInputs> = async (data) => {
             <Checkbox  onChange={(e) => setRemeberPass((e.target as HTMLInputElement).checked)} />
             <span>Remember for 30 days</span>
           </div>
-          <p>Forgot password</p>
+          <Link href='/forgot-password' className="hover:underline duration-200 ">Forgot password</Link>
         </div>
         <div className="flex flex-col pt-4 space-y-3">
           <Button

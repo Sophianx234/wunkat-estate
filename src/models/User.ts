@@ -5,6 +5,8 @@ export type userDocumentType ={
   _id?:string
   name: string;
   email: string;
+  resetToken?:string;
+  resetTokenExpire?:Date;
   profile?:string;
   password: string;
   role: "buyer" | "seller" | "agent" | "admin";
@@ -40,6 +42,9 @@ const userSchema = new Schema<userDocumentType>({
     type: Date,
     default: Date.now,
   },
+    resetToken: { type: String },
+    resetTokenExpire: { type: Date },
+  
   profile:{
     type:String,
     default:'/images/user-default.png'

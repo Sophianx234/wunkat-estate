@@ -11,9 +11,9 @@ function SideBar({handleClose}:sidebarProps) {
   return (
     <motion.aside
       initial={{ y: "-100%"  }}
-      animate={{ x: 0 }}
+      animate={{ y: 0 }}
       exit={{ y: "-100%" }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 3 }}
       className="fixed top-0 left-0 h-full  w-full bg-white shadow-lg z-50 p-6"
     >
       <div className='flex justify-between  mr-4 items-center sm:hidden pt-8 '>
