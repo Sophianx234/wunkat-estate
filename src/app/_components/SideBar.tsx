@@ -10,9 +10,9 @@ type sidebarProps = {
 function SideBar({handleClose}:sidebarProps) {
   return (
     <motion.aside
-      initial={{ x: "-100%" }}
+      initial={{ y: "-100%"  }}
       animate={{ x: 0 }}
-      exit={{ x: "-100%" }}
+      exit={{ y: "-100%" }}
       transition={{ duration: 0.3 }}
       className="fixed top-0 left-0 h-full  w-full bg-white shadow-lg z-50 p-6"
     >
