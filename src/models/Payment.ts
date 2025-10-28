@@ -6,7 +6,7 @@ export interface IPayment extends mongoose.Document {
   roomId: Types.ObjectId;
   amount: number;
   currency: string;
-  status: "pending" | "completed" | "failed";
+  status: "pending" | "completed" | "failed"|'expired';
   paymentMethod: "card" | "mobile_money" | "paypal";
   reference: string;
   expiresAt: Date

@@ -1,4 +1,5 @@
 "use client";
+
 import Logo from "@/app/_components/Logo";
 import { useDashStore } from "@/lib/store";
 import { X } from "lucide-react";
@@ -14,142 +15,147 @@ import { MdAccountCircle } from "react-icons/md";
 import { TbReportAnalytics } from "react-icons/tb";
 import { ScaleLoader } from "react-spinners";
 import ControlPanel from "./ControlPanel";
-type sidebarProps = {
+import { motion } from "framer-motion";
+
+type SidebarProps = {
   type?: "normal" | "slide";
   handleClose?: () => void;
 };
-export default function Sidebar({
-  handleClose,
-  type = "normal",
-}: sidebarProps) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+export default function Sidebar({ handleClose, type = "normal" }: SidebarProps) {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { toggleSidebar,user } = useDashStore();
+  const { toggleSidebar, user } = useDashStore();
   const pathname = usePathname();
-  console.log("pathname", pathname);
+
   const handleLogout = async () => {
     try {
       setIsLoading(true);
-
       const res = await fetch(`/api/auth/logout`);
       const data = await res.json();
       if (res.ok) {
-        console.log("logout", data);
-
         toast.success("Logout successful");
         router.push("/");
       } else {
-        console.log("logout", data);
+        toast.error("Logout failed");
       }
-    } catch (err) {
+    } catch {
       toast.error("Logout failed");
-      console.log(err);
     } finally {
       setIsLoading(false);
     }
   };
+
+  // ✨ Animation variants
+  const sidebarVariants = {
+    hidden: { y: "-100%", opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 100, damping: 15 },
+    },
+    exit: { y: "-100%", opacity: 0, transition: { duration: 0.3 } },
+  };
+
+  const AsideWrapper = type === "normal" ? "aside":motion.aside
+
   return (
-    <aside
-      
-      className={` ${
+    <AsideWrapper
+      variants={sidebarVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className={`${
         type === "normal"
-          ? "hidden sm:fixed sm:block left-0 top-0  h-screen w-64 bg-white  z-50"
-          : "block absolute h-dvh inset-0 top-0 left-0  z-10"
-      } sm:block bg-white  pb-6 `}
+          ? "hidden sm:fixed sm:block left-0 top-0 h-screen w-64 bg-white z-50"
+          : "fixed bg-white pb-10 inset-0 top-0 left-0 z-40 sm:hidden"
+      } flex flex-col h-full shadow-lg border-r border-gray-200`}
     >
-      {/* Wrapper with flex column layout */}
-      <div className="flex flex-col h-full md:h-dvh">
-        {/* Top section: Logo and close button */}
-        <div className="flex   items-center justify-between  pt-6 border-b border-b-gray-200 pr-3 md:pr-2 pb-5 pl-5 border-r border-r-gray-200">
-          <Logo type="dash" />
-          {type === "slide" && (
-            <X
-              size={30}
-              onClick={handleClose}
-              className="block self-end stroke-black cursor-pointer"
-              />
-            )}
-        </div>
-
-        {/* Scrollable nav container */}
-        <nav className="flex-1  flex-col overflow-y-auto pt-5 shadow  border-gray-200 scrollbar-hide  text-sm font-medium text-gray-600 px-4 space-y-1">
-          <Link
-            onClick={toggleSidebar}
-            href="/dashboard/finance/analytics"
-            className="dash-nav-item"
-            >
-            <TbReportAnalytics className="size-6" />
-            Financial Analytics
-          </Link>
-            <ControlPanel/>
-
-          <Link
-            onClick={toggleSidebar}
-            href="/dashboard/properties"
-            className={`dash-nav-item ${
-              pathname === "/dashboard/properties" ? "bg-black text-white" : ""
-            }`}
+      {/* Header */}
+      <div className="flex items-center justify-between pt-6 pb-5 px-5 border-b border-gray-200">
+        <Logo type="dash" />
+        {type === "slide" && (
+          <motion.button
+            whileHover={{ rotate: 90 }}
+            transition={{ type: "spring", stiffness: 200 }}
+            onClick={handleClose}
+            className="p-2 rounded-md hover:bg-gray-100"
           >
-            <GiSpookyHouse className="size-6" /> Properties
-          </Link>
-        {/*   <Link
-            onClick={toggleSidebar}
-            href="/dashboard/agents"
-            className={`dash-nav-item ${
-              pathname === "/dashboard/agents" ? "bg-black text-white" : ""
-              }`}
-              >
-              <HiOutlineUsers className="size-6" /> Agents
-              </Link> */}
-          <Link
-            onClick={toggleSidebar}
-            href="/dashboard/tenants"
-            className={`dash-nav-item ${
-              pathname === "/dashboard/tenants" ? "bg-black text-white" : ""
-            }`}
-            >
-            <MdAccountCircle className="size-6" /> Tenants
-          </Link>
-          <Link
-            onClick={toggleSidebar}
-            href={`/dashboard/transactions/${user?._id}`}
-            className={`dash-nav-item ${
-              pathname === "/dashboard/transactions"
-                ? "bg-black text-white"
-                : ""
-            }`}
-          >
-            <CiMoneyCheck1 className="size-6" /> Transactions
-          </Link>
-         
-          <Link
-            onClick={toggleSidebar}
-            href="/dashboard/account"
-            className={`dash-nav-item ${
-              pathname === "/dashboard/account" ? "bg-black text-white" : ""
-            }`}
-          >
-            <FiSettings className="size-6" /> Account
-          </Link>
-          <button
-            onClick={handleLogout}
-            className="dash-nav-item w-full text-red-500"
-          >
-            {isLoading && (
-              <ScaleLoader className="" height={10} width={6} color="#fff" />
-            )}
-            {isLoading ? (
-              "Loging out..."
-            ) : (
-              <>
-                <BiLogOut className="size-6" />
-                Logout
-              </>
-            )}
-          </button>
-        </nav>
+            <X size={24} className="stroke-black" />
+          </motion.button>
+        )}
       </div>
+
+      {/* Nav Links */}
+      <nav className="flex-1 overflow-y-auto pt-5 px-4 text-sm font-medium text-gray-700 space-y-1 scrollbar-hide">
+        <Link onClick={toggleSidebar} href="/dashboard/finance/overview" className="dash-nav-item">
+          <TbReportAnalytics className="size-6" />
+          Financial Analytics
+        </Link>
+
+        <ControlPanel />
+
+        <Link
+          onClick={toggleSidebar}
+          href="/dashboard/properties"
+          className={`dash-nav-item ${
+            pathname === "/dashboard/properties" ? "bg-black text-white" : ""
+          }`}
+        >
+          <GiSpookyHouse className="size-6" />
+          Properties
+        </Link>
+
+        <Link
+          onClick={toggleSidebar}
+          href="/dashboard/tenants"
+          className={`dash-nav-item ${
+            pathname === "/dashboard/tenants" ? "bg-black text-white" : ""
+          }`}
+        >
+          <MdAccountCircle className="size-6" />
+          Tenants
+        </Link>
+
+        <Link
+          onClick={toggleSidebar}
+          href={`/dashboard/transactions/${user?._id}`}
+          className={`dash-nav-item ${
+            pathname === "/dashboard/transactions" ? "bg-black text-white" : ""
+          }`}
+        >
+          <CiMoneyCheck1 className="size-6" />
+          Transactions
+        </Link>
+
+        <Link
+          onClick={toggleSidebar}
+          href="/dashboard/account"
+          className={`dash-nav-item ${
+            pathname === "/dashboard/account" ? "bg-black text-white" : ""
+          }`}
+        >
+          <FiSettings className="size-6" />
+          Account
+        </Link>
+
+        <motion.button
+          onClick={handleLogout}
+          whileTap={{ scale: 0.96 }}
+          className="dash-nav-item w-full text-red-600 hover:bg-red-50 transition"
+        >
+          {isLoading ? (
+            <ScaleLoader height={10} width={6} color="#ef4444" />
+          ) : (
+            <>
+              <BiLogOut className="size-6" />
+              Logout
+            </>
+          )}
+        </motion.button>
+      </nav>
+
       <Toaster />
-    </aside>
+    </AsideWrapper>
   );
 }

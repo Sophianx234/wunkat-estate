@@ -11,11 +11,10 @@ const tabs = [
   { name: "Overview", icon: Cog ,link: "/dashboard/finance/overview"},
   { name: "Analytics", icon: Eye ,link: "/dashboard/finance/analytics"},
   { name: "Properties", icon: FileText, link: "/dashboard/finance/properties" },
-  { name: "Notifications", icon: Bell, link: "/dashboard/finance/notifications" },
 ];
 
 export default function DashboardNav() {
-  const [active, setActive] = useState("Analytics");
+  const [active, setActive] = useState("Overview");
   const router = useRouter();
 
   return (
