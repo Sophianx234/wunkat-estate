@@ -67,9 +67,9 @@ export default function Sidebar({ handleClose, type = "normal" }: SidebarProps) 
       exit="exit"
       className={`${
         type === "normal"
-          ? "hidden sm:fixed sm:block left-0 top-0 h-screen w-64 bg-white z-50"
+          ? "hidden sm:fixed pb-28 sm:block left-0 top-0 h-screen w-64 bg-white z-50"
           : "fixed bg-white pb-10 inset-0 top-0 left-0 z-40 sm:hidden"
-      } flex flex-col h-full shadow-lg border-r border-gray-200`}
+      } flex flex-col h-full  border-r border-gray-200`}
     >
       {/* Header */}
       <div className="flex items-center justify-between pt-6 pb-5 px-5 border-b border-gray-200">
@@ -87,7 +87,7 @@ export default function Sidebar({ handleClose, type = "normal" }: SidebarProps) 
       </div>
 
       {/* Nav Links */}
-      <nav className="flex-1 overflow-y-auto pt-5 px-4 text-sm font-medium text-gray-700 space-y-1 scrollbar-hide">
+      <nav className={`flex-1 overflow-y-scroll h-dvh ${type==='normal'&&"pb-36"} shadow  pt-5 px-4 text-sm font-medium text-gray-700 space-y-1 scrollbar-hide`}>
         <Link onClick={toggleSidebar} href="/dashboard/finance/overview" className="dash-nav-item">
           <TbReportAnalytics className="size-6" />
           Financial Analytics
