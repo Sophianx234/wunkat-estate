@@ -90,6 +90,34 @@ const handlePay = async () => {
     return;
   }
 
+  
+  const checkRes = await fetch("/api/rooms/check-active", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: user._id }),
+    });
+
+    const checkData = await checkRes.json();
+    console.log("Active booking check:", checkData);
+
+    // 🧠 if user is already occupying a room
+    if (checkData.success && checkData.active) {
+      console.log("User already has an active booking.", checkData);
+    Swal.fire({
+  icon: "warning",
+  html: `
+    <p>You are currently occupying <strong>${checkData.room?.name || "a room"}</strong>.</p>
+    <p class="mt-2 text-sm text-gray-600">
+      Please contact the administrator to end your current stay, or wait until your current subscription expires 
+      on <strong>${checkData.room ? new Date(checkData.room.bookedUntil).toLocaleDateString() : "its end date"}</strong>.
+    </p>
+  `,
+  confirmButtonText: "Got it",
+});
+
+      return;
+    }
+
   startPaystackPayment(
     {
       email: user.email,
