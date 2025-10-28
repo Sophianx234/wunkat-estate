@@ -2,25 +2,35 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/config/DbConnect";
 import Notification from "@/models/Notification";
 import { broadcast } from "@/lib/sse";
+import mongoose from "mongoose";
 // adjust this to your JWT verification util
 
 export async function GET(req: NextRequest) {
   try {
     await connectToDatabase();
 
-    // 🧩 Try to get user info from JWT (if using authentication)
-
-
-    // 🧩 Or allow optional ?role=user/admin in URL (useful for quick testing)
     const { searchParams } = new URL(req.url);
-    const role = searchParams.get("role");
-     // default to user
+    const role = searchParams.get("role") || "user";
+    const userId = searchParams.get("userId");
 
-    // 🧠 Filter notifications based on audience
-    const filter =
-      role === "admin"
-        ? { audience: { $in: ["admin", "all"] } } // admins see admin + all
-        : { audience: { $in: ["user", "all"] } }; // users see user + all
+    let filter: any = {};
+
+    if (role === "admin") {
+      // Admins see only admin or global notifications
+      filter = { audience: { $in: ["admin", "all"] } };
+    } else {
+      // Regular users:
+      // Show notifications intended for "user"
+      // Where userId is either not set (global user message) or matches this user
+      filter = {
+        audience: "user",
+        $or: [
+          { userId: { $exists: false } },
+          { userId: { $eq: null } },
+          { userId: userId ? new mongoose.Types.ObjectId(userId) : undefined },
+        ].filter(Boolean),
+      };
+    }
 
     const notifications = await Notification.find(filter)
       .sort({ createdAt: -1 })
@@ -28,13 +38,14 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ success: true, notifications });
   } catch (error) {
-    console.error("Error fetching notifications:", error);
+    console.error("❌ Error fetching notifications:", error);
     return NextResponse.json(
       { success: false, error: "Failed to fetch notifications" },
       { status: 500 }
     );
   }
 }
+
 
 
 // POST — create a new notification

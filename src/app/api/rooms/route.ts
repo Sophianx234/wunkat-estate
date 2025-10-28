@@ -1,23 +1,15 @@
 import { connectToDatabase } from "@/config/DbConnect";
 import { uploadBufferToCloudinary } from "@/lib/cloudinary";
+import { broadcast } from "@/lib/sse"; // ✅ same SSE helper used elsewhere
 import "@/models/House"; // ensures House model is registered
 import House from "@/models/House";
+import Notification from "@/models/Notification";
 import Room from "@/models/Room";
 import { UploadApiResponse } from "cloudinary";
 import { NextRequest, NextResponse } from "next/server";
-import Notification from "@/models/Notification";
-import { broadcast } from "@/lib/sse"; // ✅ same SSE helper used elsewhere
 
-import { connectToDatabase } from "@/config/DbConnect";
-import { uploadBufferToCloudinary } from "@/lib/cloudinary";
-import "@/models/House";
-import House from "@/models/House";
-import Room from "@/models/Room";
-import { UploadApiResponse } from "cloudinary";
-import { NextRequest, NextResponse } from "next/server";
-import Notification from "@/models/Notification";
-import { broadcast } from "@/lib/sse";
 import { sendMail } from "@/lib/mail";
+import "@/models/House";
 import User from "@/models/User";
 
 export async function POST(req: NextRequest) {

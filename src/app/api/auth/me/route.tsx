@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    const user = await User.findById((decoded as DecodedToken).userId).select('name email profile')
+    const user = await User.findById((decoded as DecodedToken).userId).select('name email profile role')
     
     return NextResponse.json({ user });
   } catch (err) {

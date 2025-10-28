@@ -45,6 +45,7 @@ useEffect(() => {
   
 
   useEffect(() => {
+  if(!user) return
   // Connect to the SSE notifications endpoint
 const eventSource = new EventSource(`/api/notification?userId=${user?._id}&role=${user?.role}`);
 
@@ -76,13 +77,18 @@ const eventSource = new EventSource(`/api/notification?userId=${user?._id}&role=
   return () => {
     eventSource.close();
   };
-}, [setNotifications]);
+}, [setNotifications,user?._id,user?.role,user]);
 
 useEffect(() => {
   const fetchAllNotifications = async () => {
     try {
-      const res = await fetch("/api/notification/all");
+    if (!user?._id) return;
+
+    const res = await fetch(
+      `/api/notification/all?userId=${user._id}&role=${user.role}`
+    );
       const data = await res.json();
+      console.log(data,'all notifications')
 
       if (res.ok ) {
         loadNotifications(data.notifications);
@@ -93,7 +99,7 @@ useEffect(() => {
   };
 
   fetchAllNotifications();
-}, [setNotifications]);
+}, [setNotifications,user?._id,loadNotifications,user?.role]);
 
 
 
