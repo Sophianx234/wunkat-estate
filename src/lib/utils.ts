@@ -121,6 +121,7 @@ export function calculateNights(checkIn: Date, checkOut: Date): number {
 
 export function getImageUrl(path: string): string {
   if (path.startsWith("http")) return path
-  return `/placeholder.svg?height=400&width=600&query=${encodeURIComponent(path)}`
+  // return `/placeholder.svg?height=400&width=600&query=${encodeURIComponent(path)}`
+  return path
 }
 

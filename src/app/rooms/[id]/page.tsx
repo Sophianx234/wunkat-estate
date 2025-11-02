@@ -1,12 +1,12 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { ImageCarousel } from "@/components/image-carousel"
-import { BookingButton } from "@/components/booking-button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { FaMapMarkerAlt, FaBed, FaBath, FaWifi, FaCheck } from "react-icons/fa"
 import { formatPrice } from "@/lib/utils"
+import Header from "@/components/header"
+import { ImageCarousel } from "@/components/image-carousel"
+import { BookingButton } from "@/components/booking-button"
+import Footer from "@/components/footer"
 
 // Mock room data - Replace with real data from database
 const MOCK_ROOMS = [
@@ -22,7 +22,12 @@ const MOCK_ROOMS = [
     beds: 1,
     baths: 1,
     amenities: ["WiFi", "Kitchen", "AC", "Heating", "Parking", "Balcony"],
-    images: ["Modern downtown loft with city views", "Loft bedroom area", "Loft kitchen", "Loft balcony"],
+    images: [
+      "/c-1.jpg",
+      "/c-2.jpg",
+      "/c-3.jpg",
+      "/c-4.jpg",
+    ],
     featured: true,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -38,7 +43,12 @@ const MOCK_ROOMS = [
     beds: 2,
     baths: 1,
     amenities: ["WiFi", "Kitchen", "Pet Friendly", "Parking", "Beach Access"],
-    images: ["Beachside cottage with ocean views", "Beach cottage exterior", "Cottage interior", "Cottage deck"],
+    images: [
+      "/c-1.jpg",
+      "/c-2.jpg",
+      "/c-3.jpg",
+      "/c-4.jpg",
+    ],
     featured: true,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -55,10 +65,10 @@ const MOCK_ROOMS = [
     baths: 2,
     amenities: ["WiFi", "Kitchen", "Gym", "Washer/Dryer", "Doorman", "Rooftop Access"],
     images: [
-      "Luxury apartment in Brooklyn with exposed brick",
-      "Brooklyn apartment living room",
-      "Brooklyn bedroom",
-      "Brooklyn rooftop",
+      "/c-1.jpg",
+      "/c-2.jpg",
+      "/c-3.jpg",
+      "/c-4.jpg",
     ],
     featured: true,
     createdAt: new Date(),
