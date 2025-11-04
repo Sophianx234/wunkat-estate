@@ -19,9 +19,8 @@ export default function UploadProfilePage() {
   const [crop, setCrop] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null); // typed
-
   const router = useRouter();
-  const { signupData } = useDashStore();
+  const { signupData,room } = useDashStore();
 
   const handleAvatarClick = () => {
     fileInputRef.current?.click();
@@ -85,9 +84,16 @@ export default function UploadProfilePage() {
         const { msg } = await res.json();
         throw new Error(msg || "Upload failed");
       }
-      toast.dismiss();
-      toast.success("Account created");
-      router.push("/dashboard/properties");
+      if(res.ok){
+        toast.dismiss();
+
+        toast.success("Account created");
+        if(room){
+          router.push(`/dashboard/properties/${room._id}`);
+        }else{
+          router.push("/dashboard/properties");
+        }
+      }
     } catch (err) {
       toast.dismiss();
       toast.error("Something went wrong");
@@ -105,7 +111,7 @@ export default function UploadProfilePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(signupData),
       });
-      router.push("/dashboard/properties");
+
       if (!res.ok) {
         const { msg } = await res.json();
         throw new Error(msg || "Upload failed");
@@ -113,7 +119,12 @@ export default function UploadProfilePage() {
       if (res.ok) {
         toast.dismiss();
         toast.success("Account created...");
-        router.push("/dashboard/properties");
+        
+      if(room){
+        router.push(`/dashboard/properties/${room._id}`);
+      }else{
+      router.push("/dashboard/properties");
+      }
       }
     } catch (err) {
       toast.dismiss();

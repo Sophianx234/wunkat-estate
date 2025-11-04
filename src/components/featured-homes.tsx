@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { FaMapMarkerAlt, FaStar, FaBed, FaBath } from "react-icons/fa"
 
 const homes = [
@@ -71,7 +72,68 @@ const homes = [
   },
 ]
 
+
+interface Room {
+  _id: string
+  name: string
+  description: string
+  rating: number
+  reviews:number
+  price: number
+  beds: number
+  baths: number
+  planType: string
+  images: string[]
+  houseId: {
+    name: string
+    location: {
+      address: string
+      city: string
+      region: string
+      country: string
+    }
+  }
+}
+
 export default function FeaturedHomes() {
+
+   const [homes, setHomes] = useState<Room[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+ useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        const res = await fetch("/api/rooms")
+        if (!res.ok) throw new Error("Failed to fetch rooms")
+
+        const data = await res.json()
+
+        // Add random ratings and reviews for realism
+        const enriched = data.map((room:Room) => ({
+          ...room,
+          rating: (4.7 + Math.random() * 0.3).toFixed(2), // 4.7–5.0
+          reviews: Math.floor(Math.random() * 200) + 50, // 50–250 reviews
+        }))
+
+        setHomes(enriched.slice(0,6))
+      } catch (err: any) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchRooms()
+  }, [])
+
+  if (loading) {
+    return (
+      <section className="py-20 flex justify-center">
+        <p className="text-gray-500 text-lg">Loading featured homes...</p>
+      </section>
+    )
+  }
   return (
     <section id="homes" className="py-16 md:py-24 px-6">
       <div className="max-w-6xl mx-auto">
@@ -81,15 +143,15 @@ export default function FeaturedHomes() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {homes.map((home) => (
+          {(homes as Room[]).map((home) => (
             <div
-              key={home.id}
+              key={home._id}
               className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:translate-y-[-8px] group cursor-pointer"
             >
               <div className="relative overflow-hidden h-48">
                 <img
-                  src={home.image || "/placeholder.svg"}
-                  alt={home.title}
+                  src={home.images[0] || "/placeholder.svg"}
+                  alt={home.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
               </div>
@@ -107,10 +169,10 @@ export default function FeaturedHomes() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold mb-1">{home.title}</h3>
+                  <h3 className="text-lg font-semibold mb-1">{home.name}</h3>
                   <div className="flex items-center gap-1 text-gray-600 text-sm">
                     <FaMapMarkerAlt className="w-4 h-4" />
-                    {home.location}
+                    {home.houseId.location.address},{home.houseId.location.city}
                   </div>
                 </div>
 

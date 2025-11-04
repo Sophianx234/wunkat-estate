@@ -10,7 +10,12 @@ import { IoArrowBack } from "react-icons/io5";
 import { ToastContainer } from "react-toastify";
 import Swal from "sweetalert2";
 import TenancyTermsModal from "../../_components/TermsAgreement";
-import { formatNumber } from "@/lib/utils";
+import { formatNumber, formatPrice } from "@/lib/utils";
+import { ImageCarousel } from "@/components/image-carousel";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { FaBath, FaBed, FaCheck, FaMapMarkerAlt, FaWifi } from "react-icons/fa";
+import { IHouse } from "@/models/House";
+import { BookingButton } from "@/components/booking-button";
 
 /* type ExpandedPropertyProps = {
   price?: string;
@@ -26,7 +31,7 @@ import { formatNumber } from "@/lib/utils";
 export type roomType = {
   lockStatus: "locked" | "unlocked"; // adjust if there are other possible values
   _id: string;
-  houseId: string;
+  houseId: IHouse;
   name: string;
   description: string;
   price: number;
@@ -181,38 +186,22 @@ const handlePay = async () => {
 
 
 
+const nextImage = () =>
+  setIndex((prev) => (prev + 1) % (room as roomType)?.images.length);
+const prevImage = () =>
+  setIndex(
+    (prev) =>
+      (prev - 1 + (room as roomType).images.length) %
+    (room as roomType).images.length
+  );
+  
   if (isLoading) return <>loading</>;
-  const nextImage = () =>
-    setIndex((prev) => (prev + 1) % (room as roomType)?.images.length);
-  const prevImage = () =>
-    setIndex(
-      (prev) =>
-        (prev - 1 + (room as roomType).images.length) %
-        (room as roomType).images.length
-    );
-
   return (
-    <div className="w-full mt-16 sm:mt-0 min-h-screen bg-gray-50">
+    <div className="w-full mt-16 sm:mt-6 min-h-screen pb-20 bg-gray-50">
       {/* Hero Section with Slider */}
-      <div className="relative w-full scrollbar-hide overflow-x-hidden lg:ml-8 h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px]">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            transition={{ duration: 0.5 }}
-            className="absolute inset-0 scrollbar-hide w-full h-full"
-          >
-            <Image
-              src={room?.images[index] || "/images/img-placeholder.jpg"}
-              alt={`Slide ${index}`}
-              fill
-              className="object-cover"
-              priority
-            />
-          </motion.div>
-        </AnimatePresence>
+      <div className="relative ml-4">
+        <ImageCarousel images={room?.images ?? []} title={room?.name ?? "Room"} />
+
 
         {/* Back Button */}
         <button
@@ -224,44 +213,17 @@ const handlePay = async () => {
         </button>
 
         {/* Arrows */}
-        <button
-          onClick={prevImage}
-          className="absolute top-1/2 left-4 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-3 rounded-full"
-        >
-          ‹
-        </button>
-        <button
-          onClick={nextImage}
-          className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-3 rounded-full"
-        >
-          ›
-        </button>
+      
 
-        {/* Dots */}
-        <div className="absolute bottom-6 w-full flex justify-center gap-2">
-          {(room as roomType)?.images.map((_, i) => (
-            <div
-              key={i}
-              onClick={() => setIndex(i)}
-              className={`w-3 h-3 rounded-full cursor-pointer transition ${
-                i === index ? "bg-white" : "bg-white/50 hover:bg-white/80"
-              }`}
-            />
-          ))}
-        </div>
+       
       </div>
-
-      {/* Content Section */}
-      <div className="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-2 gap-10 items-start">
-        {/* Details */}
-        <div>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-4">
-            Modern 2-Bedroom Apartment
-          </h1>
-
-          {/* Highlighted Price */}
-          {/* Highlighted Price */}
-          <div className="mb-6 p-6 bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 rounded-2xl shadow-lg">
+      <div className="grid md:grid-cols-3 gap-8 ml-4 mt-12">
+                  {/* Left Column - Details */}
+                  <div className="md:col-span-2 space-y-8">
+                    {/* Title and Location */}
+                    <div>
+                      <h1 className="text-4xl md:text-5xl font-bold mb-4">{room?.name}</h1>
+                      <div className="mb-6 p-6 bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 rounded-2xl shadow-lg">
             <p className="text-gray-300 text-sm tracking-wide uppercase">
               {room?.planType} Rent
             </p>
@@ -269,30 +231,52 @@ const handlePay = async () => {
               GHS {room?.price && formatNumber(room?.price as number)}
             </p>
           </div>
-
-          <p className="text-gray-600 mb-4">
-            <span className="font-semibold text-black">Location:</span> Achimota
-            Gardens, Accra
-          </p>
-
-          <p className="text-gray-700 mb-8 leading-relaxed">
-            {room?.description}
-          </p>
-
-          <button
+                      <div className="flex items-center gap-2 text-lg text-muted-foreground mb-4">
+                        <FaMapMarkerAlt className="w-5 h-5" />
+                        {room?.houseId?.location.city}, {room?.houseId?.location.address}
+                      </div>
+                      <p className="text-lg text-muted-foreground pl-3">{room?.description}</p>
+                    </div>
+      
+                    {/* Quick Facts */}
+                    
+      
+                    {/* Full Description */}
+                   
+      
+                    {/* Amenities */}
+                    <div>
+                      <h2 className="text-2xl font-bold mb-4">Amenities</h2>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {room?.houseId?.amenities?.map((amenity) => (
+                          <div
+                            key={amenity}
+                            className="flex items-center gap-3 p-3 rounded border border-border bg-secondary/20"
+                          >
+                            <FaCheck className="w-5 h-5 text-primary flex-shrink-0" />
+                            <span className="font-medium">{amenity}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <button
             onClick={()=>setOpen(true)}
             className="bg-black text-white px-8 py-4 rounded-lg hover:bg-gray-700 font-bold text-lg transition w-full sm:w-auto"
           >
             Book Now
           </button>
-        </div>
-
-        {/* Extra images (Gallery Grid) */}
-        <div className="grid grid-cols-2 gap-4">
+      
+                    {/* Reviews Section */}
+                   
+                  </div>
+      
+                  {/* Right Column - Booking Card */}
+ 
+ <div className="grid grid-cols-2 gap-4">
           {room?.images.map((img, i) => (
             <div
               key={i}
-              className="relative h-40 sm:h-48 md:h-56 rounded-lg overflow-hidden shadow"
+              className="relative  rounded-lg overflow-hidden shadow"
             >
               <Image
                 src={img}
@@ -303,7 +287,13 @@ const handlePay = async () => {
             </div>
           ))}
         </div>
-      </div>
+
+
+
+                </div>
+
+      {/* Content Section */}
+    
       <TenancyTermsModal handlePay={handlePay} open={open} setOpen={setOpen} />
       <ToastContainer
   position="top-right"

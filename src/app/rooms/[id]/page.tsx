@@ -26,7 +26,7 @@ const MOCK_ROOMS = [
       "/c-1.jpg",
       "/c-2.jpg",
       "/c-3.jpg",
-      "/c-4.jpg",
+      
     ],
     featured: true,
     createdAt: new Date(),

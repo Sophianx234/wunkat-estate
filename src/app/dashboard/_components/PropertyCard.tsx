@@ -13,12 +13,12 @@ const MySwal = withReactContent(Swal);
 
 type propertyCardProps = {
   room: IRoom;
-  type: "admin" | "user";
+  type?: "admin" | "user";
 };
 
 export default function PropertyCard({ room, type = "user" }: propertyCardProps) {
   const router = useRouter();
-  const {setRoom} = useDashStore();
+  const {setRoom,user} = useDashStore();
 
   const getStatusStyle = (status: string) => {
     switch (status.toLowerCase()) {
@@ -33,8 +33,29 @@ export default function PropertyCard({ room, type = "user" }: propertyCardProps)
     }
   };
 
-  const handleReadMore = () => {
-    router.push(`/dashboard/properties/${room._id}`);
+    const handleReadMore = () => {
+    // If logged in → go to property page
+    if (user?._id) {
+      setRoom(room);
+      router.push(`/dashboard/properties/${room._id}`);
+    } else {
+      // If not logged in → store the room info temporarily
+      localStorage.setItem("redirectAfterLogin", `/dashboard/properties/${room._id}`);
+      localStorage.setItem("pendingRoom", JSON.stringify(room));
+
+      MySwal.fire({
+        title: "Please log in to continue",
+        text: "You need to be signed in to view and book a property.",
+        icon: "info",
+        confirmButtonText: "Login",
+        showCancelButton: true,
+        cancelButtonText: "Cancel",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push("/auth/login");
+        }
+      });
+    }
   };
 
   const handleEdit = () => {

@@ -42,7 +42,7 @@ type SignupFormInputs = {
 function Signup() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { setSignupData } = useDashStore();
+  const { setSignupData} = useDashStore();
 
   const {
     handleSubmit,
