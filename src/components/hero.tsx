@@ -64,19 +64,19 @@ export default function Hero() {
             Explore properties designed for elegance, comfort, and legacy.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center md:justify-start animate-fadeUp [animation-delay:0.25s]">
-            <Link href="/browse">
-              <button className="px-10 py-4 bg-white text-black rounded-full font-semibold text-base md:text-lg hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl">
-                Explore Homes
-                <FaArrowRight className="w-4 h-4" />
-              </button>
-            </Link>
-            <Link href="/about">
-              <button className="px-10 py-4 border-2 border-white text-white rounded-full font-semibold text-base md:text-lg hover:bg-white hover:text-black transition-all duration-300">
-                Learn More
-              </button>
-            </Link>
-          </div>
+         <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center items-center md:justify-start md:items-start animate-fadeUp [animation-delay:0.25s]"> 
+  <Link href="/browse">
+    <button className="px-10 py-4 bg-white text-black rounded-full font-semibold text-base md:text-lg hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl">
+      Explore Homes
+      <FaArrowRight className="w-4 h-4" />
+    </button>
+  </Link>
+  <Link href="/about">
+    <button className="px-10 py-4 border-2 border-white text-white rounded-full font-semibold text-base md:text-lg hover:bg-white hover:text-black transition-all duration-300">
+      Learn More
+    </button>
+  </Link>
+</div>
         </div>
 
         {/* Right Side Showcase */}

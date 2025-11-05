@@ -143,68 +143,89 @@ export default function AboutPage() {
         </section>
 
         {/* CONTACT FORM */}
-        <section className="py-20 bg-white">
-          <div className="max-w-3xl mx-auto px-6 text-center">
-            <h2 className="text-3xl font-bold mb-6">Contact Us</h2>
-            <p className="text-gray-600 mb-10">
-              Have a question or suggestion? We’d love to hear from you. Fill out the form below and
-              our team will get back to you shortly.
-            </p>
+       {/* CONTACT FORM */}
+<section className="py-20 bg-white">
+  <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <input
-                type="text"
-                name="name"
-                placeholder="Your Name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-black outline-none"
+      {/* Form Side */}
+      <div>
+        <h2 className="text-3xl font-bold mb-6">Contact Us</h2>
+        <p className="text-gray-600 mb-10">
+          Have a question or suggestion? We’d love to hear from you. Fill out the form below and
+          our team will get back to you shortly.
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <input
+            type="text"
+            name="name"
+            placeholder="Your Name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-black outline-none"
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Your Email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-black outline-none"
+          />
+          <textarea
+            name="message"
+            placeholder="Your Message"
+            value={formData.message}
+            onChange={handleChange}
+            required
+            rows={5}
+            className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-black outline-none"
+          />
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-4 bg-black text-white rounded-xl font-medium hover:bg-gray-800 transition disabled:opacity-50 flex justify-center items-center gap-2"
+          >
+            {loading && (
+              <Ring2
+                size="34"
+                stroke="5"
+                strokeLength="0.25"
+                bgOpacity="0.1"
+                speed="0.8"
+                color="white"
               />
-              <input
-                type="email"
-                name="email"
-                placeholder="Your Email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-black outline-none"
-              />
-              <textarea
-                name="message"
-                placeholder="Your Message"
-                value={formData.message}
-                onChange={handleChange}
-                required
-                rows={5}
-                className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-black outline-none"
-              />
-              <button
-  type="submit"
-  disabled={loading}
-  className="w-full py-4 bg-black text-white rounded-xl font-medium hover:bg-gray-800 transition disabled:opacity-50 flex justify-center items-center gap-2"
->
-  {!loading && (
+            )}
+            {loading ? "Sending..." : "Send Message"}
+          </button>
+        </form>
+
+        {status && <p className="mt-4 text-sm text-center text-gray-700">{status}</p>}
+      </div>
+
+      {/* Image Side */}
+      <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+        <img
+          src="/c-1.jpg"
+          alt="Contact Us"
+          className=" object-cover transform hover:scale-105 transition duration-700 ease-in-out"
+        />
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/50 rounded-3xl pointer-events-none" />
+        {/* Optional text or CTA over the image */}
+        {/* <div className="absolute inset-0 flex items-center justify-center">
+          <h3 className="text-white text-2xl font-bold text-center">Get in Touch Today!</h3>
+        </div> */}
+      </div>
+
+    </div>
+  </div>
+</section>
 
 
-// Default values shown
-<Ring2
-  size="34"
-  stroke="5"
-  strokeLength="0.25"
-  bgOpacity="0.1"
-  speed="0.8"
-  color="white" 
-/>
-  )}
-  {loading ? "Sending..." : "Send Message"}
-</button>
-
-            </form>
-
-            {status && <p className="mt-4 text-sm text-gray-700">{status}</p>}
-          </div>
-        </section>
       </main>
       <Footer />
     </div>
