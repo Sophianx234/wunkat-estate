@@ -2,12 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/config/DbConnect";
 import Notification from "@/models/Notification";
 import { broadcast } from "@/lib/sse";
-<<<<<<< HEAD
-import User from "@/models/User";
-import { sendMail } from "@/lib/mail";
-=======
 import mongoose from "mongoose";
->>>>>>> feature
 // adjust this to your JWT verification util
 
 export async function GET(req: NextRequest) {
@@ -52,13 +47,8 @@ export async function GET(req: NextRequest) {
 }
 
 
-<<<<<<< HEAD
-// POST — create a new notificatio // ✅ Ensure this exists and works
-
-=======
 
 // POST — create a new notification
->>>>>>> feature
 export async function POST(request: Request) {
   try {
     await connectToDatabase();
