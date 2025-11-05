@@ -104,3 +104,23 @@ export function removeUnderscores(input: string): string {
 }
 
 // usage
+
+
+export function formatPrice(price: number): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(price)
+}
+
+export function calculateNights(checkIn: Date, checkOut: Date): number {
+  const diffTime = Math.abs(checkOut.getTime() - checkIn.getTime())
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+  return Math.max(1, diffDays)
+}
+
+export function getImageUrl(path: string): string {
+  if (path.startsWith("http")) return path
+  return `/placeholder.svg?height=400&width=600&query=${encodeURIComponent(path)}`
+}
+

@@ -22,11 +22,10 @@ const menu: MenuGroup[] = [
     label: "Control Panel",
     icon: <GoGear className="size-6" />,
     items: [
+      { label: "Manage Notifications", href: "/dashboard/manage/notifications" },
       { label: "Manage Houses", href: "/dashboard/manage/houses" },
       { label: "Manage Rooms", href: "/dashboard/manage/rooms" },
       { label: "Manage Users", href: "/dashboard/manage/users" },
-      { label: "Product Detail", href: "/products/detail" },
-      { label: "Add Product", href: "/products/add" },
     ],
   },
 ];

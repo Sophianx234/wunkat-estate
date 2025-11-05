@@ -1,51 +1,33 @@
-import CTA from "./_components/CTA";
-import Discover from "./_components/Discover";
-import Experts from "./_components/Experts";
-import Featured from "./_components/Featured";
-import Footer from "./_components/Footer";
-import FooterNav from "./_components/FooterNav";
-import Hero from "./_components/Hero";
-import HomesForYou from "./_components/HomesForYou";
-import Navbar from "./_components/Navbar";
-import Testimonials from "./_components/Testimonials";
-import TrustedBy from "./_components/TrustedBy";
+"use client"
 
+import Header from "@/components/header"
+import Hero from "@/components/hero"
+import PropertySearchBar from "@/components/property-searchbar"
+import HowItWorks from "@/components/how-it-works"
+import FeaturedHomes from "@/components/featured-homes"
+import PopularLocations from "@/components/popular-locations"
+import WhyChooseUs from "@/components/why-choose-us"
+import Testimonials from "@/components/testimonials"
+import CtaBanner from "@/components/cta-banner"
+import Footer from "@/components/footer"
+import DownloadApp from "@/components/download-app"
+import Newsletter from "@/components/news-letter"
 
 export default function Home() {
   return (
-    <div>
-      
-
-<header>
-  <div
-  className="flex  h-dvh flex-col  bg-cover bg-center bg-no-repeat       "
-   style={{
-    backgroundImage:
-      "linear-gradient(to right, rgba(0,0,0, 0.3), rgba(0,0,0,.3)), url('/images/img-4.jpg')",
-  }}
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-black/60 h-dvh via-black/60 to-black/60 z-0" ></div>
-
-      {/* Optional decorative image overlay */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none select-none h-dvh z-0">
-        
-      </div>
-   <Navbar/>   
-<Hero/>
-
-  </div>
-</header>
-<main>
-  <Featured/>
-  <HomesForYou/>
-  <CTA/>
-  <TrustedBy/>
-  <Testimonials/>
-  <Experts/>
-  <Discover/>
-  <FooterNav/>
-  <Footer/>
-</main>
-    </div>
-  );
+    <main className="bg-background text-foreground">
+      <Header />
+      <Hero />
+      <PropertySearchBar />
+      <HowItWorks />
+      <FeaturedHomes />
+      <PopularLocations />
+      <WhyChooseUs />
+      <Testimonials />
+      {/* <DownloadApp /> */}
+      <CtaBanner />
+      <Newsletter/>
+      <Footer />
+    </main>
+  )
 }

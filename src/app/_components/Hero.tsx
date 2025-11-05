@@ -1,24 +1,85 @@
-import Link from "next/link"
+import React from "react";
+import { Star } from "lucide-react";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 
-function Hero() {
+function Hero({
+  heading = "A Collection of Components Built With Shadcn & Tailwind",
+  description = "Finely crafted components built with React, Tailwind and Shadcn UI. Developers can copy and paste these blocks directly into their project.",
+  button = {
+    text: "Discover all components",
+    url: "https://www.shadcnblocks.com",
+  },
+  reviews = {
+    count: 200,
+    rating: 5.0,
+    avatars: [
+      {
+        src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-1.webp",
+        alt: "Avatar 1",
+      },
+      {
+        src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-2.webp",
+        alt: "Avatar 2",
+      },
+      {
+        src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-3.webp",
+        alt: "Avatar 3",
+      },
+      {
+        src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-4.webp",
+        alt: "Avatar 4",
+      },
+      {
+        src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-5.webp",
+        alt: "Avatar 5",
+      },
+    ],
+  },
+}) {
   return (
-    <div className="py-24 z-1   pt-36">
-      <div className="flex justify-center flex-col items-center">
+    <section className="py-32">
+      <div className=" text-center">
+        <div className="mx-auto flex justify-center items-center  flex-col gap-6">
+          <h1 className={` sm:text-7xl text-4xl text-center  antialiased  font-bold lg:pt-3 lg:px-16 lg:font-extrabold  sm:tracking-tight sm:leading-20  px-1 pt-6 text-gray-200 font-archivo uppercase sm:pt-16`}>{heading}</h1>
+          <p className="max-w-2xl text-center text-gray-200 antialiased font-medium pt-6 px-6 sm:px-0 ">
+            {description}
+          </p>
+        </div>
 
-      <h1 className={` sm:text-7xl text-4xl text-center  antialiased  font-bold lg:pt-3 lg:px-16 lg:font-extrabold  sm:tracking-tight sm:leading-20  px-1 pt-6 text-gray-200 font-archivo uppercase sm:pt-16`}>Crafting your dream    space,  inside and out</h1>
-      <p className="max-w-2xl text-center text-gray-200 antialiased font-medium pt-6 px-6 sm:px-0 ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, hic minus earum dolorum odio ullam doloribus quisquam totam sed eaque porro odit veniam repellat excepturi quo neque ipsum.</p>
+        <Button asChild size="lg" className="mt-10">
+          <a href={button.url}>{button.text}</a>
+        </Button>
+
+        <div className="mx-auto mt-10 flex w-fit flex-col items-center gap-4 sm:flex-row">
+          <span className="mx-4 inline-flex items-center -space-x-4">
+            {reviews.avatars.map((avatar, index) => (
+              <Avatar key={index} className="size-14 border">
+                <AvatarImage src={avatar.src} alt={avatar.alt} />
+              </Avatar>
+            ))}
+          </span>
+
+          <div>
+            <div className="flex items-center gap-1">
+              {[...Array(5)].map((_, index) => (
+                <Star
+                  key={index}
+                  className="size-5 fill-yellow-400 text-yellow-400"
+                />
+              ))}
+              <span className="mr-1 font-semibold">
+                {reviews.rating?.toFixed(1)}
+              </span>
+            </div>
+            <p className="text-muted-foreground text-left font-medium">
+              from {reviews.count}+ reviews
+            </p>
+          </div>
+        </div>
       </div>
-      <div className="flex justify-center items-center pt-8 gap-6">
-        <Link href='login' className='btn-primary hover-blackbtn'>
-          Login
-        </Link>
-        <Link href='signup' className=' hover-whitebtn btn-secondary hover-whitebtn'>
-          Signup
-        </Link>
-      </div>
-     
-    </div>
-  )
+    </section>
+  );
 }
 
-export default Hero
+export default Hero;

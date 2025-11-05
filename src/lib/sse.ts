@@ -3,6 +3,7 @@ type SSEClient = {
   controller: ReadableStreamDefaultController;
   userId?: string;
   role?: string;
+  connectedAt: Date;
 };
 
 const globalForSSE = globalThis as unknown as {
@@ -15,30 +16,46 @@ if (!globalForSSE.clients) {
   globalForSSE.clientId = 0;
 }
 
+/**
+ * Add a new SSE client connection
+ */
 export function addClient(
   controller: ReadableStreamDefaultController,
   meta?: { userId?: string; role?: string }
 ) {
-  // 🧩 Prevent unauthenticated clients from connecting
   if (!meta?.userId) {
-    console.warn("🚫 Unauthorized SSE connection attempt — no userId provided");
+    console.warn("🚫 Unauthorized SSE connection attempt — missing userId");
     controller.close();
-    return -1; // signal rejected
+    return -1;
   }
-  
+
   const id = ++globalForSSE.clientId;
-  globalForSSE.clients.push({ id, controller, ...meta });
-  console.log(`🔗 Client connected (${globalForSSE.clients.length} total)`);
+
+  globalForSSE.clients.push({
+    id,
+    controller,
+    userId: meta.userId,
+    role: meta.role,
+    connectedAt: new Date(),
+  });
+
+  console.log(`🔗 Client connected — userId: ${meta.userId}, role: ${meta.role}`);
+  console.log(`📡 Total active clients: ${globalForSSE.clients.length}`);
 
   return id;
 }
 
-
+/**
+ * Remove a disconnected client
+ */
 export function removeClient(id: number) {
   globalForSSE.clients = globalForSSE.clients.filter((c) => c.id !== id);
-  console.log(`❌ Client disconnected (${globalForSSE.clients.length} total)`);
+  console.log(`❌ Client ${id} disconnected (${globalForSSE.clients.length} remaining)`);
 }
 
+/**
+ * Broadcast data to specific audiences or users
+ */
 export function broadcast(
   data: string,
   target?: { audience?: "all" | "user" | "admin"; userId?: string }
@@ -46,34 +63,37 @@ export function broadcast(
   const message = `data: ${data}\n\n`;
   const encoder = new TextEncoder();
 
-  // Default audience is 'all'
   const audience = target?.audience ?? "all";
-
-  // 🧩 Filter clients from the global store
   const clients = globalForSSE.clients || [];
 
-  // Determine which clients to send to
+  // Determine target clients
   const targets = clients.filter((client) => {
     if (audience === "all") return true;
     if (audience === "admin") return client.role === "admin";
     if (audience === "user") {
-      if (target?.userId) return client.userId === target.userId; // specific user
+      if (target?.userId) return client.userId === target.userId; // single user
       return client.role === "user"; // all users
     }
     return false;
   });
 
-  // 🧾 Log who we are broadcasting to
-  console.log("📢 Broadcasting message to clients in globalThis:");
+  if (targets.length === 0) {
+    console.warn(`⚠️ No active clients matched for audience '${audience}'`);
+    return;
+  }
+
+  // Log broadcast summary
+  console.log(`📢 Broadcasting message → audience: ${audience}, recipients: ${targets.length}`);
   console.table(
     targets.map((c) => ({
       id: c.id,
       userId: c.userId ?? "unknown",
       role: c.role ?? "unknown",
+      connectedAt: c.connectedAt.toISOString(),
     }))
   );
 
-  // 📨 Send to all selected clients
+  // Send message
   for (const client of targets) {
     try {
       client.controller.enqueue(encoder.encode(message));
@@ -82,6 +102,23 @@ export function broadcast(
     }
   }
 
-  console.log(`✅ Broadcast complete — sent to ${targets.length} client(s).`);
+  console.log(`✅ Broadcast complete — delivered to ${targets.length} client(s).`);
 }
 
+/**
+ * Optional cleanup function — useful if you notice stale clients
+ */
+export function cleanupDisconnectedClients() {
+  const before = globalForSSE.clients.length;
+  globalForSSE.clients = globalForSSE.clients.filter((c) => {
+    try {
+      c.controller.enqueue(new TextEncoder().encode(": ping\n\n"));
+      return true;
+    } catch {
+      return false;
+    }
+  });
+  const after = globalForSSE.clients.length;
+  if (after < before)
+    console.log(`🧹 Cleaned up ${before - after} disconnected SSE clients`);
+}

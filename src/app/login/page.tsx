@@ -12,6 +12,7 @@ import Button from "../_components/Button";
 import { Checkbox } from "../_components/checkbox";
 import { Input } from "../_components/input";
 import Logo from "../_components/Logo";
+import { useDashStore } from "@/lib/store";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -22,6 +23,7 @@ function Login() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [rememberPass,setRemeberPass] = useState<boolean>(false)
   const router = useRouter()
+  const {room} = useDashStore();
 
   console.log('rememberPass', rememberPass);
   const {
@@ -48,7 +50,12 @@ const handleLogin: SubmitHandler<formInputs> = async (data) => {
     if (res.ok) {
       console.log("res", result);
       toast.success('Login successful');
-      router.push('/dashboard/properties');
+      if(room){
+        router.push(`/dashboard/properties/${room._id}`);
+      }else{
+        router.push('/dashboard/properties');
+
+      }
     } else {
       toast.error(result?.message || 'Login failed...');
     }

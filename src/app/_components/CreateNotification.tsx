@@ -14,6 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import Swal from "sweetalert2";
+import { Bell } from "lucide-react";
 
 export function CreateNotificationDialog({ onCreate }: { onCreate: (n: any) => void }) {
   const [open, setOpen] = useState(false);
@@ -55,12 +56,12 @@ export function CreateNotificationDialog({ onCreate }: { onCreate: (n: any) => v
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="flex items-center gap-2">Create Notification</Button>
+        <Button className="flex items-center gap-2"><Bell className="text-white" />Create Notification</Button>
       </DialogTrigger>
 
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Create New Notification</DialogTitle>
+          <DialogTitle> Create New Notification</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-3 py-2">

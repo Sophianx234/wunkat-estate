@@ -7,6 +7,7 @@ import NotificationList from "./_components/Notifications";
 import Sidebar from "./_components/SideNav";
 import Topbar from "./_components/Topbar";
 import Breadcrumbs from "./_components/BreadCrumbs";
+import { useRouter } from "next/navigation";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -14,6 +15,7 @@ type LayoutProps = {
 
 function Layout({ children }: LayoutProps) {
   const {openNotifications,setUser,setNotifications,loadNotifications,user} = useDashStore()
+  const router = useRouter();
   useEffect(()=>{
     const getMe = async()=>{
       const res = await fetch('/api/auth/me')
@@ -45,6 +47,7 @@ useEffect(() => {
   
 
   useEffect(() => {
+  if(!user) return
   // Connect to the SSE notifications endpoint
 const eventSource = new EventSource(`/api/notification?userId=${user?._id}&role=${user?.role}`);
 
@@ -76,13 +79,18 @@ const eventSource = new EventSource(`/api/notification?userId=${user?._id}&role=
   return () => {
     eventSource.close();
   };
-}, [setNotifications]);
+}, [setNotifications,user?._id,user?.role,user]);
 
 useEffect(() => {
   const fetchAllNotifications = async () => {
     try {
-      const res = await fetch("/api/notification/all");
+    if (!user?._id) return;
+
+    const res = await fetch(
+      `/api/notification/all?userId=${user._id}&role=${user.role}`
+    );
       const data = await res.json();
+      console.log(data,'all notifications')
 
       if (res.ok ) {
         loadNotifications(data.notifications);
@@ -93,7 +101,31 @@ useEffect(() => {
   };
 
   fetchAllNotifications();
-}, [setNotifications]);
+}, [setNotifications,user?._id,loadNotifications,user?.role]);
+
+
+ useEffect(() => {
+    if (user?._id) return;
+
+    const checkSubscription = async () => {
+      try {
+        const res = await fetch("/api/subscription/check-expiry");
+        const data = res.json();
+
+        if (res.ok && data.message.includes("Processed")) {
+          // ✅ Optional: Backend doesn’t return per-user data,
+          // but you can refine it if needed later.
+          router.push("/dashboard/renewal");
+        }
+      } catch (error) {
+        console.error("Error checking expiry:", error);
+      }
+    };
+
+    checkSubscription();
+  }, [user?._id,router ]);
+
+ 
 
 
 
