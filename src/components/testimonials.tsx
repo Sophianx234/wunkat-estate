@@ -1,6 +1,7 @@
 "use client"
 
 import { FaQuoteLeft, FaStar } from "react-icons/fa"
+import { motion } from "framer-motion"
 
 const testimonials = [
   {
@@ -33,16 +34,26 @@ export default function Testimonials() {
   return (
     <section id="testimonials" className="py-16 md:py-24 px-6 bg-gray-50">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true, amount: 0.2 }}
+        >
           <h2 className="text-3xl md:text-5xl font-bold mb-4">What Our Users Say</h2>
           <p className="text-gray-600 text-lg">Thousands of happy renters trust HomesWunkat.</p>
-        </div>
+        </motion.div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial) => (
-            <div
+          {testimonials.map((testimonial, index) => (
+            <motion.div
               key={testimonial.id}
               className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+              viewport={{ once: true, amount: 0.2 }}
             >
               <div className="flex items-center gap-1 mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
@@ -66,7 +77,7 @@ export default function Testimonials() {
                   <p className="text-sm text-gray-600">{testimonial.role}</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

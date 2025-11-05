@@ -2,83 +2,15 @@
 
 import { useEffect, useState } from "react"
 import { FaMapMarkerAlt, FaStar, FaBed, FaBath } from "react-icons/fa"
-
-const homes = [
-  {
-    id: 1,
-    image: "/modern-apartment-city-view.jpg",
-    price: "$2,500",
-    title: "Modern City Apartment",
-    location: "Downtown Manhattan, NY",
-    beds: 2,
-    baths: 2,
-    rating: 4.9,
-    reviews: 128,
-  },
-  {
-    id: 2,
-    image: "/luxury-penthouse-skyline.jpg",
-    price: "$4,200",
-    title: "Luxury Penthouse",
-    location: "Midtown, Manhattan, NY",
-    beds: 3,
-    baths: 2,
-    rating: 5.0,
-    reviews: 89,
-  },
-  {
-    id: 3,
-    image: "/cozy-studio-apartment.jpg",
-    price: "$1,800",
-    title: "Cozy Studio",
-    location: "Brooklyn, NY",
-    beds: 1,
-    baths: 1,
-    rating: 4.8,
-    reviews: 156,
-  },
-  {
-    id: 4,
-    image: "/spacious-family-home.jpg",
-    price: "$3,500",
-    title: "Spacious Family Home",
-    location: "Upper West Side, NY",
-    beds: 4,
-    baths: 3,
-    rating: 4.9,
-    reviews: 102,
-  },
-  {
-    id: 5,
-    image: "/elegant-loft-space.jpg",
-    price: "$2,800",
-    title: "Elegant Loft",
-    location: "Tribeca, NY",
-    beds: 2,
-    baths: 2,
-    rating: 4.95,
-    reviews: 73,
-  },
-  {
-    id: 6,
-    image: "/waterfront-luxury-condo.jpg",
-    price: "$5,500",
-    title: "Waterfront Luxury Condo",
-    location: "Upper East Side, NY",
-    beds: 3,
-    baths: 3,
-    rating: 5.0,
-    reviews: 45,
-  },
-]
-
+import { motion } from "framer-motion"
+import PropertyCardSkeleton from "./skeletons/PropertyCardSkeleton"
 
 interface Room {
   _id: string
   name: string
   description: string
   rating: number
-  reviews:number
+  reviews: number
   price: number
   beds: number
   baths: number
@@ -96,12 +28,11 @@ interface Room {
 }
 
 export default function FeaturedHomes() {
-
-   const [homes, setHomes] = useState<Room[]>([])
+  const [homes, setHomes] = useState<Room[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
- useEffect(() => {
+  useEffect(() => {
     const fetchRooms = async () => {
       try {
         const res = await fetch("/api/rooms")
@@ -110,13 +41,13 @@ export default function FeaturedHomes() {
         const data = await res.json()
 
         // Add random ratings and reviews for realism
-        const enriched = data.map((room:Room) => ({
+        const enriched = data.map((room: Room) => ({
           ...room,
-          rating: (4.7 + Math.random() * 0.3).toFixed(2), // 4.7–5.0
-          reviews: Math.floor(Math.random() * 200) + 50, // 50–250 reviews
+          rating: (4.7 + Math.random() * 0.3).toFixed(2),
+          reviews: Math.floor(Math.random() * 200) + 50,
         }))
 
-        setHomes(enriched.slice(0,6))
+        setHomes(enriched.slice(0, 6))
       } catch (err: any) {
         setError(err.message)
       } finally {
@@ -127,13 +58,8 @@ export default function FeaturedHomes() {
     fetchRooms()
   }, [])
 
-  if (loading) {
-    return (
-      <section className="py-20 flex justify-center">
-        <p className="text-gray-500 text-lg">Loading featured homes...</p>
-      </section>
-    )
-  }
+
+
   return (
     <section id="homes" className="py-16 md:py-24 px-6">
       <div className="max-w-6xl mx-auto">
@@ -142,11 +68,22 @@ export default function FeaturedHomes() {
           <p className="text-gray-600 text-lg">Discover handpicked properties available now.</p>
         </div>
 
+{loading && (
+  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {[...Array(6)].map((_, index) => (
+      <PropertyCardSkeleton key={index} index={index} />
+    ))}
+  </div>
+)}
+
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {(homes as Room[]).map((home) => (
-            <div
+          {!loading && homes.map((home, index) => (
+            <motion.div
               key={home._id}
               className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:translate-y-[-8px] group cursor-pointer"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
             >
               <div className="relative overflow-hidden h-48">
                 <img
@@ -189,7 +126,7 @@ export default function FeaturedHomes() {
 
                 <p className="text-xs text-gray-500">{home.reviews} reviews</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
