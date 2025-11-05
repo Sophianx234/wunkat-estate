@@ -55,7 +55,7 @@ export function RoomCard({ room }: RoomCardProps) {
       <CardFooter className="flex items-center justify-between border-t border-border pt-4">
         <div className="font-bold text-lg">{formatPrice(room.price)}</div>
         <Button variant="outline" size="sm" asChild onClick={handleViewDetails}>
-          <div>View Details</div>
+          <div className="pointer">View Details</div>
         </Button>
       </CardFooter>
     </Card>

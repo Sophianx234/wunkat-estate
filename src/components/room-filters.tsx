@@ -120,14 +120,20 @@ export function RoomFilters({ onFilter }: RoomFiltersProps) {
           <div>
             <label className="block text-sm font-semibold mb-3">Max Price: ${filters.maxPrice}</label>
             <input
-              type="range"
-              min="0"
-              max="5000"
-              step="100"
-              value={filters.maxPrice}
-              onChange={(e) => handleFilterChange("maxPrice", Number.parseInt(e.target.value))}
-              className="w-full"
-            />
+  type="range"
+  min="0"
+  max="5000"
+  step="100"
+  value={filters.maxPrice}
+  onChange={(e) =>
+    handleFilterChange("maxPrice", Number.parseInt(e.target.value))
+  }
+  className="w-full appearance-none h-2 rounded-xl bg-black"
+  style={{
+    accentColor: "black",
+  }}
+/>
+
             <div className="flex justify-between text-xs text-muted-foreground mt-2">
               <span>$0</span>
               <span>$5000+</span>

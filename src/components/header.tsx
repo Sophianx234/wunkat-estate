@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { FaHome } from "react-icons/fa"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 
 export default function Header() {
   return (
@@ -10,9 +11,9 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 font-bold text-lg">
-            <FaHome className="w-6 h-6" />
-            <span>WunkatHomes</span>
+          <Link href="/" className="flex  items-center gap-2 font-bold text-lg">
+             <img  alt="" src='/images/home.png' className="object-contain size-10 "/>
+            <span className="pt-2">WunkatHomes</span>
           </Link>
 
           {/* Navigation */}

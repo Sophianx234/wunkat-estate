@@ -6,7 +6,7 @@ import type { Room } from "@/lib/types";
 import { FilterState, RoomFilters } from "@/components/room-filters";
 import dynamic from "next/dynamic";
 import { RoomCard } from "@/components/room-card";
-import { IRoom } from "@/models/Property";
+import { IRoom } from "../dashboard/properties/page";
 
 // ✅ Dynamically import Header and Footer to avoid SSR mismatches
 const Header = dynamic(() => import("@/components/header"), { ssr: false });
@@ -75,16 +75,24 @@ export default function BrowsePage() {
       <Header />
       <main>
         {/* Browse Hero */}
-        <section className="py-12 md:py-20 bg-muted">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Browse Rooms
-            </h1>
-            <p className="text-lg text-muted-foreground">
-              Explore {rooms.length} available rooms across the country
-            </p>
-          </div>
-        </section>
+         <div
+  className="relative bg-[url('/a-1.jpg')] bg-cover bg-center bg-no-repeat"
+  
+>
+  {/* Overlay */}
+   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
+
+  {/* Content */}
+  <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-white text-center">
+    <h1 className="text-4xl md:text-5xl font-bold mb-4 drop-shadow-lg">
+      Browse Rooms
+    </h1>
+    <p className="text-lg text-gray-200">
+      Explore {rooms.length} available rooms across the country
+    </p>
+  </div>
+</div>
+
 
         {/* Listings */}
         <section className="py-12 md:py-20 bg-background">
@@ -117,7 +125,7 @@ export default function BrowsePage() {
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
                       {paginatedRooms.map((room:IRoom) => (
-                        <RoomCard key={room.id} room={room} />
+                        <RoomCard key={room._id} room={room} />
                       ))}
                     </div>
 

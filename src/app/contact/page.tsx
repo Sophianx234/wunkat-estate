@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import { Clock, Mail, MapPin, Phone } from "lucide-react"
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -39,14 +40,21 @@ export default function ContactPage() {
       <Header />
       <main>
         {/* Contact Hero */}
-        <section className="py-20 md:py-32 bg-muted">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Get In Touch</h1>
-            <p className="text-lg text-muted-foreground">
-              Have questions? We'd love to hear from you. Contact us anytime.
-            </p>
-          </div>
-        </section>
+        <section
+  className="relative bg-[url('/a-4.jpg')] py-20 md:py-32 bg-cover bg-center bg-no-repeat"
+  
+>
+  {/* Overlay */}
+ <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/80 to-black/70"></div>
+  {/* Content */}
+  <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8  text-white">
+    <h1 className="text-4xl md:text-5xl font-bold mb-6">Get In Touch</h1>
+    <p className="text-lg text-gray-200">
+      Have questions? We'd love to hear from you. Contact us anytime.
+    </p>
+  </div>
+</section>
+
 
         {/* Contact Content */}
         <section className="py-20 md:py-32 bg-background">
@@ -89,73 +97,134 @@ export default function ContactPage() {
             </div>
 
             {/* Contact Form */}
-            <div className="max-w-2xl mx-auto">
-              <Card className="border border-border">
-                <CardHeader>
-                  <CardTitle>Send us a Message</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {submitted ? (
-                    <div className="text-center py-8">
-                      <p className="text-lg font-semibold text-primary mb-2">Thank you!</p>
-                      <p className="text-muted-foreground">
-                        We've received your message and will get back to you soon.
-                      </p>
-                    </div>
-                  ) : (
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      <div>
-                        <label htmlFor="name" className="block text-sm font-medium mb-2">
-                          Name
-                        </label>
-                        <Input
-                          id="name"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleChange}
-                          required
-                          placeholder="Your name"
-                        />
-                      </div>
+  
 
-                      <div>
-                        <label htmlFor="email" className="block text-sm font-medium mb-2">
-                          Email
-                        </label>
-                        <Input
-                          id="email"
-                          name="email"
-                          type="email"
-                          value={formData.email}
-                          onChange={handleChange}
-                          required
-                          placeholder="your@email.com"
-                        />
-                      </div>
+      {/* Contact Content */}
+      <div className="max-w-7xl mx-auto    py-4 ">
+       
 
-                      <div>
-                        <label htmlFor="message" className="block text-sm font-medium mb-2">
-                          Message
-                        </label>
-                        <Textarea
-                          id="message"
-                          name="message"
-                          value={formData.message}
-                          onChange={handleChange}
-                          required
-                          placeholder="Tell us what you think..."
-                          rows={5}
-                        />
-                      </div>
+        {/* Contact Form */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 ">
+  {/* Contact Form */}
+  <div className="space-y-6">
+    <h2 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-4">
+      Send Us a Message
+    </h2>
+    <p className="text-gray-600 mb-8">
+      We'd love to hear from you! Fill out the form below and our team will get back to you as soon as possible.
+    </p>
 
-                      <Button type="submit" size="lg" className="w-full">
-                        Send Message
-                      </Button>
-                    </form>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <input
+        type="text"
+        name="name"
+        placeholder="Your Name"
+        value={formData.name}
+        onChange={handleChange}
+        className="w-full border border-gray-300 rounded-xl px-4 py-3 bg-white text-gray-900 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition"
+        required
+      />
+
+      <input
+        type="email"
+        name="email"
+        placeholder="Your Email"
+        value={formData.email}
+        onChange={handleChange}
+        className="w-full border border-gray-300 rounded-xl px-4 py-3 bg-white text-gray-900 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition"
+        required
+      />
+
+      <input
+        type="text"
+        name="subject"
+        placeholder="Subject"
+        onChange={handleChange}
+        className="w-full border border-gray-300 rounded-xl px-4 py-3 bg-white text-gray-900 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition"
+        required
+      />
+
+      <textarea
+        name="message"
+        placeholder="Your Message"
+        rows={6}
+        value={formData.message}
+        onChange={handleChange}
+        className="w-full border border-gray-300 rounded-xl px-4 py-3 bg-white text-gray-900 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent resize-none transition"
+        required
+      />
+
+      <Button
+        type="submit"
+        className="w-full bg-black hover:bg-gray-900 text-white text-lg font-medium py-5 rounded-xl transition"
+      >
+        Send Message
+      </Button>
+
+      {submitted && (
+        <div className="p-4 bg-green-50 border border-green-300 text-green-700 rounded-xl text-sm text-center">
+          ✅ Thank you! We'll get back to you soon.
+        </div>
+      )}
+    </form>
+  </div>
+
+  {/* Info Section */}
+  <div className="space-y-8">
+    <div className="border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition">
+      <div className="flex items-start gap-4">
+        <Clock size={24} className="text-black mt-1" />
+        <div>
+          <h3 className="font-semibold text-gray-900 mb-2 text-lg">Business Hours</h3>
+          <div className="text-gray-600 text-sm space-y-1">
+            <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
+            <p>Saturday: 11:00 AM - 4:00 PM</p>
+            <p>Sunday: Closed</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div className="border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition">
+      <h3 className="font-semibold text-gray-900 text-lg mb-4">
+        Frequently Asked Questions
+      </h3>
+      <div className="divide-y divide-gray-200">
+        <details className="py-3 group">
+          <summary className="cursor-pointer font-medium text-gray-800 flex justify-between items-center hover:text-black">
+            What are your operating hours?
+            <span className="group-open:rotate-45 text-xl transition-transform">+</span>
+          </summary>
+          <p className="text-gray-600 mt-2 text-sm">
+            Our support team is available weekdays from 9:00 AM to 6:00 PM.
+          </p>
+        </details>
+
+        <details className="py-3 group">
+          <summary className="cursor-pointer font-medium text-gray-800 flex justify-between items-center hover:text-black">
+            How soon do you reply to messages?
+            <span className="group-open:rotate-45 text-xl transition-transform">+</span>
+          </summary>
+          <p className="text-gray-600 mt-2 text-sm">
+            We usually respond within 24 hours during business days.
+          </p>
+        </details>
+
+        <details className="py-3 group">
+          <summary className="cursor-pointer font-medium text-gray-800 flex justify-between items-center hover:text-black">
+            Can I visit your office in person?
+            <span className="group-open:rotate-45 text-xl transition-transform">+</span>
+          </summary>
+          <p className="text-gray-600 mt-2 text-sm">
+            Yes! Please book an appointment before visiting our main office.
+          </p>
+        </details>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
           </div>
         </section>
       </main>
