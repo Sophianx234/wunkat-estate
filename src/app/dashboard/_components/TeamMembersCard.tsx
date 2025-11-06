@@ -1,5 +1,6 @@
-"use client";
+'use client'
 
+import { useEffect, useState, useCallback } from "react";
 import {
   Card,
   CardContent,
@@ -16,7 +17,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { X } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
 import { userDocumentType } from "@/models/User";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -42,7 +42,7 @@ export default function TeamMembersCard({
   const [members, setMembers] = useState<userDocumentType[]>([]);
   const [loading, setLoading] = useState(true);
 
-   const fetchAdmins = useCallback(async () => {
+  const fetchAdmins = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch("/api/user?role=admin", { cache: "no-store" }); 
@@ -89,7 +89,6 @@ export default function TeamMembersCard({
         title: `Role updated to ${updatedUser.role}`,
       });
 
-      // ✅ Re-fetch updated list instead of local patch
       await fetchAdmins();
     } catch (err) {
       console.error(err);
@@ -99,6 +98,7 @@ export default function TeamMembersCard({
       });
     }
   };
+
   if (loading) {
     return <p className="text-gray-500">Loading team members...</p>;
   }
@@ -108,11 +108,11 @@ export default function TeamMembersCard({
   }
 
   return (
-    <Card className="w-full h-full max-w-sm rounded-xl shadow relative">
-      <CardHeader className="flex flex-row items-start justify-between">
-        <div>
+    <Card className="w-full max-w-full sm:max-w-md lg:max-w-sm rounded-xl shadow relative">
+      <CardHeader className="flex flex-row items-start justify-between flex-wrap">
+        <div className="flex-1 min-w-0">
           <CardTitle>Team Members</CardTitle>
-          <CardDescription>
+          <CardDescription className="truncate">
             These administrators are part of your core team.
           </CardDescription>
         </div>
@@ -120,22 +120,22 @@ export default function TeamMembersCard({
         {type === "admin" && onClose && (
           <button
             onClick={onClose}
-            className="p-1 rounded-full hover:bg-gray-100 transition"
+            className="p-1 rounded-full hover:bg-gray-100 transition ml-2 mt-2 sm:mt-0"
           >
             <X className="w-5 h-5 text-gray-600" />
           </button>
         )}
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 overflow-x-auto">
         {members.map((member) => (
           <div
             key={member._id}
-            className="flex items-center justify-between gap-2"
+            className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 min-w-[220px]"
           >
             {/* Avatar + Info */}
-            <div className="flex items-center gap-3">
-              <Avatar>
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <Avatar className="flex-shrink-0">
                 <AvatarImage
                   src={member.avatar || member.profile}
                   alt={member.name}
@@ -144,27 +144,29 @@ export default function TeamMembersCard({
                   {member.name.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <div>
-                <p className="font-medium text-sm">{member.name}</p>
-                <p className="text-xs text-gray-500">{member.email}</p>
+              <div className="truncate">
+                <p className="font-medium text-sm truncate">{member.name}</p>
+                <p className="text-xs text-gray-500 truncate">{member.email}</p>
               </div>
             </div>
 
             {/* Role Select */}
-            <Select
-              value={member.role}
-              onValueChange={(val) =>
-                handleRoleChange(member._id!, val as "buyer" | "admin")
-              }
-            >
-              <SelectTrigger className="w-[100px] h-8 text-xs">
-                <SelectValue placeholder="Select role" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="admin">Admin</SelectItem>
-                <SelectItem value="buyer">Buyer</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex-shrink-0 mt-2 sm:mt-0">
+              <Select
+                value={member.role}
+                onValueChange={(val) =>
+                  handleRoleChange(member._id!, val as "buyer" | "admin")
+                }
+              >
+                <SelectTrigger className="w-28 h-8 text-xs">
+                  <SelectValue placeholder="Select role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="buyer">Buyer</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         ))}
       </CardContent>
