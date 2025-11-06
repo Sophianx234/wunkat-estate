@@ -61,28 +61,25 @@ export default function CustomersPage({ type='user' }:customerPageType) {
   }, []);
 
   return (
-    <div className={`${type==='user'&&'p-6'} space-y-6 mt-24 sm:mt-0`}>
-      {type==='user'&&<FilterBar onFilter={handleFilter} />}
+    <div className={`${type === 'user' && 'p-4 sm:p-6'} space-y-6 mt-24 sm:mt-0`}>
+  {type === 'user' && <FilterBar onFilter={handleFilter} />}
 
-      <div className="space-y-4 min-h-[200px] flex justify-center items-center">
-        {loading ? (
-          <div className="flex items-center gap-2 text-gray-500">
-            <Loader2 className="w-6 h-6 animate-spin" />
-            <span>Loading Tenants...</span>
-          </div>
-        ) : filtered === null ? (
-          // ✅ No filter → show all payments
-          <CustomerTable customers={payments} />
-        ) : filtered.length === 0 ? (
-          // ✅ Filter applied but no matches
-          <div className="text-gray-500 text-sm italic">
-            No Tenants match your filter.
-          </div>
-        ) : (
-          // ✅ Filter applied → show filtered results
-          <CustomerTable customers={filtered} />
-        )}
+  <div className="space-y-4 min-h-[200px] flex justify-center items-center overflow-x-auto">
+    {loading ? (
+      <div className="flex items-center gap-2 text-gray-500">
+        <Loader2 className="w-6 h-6 animate-spin" />
+        <span>Loading Tenants...</span>
       </div>
-    </div>
+    ) : filtered === null ? (
+      <CustomerTable customers={payments} />
+    ) : filtered.length === 0 ? (
+      <div className="text-gray-500 text-sm italic">
+        No Tenants match your filter.
+      </div>
+    ) : (
+      <CustomerTable customers={filtered} />
+    )}
+  </div>
+</div>
   );
 }

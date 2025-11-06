@@ -191,9 +191,7 @@ export async function GET(req: NextRequest) {
       filter.smartLockEnabled = smartLock === "true"; // ensure boolean
     }
 
-    if (type) {
-      filter.type = type; // e.g. bedroom, studio etc.
-    }
+    
 
     console.log("filter", filter);
 

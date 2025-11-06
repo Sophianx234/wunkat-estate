@@ -187,7 +187,7 @@ export default function AccountPage() {
             </div>
 
             <div className="grid sm:grid-cols-2 gap-4">
-              <div>
+              <div className="space-y-3">
                 <Label>Name</Label>
                 <Input
                   placeholder={user?.name}
@@ -195,7 +195,7 @@ export default function AccountPage() {
                   className="mt-1"
                 />
               </div>
-              <div>
+              <div className="space-y-3">
                 <Label>Email</Label>
                 <Input
                   placeholder={user?.email}
@@ -222,7 +222,7 @@ export default function AccountPage() {
           <Separator />
           <CardContent className="pt-6 space-y-4">
             <div className="grid sm:grid-cols-2 gap-4">
-              <div>
+              <div className="space-y-3">
                 <Label>Old Password</Label>
                 <Input
                   type="password"
@@ -234,7 +234,7 @@ export default function AccountPage() {
                   <p className="text-xs text-red-500 mt-1">{errors.oldPassword}</p>
                 )}
               </div>
-              <div>
+              <div className="space-y-3">
                 <Label>New Password</Label>
                 <Input
                   type="password"
@@ -246,7 +246,7 @@ export default function AccountPage() {
                   <p className="text-xs text-red-500 mt-1">{errors.newPassword}</p>
                 )}
               </div>
-              <div className="sm:col-span-2">
+              <div className="sm:col-span-2 space-y-3">
                 <Label>Confirm New Password</Label>
                 <Input
                   type="password"

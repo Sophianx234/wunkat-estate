@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import { CreateNotificationDialog } from "@/app/_components/CreateNotification";
+import { ScaleLoader } from "react-spinners";
 
 export default function DashboardNotifications() {
   const [filter, setFilter] = useState("all");
@@ -38,7 +39,7 @@ export default function DashboardNotifications() {
     fetchNotifications();
   }, []);
 
-  // ➕ Create new notification
+  // ➕ Create notification
   const handleCreate = async (newNotif: any) => {
     try {
       const res = await fetch("/api/notification/all", {
@@ -56,9 +57,7 @@ export default function DashboardNotifications() {
           timer: 1200,
           showConfirmButton: false,
         });
-      } else {
-        throw new Error(data.error || "Failed to create notification.");
-      }
+      } else throw new Error(data.error || "Failed to create notification.");
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -95,9 +94,7 @@ export default function DashboardNotifications() {
           timer: 1000,
           showConfirmButton: false,
         });
-      } else {
-        throw new Error(data.error || "Failed to delete notification.");
-      }
+      } else throw new Error(data.error || "Failed to delete notification.");
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -107,7 +104,7 @@ export default function DashboardNotifications() {
     }
   };
 
-  // 🔍 Filter & search
+  // 🔍 Filter + Search
   const filtered = notifications.filter(
     (n) =>
       (filter === "all" || n.type === filter) &&
@@ -116,27 +113,32 @@ export default function DashboardNotifications() {
   );
 
   return (
-    <div className="space-y-8 mx-4 ml-6">
+    <div className="px-4 md:px-6 py-6 pt-10 w-full space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between border-b mt-4 pb-3">
-        <div className="font-bold text-xl">Manage Notifications</div>
-        <CreateNotificationDialog onCreate={handleCreate} />
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b pb-4">
+        <h1 className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">
+          Manage Notifications
+        </h1>
+        <div className="self-start sm:self-end">
+          <CreateNotificationDialog onCreate={handleCreate} />
+        </div>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <div className="relative">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        {/* Left: Search + Filter */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+          <div className="relative flex-1 sm:w-[220px]">
             <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
             <Input
               placeholder="Search..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 w-[220px]"
+              className="pl-9 text-sm w-full"
             />
           </div>
           <Select onValueChange={setFilter} defaultValue="all">
-            <SelectTrigger className="w-[160px]">
+            <SelectTrigger className="text-sm w-full sm:w-[160px]">
               <SelectValue placeholder="Filter type" />
             </SelectTrigger>
             <SelectContent>
@@ -149,36 +151,45 @@ export default function DashboardNotifications() {
           </Select>
         </div>
 
-        <Badge
-          variant="secondary"
-          className="text-sm font-medium bg-gray-100 text-gray-700 dark:bg-neutral-800 dark:text-gray-300"
-        >
-          {filtered.length} {filtered.length === 1 ? "Notification" : "Notifications"}
-        </Badge>
+        {/* Right: Badge */}
+        <div className="flex justify-end sm:justify-center">
+          <Badge
+            variant="secondary"
+            className="text-xs sm:text-sm font-medium bg-gray-100 text-gray-700 dark:bg-neutral-800 dark:text-gray-300 whitespace-nowrap"
+          >
+            {filtered.length} {filtered.length === 1 ? "Notification" : "Notifications"}
+          </Badge>
+        </div>
       </div>
 
       {/* List */}
       {loading ? (
-        <p className="text-center text-gray-500 text-sm py-6">
-          Loading notifications...
-        </p>
+        <div className="flex flex-col items-center justify-center py-10">
+          <ScaleLoader color="#6b7280" />
+        </div>
       ) : filtered.length === 0 ? (
-        <div className="text-center py-8 text-gray-500">
+        <div className="text-center py-10 text-gray-500">
           <Bell className="mx-auto mb-2 w-6 h-6 text-gray-400" />
-          <p>No notifications found.</p>
+          <p className="text-sm">No notifications found.</p>
         </div>
       ) : (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"
+          className="
+            grid grid-cols-1
+            sm:grid-cols-2
+            lg:grid-cols-3
+            gap-4
+            md:gap-6
+          "
         >
           {filtered.map((n) => (
             <motion.div
               key={n._id}
-              whileHover={{ scale: 1.01 }}
-              className="relative rounded-xl border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5 shadow-sm hover:shadow-md transition"
+              whileHover={{ scale: 1.02 }}
+              className="relative rounded-xl border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5 shadow-sm hover:shadow-md transition-all"
             >
               <div className="flex justify-between items-start gap-3">
                 <div className="min-w-0">

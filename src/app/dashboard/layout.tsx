@@ -148,7 +148,7 @@ useEffect(() => {
         
         {children}
       </main>
-      <MobileNavbar/>
+      {/* <MobileNavbar/> */}
     </div>
   );
 }

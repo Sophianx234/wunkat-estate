@@ -61,8 +61,8 @@ export default function HouseCard({
         setLoadingRooms(false);
       }
     };
-    if (expanded) fetchRooms();
-  }, [expanded, house._id]);
+    fetchRooms()
+  },  [house]);
 
   const onAddRoom = () => router.push(`/dashboard/properties/add-property`);
   const onEditRoom = (roomId: string) =>

@@ -71,7 +71,7 @@ export default function Header() {
             transition={{ duration: 0.3 }}
             className="md:hidden bg-background border-t border-border shadow-md"
           >
-            <nav className="flex flex-col items-center gap-4 py-6">
+            <nav className="flex flex-col pl-4 gap-4 py-6">
               
               <Link href="/browse" onClick={toggleMenu} className="text-foreground hover:text-muted-foreground transition">
                 Browse Rooms
@@ -83,14 +83,8 @@ export default function Header() {
                 Contact
               </Link>
 
-              <div className="flex flex-col gap-3 w-3/4 mt-4">
-                <Button variant="outline" asChild onClick={toggleMenu}>
                   <Link href="/login">Login</Link>
-                </Button>
-                <Button asChild className="bg-black text-white hover:bg-gray-900" onClick={toggleMenu}>
-                  <Link href="/browse">Browse Rooms</Link>
-                </Button>
-              </div>
+                
             </nav>
           </motion.div>
         )}

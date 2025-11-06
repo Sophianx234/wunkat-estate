@@ -2,6 +2,7 @@ import { connectToDatabase } from "@/config/DbConnect";
 import { broadcast } from "@/lib/sse";
 import House from "@/models/House";
 import Notification from "@/models/Notification";
+import Room from "@/models/Room";
 import { NextRequest, NextResponse } from "next/server";
 
 // MongoDB connection helper
@@ -44,7 +45,7 @@ if (smartLockSupport && ["true", "false"].includes(smartLockSupport.toLowerCase(
       query.amenities = { $all: amenities }; // OR use $all if you want "must have all"
     }
 
-    const houses = await House.find(query).populate("rooms");
+    const houses = await House.find(query);
 
     return NextResponse.json(houses, { status: 200 });
   } catch (error: any) {

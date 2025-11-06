@@ -10,7 +10,6 @@ import TeamMembersCard from "../../_components/TeamMembersCard";
 import TenantSummary from "../../_components/TenantSummary";
 import TransactionHistory from "../../_components/TransactionTable";
 import RecentActivity from "../overview/RecentActivity";
-import { Skeleton } from "@/components/ui/skeleton";
 import StatCardSkeleton from "@/components/skeletons/StatsCardSkeleton";
 
 export interface StatData {
@@ -36,7 +35,6 @@ export default function Finance() {
         const res = await fetch("/api/dashboard/stats");
         if (res.ok) {
           const data = await res.json();
-          console.log(data);
           setCardStats(data);
         }
       } catch (err) {
@@ -49,9 +47,9 @@ export default function Finance() {
   }, []);
 
   return (
-    <div className="">
-      {/* Stat cards */}
-      <div className="grid grid-cols-3 gap-4 w-full mb-5">
+    <div className="flex flex-col gap-6">
+      {/* Stat Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full mb-5">
         {isLoading ? (
           <>
             <StatCardSkeleton />
@@ -67,18 +65,29 @@ export default function Finance() {
         )}
       </div>
 
-      <RecentActivity />
-      <TenantSummary />
-      <SmartLockOverview />
+      {/* Activity and Summary */}
+      <div className="flex flex-col gap-6">
+        <RecentActivity />
+        <TenantSummary />
+        <SmartLockOverview />
+      </div>
 
-      <div className="grid grid-cols-[1.5fr_1.5fr_1fr] mb-6 gap-2">
+      {/* Insights Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.5fr_1.5fr_1fr] gap-4 mb-6">
         <PropertyInsightCard />
         <DevicesOverviewCard />
         <TeamMembersCard />
       </div>
 
-      <HousesAddedTable />
-      <TransactionHistory />
+      {/* Tables */}
+      <div className="flex flex-col gap-6">
+        <div className="overflow-x-auto">
+          <HousesAddedTable />
+        </div>
+        <div className="overflow-x-auto">
+          <TransactionHistory />
+        </div>
+      </div>
     </div>
   );
 }

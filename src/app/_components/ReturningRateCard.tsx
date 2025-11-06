@@ -37,20 +37,15 @@ export default function ReturningRateCard() {
 
         setChartData(data);
 
-        // ✅ Calculate the total revenue for both years
-        const currentYearData = data?.datasets?.[0]?.data || [];
-        const prevYearData = data?.datasets?.[1]?.data || [];
+        const current = data?.datasets?.[0]?.data || [];
+        const prev = data?.datasets?.[1]?.data || [];
 
-        const currentTotal = currentYearData.reduce((a: number, b: number) => a + b, 0);
-        const prevTotal = prevYearData.reduce((a: number, b: number) => a + b, 0);
+        const currentTotal = current.reduce((a: number, b: number) => a + b, 0);
+        const prevTotal = prev.reduce((a: number, b: number) => a + b, 0);
 
-        // ✅ Calculate growth rate
         if (prevTotal > 0) {
-          const change = ((currentTotal - prevTotal) / prevTotal) * 100;
-          setRateChange(change);
-        } else {
-          setRateChange(null);
-        }
+          setRateChange(((currentTotal - prevTotal) / prevTotal) * 100);
+        } else setRateChange(null);
       } catch (err) {
         console.error("Error loading returning rate data:", err);
       } finally {
@@ -71,33 +66,20 @@ export default function ReturningRateCard() {
         labels: {
           usePointStyle: true,
           pointStyle: "line",
-          boxWidth: 30,
           color: "#374151",
-          padding: 20,
-          font: {
-            size: 12,
-            family: "Inter, sans-serif",
-          },
+          font: { size: 12, family: "Inter, sans-serif" },
         },
       },
       tooltip: {
         callbacks: {
-          label: function (context: any) {
-            const value = context.parsed.y.toLocaleString();
-            return `${context.dataset.label}: ₵${value}`;
-          },
+          label: (context: any) =>
+            `${context.dataset.label}: ₵${context.parsed.y.toLocaleString()}`,
         },
       },
     },
     scales: {
-      x: {
-        grid: { display: false },
-        ticks: { color: "#6B7280" },
-      },
-      y: {
-        display: false,
-        grid: { display: false },
-      },
+      x: { grid: { display: false }, ticks: { color: "#6B7280" } },
+      y: { display: false, grid: { display: false } },
     },
   };
 
@@ -105,22 +87,24 @@ export default function ReturningRateCard() {
     chartData?.datasets?.[0]?.data?.reduce((a: number, b: number) => a + b, 0) || 0;
 
   return (
-    <div className="bg-white rounded-xl shadow p-6">
-      <div className="flex justify-between items-start">
+    <div className="bg-white rounded-2xl border shadow-sm hover:shadow-md transition-all duration-300 p-5 sm:p-6 flex flex-col">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
         <div>
-          <h2 className="font-semibold text-lg text-gray-800">Returning Rate</h2>
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
+            Returning Rate
+          </h2>
 
           {isLoading ? (
             <p className="text-gray-500 text-sm mt-2">Loading...</p>
           ) : (
             <>
-              <p className="text-2xl font-bold mt-2">
+              <p className="text-2xl sm:text-3xl font-bold mt-1 text-gray-800">
                 GH₵ {currentTotal.toLocaleString()}
               </p>
-
               {rateChange !== null && (
                 <p
-                  className={`text-sm font-medium ${
+                  className={`text-sm sm:text-base font-medium ${
                     rateChange >= 0 ? "text-green-600" : "text-red-600"
                   }`}
                 >
@@ -132,9 +116,9 @@ export default function ReturningRateCard() {
           )}
         </div>
 
-        {/* Year Select */}
+        {/* Year Selector */}
         <Select value={year} onValueChange={setYear}>
-          <SelectTrigger className="w-[100px] border px-3 py-1 rounded-md text-sm">
+          <SelectTrigger className="w-full sm:w-[120px] border-gray-300 text-sm">
             <SelectValue placeholder="Year" />
           </SelectTrigger>
           <SelectContent>
@@ -146,7 +130,7 @@ export default function ReturningRateCard() {
       </div>
 
       {/* Chart */}
-      <div className="h-48 mt-6">
+      <div className="h-48 sm:h-56 mt-6">
         {chartData ? (
           <Line
             data={{

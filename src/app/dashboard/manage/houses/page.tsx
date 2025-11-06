@@ -7,6 +7,7 @@ import HouseCard from "../../_components/HouseCard";
 import { useRouter } from "next/navigation";
 import HouseFilter from "../../_components/HouseFilter";
 import { useDashStore } from "@/lib/store";
+import { ScaleLoader } from "react-spinners";
 
 export default function Page() {
   const [houses, setHouses] = useState<IHouse[]>([]);
@@ -85,7 +86,9 @@ if (filteredHouses === null || filteredHouses === undefined) {
   displayHouses = filteredHouses;
 }
 
-
+ if(loading) return (<div className="flex flex-col items-center justify-center py-10">
+          <ScaleLoader color="#6b7280" />
+        </div>)
   return (
     <div className="p-6">
       <h1 className="text-lg mb-3 font-bold">Manage Houses</h1>
