@@ -1,32 +1,37 @@
 
-import { FaHandshake, FaHome, FaLock, FaUsers } from "react-icons/fa"
+import { FaHandshake, FaHome, FaLock, FaMoneyBillWave, FaSmile, FaUsers } from "react-icons/fa"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 
 export default function AboutPage() {
-  const values = [
-    {
-      icon: FaHandshake,
-      title: "Direct Connections",
-      description: "Connect directly with property owners. No agents, no middlemen, just honest conversations.",
-    },
-    {
-      icon: FaHome,
-      title: "Real Spaces",
-      description: "Verified rooms with authentic photos and detailed descriptions. See exactly what you're getting.",
-    },
-    {
-      icon: FaLock,
-      title: "Secure & Safe",
-      description: "Your money is protected. Payments are secured through Stripe, and bookings are guaranteed.",
-    },
-    {
-      icon: FaUsers,
-      title: "Community First",
-      description: "We believe in building a community of trusted hosts and renters. Your feedback shapes us.",
-    },
-  ]
+ const values = [
+  {
+    icon: FaHome,
+    title: "Comfort You Can Trust",
+    description:
+      "Every WunkatHomes room is carefully managed and maintained for a clean, safe, and comfortable stay.",
+  },
+  {
+    icon: FaLock,
+    title: "Transparent & Secure",
+    description:
+      "No hidden fees or surprises. Every booking and payment is handled securely for your peace of mind.",
+  },
+  {
+    icon: FaMoneyBillWave,
+    title: "Affordable Living",
+    description:
+      "Enjoy modern, well-kept spaces at prices that make sense. Quality living doesn’t have to be expensive.",
+  },
+  {
+    icon: FaSmile,
+    title: "Simple Experience",
+    description:
+      "From browsing to booking, every step is designed to be smooth and hassle-free so you can move in with confidence.",
+  },
+];
+
 
   return (
     <div className="min-h-screen  bg-background">
@@ -45,9 +50,8 @@ export default function AboutPage() {
       About WunkatHomes
     </h1>
     <p className="text-lg md:text-xl text-gray-200 leading-relaxed drop-shadow">
-      We’re on a mission to simplify real estate bookings.  
-      By eliminating agents and hidden fees, we empower renters and property owners  
-      to connect directly and fairly.
+      WunkatHomes is on a mission to make quality living accessible.
+We provide affordable, well-managed rooms with a seamless booking experience. no agents, no surprises.
     </p>
   </div>
 </section>
@@ -74,17 +78,15 @@ export default function AboutPage() {
       <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
         Building Trust <br /> Through Transparency
       </h2>
-      <p className="text-lg text-gray-600 leading-relaxed mb-6">
-        At <span className="font-semibold text-gray-900">WunkatHomes</span>, our
-        mission is to redefine real estate by making it more transparent,
-        accessible, and human-centered. We believe that finding a home should be
-        about trust, not transactions.
-      </p>
-      <p className="text-lg text-gray-600 leading-relaxed mb-10">
-        Every connection is built on honesty and simplicity. From verified
-        listings to secure payments, we ensure a seamless experience that lets
-        you focus on what truly matters — finding your space.
-      </p>
+      <p className="text-lg text-gray-700 leading-relaxed mb-4">
+  At <span className="font-semibold text-gray-900">WunkatHomes</span>, our mission is to make quality living simple, affordable, and stress-free.  
+  We provide thoughtfully designed rooms that bring comfort and convenience within reach.
+</p>
+<p className="text-lg text-gray-600 leading-relaxed mb-10">
+  With transparent pricing, flexible bookings, and reliable service, we take the hassle out of finding your next home  
+  so you can focus on what truly matters: living comfortably.
+</p>
+
       <div className="flex items-center gap-6">
         <button className="px-8 py-3 bg-black text-white rounded-full font-medium hover:bg-gray-800 transition">
           Explore More

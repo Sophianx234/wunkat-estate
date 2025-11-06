@@ -3,8 +3,8 @@
 import { useState } from "react"
     import { Ring2 } from 'ldrs/react'
 import 'ldrs/react/Ring2.css'
-import { FaHandshake, FaHome, FaLock, FaUsers } from "react-icons/fa"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { FaEnvelope, FaHandshake, FaHome, FaLock, FaMapPin, FaPhone, FaUsers } from "react-icons/fa"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 
@@ -77,70 +77,87 @@ export default function AboutPage() {
         <section className="relative bg-[url('/a-4.jpg')] bg-cover bg-center bg-no-repeat">
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
           <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-white">
-            <h1 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight drop-shadow-lg">
-              About WunkatHomes
-            </h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">Get In Touch</h1>
             <p className="text-lg md:text-xl text-gray-200 leading-relaxed drop-shadow">
-              We’re on a mission to simplify real estate bookings. By eliminating agents and hidden
-              fees, we empower renters and property owners to connect directly and fairly.
+              Have questions? We'd love to hear from you. Contact us anytime.
             </p>
           </div>
         </section>
 
         {/* MISSION */}
-        <section className="relative bg-neutral-50 py-28">
-          <div className="max-w-7xl mx-auto grid md:grid-cols-2 items-center gap-16 px-6 lg:px-12">
-            <div className="relative group">
-              <div className="rounded-3xl overflow-hidden shadow-2xl relative">
-                <img
-                  src="/a-2.jpg"
-                  alt="Elegant interior representing WunkatHomes mission"
-                  className="w-full h-[600px] object-cover transform group-hover:scale-105 transition duration-700 ease-in-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-              </div>
-            </div>
-
-            <div className="relative">
-              <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-                Building Trust <br /> Through Transparency
-              </h2>
-              <p className="text-lg text-gray-600 leading-relaxed mb-6">
-                At <span className="font-semibold text-gray-900">WunkatHomes</span>, our mission is
-                to redefine real estate by making it more transparent, accessible, and
-                human-centered.
-              </p>
-              <p className="text-lg text-gray-600 leading-relaxed mb-10">
-                Every connection is built on honesty and simplicity. From verified listings to
-                secure payments, we ensure a seamless experience that lets you focus on what truly
-                matters — finding your space.
-              </p>
-            </div>
-          </div>
-        </section>
+    
 
         {/* VALUES */}
-        <section className="py-20 md:py-32 bg-secondary/20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl md:text-4xl font-bold mb-16 text-center">Our Core Values</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {values.map((value, idx) => {
-                const Icon = value.icon
-                return (
-                  <Card key={idx} className="border border-border shadow-md hover:shadow-lg transition">
-                    <CardHeader>
-                      <Icon className="w-8 h-8 text-primary mb-4" />
-                      <CardTitle>{value.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">{value.description}</p>
-                    </CardContent>
-                  </Card>
-                )
-              })}
-            </div>
-          </div>
-        </section>
+        <section className="py-20 md:py-32 bg-gradient-to-b from-gray-50 to-white">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+      Get in Touch
+    </h2>
+    <p className="text-gray-600 max-w-2xl mx-auto mb-16">
+      Whether you have a question, feedback, or need assistance with your booking,
+      our team is here to help. Reach out to us through any of the options below.
+    </p>
+
+    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 justify-items-center">
+      {/* Email Card */}
+      <Card className="w-full max-w-sm border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+        <CardHeader className="flex flex-col items-center text-center">
+          <FaEnvelope className="w-8 h-8 text-primary mb-4" />
+          <CardTitle className="text-lg font-semibold">Email Us</CardTitle>
+          <CardDescription className="text-gray-500">
+            We typically reply within 24 hours.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="text-center">
+          <a
+            href="mailto:info@wunkathomes.com"
+            className="text-gray-800 hover:text-primary transition font-medium"
+          >
+            info@wunkathomes.com
+          </a>
+        </CardContent>
+      </Card>
+
+      {/* Phone Card */}
+      <Card className="w-full max-w-sm border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+        <CardHeader className="flex flex-col items-center text-center">
+          <FaPhone className="w-8 h-8 text-primary mb-4" />
+          <CardTitle className="text-lg font-semibold">Call Us</CardTitle>
+          <CardDescription className="text-gray-500">
+            Speak directly with our support team.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="text-center">
+          <a
+            href="tel:+233-55-123-4567"
+            className="text-gray-800 hover:text-primary transition font-medium"
+          >
+            +233 55 123 4567
+          </a>
+        </CardContent>
+      </Card>
+
+      {/* Address Card */}
+      <Card className="w-full max-w-sm border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+        <CardHeader className="flex flex-col items-center text-center">
+          <FaMapPin className="w-8 h-8 text-primary mb-4" />
+          <CardTitle className="text-lg font-semibold">Visit Us</CardTitle>
+          <CardDescription className="text-gray-500">
+            Stop by our office during working hours.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="text-center">
+          <p className="text-gray-800">
+            WunkatHomes HQ  
+            <br />
+            Spintex Road, Accra, Ghana
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+</section>
+
 
         {/* CONTACT FORM */}
        {/* CONTACT FORM */}
@@ -231,3 +248,6 @@ export default function AboutPage() {
     </div>
   )
 }
+
+
+/*  */
