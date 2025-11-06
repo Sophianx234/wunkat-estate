@@ -18,9 +18,9 @@ export default function UploadProfilePage() {
   const [cropping, setCropping] = useState(false);
   const [crop, setCrop] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null); // typed
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
   const router = useRouter();
-  const { signupData,room } = useDashStore();
+  const { signupData, room } = useDashStore();
 
   const handleAvatarClick = () => {
     fileInputRef.current?.click();
@@ -47,7 +47,7 @@ export default function UploadProfilePage() {
   const confirmCrop = async () => {
     if (!avatar || !croppedAreaPixels) return;
     try {
-      const croppedFile: File = await getCroppedImg(avatar, croppedAreaPixels); // ensure getCroppedImg returns File
+      const croppedFile: File = await getCroppedImg(avatar, croppedAreaPixels);
       setSelectedFile(croppedFile);
 
       const previewUrl = URL.createObjectURL(croppedFile);
@@ -58,6 +58,7 @@ export default function UploadProfilePage() {
       console.error(err);
     }
   };
+
   const handleSetProfile = async () => {
     if (!selectedFile) {
       toast.error("Please select an image first!");
@@ -84,13 +85,13 @@ export default function UploadProfilePage() {
         const { msg } = await res.json();
         throw new Error(msg || "Upload failed");
       }
-      if(res.ok){
-        toast.dismiss();
 
+      if (res.ok) {
+        toast.dismiss();
         toast.success("Account created");
-        if(room){
+        if (room) {
           router.push(`/dashboard/properties/${room._id}`);
-        }else{
+        } else {
           router.push("/dashboard/properties");
         }
       }
@@ -114,17 +115,14 @@ export default function UploadProfilePage() {
 
       if (!res.ok) {
         const { msg } = await res.json();
-        throw new Error(msg || "Upload failed");
+        throw new Error(msg || "Signup failed");
       }
-      if (res.ok) {
-        toast.dismiss();
-        toast.success("Account created...");
-        
-      if(room){
+      toast.dismiss();
+      toast.success("Account created");
+      if (room) {
         router.push(`/dashboard/properties/${room._id}`);
-      }else{
-      router.push("/dashboard/properties");
-      }
+      } else {
+        router.push("/dashboard/properties");
       }
     } catch (err) {
       toast.dismiss();
@@ -136,15 +134,16 @@ export default function UploadProfilePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4 py-8 sm:py-12">
       <Toaster />
-      <h1 className="text-2xl font-semibold mb-6 text-center">
+      <h1 className="text-2xl sm:text-3xl font-semibold mb-6 text-center">
         Upload Profile Photo
       </h1>
 
-      <div className="flex flex-col items-center gap-4 mb-6">
+      <div className="flex flex-col items-center gap-6 sm:gap-8 w-full max-w-md">
+        {/* Avatar Upload */}
         <div
-          className="relative size-24 rounded-full overflow-hidden border-2 border-orange-200 cursor-pointer group"
+          className="relative w-36 h-36 sm:w-48 sm:h-48 rounded-full overflow-hidden border-2 border-orange-200 cursor-pointer group"
           onClick={handleAvatarClick}
         >
           {avatar ? (
@@ -155,7 +154,9 @@ export default function UploadProfilePage() {
               className="object-cover group-hover:opacity-80 transition"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm"></div>
+            <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm sm:text-base">
+              Click to upload
+            </div>
           )}
           <input
             type="file"
@@ -165,26 +166,24 @@ export default function UploadProfilePage() {
             onChange={handleFileChange}
           />
         </div>
-        <div
-          className={`${
-            uploading ? "flex" : "grid grid-cols-2"
-          } gap-3 items-center`}
-        >
+
+        {/* Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
           {!uploading && (
             <button
               onClick={handleSkip}
-              className="flex justify-center hover:bg-gray-100 items-center gap-2 bg-white shadow border border-gray-200 text-black px-5 py-2 rounded-md"
+              className="flex justify-center items-center gap-2 bg-white shadow border border-gray-200 text-black px-5 py-2 rounded-md hover:bg-gray-100 transition w-full sm:w-auto"
             >
               Skip
             </button>
           )}
 
           {uploading ? (
-            <ScaleLoader className="" />
+            <ScaleLoader color="#000" />
           ) : (
             <button
               onClick={handleSetProfile}
-              className="flex items-center gap-2 bg-black text-white px-5 py-2 rounded-md hover:bg-gray-800 transition"
+              className="flex items-center gap-2 bg-black text-white px-5 py-2 rounded-md hover:bg-gray-800 transition w-full sm:w-auto justify-center"
             >
               <FiUploadCloud />
               Set Profile
@@ -195,8 +194,8 @@ export default function UploadProfilePage() {
 
       {/* Crop Modal */}
       {cropping && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center z-50">
-          <div className="relative w-[300px] h-[300px] bg-white">
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex flex-col items-center justify-center z-50 px-4">
+          <div className="relative w-full max-w-xs sm:max-w-sm h-64 sm:h-80 bg-white rounded-lg overflow-hidden">
             <Cropper
               image={avatar || ""}
               crop={crop}
@@ -207,16 +206,16 @@ export default function UploadProfilePage() {
               onCropComplete={onCropComplete}
             />
           </div>
-          <div className="mt-4 flex gap-4">
+          <div className="mt-4 flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center">
             <button
               onClick={() => setCropping(false)}
-              className="px-4 py-2 bg-gray-300 rounded"
+              className="px-4 py-2 bg-gray-300 rounded w-full sm:w-auto"
             >
               Cancel
             </button>
             <button
               onClick={confirmCrop}
-              className="px-4 py-2 bg-black border border-white shadow text-white rounded"
+              className="px-4 py-2 bg-black text-white rounded shadow w-full sm:w-auto"
             >
               Crop & Save
             </button>
