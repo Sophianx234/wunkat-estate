@@ -7,7 +7,7 @@ const features = [
   { icon: FaCheckCircle, title: "Verified Rooms", desc: "Each space listed on WunkatHomes is personally verified for quality, comfort, and authenticity." },
   { icon: FaShieldAlt, title: "Secure Booking", desc: "Book confidently with encrypted transactions and trusted payment gateways." },
   { icon: FaClock, title: "24/7 Support", desc: "Our dedicated team is available anytime you need assistance or guidance." },
-  { icon: FaSmile, title: "Transparent Pricing", desc: "What you see is what you pay. No hidden costs, no surprises — just clarity." },
+  { icon: FaSmile, title: "Transparent Pricing", desc: "What you see is what you pay. No hidden costs, no surprises, just clarity." },
 ]
 
 export default function WhyChooseUs() {
@@ -42,7 +42,7 @@ export default function WhyChooseUs() {
             transition={{ duration: 0.6, delay: 0.3 }}
             viewport={{ once: true }}
           >
-            We’re redefining how you discover and book living spaces — through verified listings, secure payments,
+            We’re redefining how you discover and book living spaces through verified listings, secure payments,
             and an unmatched rental experience built on trust and design excellence.
           </motion.p>
 

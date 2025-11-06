@@ -105,8 +105,7 @@ export default function Newsletter() {
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              Subscribe for curated updates on new listings, design inspiration, and investment opportunities — 
-              tailored for the modern homeowner.
+             Receive exclusive updates on new properties, market insights, and smart investment opportunities from WunkatHomes.
             </motion.p>
 
             {/* Form */}

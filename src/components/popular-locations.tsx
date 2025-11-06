@@ -31,8 +31,7 @@ export default function PopularLocations() {
           viewport={{ once: true }}
           className="text-gray-500 mb-14 max-w-2xl mx-auto leading-relaxed"
         >
-          Discover the most sought-after cities where WunkatHomes users find their perfect stays and investments.
-        </motion.p>
+         Explore the cities our community loves most, and find a stay that feels just right for your</motion.p>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {locations.map((loc, index) => (

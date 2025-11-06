@@ -62,8 +62,7 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="text-lg md:text-xl text-gray-200 leading-relaxed max-w-xl mx-auto md:mx-0 font-light"
           >
-            Immerse yourself in spaces where architecture meets artistry.  
-            Explore properties designed for elegance, comfort, and legacy.
+            Discover subscription-based living made simple. WunkatHomes offers elegant, fully managed rooms designed for comfort, style, and peace of mind.
           </motion.p>
 
           <motion.div

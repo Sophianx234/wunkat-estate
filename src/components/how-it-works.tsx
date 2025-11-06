@@ -7,25 +7,26 @@ const steps = [
   {
     icon: FaSearch,
     number: "01",
-    title: "Search Properties",
+    title: "Explore Properties",
     description:
-      "Browse hundreds of verified listings curated just for you. Filter by location, price, and amenities.",
+      "Discover a curated selection of WunkatHomes rooms designed for comfort and convenience. Find the perfect space that suits your lifestyle.",
   },
   {
     icon: FaCalendarCheck,
     number: "02",
-    title: "Book Instantly",
+    title: "Book & Subscribe",
     description:
-      "Schedule viewings in seconds and secure your viewing slot with instant confirmation.",
+      "Choose your preferred room and subscription period. Enjoy a seamless booking process with instant confirmation and flexible renewal options.",
   },
   {
     icon: FaCreditCard,
     number: "03",
-    title: "Secure Payment",
+    title: "Make Secure Payments",
     description:
-      "Complete payments safely with our encrypted platform. No hidden fees, complete transparency.",
+      "Complete your subscription through our secure, transparent payment system. Your comfort and trust are our priority.",
   },
-]
+];
+
 
 export default function HowItWorks() {
   return (

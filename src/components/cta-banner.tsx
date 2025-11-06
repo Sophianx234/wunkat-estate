@@ -52,7 +52,7 @@ export default function CtaBanner() {
           transition={{ duration: 0.7, delay: 0.4 }}
           viewport={{ once: true, amount: 0.3 }}
         >
-          From exclusive penthouses to tranquil escapes — explore verified listings designed for modern lifestyles.  
+          From exclusive penthouses to tranquil escapes. explore verified listings designed for modern lifestyles.  
           Trust, transparency, and timeless design in every stay.
         </motion.p>
 
