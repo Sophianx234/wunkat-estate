@@ -16,67 +16,68 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold text-white mb-4">Company</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  Careers
-                </Link>
-              </li>
-            </ul>
-          </div>
+  <h4 className="font-semibold text-white mb-4">Company</h4>
+  <ul className="space-y-2 text-sm">
+    <li>
+      <Link href="/about" className="hover:text-white transition-colors">
+        About Us
+      </Link>
+    </li>
+    <li>
+      <Link href="/blog" className="hover:text-white transition-colors">
+        Blog
+      </Link>
+    </li>
+    <li>
+      <Link href="/careers" className="hover:text-white transition-colors">
+        Careers
+      </Link>
+    </li>
+  </ul>
+</div>
 
-          <div>
-            <h4 className="font-semibold text-white mb-4">Support</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  Help Center
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  FAQ
-                </Link>
-              </li>
-            </ul>
-          </div>
+<div>
+  <h4 className="font-semibold text-white mb-4">Support</h4>
+  <ul className="space-y-2 text-sm">
+    <li>
+      <Link href="/help-center" className="hover:text-white transition-colors">
+        Help Center
+      </Link>
+    </li>
+    <li>
+      <Link href="/contact" className="hover:text-white transition-colors">
+        Contact
+      </Link>
+    </li>
+    <li>
+      <Link href="/faq" className="hover:text-white transition-colors">
+        FAQ
+      </Link>
+    </li>
+  </ul>
+</div>
 
-          <div>
-            <h4 className="font-semibold text-white mb-4">Legal</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  Terms
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  Privacy
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  Cookies
-                </Link>
-              </li>
-            </ul>
-          </div>
+<div>
+  <h4 className="font-semibold text-white mb-4">Legal</h4>
+  <ul className="space-y-2 text-sm">
+    <li>
+      <Link href="/terms" className="hover:text-white transition-colors">
+        Terms
+      </Link>
+    </li>
+    <li>
+      <Link href="/privacy" className="hover:text-white transition-colors">
+        Privacy
+      </Link>
+    </li>
+    <li>
+      <Link href="/cookies" className="hover:text-white transition-colors">
+        Cookies
+      </Link>
+    </li>
+  </ul>
+</div>
+
         </div>
 
         <div className="border-t border-gray-800 pt-8">

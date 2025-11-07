@@ -22,6 +22,7 @@ import { PiBathtubLight } from "react-icons/pi";
 import { LuClipboardList, LuHeadphones, LuSettings2 } from "react-icons/lu";
 import { useDashStore } from "@/lib/store";
 import { startPaystackPayment } from "@/lib/paystackConfig";
+import { ScaleLoader } from "react-spinners";
 
 type RoomInfo = {
   _id: string;
@@ -239,20 +240,52 @@ const handleRenew = async (plan: "monthly" | "yearly") => {
     ? `Expires on ${format(new Date(status.expiresAt), "PPP")}`
     : "No active subscription found";
 
-  const perks = [
-    { title: "Uninterrupted Bookings", subtitle: "Keep upcoming bookings active — no auto cancellations.", points: "Priority", icon: <FaCrown className="w-6 h-6" /> },
-    { title: "Smart Lock Access", subtitle: "Maintain seamless remote access to smart-lock enabled rooms.", points: "Access", icon: <FaLock className="w-6 h-6" /> },
-    { title: "Priority Rebooking", subtitle: "Quickly rebook your favorite rooms with faster priority windows.", points: "Convenience", icon: <FaChartLine className="w-6 h-6" /> },
-    { title: "Dedicated Support", subtitle: "Get premium support with faster response times.", points: "Support", icon: <LuHeadphones className="w-6 h-6" /> },
-    { title: "Partner Discounts", subtitle: "Access exclusive partner discounts on services.", points: "Savings", icon: <FaHandshake className="w-6 h-6" /> },
-    { title: "Flexible Plans", subtitle: "Easily switch between monthly and yearly renewal plans.", points: "Flexibility", icon: <LuSettings2 className="w-6 h-6" /> },
-  ];
+const perks = [
+  {
+    title: "Seamless Renewals",
+    subtitle: "Easily renew your room before it expires. no stress, no delays.",
+    points: "Convenience",
+    icon: <FaCrown className="w-6 h-6" />,
+  },
+  {
+    title: "Smart Access",
+    subtitle: "Enjoy secure keyless entry to select rooms using our smart-lock system.",
+    points: "Access",
+    icon: <FaLock className="w-6 h-6" />,
+  },
+  {
+    title: "Early Rebooking",
+    subtitle: "Rebook your favorite rooms before they’re made available to others.",
+    points: "Priority",
+    icon: <FaChartLine className="w-6 h-6" />,
+  },
+  {
+    title: "Dedicated Assistance",
+    subtitle: "Reach out anytime our support team is here to help you quickly and reliably.",
+    points: "Support",
+    icon: <LuHeadphones className="w-6 h-6" />,
+  },
+  {
+    title: "Exclusive Offers",
+    subtitle: "Enjoy periodic discounts and special pricing for loyal WunkatHomes users.",
+    points: "Savings",
+    icon: <FaHandshake className="w-6 h-6" />,
+  },
+  {
+    title: "Flexible Stay Plans",
+    subtitle: "Choose between monthly, quarterly, or yearly room renewals that fit your lifestyle.",
+    points: "Flexibility",
+    icon: <LuSettings2 className="w-6 h-6" />,
+  },
+];
+
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-[60vh] text-gray-500">
-        Loading renewal information...
-      </div>
+    
+      <div className="flex justify-center items-center h-[50vh]">
+                <ScaleLoader color="#868e96" />
+              </div>
     );
   }
 

@@ -24,17 +24,17 @@ export default function Topbar() {
 
         {/* Search bar */}
         <div className="hidden sm:block relative w-full max-w-md">
-          <input
+          {/* <input
             type="text"
             placeholder="Search something here..."
             className="w-full border border-gray-300 dark:border-gray-600 rounded-lg py-2 px-4 pl-10 text-sm focus:outline-none bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200"
           />
-          <FaSearch className="absolute left-3 top-2.5 text-gray-400" />
+          <FaSearch className="absolute left-3 top-2.5 text-gray-400" /> */}
         </div>
 
         {/* Right side icons */}
         <div className="flex items-center justify-self-end gap-4">
-          <ThemeToggle /> {/* <-- new button here */}
+          {/* <ThemeToggle />  */}
           <div
             onClick={toggleNotification}
             className="border hover:scale-105 duration-200 cursor border-gray-200 dark:border-gray-600 rounded-full p-2 relative"
