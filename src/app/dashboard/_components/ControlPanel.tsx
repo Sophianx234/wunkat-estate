@@ -23,10 +23,10 @@ const menu: MenuGroup[] = [
     icon: <GoGear className="size-6" />,
     items: [
       { label: "Manage Notifications", href: "/dashboard/manage/notifications" },
+      { label: "Manage Feedbacks", href: "/dashboard/manage/feedbacks" },
       { label: "Manage Houses", href: "/dashboard/manage/houses" },
       { label: "Manage Rooms", href: "/dashboard/manage/rooms" },
       { label: "Manage Users", href: "/dashboard/manage/users" },
-      { label: "Manage Feedbacks", href: "/dashboard/manage/feedbacks" },
     ],
   },
 ];
