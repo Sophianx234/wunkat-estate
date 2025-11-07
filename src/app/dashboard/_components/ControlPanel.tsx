@@ -26,6 +26,7 @@ const menu: MenuGroup[] = [
       { label: "Manage Houses", href: "/dashboard/manage/houses" },
       { label: "Manage Rooms", href: "/dashboard/manage/rooms" },
       { label: "Manage Users", href: "/dashboard/manage/users" },
+      { label: "Manage Feedbacks", href: "/dashboard/manage/feedbacks" },
     ],
   },
 ];
