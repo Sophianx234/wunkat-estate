@@ -6,12 +6,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="px-6 py-4">
       {/* Dashboard Header */}
-      <h1 className="text-xl font-inter font-bold mb-4">
-        WunkatHomes Dashboard
-      </h1>
+     
 
       {/* Dashboard Navigation */}
-      <div className="flex items-center mb-6">
+      <div className="flex items-center mb-2">
         <DashboardNav />
       </div>
 

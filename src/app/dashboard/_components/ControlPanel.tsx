@@ -5,6 +5,7 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 import { GoGear } from "react-icons/go";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useDashStore } from "@/lib/store";
 
 type MenuItem = {
   label: string;
@@ -34,6 +35,7 @@ const menu: MenuGroup[] = [
 export default function ControlPanel() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const {toggleSidebar} = useDashStore()
 
   return (
     <div className=" ">
@@ -61,6 +63,7 @@ export default function ControlPanel() {
               {group.items.map((item, i) => (
                 <Link
                   key={i}
+                  onClick={toggleSidebar}
                   href={item.href || "#"}
                   className={`dash-nav-item ${
                     pathname === item.href ? "bg-black text-white" : ""

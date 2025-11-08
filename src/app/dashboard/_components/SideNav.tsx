@@ -13,7 +13,7 @@ import { FiSettings } from "react-icons/fi";
 import { GiSpookyHouse } from "react-icons/gi";
 import { MdAccountCircle } from "react-icons/md";
 import { TbReportAnalytics } from "react-icons/tb";
-import { ScaleLoader } from "react-spinners";
+import { ClipLoader, ScaleLoader } from "react-spinners";
 import ControlPanel from "./ControlPanel";
 import { motion } from "framer-motion";
 
@@ -34,7 +34,6 @@ export default function Sidebar({ handleClose, type = "normal" }: SidebarProps) 
       const res = await fetch(`/api/auth/logout`);
       const data = await res.json();
       if (res.ok) {
-        toast.success("Logout successful");
         router.push("/");
       } else {
         toast.error("Logout failed");
@@ -145,7 +144,7 @@ export default function Sidebar({ handleClose, type = "normal" }: SidebarProps) 
           className="dash-nav-item w-full text-red-600 hover:bg-red-50 transition"
         >
           {isLoading ? (
-            <ScaleLoader height={10} width={6} color="#ef4444" />
+           <> <ClipLoader size={18}  color="#ef4444 size-3" /> logingout....</>
           ) : (
             <>
               <BiLogOut className="size-6" />
