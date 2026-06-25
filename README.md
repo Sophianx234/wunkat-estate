@@ -22,7 +22,7 @@
 
 **Wunkat Estate (v1)** is a modern frontend web application built to bring luxury homes and realty services to life. Engineered with a focus on immersive user experience, the platform utilizes a clean, minimalist UI to highlight high-end real estate. 
 
-By leveraging server-side rendering and static site generation, the application ensures optimal performance, rapid load times, and superior SEO—crucial metrics for modern real estate discoverability.
+By leveraging server-side rendering and static site generation, the application ensures optimal performance, rapid load times, and superior SEO metrics for modern real estate discoverability.
 
 ## ✨ Core Features
 
